@@ -5,3 +5,9 @@
 img {
     max-width: 100%;
 }
+leptos-island {
+    display: contents;
+}
+leptos-children {
+    display: contents;
+}

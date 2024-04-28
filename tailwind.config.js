@@ -21,6 +21,19 @@ module.exports = {
       'mui-icon': ['"Material Symbols Outlined"']
     },
     extend: {
+      zIndex: {
+        '2': '2',
+        '3': '3',
+        '4': '4'
+      },
+      scale: {
+        '200': '2',
+        '300': '3'
+      },
+      spacing: {
+        '300npx': '-300px',
+        '600npx': '-600px'
+      },
       lineHeight: '2rem',
       textShadow: {
         sm: '0 1px 2px var(--tw-shadow-color)',
@@ -31,6 +44,7 @@ module.exports = {
   },
   darkMode: 'class',
   plugins: [
+      require('@kamona/tailwindcss-perspective'),
       plugin(function ({ matchUtilities, theme }) {
         matchUtilities(
             {

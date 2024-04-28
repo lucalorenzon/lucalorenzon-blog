@@ -22,7 +22,7 @@ pub fn AsciiArtLogo_(media_query: &'static str) -> impl IntoView {
 #[component]
 pub fn AsciiArtLogo(media_query: &'static str) -> impl IntoView {
     view! {
-<pre class=move || format!("text-[7pt] font-mono font-thin leading-none tracking-tighter p-2 {}", media_query) >
+<pre class=move || format!("text-white text-[7pt] font-mono font-thin leading-none tracking-tighter p-2 {}", media_query) >
 "    __        __   ______  __________
    / / _   __/ /__/ ____ \\/__  /__  /_____
   / / | | / / //_/ / __ `/  / / /_ </ ___/
@@ -36,7 +36,7 @@ pub fn AsciiArtLogo(media_query: &'static str) -> impl IntoView {
 #[component]
 pub fn TextLogo(media_query: &'static str) -> impl IntoView {
     view! {
-<p class=move || format!("text-xl font-sans italic font-thin leading-[2.0rem] {}", media_query)>Lvk@73r</p>
+<p class=move || format!("text-white text-xl font-sans italic font-thin leading-[2.0rem] {}", media_query)>Lvk@73r</p>
     }
 }
 

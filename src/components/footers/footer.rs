@@ -3,8 +3,8 @@ use leptos::*;
 #[component]
 pub fn BlogFooter() -> impl IntoView {
     view! {
-        <hr class="h-px"/>
-        <footer class="bottom-0">
+        <footer class="bottom-0 z-50 sticky">
+            <hr class="h-px"/>
             <span>@ Luca Lorenzon production</span>
         </footer>
     }

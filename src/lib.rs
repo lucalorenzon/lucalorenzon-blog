@@ -7,20 +7,19 @@ pub mod components;
 use cfg_if::cfg_if;
 
 cfg_if! {
-if #[cfg(feature = "hydrate")] {
+  if #[cfg(feature = "hydrate")] {
 
-  use wasm_bindgen::prelude::wasm_bindgen;
+    use wasm_bindgen::prelude::wasm_bindgen;
 
-    #[wasm_bindgen]
-    pub fn hydrate() {
-      use app::*;
-      use leptos::*;
+      #[wasm_bindgen]
+      pub fn hydrate() {
 
-      console_error_panic_hook::set_once();
+        console_error_panic_hook::set_once();
 
-      leptos::mount_to_body(move || {
-          view! { <App/> }
-      });
-    }
-}
+        leptos::leptos_dom::HydrationCtx::stop_hydrating();
+        // leptos::mount_to_body(move || {
+        //     view! { <App/> }
+        // });
+      }
+  }
 }
