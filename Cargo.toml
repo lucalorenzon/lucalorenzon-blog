@@ -16,11 +16,11 @@ leptos = { version = "0.6.11", features = ["nightly", "tracing", "experimental-i
 leptos_meta = { version = "0.6.11", features = ["nightly"] }
 leptos_actix = { version = "0.6.11", optional = true, features=["experimental-islands"] }
 leptos_router = { version = "0.6.11", features = ["nightly"] }
-wasm-bindgen = "=0.2.90"
-leptos-use = { version = "=0.10.8", features = ["docs"] }
+wasm-bindgen = "=0.2.92"
+leptos-use = { version = "=0.10.9", features = ["docs"] }
 leptos_icons = { version= "0.3.0" }
 icondata = { version="0.3.0"}
-serde = { version = "1.0.198", features = ["derive"] }
+serde = { version = "1.0.201", features = ["derive"] }
 
 [features]
 csr = ["leptos/csr", "leptos_meta/csr", "leptos_router/csr"]
