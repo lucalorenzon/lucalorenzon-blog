@@ -1,11 +1,11 @@
-use leptos::*;
-use leptos::html::{Div};
-use leptos::leptos_dom::{is_browser};
-use leptos_icons::Icon;
-use icondata::{LuSearch};
-use leptos_use::use_element_visibility;
 use crate::components::logos::logo::Logo;
 use crate::components::menu::menu::Menu;
+use icondata::LuSearch;
+use leptos::html::Div;
+use leptos::leptos_dom::is_browser;
+use leptos::*;
+use leptos_icons::Icon;
+use leptos_use::use_element_visibility;
 
 #[island]
 pub fn DynamicHeader(children: Children) -> impl IntoView {
@@ -26,8 +26,7 @@ pub fn DynamicHeader(children: Children) -> impl IntoView {
 }
 
 #[component]
-pub fn BlogHeader(
-) -> impl IntoView {
+pub fn BlogHeader() -> impl IntoView {
     view! {
         <DynamicHeader >
             <Logo />
