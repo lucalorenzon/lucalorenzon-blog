@@ -26,7 +26,7 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 - Aggiornamento delle dipendenze Cargo (ecosistema Leptos, actix-web, wasm-bindgen, leptos-use, leptos_icons/icondata) a versioni stabili correnti
 - Adeguamento del codice alle breaking change introdotte dalle nuove versioni
 - Verifica manuale che tutte le feature attuali continuino a funzionare
-- Aggiornamento del toolchain Rust (nightly) se richiesto dalle nuove versioni
+- Passaggio del toolchain Rust da nightly a stable (non più richiesto da Leptos 0.8, vedi ADR-001)
 - ADR sulla versione target di Leptos e sulle breaking change rilevanti
 
 ### Out of scope
@@ -42,7 +42,7 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 
 | Type | Constraint |
 |---|---|
-| Technical | Rust nightly pinato via `rust-toolchain.toml`; target `wasm32-unknown-unknown`; le crate dell'ecosistema Leptos devono avanzare in modo coerente tra loro (versioni compatibili) |
+| Technical | Toolchain Rust in transizione da nightly a stable (vedi ADR-001); target `wasm32-unknown-unknown`; le crate dell'ecosistema Leptos devono avanzare in modo coerente tra loro (versioni compatibili) |
 | Technical | `actix-web`/`leptos_actix` restano il backend SSR per questa epica — la sostituzione con SSG è fuori scope qui |
 | Business | Nessuna scadenza esterna rigida, ma priorità alta: blocca l'avvio di tutte le altre epiche |
 
@@ -102,3 +102,4 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 | 2026-08-14 | Split into 3 stories (EP-001-S001..S003) via sw-story-split, traced to AT-EP-001 |
 | 2026-08-14 | Rewrote actor references and verification steps in an impersonal tone across the epic and AT-EP-001 (documentation must not read as a narrative about a named person) |
 | 2026-08-14 | Removed the Actors section — not meaningful for a technical epic with no actor-system interaction to model |
+| 2026-08-14 | Discussed and resolved EP-001-S001's Decision field: wasm-bindgen moves to a range instead of an exact pin, toolchain moves from nightly to stable (no longer required by Leptos 0.8), added a hydration/console-error check to scope. Updated ADR-001, AT-EP-001, and the story accordingly |
