@@ -73,13 +73,20 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 |---|---|---|---|
 | — | — | — | — |
 
+> Nota: questa epica è un lavoro tecnico di ripristino/refactor (aggiornamento dipendenze, adeguamento a breaking change) senza logica di business né interazione attore-sistema da modellare. Non prevede Use Case; si procede direttamente a story-split.
+
 ## Open Issues
 
 - Verificare qual è l'ultima versione stabile di Leptos e se introduce breaking change rilevanti per `experimental-islands` (da risolvere in ADR dedicato)
-- Il `Cargo.lock` ha una modifica non committata (bump 0.6.14→0.6.15) da chiarire prima di iniziare: è un residuo da scartare o va committata a parte?
+
+## Resolved Issues
+
+- ~~Il `Cargo.lock` ha una modifica non committata (bump 0.6.14→0.6.15) da chiarire prima di iniziare~~ — risolto: era l'effetto di un `cargo update` esplorativo, non un aggiornamento intenzionale. Luca ha ripristinato `Cargo.lock` con `git restore` per ripartire da uno stato pulito prima di iniziare il lavoro su questa epica.
 
 ---
 
 | Updated | What changed |
 |---|---|
 | 2026-08-13 | Epic created |
+| 2026-08-14 | Closed the Cargo.lock open issue (was a leftover from an exploratory `cargo update`, deliberately reverted with `git restore`) |
+| 2026-08-14 | Determined this epic has no business-facing interaction to model as a Use Case (pure technical refactor) — will proceed directly to story-split |
