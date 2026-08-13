@@ -75,6 +75,10 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 
 > Nota: questa epica è un lavoro tecnico di ripristino/refactor (aggiornamento dipendenze, adeguamento a breaking change) senza logica di business né interazione attore-sistema da modellare. Non prevede Use Case; si procede direttamente a story-split.
 
+## Acceptance Tests
+
+[AT-EP-001](../acceptance-tests/AT-EP-001-aggiornamento-stack-leptos-rust.md) — livello Component, derivato dagli Acceptance Criteria AC-1..AC-4 in assenza di una UC.
+
 ## Open Issues
 
 - —
@@ -92,3 +96,4 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 | 2026-08-14 | Closed the Cargo.lock open issue (was a leftover from an exploratory `cargo update`, deliberately reverted with `git restore`) |
 | 2026-08-14 | Determined this epic has no business-facing interaction to model as a Use Case (pure technical refactor) — will proceed directly to story-split |
 | 2026-08-14 | Added ADR-001 (Leptos target version 0.8.20 and related ecosystem) and closed the last open issue |
+| 2026-08-14 | Added AT-EP-001 (Component-level acceptance tests, derived from AC-1..AC-4 in place of a missing UC) |
