@@ -42,5 +42,5 @@ Component under test: build di lucalorenzon-blog (insieme di dipendenze Cargo + 
 
 ## Open Issues
 
-- L'"equivalenza visiva" nelle righe AC-2/AC-3 è verificata manualmente da Luca (nessun tool di visual regression automatico è in scope per EP-001 — quello è EP-002). Il valore `true` rappresenta "nessuna regressione osservata", accertata soggettivamente dall'unico stakeholder, non da un diff automatico.
+- L'"equivalenza visiva" nelle righe AC-2/AC-3 è verificata manualmente (nessun tool di visual regression automatico è in scope per EP-001 — quello è EP-002). Il valore `true` rappresenta "nessuna regressione osservata", accertata soggettivamente dall'unico stakeholder, non da un diff automatico.
 - `rust-toolchain.toml` attualmente fissa solo `channel = "nightly"` senza data pinnata. Se Leptos 0.8 richiede uno snapshot nightly specifico, il valore esatto è `?UNKNOWN?` finché non si tenta la build — da definire durante l'implementazione.

@@ -24,7 +24,7 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 
 | Actor | Type | Role in this epic |
 |---|---|---|
-| Luca Lorenzon | Primary | Sviluppatore e unico stakeholder; decide versioni target e verifica il risultato |
+| Sviluppatore | Primary | Unico stakeholder del progetto; decide le versioni target e verifica il risultato |
 
 ## Scope
 
@@ -56,10 +56,10 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 
 | ID | Criterion | Verified by |
 |---|---|---|
-| AC-1 | `cargo leptos watch` avvia il sito in locale senza errori di build | Luca esegue il comando e osserva l'esito |
-| AC-2 | Tutte le route esistenti (home, 404) sono raggiungibili e visivamente equivalenti a prima dell'aggiornamento | Luca naviga il sito in locale |
-| AC-3 | Le funzionalità interattive esistenti (apertura/chiusura menu, toggle dark/light) continuano a funzionare | Luca interagisce col sito in locale |
-| AC-4 | Le dipendenze Cargo sono aggiornate a versioni stabili correnti, con motivazione documentata | Luca legge `Cargo.toml`/`Cargo.lock` e l'ADR collegato |
+| AC-1 | `cargo leptos watch` avvia il sito in locale senza errori di build | Esecuzione del comando e osservazione dell'esito |
+| AC-2 | Tutte le route esistenti (home, 404) sono raggiungibili e visivamente equivalenti a prima dell'aggiornamento | Navigazione manuale del sito in locale |
+| AC-3 | Le funzionalità interattive esistenti (apertura/chiusura menu, toggle dark/light) continuano a funzionare | Interazione manuale con il sito in locale |
+| AC-4 | Le dipendenze Cargo sono aggiornate a versioni stabili correnti, con motivazione documentata | Lettura di `Cargo.toml`/`Cargo.lock` e dell'ADR collegato |
 
 ## ADRs
 
@@ -93,7 +93,7 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 
 ## Resolved Issues
 
-- ~~Il `Cargo.lock` ha una modifica non committata (bump 0.6.14→0.6.15) da chiarire prima di iniziare~~ — risolto: era l'effetto di un `cargo update` esplorativo, non un aggiornamento intenzionale. Luca ha ripristinato `Cargo.lock` con `git restore` per ripartire da uno stato pulito prima di iniziare il lavoro su questa epica.
+- ~~Il `Cargo.lock` ha una modifica non committata (bump 0.6.14→0.6.15) da chiarire prima di iniziare~~ — risolto: era l'effetto di un `cargo update` esplorativo, non un aggiornamento intenzionale. `Cargo.lock` è stato ripristinato con `git restore` per ripartire da uno stato pulito prima di iniziare il lavoro su questa epica.
 - ~~Verificare qual è l'ultima versione stabile di Leptos e se introduce breaking change rilevanti per `experimental-islands`~~ — risolto: vedi [ADR-001](../adr/ADR-001-leptos-target-version.md) (target Leptos 0.8.20, feature flag `experimental-islands` → `islands`).
 
 ---
@@ -106,3 +106,4 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 | 2026-08-14 | Added ADR-001 (Leptos target version 0.8.20 and related ecosystem) and closed the last open issue |
 | 2026-08-14 | Added AT-EP-001 (Component-level acceptance tests, derived from AC-1..AC-4 in place of a missing UC) |
 | 2026-08-14 | Split into 3 stories (EP-001-S001..S003) via sw-story-split, traced to AT-EP-001 |
+| 2026-08-14 | Rewrote actor references and verification steps in an impersonal tone across the epic and AT-EP-001 (documentation must not read as a narrative about a named person) |
