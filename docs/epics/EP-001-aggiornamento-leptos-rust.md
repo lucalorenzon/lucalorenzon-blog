@@ -79,6 +79,14 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 
 [AT-EP-001](../acceptance-tests/AT-EP-001-aggiornamento-stack-leptos-rust.md) — livello Component, derivato dagli Acceptance Criteria AC-1..AC-4 in assenza di una UC.
 
+## Stories
+
+| Story ID | Title | Status |
+|---|---|---|
+| [EP-001-S001](../stories/EP-001-S001-aggiornamento-dipendenze-migrazione-islands.md) | Aggiornare le dipendenze Cargo e migrare l'architettura islands al feature flag stabilizzato | Pending discussion |
+| [EP-001-S002](../stories/EP-001-S002-verifica-route-esistenti.md) | Verificare e correggere le route esistenti dopo l'aggiornamento | Pending discussion |
+| [EP-001-S003](../stories/EP-001-S003-verifica-funzionalita-interattive-islands.md) | Verificare e correggere le funzionalità interattive (islands) dopo l'aggiornamento | Pending discussion |
+
 ## Open Issues
 
 - —
@@ -97,3 +105,4 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 | 2026-08-14 | Determined this epic has no business-facing interaction to model as a Use Case (pure technical refactor) — will proceed directly to story-split |
 | 2026-08-14 | Added ADR-001 (Leptos target version 0.8.20 and related ecosystem) and closed the last open issue |
 | 2026-08-14 | Added AT-EP-001 (Component-level acceptance tests, derived from AC-1..AC-4 in place of a missing UC) |
+| 2026-08-14 | Split into 3 stories (EP-001-S001..S003) via sw-story-split, traced to AT-EP-001 |
