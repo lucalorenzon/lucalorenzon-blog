@@ -1,0 +1,85 @@
+# EP-001: Rilancio del sito su stack Leptos/Rust aggiornato
+
+> Riportare il sito a compilare ed eseguire con le feature attuali su dipendenze e toolchain correnti, come prerequisito bloccante per tutte le epiche successive.
+
+---
+
+## Motivation
+
+Il progetto è fermo dal 2024-08-14 (ultimo commit di dipendenze), quasi due anni fa rispetto a oggi. È basato su Leptos 0.6 (nightly), mai aggiornato oltre un bump di patch. Nessuna delle epiche successive — migrazione a SSG (EP-003), motore di ricerca (EP-004), pipeline di deploy (EP-005), revisione grafica (EP-006), contenuti (EP-007) — può partire in modo sensato su una base che non è allineata alle versioni correnti dell'ecosistema Leptos: il rischio è costruire su fondamenta che andranno comunque riscritte.
+
+Il motivo per cui questo lavoro riparte ora è che l'utente ha deciso di riportare in vita il progetto per costruirsi una rete professionale in vista di una futura attività in proprio, oltre che come spazio personale.
+
+## Context
+
+Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `actix-web`, con Rust nightly pinato (`rust-toolchain.toml`). Non è mai stato deployato in produzione — è sempre rimasto un banco di prova locale ("mai andato in produzione, sempre stato solo una scusa per provare qualcosa"). Le dipendenze principali (`leptos`, `leptos_meta`, `leptos_router`, `leptos_actix`, `leptos-use`, `leptos_icons`/`icondata`, `wasm-bindgen`) sono ferme alla riga di Leptos 0.6. Il `Cargo.lock` ha attualmente una modifica non committata (bump `leptos` 0.6.14→0.6.15, probabile effetto collaterale di una build locale, non un aggiornamento intenzionale). Il problema noto e già segnalato dall'utente è che il bundle WASM, pur non enorme, si sente nelle prestazioni di download.
+
+## Business Outcome
+
+- Il sito compila ed esegue in locale (`cargo leptos watch`) senza errori, su dipendenze e toolchain correnti
+- Tutte le route e le funzionalità interattive oggi presenti (homepage, 404, header dinamico, menu con toggle dark/light, footer, logo) restano funzionanti dopo l'aggiornamento
+- Le versioni delle dipendenze Cargo e la relativa motivazione delle scelte sono documentate in un ADR collegato a questa epica
+
+## Actors
+
+| Actor | Type | Role in this epic |
+|---|---|---|
+| Luca Lorenzon | Primary | Sviluppatore e unico stakeholder; decide versioni target e verifica il risultato |
+
+## Scope
+
+### In scope
+- Aggiornamento delle dipendenze Cargo (ecosistema Leptos, actix-web, wasm-bindgen, leptos-use, leptos_icons/icondata) a versioni stabili correnti
+- Adeguamento del codice alle breaking change introdotte dalle nuove versioni
+- Verifica manuale che tutte le feature attuali continuino a funzionare
+- Aggiornamento del toolchain Rust (nightly) se richiesto dalle nuove versioni
+- ADR sulla versione target di Leptos e sulle breaking change rilevanti
+
+### Out of scope
+- Migrazione architetturale a SSG (EP-003)
+- Riduzione misurabile del bundle WASM come criterio di accettazione — è un effetto atteso ma non l'obiettivo di questa epica (l'obiettivo architetturale è EP-003)
+- Scrittura di test automatici oltre alla verifica manuale (EP-002)
+- Deploy, CI/CD, dominio custom (EP-005)
+- Motore di ricerca (EP-004)
+- Revisione grafica e accessibilità (EP-006)
+- Contenuti (EP-007)
+
+## Constraints
+
+| Type | Constraint |
+|---|---|
+| Technical | Rust nightly pinato via `rust-toolchain.toml`; target `wasm32-unknown-unknown`; le crate dell'ecosistema Leptos devono avanzare in modo coerente tra loro (versioni compatibili) |
+| Technical | `actix-web`/`leptos_actix` restano il backend SSR per questa epica — la sostituzione con SSG è fuori scope qui |
+| Business | Nessuna scadenza esterna rigida, ma priorità alta: blocca l'avvio di tutte le altre epiche |
+
+## Acceptance Criteria
+
+| ID | Criterion | Verified by |
+|---|---|---|
+| AC-1 | `cargo leptos watch` avvia il sito in locale senza errori di build | Luca esegue il comando e osserva l'esito |
+| AC-2 | Tutte le route esistenti (home, 404) sono raggiungibili e visivamente equivalenti a prima dell'aggiornamento | Luca naviga il sito in locale |
+| AC-3 | Le funzionalità interattive esistenti (apertura/chiusura menu, toggle dark/light) continuano a funzionare | Luca interagisce col sito in locale |
+| AC-4 | Le dipendenze Cargo sono aggiornate a versioni stabili correnti, con motivazione documentata | Luca legge `Cargo.toml`/`Cargo.lock` e l'ADR collegato |
+
+## ADRs
+
+| ADR | Title | Date | Status |
+|---|---|---|---|
+| — | — | — | — |
+
+## Use Cases
+
+| UC ID | Title | Goal level | Status |
+|---|---|---|---|
+| — | — | — | — |
+
+## Open Issues
+
+- Verificare qual è l'ultima versione stabile di Leptos e se introduce breaking change rilevanti per `experimental-islands` (da risolvere in ADR dedicato)
+- Il `Cargo.lock` ha una modifica non committata (bump 0.6.14→0.6.15) da chiarire prima di iniziare: è un residuo da scartare o va committata a parte?
+
+---
+
+| Updated | What changed |
+|---|---|
+| 2026-08-13 | Epic created |
