@@ -65,7 +65,7 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 
 | ADR | Title | Date | Status |
 |---|---|---|---|
-| — | — | — | — |
+| [ADR-001](../adr/ADR-001-leptos-target-version.md) | Target version for Leptos and the related dependency ecosystem | 2026-08-14 | Proposed |
 
 ## Use Cases
 
@@ -77,11 +77,12 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 
 ## Open Issues
 
-- Verificare qual è l'ultima versione stabile di Leptos e se introduce breaking change rilevanti per `experimental-islands` (da risolvere in ADR dedicato)
+- —
 
 ## Resolved Issues
 
 - ~~Il `Cargo.lock` ha una modifica non committata (bump 0.6.14→0.6.15) da chiarire prima di iniziare~~ — risolto: era l'effetto di un `cargo update` esplorativo, non un aggiornamento intenzionale. Luca ha ripristinato `Cargo.lock` con `git restore` per ripartire da uno stato pulito prima di iniziare il lavoro su questa epica.
+- ~~Verificare qual è l'ultima versione stabile di Leptos e se introduce breaking change rilevanti per `experimental-islands`~~ — risolto: vedi [ADR-001](../adr/ADR-001-leptos-target-version.md) (target Leptos 0.8.20, feature flag `experimental-islands` → `islands`).
 
 ---
 
@@ -90,3 +91,4 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 | 2026-08-13 | Epic created |
 | 2026-08-14 | Closed the Cargo.lock open issue (was a leftover from an exploratory `cargo update`, deliberately reverted with `git restore`) |
 | 2026-08-14 | Determined this epic has no business-facing interaction to model as a Use Case (pure technical refactor) — will proceed directly to story-split |
+| 2026-08-14 | Added ADR-001 (Leptos target version 0.8.20 and related ecosystem) and closed the last open issue |
