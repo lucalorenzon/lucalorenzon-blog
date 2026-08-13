@@ -20,12 +20,6 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 - Tutte le route e le funzionalità interattive oggi presenti (homepage, 404, header dinamico, menu con toggle dark/light, footer, logo) restano funzionanti dopo l'aggiornamento
 - Le versioni delle dipendenze Cargo e la relativa motivazione delle scelte sono documentate in un ADR collegato a questa epica
 
-## Actors
-
-| Actor | Type | Role in this epic |
-|---|---|---|
-| Sviluppatore | Primary | Unico stakeholder del progetto; decide le versioni target e verifica il risultato |
-
 ## Scope
 
 ### In scope
@@ -107,3 +101,4 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 | 2026-08-14 | Added AT-EP-001 (Component-level acceptance tests, derived from AC-1..AC-4 in place of a missing UC) |
 | 2026-08-14 | Split into 3 stories (EP-001-S001..S003) via sw-story-split, traced to AT-EP-001 |
 | 2026-08-14 | Rewrote actor references and verification steps in an impersonal tone across the epic and AT-EP-001 (documentation must not read as a narrative about a named person) |
+| 2026-08-14 | Removed the Actors section — not meaningful for a technical epic with no actor-system interaction to model |
