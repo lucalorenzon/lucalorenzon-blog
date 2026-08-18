@@ -26,8 +26,11 @@ Before any implementation, complete in order:
 - [ ] `/parse-dont-validate`    — domain types and invariants
 - [ ] `/sw-practices`           — naming, error handling, bootstrap
 
+### Acceptance Tests
+[AT-EP-001-S001](../acceptance-tests/AT-EP-001-S001-aggiornamento-dipendenze-migrazione-islands.md)
+
 ### Next steps after agreement
-- [ ] `/acceptance-tests EP-001-S001` — story-level AT table
+- [x] `/acceptance-tests EP-001-S001` — story-level AT table
 - [ ] `/story-size EP-001-S001`       — assign XS / S / M / L / XL / XXL
 
 ### Open questions
