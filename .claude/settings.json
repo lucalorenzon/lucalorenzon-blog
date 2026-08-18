@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "vladikk-modularity": {
+      "source": {
+        "source": "github",
+        "repo": "vladikk/modularity"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "modularity@vladikk-modularity": true
+  }
+}
