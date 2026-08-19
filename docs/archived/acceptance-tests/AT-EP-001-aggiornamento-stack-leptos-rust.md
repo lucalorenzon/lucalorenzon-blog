@@ -1,6 +1,6 @@
 # AT-EP-001: Aggiornamento dello stack Leptos/Rust
 
-Epic: EP-001 | ADR: [ADR-001](../adr/ADR-001-leptos-target-version.md)
+Epic: EP-001 | ADR: [ADR-001](../../adr/ADR-001-leptos-target-version.md)
 
 > Livello: Component. EP-001 non ha una Use Case (refactor tecnico senza logica di business), quindi questo file deriva direttamente dagli Acceptance Criteria AC-1..AC-4 dell'epica invece che da estensioni di una UC.
 

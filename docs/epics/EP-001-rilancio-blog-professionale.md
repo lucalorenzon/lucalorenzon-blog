@@ -1,4 +1,4 @@
-# EP-008: Rilancio del blog personale come presenza professionale
+# EP-001: Rilancio del blog personale come presenza professionale
 
 > Riportare il sito a compilare e a pubblicare articoli reali su una base architetturale (SSG + content layer) coerente con il bisogno di farsi conoscere professionalmente, sostituendo il precedente uso del repo come banco di prova tecnologico.
 
@@ -10,7 +10,7 @@ Il repo è fermo a circa due anni fa (dipendenze Leptos/wasm-bindgen pinnate a v
 
 Quella necessità ora esiste: farsi conoscere professionalmente e valorizzare 30 anni di esperienza nel settore. Il sito deve smettere di essere uno sfizio intermittente e diventare qualcosa che resta vivo, pubblica contenuti reali e regge un pubblico professionale.
 
-Questo epic sostituisce [EP-001](./EP-001-aggiornamento-leptos-rust.md) (aggiornamento dipendenze) con uno scope più ampio, emerso da un assessment architetturale reale — vedi [docs/analysis/architecture-assessment-lucalorenzon-blog.md](../analysis/architecture-assessment-lucalorenzon-blog.md).
+Questo epic sostituisce il precedente epic di solo aggiornamento dipendenze — [archiviato: EP-001 aggiornamento Leptos/Rust](../archived/epics/EP-001-aggiornamento-leptos-rust.md) — con uno scope più ampio, emerso da un assessment architetturale reale — vedi [docs/analysis/architecture-assessment-lucalorenzon-blog.md](../analysis/architecture-assessment-lucalorenzon-blog.md).
 
 ## Context
 

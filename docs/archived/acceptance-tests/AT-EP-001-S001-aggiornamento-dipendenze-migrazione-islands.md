@@ -1,6 +1,6 @@
 # AT-EP-001-S001: Aggiornare le dipendenze Cargo e migrare l'architettura islands al feature flag stabilizzato
 
-Epic: EP-001 | ADR: [ADR-001](../adr/ADR-001-leptos-target-version.md) | Story: [EP-001-S001](../stories/EP-001-S001-aggiornamento-dipendenze-migrazione-islands.md)
+Epic: EP-001 | ADR: [ADR-001](../../adr/ADR-001-leptos-target-version.md) | Story: [EP-001-S001](../stories/EP-001-S001-aggiornamento-dipendenze-migrazione-islands.md)
 
 > Livello: Story. Le 6 righe Given/When/Then della Decision di EP-001-S001 sono numerate AC-1..AC-6 nell'ordine in cui compaiono nella storia.
 

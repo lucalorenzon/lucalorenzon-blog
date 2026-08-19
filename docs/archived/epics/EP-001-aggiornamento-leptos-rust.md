@@ -1,6 +1,6 @@
 # EP-001: Rilancio del sito su stack Leptos/Rust aggiornato
 
-> **Superseded by [EP-008](./EP-008-rilancio-blog-professionale.md)** — 2026-08-19: un assessment architetturale ha ampliato lo scope (content layer + migrazione SSG, non solo aggiornamento dipendenze). Questo epic resta come riferimento storico; ADR-001 collegata resta valida come riferimento tecnico sulle versioni verificate.
+> **Superseded by [il nuovo EP-001 — rilancio del blog professionale](../../epics/EP-001-rilancio-blog-professionale.md)** — 2026-08-19: un assessment architetturale ha ampliato lo scope (content layer + migrazione SSG, non solo aggiornamento dipendenze). Questo epic resta come riferimento storico; ADR-001 collegata resta valida come riferimento tecnico sulle versioni verificate. Il numero EP-001 è stato riassegnato al nuovo epic dopo l'archiviazione di questo e delle altre epiche EP-002..EP-007 (nessuna sovrapposizione di numerazione più necessaria).
 
 > Riportare il sito a compilare ed eseguire con le feature attuali su dipendenze e toolchain correnti, come prerequisito bloccante per tutte le epiche successive.
 
@@ -61,7 +61,7 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 
 | ADR | Title | Date | Status |
 |---|---|---|---|
-| [ADR-001](../adr/ADR-001-leptos-target-version.md) | Target version for Leptos and the related dependency ecosystem | 2026-08-14 | Proposed |
+| [ADR-001](../../adr/ADR-001-leptos-target-version.md) | Target version for Leptos and the related dependency ecosystem | 2026-08-14 | Proposed |
 
 ## Use Cases
 
@@ -90,7 +90,7 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 ## Resolved Issues
 
 - ~~Il `Cargo.lock` ha una modifica non committata (bump 0.6.14→0.6.15) da chiarire prima di iniziare~~ — risolto: era l'effetto di un `cargo update` esplorativo, non un aggiornamento intenzionale. `Cargo.lock` è stato ripristinato con `git restore` per ripartire da uno stato pulito prima di iniziare il lavoro su questa epica.
-- ~~Verificare qual è l'ultima versione stabile di Leptos e se introduce breaking change rilevanti per `experimental-islands`~~ — risolto: vedi [ADR-001](../adr/ADR-001-leptos-target-version.md) (target Leptos 0.8.20, feature flag `experimental-islands` → `islands`).
+- ~~Verificare qual è l'ultima versione stabile di Leptos e se introduce breaking change rilevanti per `experimental-islands`~~ — risolto: vedi [ADR-001](../../adr/ADR-001-leptos-target-version.md) (target Leptos 0.8.20, feature flag `experimental-islands` → `islands`).
 
 ---
 
@@ -105,4 +105,5 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 | 2026-08-14 | Rewrote actor references and verification steps in an impersonal tone across the epic and AT-EP-001 (documentation must not read as a narrative about a named person) |
 | 2026-08-14 | Removed the Actors section — not meaningful for a technical epic with no actor-system interaction to model |
 | 2026-08-14 | Discussed and resolved EP-001-S001's Decision field: wasm-bindgen moves to a range instead of an exact pin, toolchain moves from nightly to stable (no longer required by Leptos 0.8), added a hydration/console-error check to scope. Updated ADR-001, AT-EP-001, and the story accordingly |
-| 2026-08-19 | Superseded by EP-008 — vedi nota sotto il titolo |
+| 2026-08-19 | Superseded by the new EP-001 (rilancio-blog-professionale) — vedi nota sotto il titolo |
+| 2026-08-19 | Moved to docs/archived/epics/ along with EP-002..EP-007, its stories, and its acceptance tests; ADR-001 stays in place as still-valid technical reference |
