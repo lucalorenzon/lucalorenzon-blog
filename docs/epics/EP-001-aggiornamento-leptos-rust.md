@@ -1,5 +1,7 @@
 # EP-001: Rilancio del sito su stack Leptos/Rust aggiornato
 
+> **Superseded by [EP-008](./EP-008-rilancio-blog-professionale.md)** — 2026-08-19: un assessment architetturale ha ampliato lo scope (content layer + migrazione SSG, non solo aggiornamento dipendenze). Questo epic resta come riferimento storico; ADR-001 collegata resta valida come riferimento tecnico sulle versioni verificate.
+
 > Riportare il sito a compilare ed eseguire con le feature attuali su dipendenze e toolchain correnti, come prerequisito bloccante per tutte le epiche successive.
 
 ---
@@ -103,3 +105,4 @@ Stato attuale: sito Leptos SSR + islands (`experimental-islands`), servito da `a
 | 2026-08-14 | Rewrote actor references and verification steps in an impersonal tone across the epic and AT-EP-001 (documentation must not read as a narrative about a named person) |
 | 2026-08-14 | Removed the Actors section — not meaningful for a technical epic with no actor-system interaction to model |
 | 2026-08-14 | Discussed and resolved EP-001-S001's Decision field: wasm-bindgen moves to a range instead of an exact pin, toolchain moves from nightly to stable (no longer required by Leptos 0.8), added a hydration/console-error check to scope. Updated ADR-001, AT-EP-001, and the story accordingly |
+| 2026-08-19 | Superseded by EP-008 — vedi nota sotto il titolo |
