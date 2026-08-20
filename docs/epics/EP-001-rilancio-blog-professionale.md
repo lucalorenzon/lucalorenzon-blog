@@ -34,7 +34,7 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 ## Scope
 
 ### In scope
-- Aggiornamento delle dipendenze Cargo e del toolchain a versioni correnti mantenute (sblocca la build, oggi rotta)
+- ~~Aggiornamento delle dipendenze Cargo e del toolchain a versioni correnti mantenute (sblocca la build, oggi rotta)~~ — **fatto** (2026-08-20, lane `chore`, commit `169b30c`; vedi changelog)
 - Dominio `Article` (parse-dont-validate sul frontmatter: data, slug, tag) e porta `ContentSource` con adapter filesystem sul repo contenuti dedicato
 - Passaggio da SSR (actix-web sempre attivo) a SSG + islands, con ritiro del server always-on
 - Adapter di osservabilità isolato per Google Tag Manager
@@ -61,7 +61,7 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 
 | ID | Criterion | Verified by |
 |---|---|---|
-| AC-1 | Il sito compila e genera un output statico deployabile senza processo server sempre attivo | Esecuzione della build e verifica dell'assenza di un processo server in produzione |
+| AC-1 | Il sito compila e genera un output statico deployabile senza processo server sempre attivo | Esecuzione della build e verifica dell'assenza di un processo server in produzione — **build sbloccata** (2026-08-20); output ancora SSR, non SSG |
 | AC-2 | È possibile pubblicare un nuovo articolo scrivendo un file markdown+frontespizio nel repo contenuti dedicato e pushando, senza modificare codice applicativo | Pubblicazione end-to-end di un articolo di prova |
 | AC-3 | Il sito generato ottiene punteggio Lighthouse >90 (performance) | Audit Lighthouse sull'output di build |
 | AC-4 | Il layout rispetta WCAG 2.2 AA | Audit di accessibilità (es. axe / Lighthouse a11y) |
@@ -71,9 +71,11 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 
 | ADR | Title | Date | Status |
 |---|---|---|---|
-| — | — | — | — |
+| [ADR-001](../adr/ADR-001-leptos-target-version.md) | Leptos target version | 2026-08-14 | Applicata (2026-08-20) |
+| — | SSG + islands al posto di SSR | — | Da creare |
+| — | Content come markdown-in-git via porta ContentSource, nessun CMS per ora | — | Da creare |
 
-> Da creare con `/adr`: "SSG + islands al posto di SSR" e "Content come markdown-in-git via porta ContentSource, nessun CMS per ora" — entrambe raccomandate dall'assessment architetturale collegato, non ancora formalizzate come ADR.
+> Le due ADR mancanti restano da creare con `/adr` — entrambe raccomandate dall'assessment architetturale collegato, non ancora formalizzate.
 
 ## Use Cases
 
@@ -91,3 +93,4 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 | Updated | What changed |
 |---|---|
 | 2026-08-19 | Epic created, a partire dall'assessment architetturale docs/analysis/architecture-assessment-lucalorenzon-blog.md (architecture-compass + software-design, agreed 2026-08-18) |
+| 2026-08-20 | Aggiornamento dipendenze completato via lane `chore` (non UC/story, per CLAUDE.md thin-lane routing): Leptos 0.6→0.8.x, toolchain nightly→stable, `experimental-islands`→`islands` (ADR-001 applicata, commit `169b30c`); fix hydrate `mark_branches` (commit `9096976`); migrazione Tailwind v3→v4 (commit `08c6030`); bump Playwright + fix tipi end2end (commit `602887c`, `d5cdff5`). Il sito torna a compilare (AC-1 parzialmente soddisfatto, output ancora SSR). Restano da fare: content layer, migrazione SSG, i due ADR mancanti, verifica NFR (Lighthouse/WCAG/GTM) |

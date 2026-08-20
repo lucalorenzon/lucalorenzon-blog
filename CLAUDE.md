@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-Personal blog for Luca Lorenzon ("Lvk@73r"), built with the [Leptos](https://github.com/leptos-rs/leptos) Rust web framework (v0.6, nightly, with `experimental-islands`) and server-rendered via `actix-web`. Styling is Tailwind CSS compiled by `cargo-leptos`/`dart-sass`. This started from the `leptos-rs/start` template — the README still documents template-level setup, not this project.
+Personal blog for Luca Lorenzon ("Lvk@73r"), built with the [Leptos](https://github.com/leptos-rs/leptos) Rust web framework (v0.8, stable toolchain, with the standard `islands` feature — migrated from `experimental-islands`/nightly per ADR-001, 2026-08-20) and server-rendered via `actix-web`. Styling is Tailwind CSS v4 compiled by `cargo-leptos`/`dart-sass`. This started from the `leptos-rs/start` template — the README still documents template-level setup, not this project.
 
 ## Commands
 
-Requires Rust **nightly** (pinned via `rust-toolchain.toml`) and the `wasm32-unknown-unknown` target, plus `cargo-leptos` and `dart-sass` installed.
+Requires Rust **stable** (pinned via `rust-toolchain.toml`) and the `wasm32-unknown-unknown` target, plus `cargo-leptos` and `dart-sass` installed.
 
 - **Dev server with hot reload**: `cargo leptos watch` — serves at `http://localhost:3000`
 - **Production build**: `cargo leptos build --release`
@@ -31,7 +31,7 @@ The crate compiles to three different targets depending on enabled features (`Ca
 
 ### Islands architecture
 
-This app uses Leptos's `experimental-islands` feature: pages are server-rendered by default (no JS shipped), and only components explicitly marked `#[island]` are hydrated with WASM on the client. Plain `#[component]` functions stay static HTML. When adding interactivity (state, `on:click`, signals), the component must be an `#[island]`, not a `#[component]` — see `DynamicHeader` (`src/components/headers/headers.rs`) and `LightDarkSwitch` (`src/components/menu/menu.rs`) for the pattern, including the `is_browser()` guard needed because islands' setup code still runs during SSR.
+This app uses Leptos's standard `islands` feature (migrated from `experimental-islands` per ADR-001): pages are server-rendered by default (no JS shipped), and only components explicitly marked `#[island]` are hydrated with WASM on the client. Plain `#[component]` functions stay static HTML. When adding interactivity (state, `on:click`, signals), the component must be an `#[island]`, not a `#[component]` — see `DynamicHeader` (`src/components/headers/headers.rs`) and `LightDarkSwitch` (`src/components/menu/menu.rs`) for the pattern, including the `is_browser()` guard needed because islands' setup code still runs during SSR.
 
 ### Routing & page structure
 
