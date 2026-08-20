@@ -1,7 +1,31 @@
-use leptos::*;
-use leptos_meta::{Html, Meta, Stylesheet, Body, Title, provide_meta_context};
-use leptos_router::{Router, Routes, Route};
+use leptos::prelude::*;
+use leptos_meta::{Html, Meta, MetaTags, Stylesheet, Body, Title, provide_meta_context};
+use leptos_router::components::{Router, Routes, Route};
+use leptos_router::path;
 use crate::layout::{Layout, ArticleTitle, ArticleAbstract, ArticleContent};
+
+/// The document shell rendered around `<App/>` during server-side rendering.
+///
+/// `leptos_meta`'s SSR pipeline patches head content and `<html>`/`<body>`
+/// attributes into this literal markup, so `<head>` and `<MetaTags/>` must
+/// be present here even though the actual tags are populated by `<Meta>`,
+/// `<Title>`, `<Html>` and `<Body>` further down in `<App/>`.
+pub fn shell(options: LeptosOptions) -> impl IntoView {
+    view! {
+        <!DOCTYPE html>
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <AutoReload options=options.clone() />
+                <HydrationScripts options islands=true islands_router=true />
+                <MetaTags/>
+            </head>
+            <body>
+                <App/>
+            </body>
+        </html>
+    }
+}
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -9,15 +33,15 @@ pub fn App() -> impl IntoView {
     view! {
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
-        <Html lang="en" dir="ltr" class="dark antialiased h-full" />
+        <Html {..} lang="en" dir="ltr" class="dark antialiased h-full" />
         <Meta name="viewport" content="width=device-width,initial-scale=1.0" />
         <Stylesheet id="leptos" href="/pkg/leptos_start.css"/>
-        <Body class="bg-white text-blue dark:bg-black dark:text-blue-100 flex flex-col h-screen overflow-y-auto" />
+        <Body {..} class="bg-white text-blue dark:bg-black dark:text-blue-100 flex flex-col h-screen overflow-y-auto" />
         // content for this welcome page
         <Router>
-                <Routes>
-                    <Route path="" view=HomePage />
-                    <Route path="/*any" view=NotFound/>
+                <Routes fallback=NotFound>
+                    <Route path=path!("") view=HomePage />
+                    <Route path=path!("/*any") view=NotFound/>
                 </Routes>
         </Router>
     }

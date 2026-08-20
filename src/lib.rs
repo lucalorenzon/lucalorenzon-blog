@@ -16,10 +16,7 @@ cfg_if! {
 
         console_error_panic_hook::set_once();
 
-        leptos::leptos_dom::HydrationCtx::stop_hydrating();
-        // leptos::mount_to_body(move || {
-        //     view! { <App/> }
-        // });
+        leptos::mount::hydrate_islands();
       }
   }
 }

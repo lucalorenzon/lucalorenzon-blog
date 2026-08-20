@@ -1,13 +1,22 @@
-use leptos::*;
+use leptos::children::ChildrenFragment;
+use leptos::prelude::*;
 
 
 use crate::components::headers::headers::BlogHeader;
 use crate::components::footers::footer::BlogFooter;
 
 #[component]
-pub fn Layout( children: Children ) -> impl IntoView {
+pub fn Layout( children: ChildrenFragment ) -> impl IntoView {
 
-    if let [article_title, article_abstract, article_content] = &(children().nodes)[..] {
+    let mut nodes = children().nodes.into_iter();
+    let article_title = nodes.next();
+    let article_abstract = nodes.next();
+    let article_content = nodes.next();
+    let extra = nodes.next();
+
+    if let (Some(article_title), Some(article_abstract), Some(article_content), None) =
+        (article_title, article_abstract, article_content, extra)
+    {
         view! {
             <BlogHeader  />
             <main class="bg-cover bg-[url('/assets/images/ostia_sea_top_image.webp')] bg-fixed h-screen z-0 -mt-[80px] overflow-auto grow-1">
@@ -18,7 +27,7 @@ pub fn Layout( children: Children ) -> impl IntoView {
                 </article>
             </main>
             <BlogFooter />
-        }
+        }.into_any()
     }
     else {
         view! {
@@ -29,7 +38,7 @@ pub fn Layout( children: Children ) -> impl IntoView {
             <BlogFooter />
 
 
-        }
+        }.into_any()
     }
 }
 

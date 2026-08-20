@@ -1,4 +1,4 @@
-use leptos::*;
+use leptos::prelude::*;
 use leptos_use::breakpoints_tailwind;
 use leptos_use::BreakpointsTailwind::{Md};
 
