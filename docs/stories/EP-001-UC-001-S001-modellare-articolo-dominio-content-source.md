@@ -10,6 +10,7 @@ As Autore/Editore, voglio che un frontespizio ben formato venga riconosciuto com
 | **UC** | UC-001 — Autore pubblica un nuovo articolo |
 | **Pattern** | Major effort isolation + Business rule variations |
 | **AT rows** | AT-UC-001 righe: 1-5 (happy path, limitatamente a "frontmatter valido → costruzione riuscita"; righe "abstract assente"/"immagine assente" NON coperte qui, vedi [[EP-001-UC-001-S003]]), 3a (data/slug/tag/titolo mancanti o malformati) |
+| **Size** | L — estimated 2026-08-21 |
 
 ### Acceptance criteria
 - Given un frontespizio con data, slug, uno o più tag e titolo tutti presenti e ben formati, when il sistema lo legge dal repo contenuti tramite `ContentSource`, then costruisce un `Article` valido con quei metadati (abstract e immagine di sintesi, se presenti, vengono letti così come sono; se assenti, l'`Article` li rappresenta come opzionali assenti, senza rifiutare la costruzione)

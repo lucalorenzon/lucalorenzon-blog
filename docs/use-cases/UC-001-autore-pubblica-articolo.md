@@ -56,7 +56,7 @@
 ## Stories
 | Story ID | Title | Status |
 |---|---|---|
-| EP-001-UC-001-S001 | Modellare l'articolo e la porta ContentSource | AT defined (2026-08-21) — pending sizing |
+| EP-001-UC-001-S001 | Modellare l'articolo e la porta ContentSource | Sized L (2026-08-21) — pending design pipeline |
 | EP-001-UC-001-S002 | Verificare l'unicità dello slug rispetto agli articoli già pubblicati | Pending discussion |
 | EP-001-UC-001-S003 | Generare il sito statico da un Article (ARTICLE-PAGE, LISTING-PAGE, HOME-PAGE) | Pending discussion |
 | EP-001-UC-001-S004 | Automatizzare la pipeline CI: trigger su push e segnalazione errori | Pending discussion |
