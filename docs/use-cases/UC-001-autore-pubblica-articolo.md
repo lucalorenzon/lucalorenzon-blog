@@ -49,6 +49,9 @@
 - Meccanismo di trigger della build (CI su push vs. comando manuale dell'autore) non deciso qui — demandato alla progettazione tecnica (design pipeline della story)
 - Canale/formato con cui l'autore vede errori di validazione o di build (passi 1a, 3b) non specificato in questa UC
 
+## Acceptance Tests
+[AT-UC-001-autore-pubblica-articolo](../acceptance-tests/AT-UC-001-autore-pubblica-articolo.md)
+
 ## Sequence Diagram
 
 ```mermaid
