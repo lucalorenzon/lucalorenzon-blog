@@ -9,12 +9,14 @@ As Autore/Editore, voglio che il mio articolo compaia come pagina statica genera
 | **Epic** | EP-001 — Rilancio del blog personale come presenza professionale |
 | **UC** | UC-001 — Autore pubblica un nuovo articolo |
 | **Pattern** | Major effort isolation |
-| **AT rows** | AT-UC-001 righe: 1-5 (happy path, limitatamente a "build riuscita → ARTICLE-PAGE/LISTING-PAGE/HOME-PAGE generate correttamente"; il deploy stesso è fuori da questa story, vedi [[EP-001-UC-001-S005]]) |
+| **AT rows** | AT-UC-001 righe: 1-5 (happy path, limitatamente a "build riuscita → ARTICLE-PAGE/LISTING-PAGE/HOME-PAGE generate correttamente"; il deploy stesso è fuori da questa story, vedi [[EP-001-UC-001-S005]]), righe happy path "abstract assente" e "immagine di sintesi assente" |
 
 ### Acceptance criteria
 - Given un `Article` valido prodotto da [[EP-001-UC-001-S001]], when il build statico viene eseguito, then genera una ARTICLE-PAGE raggiungibile allo slug dell'articolo con metadati e contenuto corretti
 - Given un `Article` valido pubblicato, when il build statico viene eseguito, then la LISTING-PAGE include una voce per il nuovo articolo
 - Given un `Article` valido pubblicato, when il build statico viene eseguito, then la HOME-PAGE (caso particolare cronologico della LISTING-PAGE) riflette il nuovo articolo secondo l'ordine cronologico
+- Given un `Article` con abstract assente, when il build statico viene eseguito, then l'abstract mostrato in ARTICLE-PAGE/LISTING-PAGE/HOME-PAGE è calcolato automaticamente dal corpo dell'articolo
+- Given un `Article` con immagine di sintesi assente, when il build statico viene eseguito, then viene usata un'immagine di fallback predefinita in ARTICLE-PAGE/LISTING-PAGE/HOME-PAGE
 
 ### Design pipeline
 Before any implementation, complete in order:

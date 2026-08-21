@@ -12,9 +12,9 @@
 
 ## Main Success Scenario
 
-1. Autore scrive un file markdown con frontespizio (data, slug, tag, titolo, abstract, immagine di sintesi) nel repo contenuti dedicato
+1. Autore scrive un file markdown con frontespizio nel repo contenuti dedicato: campi obbligatori data, slug, uno o più tag, titolo; campi opzionali abstract e immagine di sintesi (calcolati automaticamente se assenti, vedi passo 3)
 2. Autore fa push del file sul repo contenuti
-3. Sistema rileva la nuova pubblicazione e genera il sito statico aggiornato (ARTICLE-PAGE del nuovo articolo, LISTING-PAGE e HOME-PAGE aggiornate)
+3. Sistema rileva la nuova pubblicazione e genera il sito statico aggiornato (ARTICLE-PAGE del nuovo articolo, LISTING-PAGE e HOME-PAGE aggiornate); se abstract o immagine di sintesi sono assenti, il sistema li calcola automaticamente (abstract dal corpo dell'articolo, immagine di sintesi con un'immagine di fallback predefinita)
 4. Sistema distribuisce l'output generato
 5. Sistema rende l'articolo raggiungibile dal Visitatore tramite la ARTICLE-PAGE e la LISTING-PAGE/HOME-PAGE
 
@@ -26,7 +26,7 @@
   1. Repo respinge il push
   2. Autore risolve il conflitto o ottiene i permessi necessari, poi ripete il passo 2
 
-**3a. Frontespizio mancante o malformato (data, slug o tag non validi):**
+**3a. Frontespizio mancante o malformato (data, slug, tag o titolo non validi — abstract e immagine di sintesi non rientrano qui: sono opzionali, vedi passo 3):**
   1. CI (GitHub Actions), avviata dal push, rileva l'errore e segnala all'autore tramite check fallito, con dettaglio nel log del check, più email di notifica standard di GitHub per il check fallito
   2. La pubblicazione non procede; l'autore corregge il frontespizio e ripete il push (torna al passo 2)
 
@@ -46,6 +46,7 @@
 
 ## Open Issues
 
+- **Risolto (2026-08-21, discussione Decision di [EP-001-UC-001-S001](../stories/EP-001-UC-001-S001-modellare-articolo-dominio-content-source.md)):** obbligatorietà dei campi del frontespizio non era specificata a livello di UC. Decisione: data/slug/tag/titolo obbligatori (rifiuto se mancanti o malformati, estensione 3a); abstract e immagine di sintesi opzionali, calcolati automaticamente in fase di generazione se assenti (passo 3 del main scenario) — non generano un errore. `tag` è una lista di uno o più valori, non un valore singolo.
 - ~~Meccanismo di trigger della build (CI su push vs. comando manuale dell'autore) non deciso qui...~~ — **risolto** (2026-08-21): CI automatico su push (GitHub Actions), coerente con AC-2 dell'epic ("pushando...senza modificare codice applicativo") — nessun comando manuale dell'autore. Vedi campo Trigger. **Conseguenza:** la validazione del frontespizio (ex-estensione 1a) è rilevata da CI *dopo* il push, non prima — l'estensione è stata rinumerata da 1a a 3a (e le successive 3a/3b spostate a 3b/3c) per riflettere il punto reale in cui la deviazione viene osservata nello scenario principale.
 - ~~Canale/formato con cui l'autore vede errori di validazione o di build (passi 1a, 3b) non specificato in questa UC~~ — **risolto** (2026-08-21): check fallito su GitHub Actions con dettaglio nel log + email di notifica standard di GitHub. Applicato anche a 3b (ex-3a) e 4a per coerenza, essendo validazione/build/deploy step della stessa pipeline.
 
@@ -55,7 +56,7 @@
 ## Stories
 | Story ID | Title | Status |
 |---|---|---|
-| EP-001-UC-001-S001 | Modellare l'articolo e la porta ContentSource | Pending discussion |
+| EP-001-UC-001-S001 | Modellare l'articolo e la porta ContentSource | Decision agreed (2026-08-21) — pending AT/sizing |
 | EP-001-UC-001-S002 | Verificare l'unicità dello slug rispetto agli articoli già pubblicati | Pending discussion |
 | EP-001-UC-001-S003 | Generare il sito statico da un Article (ARTICLE-PAGE, LISTING-PAGE, HOME-PAGE) | Pending discussion |
 | EP-001-UC-001-S004 | Automatizzare la pipeline CI: trigger su push e segnalazione errori | Pending discussion |

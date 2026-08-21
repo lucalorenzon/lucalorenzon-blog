@@ -10,7 +10,9 @@ Epic: EP-001 | UC: UC-001
 
 | frontmatter | push esito | build esito | deploy esito | ARTICLE-PAGE(slug)? | LISTING-PAGE/HOME-PAGE? | ref |
 |---|---|---|---|---|---|---|
-| valido (data, slug univoco, tag, titolo, abstract, immagine di sintesi tutti presenti e ben formati) | accettato | riuscita | riuscita | `{ reachable: true, metadata: <frontmatter>, content: <corpo markdown> }` | include voce per lo slug pubblicato | 1-5 |
+| valido (data, slug univoco, uno o più tag, titolo, abstract, immagine di sintesi tutti presenti e ben formati) | accettato | riuscita | riuscita | `{ reachable: true, metadata: <frontmatter>, content: <corpo markdown> }` | include voce per lo slug pubblicato | 1-5 |
+| valido ma abstract assente | accettato | riuscita | riuscita | `{ reachable: true, metadata: <frontmatter con abstract calcolato dal corpo dell'articolo>, content: <corpo markdown> }` | include voce per lo slug pubblicato, con l'abstract calcolato | 1,3 |
+| valido ma immagine di sintesi assente | accettato | riuscita | riuscita | `{ reachable: true, metadata: <frontmatter con immagine di sintesi = fallback predefinita>, content: <corpo markdown> }` | include voce per lo slug pubblicato, con l'immagine di fallback | 1,3 |
 
 ---
 
@@ -22,7 +24,8 @@ Epic: EP-001 | UC: UC-001
 |---|---|---|---|---|---|---|
 | data mancante o malformata | data | true | true (fallisce nel check di validazione) | non pubblicato | check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub | 3a |
 | slug mancante o malformato | slug | true | true (fallisce nel check di validazione) | non pubblicato | check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub | 3a |
-| tag mancante o malformato | tag | true | true (fallisce nel check di validazione) | non pubblicato | check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub | 3a |
+| tag assente (lista vuota) o con un valore malformato | tag | true | true (fallisce nel check di validazione) | non pubblicato | check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub | 3a |
+| titolo mancante o malformato | titolo | true | true (fallisce nel check di validazione) | non pubblicato | check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub | 3a |
 
 ---
 
@@ -69,6 +72,7 @@ Epic: EP-001 | UC: UC-001
 
 ## Open Issues
 
+- **Risolto (2026-08-21, discussione Decision di [EP-001-UC-001-S001](../stories/EP-001-UC-001-S001-modellare-articolo-dominio-content-source.md)):** obbligatorietà dei campi del frontespizio non specificata. Aggiunta riga `titolo` alla tabella "frontespizio mancante o malformato" (3a); aggiunte due righe alla tabella Happy path per abstract/immagine di sintesi assenti (calcolati automaticamente, non generano errore); chiarito che `tag` è una lista di uno o più valori.
 - ~~Tutte le celle `?UNKNOWN?` dipendono dai due Open Issues già registrati in UC-001, non ancora decisi...~~ — **risolto** (2026-08-21), coerentemente con la risoluzione degli Open Issues in UC-001:
   - **Canale/formato errori**: check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub — applicato a tutte le righe ex-`?UNKNOWN?` (ora 3a, 3b, 3c, 4a).
   - **Meccanismo di trigger della build**: CI automatico su push (GitHub Actions), non comando manuale. **Conseguenza sulla tabella:** la sezione "frontespizio mancante o malformato" presupponeva `push tentato? false` (validazione prima del push) — corretto a `true`, con colonna aggiuntiva `CI avviata?`, poiché con CI-on-push la validazione avviene *dopo* il push, dentro la pipeline (vedi UC-001 ext. 3a, rinumerata da 1a).

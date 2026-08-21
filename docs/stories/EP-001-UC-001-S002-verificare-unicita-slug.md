@@ -30,7 +30,7 @@ Before any implementation, complete in order:
 - AT-UC-001 nota esplicitamente che UC-001 non specifica se il controllo di unicità avviene in uno step CI dedicato o durante il build stesso — questa story decide solo la logica di dominio/porta; il punto esatto nella pipeline è materia di [[EP-001-UC-001-S004]].
 
 ### Dependencies
-- Richiede il tipo `Article` e la porta `ContentSource` di [[EP-001-UC-001-S001]] già disponibili (external design dependency — Independence sub-check b).
+- Richiede il tipo `Article` e la porta `ContentSource` di [[EP-001-UC-001-S001]] già disponibili (external design dependency — Independence sub-check b). L'interfaccia di `ContentSource` è già stata decisa in S001 (lettura singola + elenco articoli pubblicati); questa story implementa il metodo di elenco sulla stessa interfaccia, non lo ridisegna.
 
 ### Decisions Log
 | Date | Decision | Reasoning | Alternatives Considered |
