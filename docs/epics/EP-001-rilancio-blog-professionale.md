@@ -36,6 +36,7 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 ### In scope
 - ~~Aggiornamento delle dipendenze Cargo e del toolchain a versioni correnti mantenute (sblocca la build, oggi rotta)~~ — **fatto** (2026-08-20, lane `chore`, commit `169b30c`; vedi changelog)
 - Dominio `Article` (parse-dont-validate sul frontmatter: data, slug, tag) e porta `ContentSource` con adapter filesystem sul repo contenuti dedicato
+- Elenco articoli (LISTING-PAGE, con HOME-PAGE come caso particolare in ordine cronologico) oltre alla singola ARTICLE-PAGE — vedi UC-003
 - Passaggio da SSR (actix-web sempre attivo) a SSG + islands, con ritiro del server always-on
 - Adapter di osservabilità isolato per Google Tag Manager
 - ADR "SSG + islands al posto di SSR" e ADR "Content come markdown-in-git via porta ContentSource, nessun CMS per ora"
@@ -81,12 +82,18 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 
 | UC ID | Title | Goal level | Status |
 |---|---|---|---|
-| — | — | — | — |
+| UC-001 | Autore pubblica un nuovo articolo | ⚡ User-Goal | Draft |
+| UC-002 | Visitatore legge un articolo pubblicato | ⚡ User-Goal | Draft |
+| UC-003 | Visitatore sfoglia l'elenco degli articoli | ⚡ User-Goal | Draft |
+| UC-004 | Header si adatta allo scroll e al contesto della pagina | ⬇ Subfunction | Draft |
+| UC-005 | Visitatore usa il menu di navigazione | ⬇ Subfunction | Draft |
 
 ## Open Issues
 
 - GTM è in scope di questo epic ma il consenso/cookie-banner è esplicitamente fuori scope — rischio concreto di non conformità UE se GTM va in produzione prima che il consenso sia gestito. Da risolvere prima del deploy in produzione, qui o in un epic compliance separato — non ancora deciso.
-- Il dominio `Article` raccomandato dall'assessment copre un singolo articolo, senza listing/indice. Un epic che "pubblica articoli" ma può mostrarne solo uno alla volta rischia di non essere realmente utilizzabile a fine epic. Da decidere se un indice minimale rientra in questo epic o resta nell'epic content-strategy/SEO separato che copre gli altri gap dichiarati fuori scope.
+- ~~Il dominio `Article` raccomandato dall'assessment copre un singolo articolo, senza listing/indice...~~ — **risolto** (2026-08-21): un indice (LISTING-PAGE, con HOME-PAGE come suo caso particolare in ordine cronologico) rientra in questo epic — vedi [UC-003](../use-cases/UC-003-visitatore-sfoglia-elenco-articoli.md). Restano aperte, come da UC-003/UC-005: meccanismo di paginazione, e se il layout a slider orizzontale con effetto lente (design alternativo alla lista verticale) entra in questo epic o resta un incremento futuro.
+- La ricerca full-text e i facet dinamici sui tag (voce "ricerca" nel menu) sono demandati all'epic EP-004 (motore di ricerca client-side) — vedi Open Issues in [UC-005](../use-cases/UC-005-visitatore-usa-menu-navigazione.md). In EP-001 i tag restano statici/predefiniti.
+- Le voci di menu "About Me" e "CV" compaiono come segnaposto non funzionanti, poiché le relative pagine sono esplicitamente fuori scope di questo epic (vedi UC-005).
 
 ---
 
@@ -94,3 +101,4 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 |---|---|
 | 2026-08-19 | Epic created, a partire dall'assessment architetturale docs/analysis/architecture-assessment-lucalorenzon-blog.md (architecture-compass + software-design, agreed 2026-08-18) |
 | 2026-08-20 | Aggiornamento dipendenze completato via lane `chore` (non UC/story, per CLAUDE.md thin-lane routing): Leptos 0.6→0.8.x, toolchain nightly→stable, `experimental-islands`→`islands` (ADR-001 applicata, commit `169b30c`); fix hydrate `mark_branches` (commit `9096976`); migrazione Tailwind v3→v4 (commit `08c6030`); bump Playwright + fix tipi end2end (commit `602887c`, `d5cdff5`). Il sito torna a compilare (AC-1 parzialmente soddisfatto, output ancora SSR). Restano da fare: content layer, migrazione SSG, i due ADR mancanti, verifica NFR (Lighthouse/WCAG/GTM) |
+| 2026-08-21 | Definite UC-001..UC-005 (pubblicazione articolo, lettura articolo, sfoglio elenco, header adattivo, menu di navigazione). Risolto l'Open Issue sull'indice/listing (in scope, vedi UC-003). Chiariti i confini con EP-004 (ricerca live/facet fuori scope qui) e con le pagine di identità professionale (About Me/CV segnaposto in menu, pagine reali fuori scope) |
