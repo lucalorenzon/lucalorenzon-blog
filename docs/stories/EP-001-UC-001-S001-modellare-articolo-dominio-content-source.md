@@ -27,8 +27,11 @@ Before any implementation, complete in order:
 - [ ] `/sw-practices`           — naming, error handling, bootstrap
 
 ### Next steps after agreement
-- [ ] `/acceptance-tests EP-001-UC-001-S001` — story-level AT table (narrower than UC level)
+- [x] `/acceptance-tests EP-001-UC-001-S001` — story-level AT table (narrower than UC level) → [AT-EP-001-UC-001-S001](../acceptance-tests/AT-EP-001-UC-001-S001-modellare-articolo-dominio-content-source.md)
 - [ ] `/story-size EP-001-UC-001-S001`       — assign XS / S / M / L / XL / XXL
+
+### Acceptance Tests
+[AT-EP-001-UC-001-S001-modellare-articolo-dominio-content-source](../acceptance-tests/AT-EP-001-UC-001-S001-modellare-articolo-dominio-content-source.md)
 
 ### Open questions
 - Nessuna nota bloccante allo split. La forma esatta dell'errore di costruzione (tipo Rust, messaggio) è materia del design pipeline (`parse-dont-validate`), non di questa story.
