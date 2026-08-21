@@ -8,7 +8,7 @@
 | **Primary actor** | Autore/Editore |
 | **Preconditions** | L'autore ha accesso in scrittura al repo contenuti dedicato; il sito è già distribuito da una build precedente |
 | **Success guarantee** | L'articolo è raggiungibile pubblicamente sul sito generato (ARTICLE-PAGE), con contenuto e metadati (data, slug, tag) corretti, ed elencato nella LISTING-PAGE/HOME-PAGE pertinente |
-| **Trigger** | L'autore vuole pubblicare un nuovo articolo |
+| **Trigger** | L'autore vuole pubblicare un nuovo articolo; la build è avviata automaticamente da CI (GitHub Actions) al push sul repo contenuti, non da un comando manuale dell'autore |
 
 ## Main Success Scenario
 
@@ -22,32 +22,32 @@
 
 ## Extensions (alternative and failure paths)
 
-**1a. Frontespizio mancante o malformato (data, slug o tag non validi):**
-  1. Sistema segnala l'errore di validazione all'autore
-  2. La pubblicazione non procede finché l'errore non è corretto (torna al passo 1)
-
 **2a. Push respinto (conflitto, permessi mancanti):**
   1. Repo respinge il push
   2. Autore risolve il conflitto o ottiene i permessi necessari, poi ripete il passo 2
 
-**3a. Slug duplicato (già usato da un articolo esistente):**
-  1. Sistema segnala il conflitto di slug
+**3a. Frontespizio mancante o malformato (data, slug o tag non validi):**
+  1. CI (GitHub Actions), avviata dal push, rileva l'errore e segnala all'autore tramite check fallito, con dettaglio nel log del check, più email di notifica standard di GitHub per il check fallito
+  2. La pubblicazione non procede; l'autore corregge il frontespizio e ripete il push (torna al passo 2)
+
+**3b. Slug duplicato (già usato da un articolo esistente):**
+  1. Sistema segnala il conflitto di slug tramite check fallito sul push in GitHub Actions, con dettaglio dell'errore nel log del check, più email di notifica standard di GitHub per il check fallito
   2. Autore corregge lo slug e ripete la pubblicazione
 
-**3b. Build fallisce (errore nel processo di generazione del sito):**
-  1. Sistema segnala l'errore di build
+**3c. Build fallisce (errore nel processo di generazione del sito):**
+  1. Sistema segnala l'errore di build tramite check fallito sul push in GitHub Actions, con dettaglio dell'errore nel log del check, più email di notifica standard di GitHub per il check fallito
   2. L'articolo non viene pubblicato; il sito precedentemente distribuito resta invariato
 
 **4a. Distribuzione fallisce:**
   1. Sistema mantiene attiva l'ultima versione distribuita con successo
-  2. Autore viene informato dell'esito e può ripetere la pubblicazione
+  2. Autore viene informato dell'esito tramite check fallito sul push in GitHub Actions (stesso canale di 3a/3b/3c, essendo il deploy uno step della stessa pipeline) e può ripetere la pubblicazione
 
 <!-- Each extension = one acceptance test case -->
 
 ## Open Issues
 
-- Meccanismo di trigger della build (CI su push vs. comando manuale dell'autore) non deciso qui — demandato alla progettazione tecnica (design pipeline della story)
-- Canale/formato con cui l'autore vede errori di validazione o di build (passi 1a, 3b) non specificato in questa UC
+- ~~Meccanismo di trigger della build (CI su push vs. comando manuale dell'autore) non deciso qui...~~ — **risolto** (2026-08-21): CI automatico su push (GitHub Actions), coerente con AC-2 dell'epic ("pushando...senza modificare codice applicativo") — nessun comando manuale dell'autore. Vedi campo Trigger. **Conseguenza:** la validazione del frontespizio (ex-estensione 1a) è rilevata da CI *dopo* il push, non prima — l'estensione è stata rinumerata da 1a a 3a (e le successive 3a/3b spostate a 3b/3c) per riflettere il punto reale in cui la deviazione viene osservata nello scenario principale.
+- ~~Canale/formato con cui l'autore vede errori di validazione o di build (passi 1a, 3b) non specificato in questa UC~~ — **risolto** (2026-08-21): check fallito su GitHub Actions con dettaglio nel log + email di notifica standard di GitHub. Applicato anche a 3b (ex-3a) e 4a per coerenza, essendo validazione/build/deploy step della stessa pipeline.
 
 ## Acceptance Tests
 [AT-UC-001-autore-pubblica-articolo](../acceptance-tests/AT-UC-001-autore-pubblica-articolo.md)
@@ -62,16 +62,20 @@ sequenceDiagram
     actor Visitatore
 
     Autore->>Repo: push articolo (markdown + frontespizio)
+    Repo->>System: CI (GitHub Actions) avviata automaticamente sul push
     alt frontespizio non valido
-        Repo-->>Autore: segnala errore di validazione
+        System-->>Autore: check fallito su GitHub Actions + email di notifica (errore di validazione)
     else push accettato
-        Repo->>System: nuova versione dei contenuti disponibile
         System->>System: genera output statico aggiornato
         alt build fallisce
-            System-->>Autore: segnala errore di build
+            System-->>Autore: check fallito su GitHub Actions + email di notifica (errore di build)
         else build riuscita
             System->>System: distribuisce l'output generato
-            System-->>Visitatore: articolo raggiungibile (ARTICLE-PAGE, LISTING-PAGE/HOME-PAGE)
+            alt distribuzione fallisce
+                System-->>Autore: check fallito su GitHub Actions + email di notifica (errore di deploy); ultima versione distribuita resta attiva
+            else distribuzione riuscita
+                System-->>Visitatore: articolo raggiungibile (ARTICLE-PAGE, LISTING-PAGE/HOME-PAGE)
+            end
         end
     end
 ```

@@ -16,13 +16,13 @@ Epic: EP-001 | UC: UC-001
 
 ## Extensions — frontespizio mancante o malformato
 
-> Source: UC-001 ext. 1a
+> Source: UC-001 ext. 3a
 
-| frontmatter | campo invalido | push tentato? | esito pubblicazione? | messaggio errore? | ref |
-|---|---|---|---|---|---|
-| data mancante o malformata | data | false | non pubblicato | `?UNKNOWN?` | 1a |
-| slug mancante o malformato | slug | false | non pubblicato | `?UNKNOWN?` | 1a |
-| tag mancante o malformato | tag | false | non pubblicato | `?UNKNOWN?` | 1a |
+| frontmatter | campo invalido | push tentato? | CI (GitHub Actions) avviata? | esito pubblicazione? | messaggio errore? | ref |
+|---|---|---|---|---|---|---|
+| data mancante o malformata | data | true | true (fallisce nel check di validazione) | non pubblicato | check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub | 3a |
+| slug mancante o malformato | slug | true | true (fallisce nel check di validazione) | non pubblicato | check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub | 3a |
+| tag mancante o malformato | tag | true | true (fallisce nel check di validazione) | non pubblicato | check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub | 3a |
 
 ---
 
@@ -39,21 +39,21 @@ Epic: EP-001 | UC: UC-001
 
 ## Extensions — slug duplicato
 
-> Source: UC-001 ext. 3a
+> Source: UC-001 ext. 3b
 
 | frontmatter | slug | slug già esistente? | esito pubblicazione? | messaggio errore? | ref |
 |---|---|---|---|---|---|
-| valido altrimenti | uguale a uno slug di un articolo già pubblicato | true | non pubblicato | `?UNKNOWN?` | 3a |
+| valido altrimenti | uguale a uno slug di un articolo già pubblicato | true | non pubblicato | check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub | 3b |
 
 ---
 
 ## Extensions — build fallisce
 
-> Source: UC-001 ext. 3b
+> Source: UC-001 ext. 3c
 
 | frontmatter | slug | build esito | ARTICLE-PAGE(slug) pubblicata? | sito precedentemente distribuito? | messaggio errore? | ref |
 |---|---|---|---|---|---|---|
-| valido | univoco | fallita | false | invariato (resta la versione distribuita prima del tentativo) | `?UNKNOWN?` | 3b |
+| valido | univoco | fallita | false | invariato (resta la versione distribuita prima del tentativo) | check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub | 3c |
 
 ---
 
@@ -63,13 +63,13 @@ Epic: EP-001 | UC: UC-001
 
 | frontmatter | slug | build esito | deploy esito | sito servito al Visitatore? | autore informato dell'esito? | ref |
 |---|---|---|---|---|---|---|
-| valido | univoco | riuscita | fallita | ultima versione distribuita con successo (non la nuova build) | `?UNKNOWN?` (canale non specificato) — ma esito comunicato e autore può ripetere la pubblicazione | 4a |
+| valido | univoco | riuscita | fallita | ultima versione distribuita con successo (non la nuova build) | check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub — esito comunicato e autore può ripetere la pubblicazione | 4a |
 
 ---
 
 ## Open Issues
 
-- Tutte le celle `?UNKNOWN?` dipendono dai due Open Issues già registrati in UC-001, non ancora decisi:
-  - **Canale/formato con cui l'autore vede errori di validazione o di build** (righe 1a, 3a, 3b, 4a) — demandato alla progettazione tecnica della story che implementerà la validazione/build/deploy.
-  - **Meccanismo di trigger della build** (CI su push vs. comando manuale) — non influisce sui valori attesi di queste righe, ma condiziona come "push accettato" si traduce operativamente in "build avviata".
-- Riga 3a (slug duplicato): non è specificato in UC-001 se il controllo di unicità avviene prima o durante la build — la tabella assume solo l'esito osservabile (pubblicazione non avviene), non il punto esatto del fallimento.
+- ~~Tutte le celle `?UNKNOWN?` dipendono dai due Open Issues già registrati in UC-001, non ancora decisi...~~ — **risolto** (2026-08-21), coerentemente con la risoluzione degli Open Issues in UC-001:
+  - **Canale/formato errori**: check fallito su GitHub Actions (dettaglio nel log) + email di notifica standard GitHub — applicato a tutte le righe ex-`?UNKNOWN?` (ora 3a, 3b, 3c, 4a).
+  - **Meccanismo di trigger della build**: CI automatico su push (GitHub Actions), non comando manuale. **Conseguenza sulla tabella:** la sezione "frontespizio mancante o malformato" presupponeva `push tentato? false` (validazione prima del push) — corretto a `true`, con colonna aggiuntiva `CI avviata?`, poiché con CI-on-push la validazione avviene *dopo* il push, dentro la pipeline (vedi UC-001 ext. 3a, rinumerata da 1a).
+- Riga 3b (slug duplicato, ex-3a): non è specificato in UC-001 se il controllo di unicità avviene in uno step CI dedicato o durante il build stesso — la tabella assume solo l'esito osservabile (pubblicazione non avviene), non il punto esatto del fallimento all'interno della pipeline.
