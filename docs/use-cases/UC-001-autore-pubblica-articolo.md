@@ -52,6 +52,17 @@
 ## Acceptance Tests
 [AT-UC-001-autore-pubblica-articolo](../acceptance-tests/AT-UC-001-autore-pubblica-articolo.md)
 
+## Stories
+| Story ID | Title | Status |
+|---|---|---|
+| EP-001-UC-001-S001 | Modellare l'articolo e la porta ContentSource | Pending discussion |
+| EP-001-UC-001-S002 | Verificare l'unicità dello slug rispetto agli articoli già pubblicati | Pending discussion |
+| EP-001-UC-001-S003 | Generare il sito statico da un Article (ARTICLE-PAGE, LISTING-PAGE, HOME-PAGE) | Pending discussion |
+| EP-001-UC-001-S004 | Automatizzare la pipeline CI: trigger su push e segnalazione errori | Pending discussion |
+| EP-001-UC-001-S005 | Distribuire l'output generato e gestire il fallimento di deploy | Pending discussion |
+
+**Estensione 2a (push respinto per conflitto o permessi mancanti) non ha una story dedicata**: è comportamento nativo di git/GitHub (il repo respinge il push, l'autore risolve conflitto/permessi fuori dal sistema che stiamo costruendo) — nessuno sviluppo applicativo la copre. Segnalato qui per non assorbirla silenziosamente in un'altra story (Step 7 di `sw-story-split`).
+
 ## Sequence Diagram
 
 ```mermaid
