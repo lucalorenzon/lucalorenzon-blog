@@ -56,7 +56,7 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 |---|---|
 | Business | Nessuna scadenza esterna rigida, ma priorità alta: bisogno professionale reale, non più uno sfizio rimandabile |
 | Technical | Toolchain Rust/Leptos corrente; budget di dimensione del bundle wasm (problema storico già segnalato); deploy senza processo server sempre attivo (SSG) |
-| Regulatory | Google Tag Manager raccoglie dati di navigazione; il consenso/cookie-banner non è gestito in questo epic (vedi Open Issues) |
+| Regulatory | Google Tag Manager raccoglie dati di navigazione; il consenso/cookie-banner è demandato a un epic compliance dedicato (vedi Open Issues) — GTM non va in produzione da EP-001 prima che quell'epic lo copra |
 
 ## Acceptance Criteria
 
@@ -90,7 +90,7 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 
 ## Open Issues
 
-- GTM è in scope di questo epic ma il consenso/cookie-banner è esplicitamente fuori scope — rischio concreto di non conformità UE se GTM va in produzione prima che il consenso sia gestito. Da risolvere prima del deploy in produzione, qui o in un epic compliance separato — non ancora deciso.
+- ~~GTM è in scope di questo epic ma il consenso/cookie-banner è esplicitamente fuori scope...~~ — **risolto** (2026-08-21): il consenso/cookie-banner sarà affrontato in un epic compliance dedicato, separato da EP-001 (non ancora creato/numerato). **Vincolo:** GTM non va distribuito in produzione da EP-001 finché quell'epic non ha coperto il consenso — rischio di non conformità UE altrimenti.
 - ~~Il dominio `Article` raccomandato dall'assessment copre un singolo articolo, senza listing/indice...~~ — **risolto** (2026-08-21): un indice (LISTING-PAGE, con HOME-PAGE come suo caso particolare in ordine cronologico) rientra in questo epic — vedi [UC-003](../use-cases/UC-003-visitatore-sfoglia-elenco-articoli.md). Restano aperte, come da UC-003/UC-005: meccanismo di paginazione, e se il layout a slider orizzontale con effetto lente (design alternativo alla lista verticale) entra in questo epic o resta un incremento futuro.
 - La ricerca full-text e i facet dinamici sui tag (voce "ricerca" nel menu) sono demandati all'epic EP-004 (motore di ricerca client-side) — vedi Open Issues in [UC-005](../use-cases/UC-005-visitatore-usa-menu-navigazione.md). In EP-001 i tag restano statici/predefiniti.
 - Le voci di menu "About Me" e "CV" compaiono come segnaposto non funzionanti, poiché le relative pagine sono esplicitamente fuori scope di questo epic (vedi UC-005).
