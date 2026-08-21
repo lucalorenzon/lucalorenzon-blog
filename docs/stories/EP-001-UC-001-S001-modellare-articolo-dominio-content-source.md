@@ -22,7 +22,7 @@ As Autore/Editore, voglio che un frontespizio ben formato venga riconosciuto com
 
 ### Design pipeline
 Before any implementation, complete in order:
-- [ ] `/software-design`        — coupling, ownership, accidental complexity
+- [x] `/software-design`        — coupling, ownership, accidental complexity
 - [ ] `/hexagonal-architecture` — ports, adapters, composition root
 - [ ] `/parse-dont-validate`    — domain types and invariants
 - [ ] `/sw-practices`           — naming, error handling, bootstrap
@@ -49,5 +49,6 @@ Il repo contenuti dedicato (target del `ContentSource` filesystem adapter) non r
 | 2026-08-21 | Titolo obbligatorio quanto data/slug/tag (costruzione rifiutata se assente/malformato); abstract e immagine di sintesi restano opzionali nell'`Article`, il loro default è calcolato a build time da [[EP-001-UC-001-S003]], non qui | Riduce l'attrito di pubblicazione senza sacrificare i metadati che guidano URL/categorizzazione (data/slug/tag) e la user experience minima (titolo) | Rendere abstract/immagine obbligatorie quanto gli altri campi — scartata, più attrito per un blog personale |
 | 2026-08-21 | `tag` è una lista non vuota di uno o più valori, non un valore singolo | Coerente con menu a tag statici (UC-005) e con articoli che coprono più argomenti | Tag singolo per articolo — scartata, meno flessibile |
 | 2026-08-21 | La porta `ContentSource` è progettata ora con interfaccia completa (lettura singola per slug + elenco articoli pubblicati); S001 implementa solo la lettura singola | Evita di ridisegnare il port quando S002 (unicità slug) e S003 (listing) avranno bisogno dell'elenco | Progettare solo "read one" ora e aggiungere "list" più avanti — scartata, rischio di retrofit del port |
+| 2026-08-21 | `ContentSource` resta un solo trait Rust con entrambi i metodi dichiarati; `get_by_slug` implementato da S001 con logica reale, `list_published` implementato da S001 con un tipo di errore esplicito (es. `NotYetSupported`), sostituito da S002 con la logica reale | Un errore tipato ed esplicito rappresenta onestamente l'assenza della capacità (nessun `todo!()`/stub silenzioso, coerente con parse-dont-validate); evita anche la segregazione in più trait (`ArticleReader`/`ArticleLister`), complessità accidentale non giustificata da un bisogno reale — fetch-lista è oggi una sola variazione dello stesso concetto di fetch, non un'operazione indipendente; eventuali variazioni future (ricerca, ricerca filtrata) restano fuori scope finché non avranno una story propria | (a) Implementare già in S001 la logica reale di `list_published` (walk-directory) — scartata, sposterebbe fuori dal perimetro AC/AT di S001 un comportamento non testato qui; (b) segregare `ContentSource` in due trait indipendenti — scartata, complessità accidentale per un bisogno di dominio che oggi è unico |
 
 INVEST: I✓ N✓ V✓ E✓ S✓ T✓  |  1 Decision: ✓  |  Coherence: ✓
