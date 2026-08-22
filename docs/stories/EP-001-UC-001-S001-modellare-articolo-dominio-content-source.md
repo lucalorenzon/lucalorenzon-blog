@@ -23,9 +23,11 @@ As Autore/Editore, voglio che un frontespizio ben formato venga riconosciuto com
 ### Design pipeline
 Before any implementation, complete in order:
 - [x] `/software-design`        — coupling, ownership, accidental complexity
-- [ ] `/hexagonal-architecture` — ports, adapters, composition root
+- [x] `/hexagonal-architecture` — ports, adapters, composition root
 - [ ] `/parse-dont-validate`    — domain types and invariants
 - [ ] `/sw-practices`           — naming, error handling, bootstrap
+
+Hexagonal design artefact: [docs/architecture/hexagonal.md](../architecture/hexagonal.md)
 
 ### Next steps after agreement
 - [x] `/acceptance-tests EP-001-UC-001-S001` — story-level AT table (narrower than UC level) → [AT-EP-001-UC-001-S001](../acceptance-tests/AT-EP-001-UC-001-S001-modellare-articolo-dominio-content-source.md)
