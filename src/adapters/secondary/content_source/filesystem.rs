@@ -20,7 +20,7 @@ impl FilesystemContentSource {
     }
 }
 
-/// Raw shape of the YAML frontmatter block, deserialized by serde_yaml.
+/// Raw shape of the YAML frontmatter block, deserialized by `yaml_serde`.
 /// `abstract` is a Rust keyword, hence the rename. Any structural problem
 /// here (no frontmatter block, invalid YAML, wrong field types) falls back
 /// to `Default` — an all-empty `RawFrontmatter` — and is reported through
@@ -52,7 +52,7 @@ impl From<YamlFrontmatter> for RawFrontmatter {
 
 /// Extracts the YAML block between the opening and closing `---` fences.
 /// Returns "" for anything that doesn't match (no leading fence, no closing
-/// fence) — `serde_yaml` then fails on an empty document, which is caught
+/// fence) — `yaml_serde` then fails on an empty document, which is caught
 /// the same way as any other malformed frontmatter.
 fn extract_yaml_block(content: &str) -> &str {
     let Some(rest) = content.strip_prefix("---") else {
@@ -78,7 +78,7 @@ impl ContentSource for FilesystemContentSource {
         })?;
 
         let yaml_block = extract_yaml_block(&content);
-        let frontmatter: YamlFrontmatter = serde_yaml::from_str(yaml_block).unwrap_or_default();
+        let frontmatter: YamlFrontmatter = yaml_serde::from_str(yaml_block).unwrap_or_default();
 
         Article::new(frontmatter.into()).map_err(FetchError::Malformed)
     }

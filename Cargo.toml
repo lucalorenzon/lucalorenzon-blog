@@ -27,7 +27,7 @@ leptos-use = { version = "0.19", features = ["docs"] }
 leptos_icons = { version = "0.7" }
 icondata = { version = "0.7" }
 serde = { version = "1.0", features = ["derive"] }
-serde_yaml = { version = "0.9", optional = true }
+yaml_serde = { version = "0.10", optional = true }
 thiserror = "2"
 
 [features]
@@ -37,7 +37,7 @@ ssr = [
   "dep:actix-files",
   "dep:actix-web",
   "dep:leptos_actix",
-  "dep:serde_yaml",
+  "dep:yaml_serde",
   "leptos/ssr",
   "leptos_meta/ssr",
   "leptos_router/ssr",
