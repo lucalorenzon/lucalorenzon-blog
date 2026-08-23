@@ -26,7 +26,7 @@ pub enum ArticleError {
     Title(#[from] TitleError),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Article {
     date: PublicationDate,
     slug: Slug,
@@ -134,29 +134,57 @@ mod tests {
 
     #[test]
     fn rejects_missing_date() {
-        let err = Article::new(raw(None, Some("valid-slug"), vec!["rust"], Some("Title"), None, None))
-            .unwrap_err();
+        let err = Article::new(raw(
+            None,
+            Some("valid-slug"),
+            vec!["rust"],
+            Some("Title"),
+            None,
+            None,
+        ))
+        .unwrap_err();
         assert!(matches!(err, ArticleError::Date(_)));
     }
 
     #[test]
     fn rejects_missing_slug() {
-        let err = Article::new(raw(Some("2026-08-23"), None, vec!["rust"], Some("Title"), None, None))
-            .unwrap_err();
+        let err = Article::new(raw(
+            Some("2026-08-23"),
+            None,
+            vec!["rust"],
+            Some("Title"),
+            None,
+            None,
+        ))
+        .unwrap_err();
         assert!(matches!(err, ArticleError::Slug(_)));
     }
 
     #[test]
     fn rejects_missing_tags() {
-        let err = Article::new(raw(Some("2026-08-23"), Some("valid-slug"), vec![], Some("Title"), None, None))
-            .unwrap_err();
+        let err = Article::new(raw(
+            Some("2026-08-23"),
+            Some("valid-slug"),
+            vec![],
+            Some("Title"),
+            None,
+            None,
+        ))
+        .unwrap_err();
         assert!(matches!(err, ArticleError::Tags(_)));
     }
 
     #[test]
     fn rejects_missing_title() {
-        let err = Article::new(raw(Some("2026-08-23"), Some("valid-slug"), vec!["rust"], None, None, None))
-            .unwrap_err();
+        let err = Article::new(raw(
+            Some("2026-08-23"),
+            Some("valid-slug"),
+            vec!["rust"],
+            None,
+            None,
+            None,
+        ))
+        .unwrap_err();
         assert!(matches!(err, ArticleError::Title(_)));
     }
 

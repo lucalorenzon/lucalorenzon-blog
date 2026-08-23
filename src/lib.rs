@@ -1,9 +1,9 @@
+pub mod adapters;
 pub mod app;
 pub mod domain;
 pub mod layout;
 
 pub mod components;
-
 
 use cfg_if::cfg_if;
 
