@@ -31,6 +31,10 @@ impl ContentSource for InMemoryContentSource {
     fn list_published(&self) -> Result<Vec<Article>, FetchError> {
         Err(FetchError::NotImplemented)
     }
+
+    fn exists(&self, slug: &Slug) -> Result<bool, FetchError> {
+        Ok(self.articles.contains_key(slug))
+    }
 }
 
 #[cfg(test)]

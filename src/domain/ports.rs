@@ -16,4 +16,7 @@ pub enum FetchError {
 pub trait ContentSource {
     fn get_by_slug(&self, slug: &Slug) -> Result<Article, FetchError>;
     fn list_published(&self) -> Result<Vec<Article>, FetchError>;
+    /// Presence-only check: does a document already occupy `slug`? No read,
+    /// no parsing — a malformed document still counts as present.
+    fn exists(&self, slug: &Slug) -> Result<bool, FetchError>;
 }

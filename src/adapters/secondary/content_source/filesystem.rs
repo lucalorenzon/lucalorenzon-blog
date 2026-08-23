@@ -86,6 +86,15 @@ impl ContentSource for FilesystemContentSource {
     fn list_published(&self) -> Result<Vec<Article>, FetchError> {
         Err(FetchError::NotImplemented)
     }
+
+    fn exists(&self, slug: &Slug) -> Result<bool, FetchError> {
+        let path = self.articles_dir.join(format!("{slug}.md"));
+        match std::fs::metadata(&path) {
+            Ok(_) => Ok(true),
+            Err(err) if err.kind() == std::io::ErrorKind::NotFound => Ok(false),
+            Err(err) => Err(FetchError::Io(err)),
+        }
+    }
 }
 
 #[cfg(test)]
