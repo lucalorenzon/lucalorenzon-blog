@@ -86,4 +86,22 @@ mod tests {
             Err(FetchError::NotImplemented)
         ));
     }
+
+    // Component: ContentSource::exists — presence check, AT-EP-001-UC-001-S002
+
+    #[test]
+    fn exists_returns_true_for_known_slug() {
+        let source = InMemoryContentSource::new(vec![article("hello-world")]);
+        let slug = Slug::parse(Some("hello-world")).unwrap();
+
+        assert!(source.exists(&slug).expect("exists should not fail"));
+    }
+
+    #[test]
+    fn exists_returns_false_for_unknown_slug() {
+        let source = InMemoryContentSource::new(vec![]);
+        let slug = Slug::parse(Some("missing")).unwrap();
+
+        assert!(!source.exists(&slug).expect("exists should not fail"));
+    }
 }

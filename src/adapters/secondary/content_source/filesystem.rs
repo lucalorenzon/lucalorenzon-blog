@@ -189,4 +189,44 @@ mod tests {
         ));
         fs::remove_dir_all(&dir).ok();
     }
+
+    // Component: ContentSource::exists — presence check, AT-EP-001-UC-001-S002
+
+    #[test]
+    fn exists_returns_true_for_well_formed_article() {
+        let dir = temp_content_dir("exists_returns_true_for_well_formed_article");
+        fs::write(
+            dir.join("hello-world.md"),
+            "---\ndate: 2026-08-23\nslug: hello-world\ntags:\n  - rust\ntitle: Hello\n---\nBody.\n",
+        )
+        .unwrap();
+
+        let source = FilesystemContentSource::new(&dir);
+        let slug = Slug::parse(Some("hello-world")).unwrap();
+
+        assert!(source.exists(&slug).expect("exists should not fail"));
+        fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn exists_returns_true_for_malformed_article() {
+        let dir = temp_content_dir("exists_returns_true_for_malformed_article");
+        fs::write(dir.join("broken.md"), "no frontmatter here\n").unwrap();
+
+        let source = FilesystemContentSource::new(&dir);
+        let slug = Slug::parse(Some("broken")).unwrap();
+
+        assert!(source.exists(&slug).expect("exists should not fail"));
+        fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn exists_returns_false_for_missing_file() {
+        let dir = temp_content_dir("exists_returns_false_for_missing_file");
+        let source = FilesystemContentSource::new(&dir);
+        let slug = Slug::parse(Some("does-not-exist")).unwrap();
+
+        assert!(!source.exists(&slug).expect("exists should not fail"));
+        fs::remove_dir_all(&dir).ok();
+    }
 }
