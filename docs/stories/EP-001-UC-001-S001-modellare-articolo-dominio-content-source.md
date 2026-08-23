@@ -41,7 +41,7 @@ Parse-dont-validate design artefact: [docs/design/article.md](../design/article.
 - Nessuna nota bloccante allo split. La forma esatta dell'errore di costruzione (tipo Rust, messaggio) è materia del design pipeline (`parse-dont-validate`), non di questa story.
 
 ### Escalation
-Questa decisione corrisponde all'ADR già raccomandato dall'epic ma non ancora creato: **"Content come markdown-in-git via porta ContentSource, nessun CMS per ora"**. Formalizzare con `/adr` prima o durante il design pipeline di questa story.
+Questa decisione corrisponde all'ADR già raccomandato dall'epic ma non ancora creato: **"Content come markdown-in-git via porta ContentSource, nessun CMS per ora"**. Formalizzare con `/adr` prima o durante il design pipeline di questa story. → Formalizzata: [ADR-002](../adr/ADR-002-content-markdown-in-git.md) (2026-08-23).
 
 ### Dependencies (infra)
 Il repo contenuti dedicato (target del `ContentSource` filesystem adapter) non risulta ancora creato/configurato — nessuna evidenza in `docs/` di dove o come esista oggi. Prima di implementare l'adapter, chore prerequisito: **creare/configurare il repo contenuti dedicato su GitHub e verificarne permessi di scrittura ed eventuale branch protection**, includendo la verifica manuale dell'estensione UC-001 2a (push respinto per conflitto o permessi mancanti) — comportamento nativo git/GitHub, non applicativo, ma la cui configurazione va comunque controllata. Lane `chore`, non una story: nessuna Decision di dominio, solo config da verificare.
