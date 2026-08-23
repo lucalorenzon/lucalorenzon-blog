@@ -10,7 +10,7 @@ As Autore/Editore, voglio essere bloccato se scelgo uno slug già usato so that 
 | **UC** | UC-001 — Autore pubblica un nuovo articolo |
 | **Pattern** | Business rule variations |
 | **AT rows** | AT-UC-001 righe: 3b (slug duplicato) |
-| **Size** | S — estimated 2026-08-24, post design-pipeline. Implementation complete 2026-08-24: `ContentSource::exists` su entrambi gli adapter, `SlugUniquenessError`, `ensure_slug_is_unique` (5 righe AT coperte) |
+| **Size** | S — estimated 2026-08-24, post design-pipeline. Done 2026-08-24: `ContentSource::exists` su entrambi gli adapter, `SlugUniquenessError`, `ensure_slug_is_unique` — 5/5 righe AT coperte, 26 test verdi (7 nuovi) |
 
 ### Acceptance criteria
 - Given un frontespizio altrimenti valido con uno slug uguale a quello di un articolo già pubblicato, when il sistema verifica l'unicità tramite `ContentSource`, then la pubblicazione non procede e l'errore identifica il conflitto di slug

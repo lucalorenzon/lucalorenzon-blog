@@ -57,7 +57,7 @@
 | Story ID | Title | Status |
 |---|---|---|
 | EP-001-UC-001-S001 | Modellare l'articolo e la porta ContentSource | Done (2026-08-23) — dominio + porta `ContentSource`/`FetchError` + adapter `FilesystemContentSource`/`InMemoryContentSource`, 19 test verdi, AT rows 1-5/3a + AC-6 coperte |
-| EP-001-UC-001-S002 | Verificare l'unicità dello slug rispetto agli articoli già pubblicati | Pending discussion |
+| EP-001-UC-001-S002 | Verificare l'unicità dello slug rispetto agli articoli già pubblicati | Done (2026-08-24) — `ContentSource::exists`, `SlugUniquenessError`, `ensure_slug_is_unique`, 26 test verdi |
 | EP-001-UC-001-S003 | Generare il sito statico da un Article (ARTICLE-PAGE, LISTING-PAGE, HOME-PAGE) | Pending discussion |
 | EP-001-UC-001-S004 | Automatizzare la pipeline CI: trigger su push e segnalazione errori | Pending discussion |
 | EP-001-UC-001-S005 | Distribuire l'output generato e gestire il fallimento di deploy | Pending discussion |
