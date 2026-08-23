@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-Personal blog for Luca Lorenzon ("Lvk@73r"), built with the [Leptos](https://github.com/leptos-rs/leptos) Rust web framework (v0.8, stable toolchain, with the standard `islands` feature — migrated from `experimental-islands`/nightly per ADR-001, 2026-08-20) and server-rendered via `actix-web`. Styling is Tailwind CSS v4 compiled by `cargo-leptos`/`dart-sass`. This started from the `leptos-rs/start` template — the README still documents template-level setup, not this project.
+Personal blog for Luca Lorenzon ("Lvk@73r"), built with the [Leptos](https://github.com/leptos-rs/leptos) Rust web framework (v0.8, stable toolchain, with the standard `islands` feature — migrated from `experimental-islands`/nightly per ADR-001, 2026-08-20) and server-rendered via `actix-web`. Styling is Tailwind CSS v4 compiled by `cargo-leptos`/`dart-sass`. This started from the `leptos-rs/start` template, since diverged (see `README.md`).
 
 ## Commands
 
@@ -12,9 +12,9 @@ Requires Rust **stable** (pinned via `rust-toolchain.toml`) and the `wasm32-unkn
 
 - **Dev server with hot reload**: `cargo leptos watch` — serves at `http://localhost:3000`
 - **Production build**: `cargo leptos build --release`
-- **Run built server standalone**: after a release build, the binary is at `target/server/release/leptos_start` and needs `target/site` alongside it (see env vars `LEPTOS_OUTPUT_NAME`, `LEPTOS_SITE_ROOT`, `LEPTOS_SITE_PKG_DIR`, `LEPTOS_SITE_ADDR` — set in the `Dockerfile`)
+- **Run built server standalone**: after a release build, the binary is at `target/release/blog_start` and needs `target/site` alongside it (see env vars `LEPTOS_OUTPUT_NAME`, `LEPTOS_SITE_ROOT`, `LEPTOS_SITE_PKG_DIR`, `LEPTOS_SITE_ADDR` — set in the `Dockerfile`)
 - **End-to-end tests (Playwright)**: `cargo leptos end-to-end` (runs `npx playwright test` inside `end2end/`, per `end2end-cmd`/`end2end-dir` in `Cargo.toml`). To run a single spec directly: `cd end2end && npx playwright test tests/example.spec.ts`
-- **Docker build**: `docker build -t leptos_start .` — multi-stage build using `rustlang/rust:nightly-bullseye`
+- **Docker build**: `docker build -t blog_start .` — multi-stage build (`rust:1-bookworm` builder targeting `x86_64-unknown-linux-musl` for a static binary, `scratch` runtime)
 
 There is no separate lint/format command configured beyond standard `cargo fmt` / `cargo clippy`.
 

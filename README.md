@@ -1,68 +1,65 @@
-<picture>
-    <source srcset="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_Solid_White.svg" media="(prefers-color-scheme: dark)">
-    <img src="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_RGB.svg" alt="Leptos Logo">
-</picture>
+# lucalorenzon-blog
 
-# Leptos Starter Template
+Personal blog for Luca Lorenzon ("Lvk@73r"), built with the [Leptos](https://github.com/leptos-rs/leptos) Rust web framework (v0.8, stable toolchain) and server-rendered via [actix-web](https://actix.rs/). Only the interactive parts of the page ship JavaScript, via Leptos's [islands](https://leptos-rs.github.io/leptos/islands.html) architecture — everything else is plain server-rendered HTML. Styling is [Tailwind CSS v4](https://tailwindcss.com/), compiled by `cargo-leptos`.
 
-This is a template for use with the [Leptos](https://github.com/leptos-rs/leptos) web framework and the [cargo-leptos](https://github.com/akesson/cargo-leptos) tool.
+This project started from the `leptos-rs/start` template; the structure below reflects how it has since diverged.
 
-## Creating your template repo
+## Requirements
 
-If you don't have `cargo-leptos` installed you can install it with
+- Rust **stable** (pinned via `rust-toolchain.toml`)
+- The `wasm32-unknown-unknown` target: `rustup target add wasm32-unknown-unknown`
+- [`cargo-leptos`](https://github.com/leptos-rs/cargo-leptos): `cargo install cargo-leptos`
+- `dart-sass` is **not** required — `cargo-leptos` downloads its own standalone `tailwindcss` CLI to compile `input.css` (Tailwind v4, CSS-first config)
 
-`cargo install cargo-leptos`
+## Running the project
 
-Then run
-
-`cargo leptos new --git leptos-rs/start`
-
-to generate a new project template (you will be prompted to enter a project name).
-
-`cd {projectname}`
-
-to go to your newly created project.
-
-Of course, you should explore around the project structure, but the best place to start with your application code is in `src/app.rs`.
-
-## Running your project
-
-`cargo leptos watch`  
-By default, you can access your local project at `http://localhost:3000`
-
-## Installing Additional Tools
-
-By default, `cargo-leptos` uses `nightly` Rust, `cargo-generate`, and `sass`. If you run into any trouble, you may need to install one or more of these tools.
-
-1. `rustup toolchain install nightly --allow-downgrade` - make sure you have Rust nightly
-2. `rustup target add wasm32-unknown-unknown` - add the ability to compile Rust to WebAssembly
-3. `cargo install cargo-generate` - install `cargo-generate` binary (should be installed automatically in future)
-4. `npm install -g sass` - install `dart-sass` (should be optional in future)
-
-## Executing a Server on a Remote Machine Without the Toolchain
-After running a `cargo leptos build --release` the minimum files needed are:
-
-1. The server binary located in `target/server/release`
-2. The `site` directory and all files within located in `target/site`
-
-Copy these files to your remote server. The directory structure should be:
-```text
-leptos_start
-site/
-```
-Set the following environment variables (updating for your project as needed):
 ```sh
-export LEPTOS_OUTPUT_NAME="leptos_start"
+cargo leptos watch
+```
+
+Serves the app at `http://localhost:3000` with hot reload.
+
+## Production build
+
+```sh
+cargo leptos build --release
+```
+
+This produces:
+
+1. The server binary at `target/release/blog_start`
+2. The static site assets (JS/WASM/CSS) at `target/site`
+
+To run the built server standalone, copy both alongside each other and set:
+
+```sh
+export LEPTOS_OUTPUT_NAME="blog_start"
 export LEPTOS_SITE_ROOT="site"
 export LEPTOS_SITE_PKG_DIR="pkg"
 export LEPTOS_SITE_ADDR="127.0.0.1:3000"
-export LEPTOS_RELOAD_PORT="3001"
 ```
-Finally, run the server binary.
 
-## Notes about CSR and Trunk:
-Although it is not recommended, you can also run your project without server integration using the feature `csr` and `trunk serve`:
+See the `Dockerfile` for a complete example (multi-stage build, static binary, `scratch` runtime image).
 
-`trunk serve --open --features csr`
+## End-to-end tests
 
-This may be useful for integrating external tools which require a static site, e.g. `tauri`.
+```sh
+cargo leptos end-to-end
+```
+
+Runs the Playwright suite in `end2end/` (see `end2end-cmd`/`end2end-dir` in `Cargo.toml`). To run a single spec directly:
+
+```sh
+cd end2end && npx playwright test tests/example.spec.ts
+```
+
+## Project structure
+
+- `src/app.rs` — the `App` root component: `<Html>`/`<Meta>`/`<Stylesheet>`/`<Body>` setup and routes
+- `src/layout.rs` — the `Layout` slot-based wrapper every article page is built through
+- `src/components/` — one subdirectory per UI unit (headers, footers, logos, menu)
+- `src/domain/` — plain domain types and ports (e.g. `Article`, `ContentSource`), independent of the web framework
+- `assets/` — static files synced verbatim into the site output and served from `/assets`
+- `docs/` — epics, use cases, stories, and ADRs tracking why this project is shaped the way it is
+
+See `CLAUDE.md` for the full architecture notes (compilation targets, islands, routing, styling).

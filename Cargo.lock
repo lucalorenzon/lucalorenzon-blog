@@ -380,6 +380,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "blog_start"
+version = "0.1.0"
+dependencies = [
+ "actix-files",
+ "actix-web",
+ "cfg-if",
+ "console_error_panic_hook",
+ "http 1.5.0",
+ "icondata",
+ "leptos",
+ "leptos-use",
+ "leptos_actix",
+ "leptos_icons",
+ "leptos_meta",
+ "leptos_router",
+ "serde",
+ "thiserror 2.0.20",
+ "wasm-bindgen",
+ "yaml_serde",
+]
+
+[[package]]
 name = "brotli"
 version = "8.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1851,28 +1873,6 @@ dependencies = [
  "server_fn",
  "tachys",
  "tracing",
-]
-
-[[package]]
-name = "leptos_start"
-version = "0.1.0"
-dependencies = [
- "actix-files",
- "actix-web",
- "cfg-if",
- "console_error_panic_hook",
- "http 1.5.0",
- "icondata",
- "leptos",
- "leptos-use",
- "leptos_actix",
- "leptos_icons",
- "leptos_meta",
- "leptos_router",
- "serde",
- "thiserror 2.0.20",
- "wasm-bindgen",
- "yaml_serde",
 ]
 
 [[package]]

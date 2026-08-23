@@ -1,6 +1,6 @@
 use crate::layout::{ArticleAbstract, ArticleContent, ArticleTitle, Layout};
 use leptos::prelude::*;
-use leptos_meta::{provide_meta_context, Body, Html, Meta, MetaTags, Stylesheet, Title};
+use leptos_meta::{Body, Html, Meta, MetaTags, Stylesheet, Title, provide_meta_context};
 use leptos_router::components::{Route, Router, Routes};
 use leptos_router::path;
 
@@ -35,7 +35,7 @@ pub fn App() -> impl IntoView {
         // id=leptos means cargo-leptos will hot-reload this stylesheet
         <Html {..} lang="en" dir="ltr" class="dark antialiased h-full" />
         <Meta name="viewport" content="width=device-width,initial-scale=1.0" />
-        <Stylesheet id="leptos" href="/pkg/leptos_start.css"/>
+        <Stylesheet id="leptos" href="/pkg/blog_start.css"/>
         <Body {..} class="bg-white text-blue dark:bg-black dark:text-blue-100 flex flex-col h-screen overflow-y-auto" />
         // content for this welcome page
         <Router>

@@ -1,6 +1,6 @@
 use leptos::prelude::*;
-use leptos_use::breakpoints_tailwind;
 use leptos_use::BreakpointsTailwind::Md;
+use leptos_use::breakpoints_tailwind;
 
 #[component]
 pub fn AsciiArtLogo_(media_query: &'static str) -> impl IntoView {
