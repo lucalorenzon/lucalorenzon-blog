@@ -35,10 +35,10 @@ Epic: EP-001 | UC: UC-001 | Story: EP-001-UC-001-S001
 
 | data | slug | tag | titolo | costruzione riuscita? | campo causa? | ref |
 |---|---|---|---|---|---|---|
-| malformata (`?UNKNOWN?` formato atteso) | valido | valida (≥1 tag) | valido | `false` | `Data` | AC-2 |
-| valida | malformato (`?UNKNOWN?` formato atteso) | valida (≥1 tag) | valido | `false` | `Slug` | AC-3 |
-| valida | valido | contiene un valore malformato (`?UNKNOWN?` formato atteso) | valido | `false` | `Tag` | AC-4 |
-| valida | valido | valida (≥1 tag) | malformato (`?UNKNOWN?` formato atteso) | `false` | `Titolo` | AC-5 |
+| malformata (`2026-02-30` — calendario inesistente) | valido | valida (≥1 tag) | valido | `false` | `Data` | AC-2 |
+| valida | malformato (`Il Mio Slug!` — maiuscole/spazi/punteggiatura non ammessi) | valida (≥1 tag) | valido | `false` | `Slug` | AC-3 |
+| valida | valido | contiene un valore malformato (`Rust Web` — maiuscole/spazi non ammessi) | valido | `false` | `Tag` | AC-4 |
+| valida | valido | valida (≥1 tag) | malformato (contiene un carattere di controllo, es. newline) | `false` | `Titolo` | AC-5 |
 
 ---
 
@@ -55,8 +55,8 @@ Epic: EP-001 | UC: UC-001 | Story: EP-001-UC-001-S001
 
 ## Open Issues
 
-- **Formato "malformato" per data/slug/tag/titolo non ancora deciso** (`?UNKNOWN?` nelle tre righe della tabella "campo obbligatorio malformato"): sintassi esatta attesa per ciascun campo (es. formato data, charset slug, vincoli sul valore di un tag, vincoli sul titolo) è materia di `/parse-dont-validate`, non ancora eseguito per questa story (design pipeline non ancora completata).
-- **Tipo/messaggio esatto dell'errore di costruzione non ancora deciso**: le tabelle sopra assertano solo `costruzione riuscita? = false` e il campo causa (nome semantico, es. `Data`/`Slug`/`Tag`/`Titolo`), come richiesto dagli AC. La forma Rust esatta (variante enum, struct, messaggio) è esplicitamente rimandata dalla story al design pipeline (`/parse-dont-validate`) — da colmare prima di `/test`.
+- ~~**Formato "malformato" per data/slug/tag/titolo non ancora deciso**~~ — risolto in `/parse-dont-validate` (2026-08-23): `PublicationDate` = `YYYY-MM-DD` calendario reale; `Slug`/`Tag` = kebab-case ASCII minuscolo condiviso; `Title` = non vuoto dopo trim, nessun carattere di controllo. Dettaglio: [docs/design/article.md](../design/article.md).
+- **Tipo/messaggio esatto dell'errore di costruzione**: forma Rust fissata in `/parse-dont-validate` — `ArticleError` è un enum con una variante per campo (`Date`/`Slug`/`Tags`/`Title`), ciascuna avvolgente l'errore tipato del value object corrispondente (vedi [docs/design/article.md](../design/article.md)). Il messaggio esatto (`#[error(...)]`) è nel design artefact; resta da verificare in `/test` che l'implementazione corrisponda.
 - **Fallimenti di lettura da ContentSource (I/O, file non trovato) non coperti**: gli AC di questa story riguardano solo la costruzione del tipo `Article` da un frontespizio e la forma dell'interfaccia della porta, non il comportamento di errore della lettura filesystem stessa — non è chiaro se questa story includa anche quel caso o se sia materia di `/hexagonal-architecture` (adapter filesystem). Da chiarire nel design pipeline, non qui.
 
 ---

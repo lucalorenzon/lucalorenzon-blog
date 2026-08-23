@@ -21,9 +21,9 @@ No `Clock` or `IdGenerator` ports: nothing in this story generates a timestamp o
 | Concept | Type | Invariants |
 |---|---|---|
 | `Article` | Entity (identity = `slug`) | `date`, `slug`, ≥1 `tag`, `title` present and well-formed — construction rejected otherwise; `abstract` and `image` optional, not validated here (their default computation is [EP-001-UC-001-S003](../stories/EP-001-UC-001-S003-generare-sito-statico-ssg.md)'s responsibility) |
-| `PublicationDate`, `Slug`, `Tag`, `Title` | Value Object | one smart constructor each; exact invariants (format, charset, constraints) deferred to `/parse-dont-validate`, the next step in this story's design pipeline |
+| `PublicationDate`, `Slug`, `Tag`, `Tags`, `Title` | Value Object | one smart constructor each; invariants (format, charset, constraints) fixed in [docs/design/article.md](../design/article.md) — `PublicationDate` = real `YYYY-MM-DD` calendar date; `Slug`/`Tag` = shared kebab-case ASCII charset; `Tags` = non-empty newtype; `Title` = non-blank, single-line |
 | `RawFrontmatter` | Boundary DTO | raw string fields read from the frontmatter, unvalidated; consumed exactly once by `Article::new`, never propagated past it. Lives next to `Article` (not in `ports`) because it is the input half of `Article`'s own smart constructor: `Article::new(raw: RawFrontmatter) -> Result<Article, ArticleError>` |
-| `ArticleError` | Domain Error | must identify the causing field (Data/Slug/Tag/Titolo); exact Rust variant shape deferred to `/parse-dont-validate` |
+| `ArticleError` | Domain Error | identifies the causing field via its own variant (Date/Slug/Tags/Title), each wrapping the field's typed error — shape fixed in [docs/design/article.md](../design/article.md), built with `thiserror` (`anyhow` explicitly excluded from the domain layer) |
 | `FetchError` | Domain Error (port-level) | `NotFound \| Io \| Malformed(ArticleError) \| NotImplemented` — shared by both `ContentSource` methods (agreed in the story's Decisions Log, 2026-08-21) |
 
 ## Secondary port
