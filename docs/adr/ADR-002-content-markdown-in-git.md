@@ -1,7 +1,7 @@
 # ADR-002: Content as markdown-in-git via a ContentSource port, no CMS
 
 - **Date:** 2026-08-23
-- **Status:** Accepted (domain side implemented — see Technical Notes; filesystem adapter and dedicated content repo not yet built)
+- **Status:** Accepted (domain side implemented, dedicated content repo created — see Technical Notes; filesystem adapter not yet built)
 - **Stories:** EP-001-UC-001-S001 (domain construction, port shape); EP-001-UC-001-S002/S003 (filesystem adapter, listing)
 
 ## Context
@@ -47,7 +47,7 @@ Content lives in a repository separate from the site's own code repository: arti
 - Port: `ContentSource` (`src/domain/ports.rs`, not yet created — planned by S001's design but out of this session's implementation scope), with `get_by_slug(&self, slug: &Slug) -> Result<Article, FetchError>` and `list_published(&self) -> Result<Vec<Article>, FetchError>`. `FetchError` is one shared error type (`NotFound | Io | Malformed(ArticleError) | NotImplemented`) across both methods.
 - Adapters: `FilesystemContentSource` (`std::fs`, `#[cfg(feature = "ssr")]` — filesystem access is meaningless in the `hydrate`/WASM target) reads a `.md` file, parses its frontmatter into `RawFrontmatter`, and calls `Article::new`; `InMemoryContentSource` (`#[cfg(test)]`) is a no-I/O test fake.
 - Implemented so far (this session, EP-001-UC-001-S001): the domain side only — `Article`, its value objects, `RawFrontmatter`, `ArticleError` (`src/domain/`), with unit tests derived from `AT-EP-001-UC-001-S001`. The `ContentSource` port, `FetchError`, and both adapters are designed (`docs/architecture/hexagonal.md`) but not yet written to `src/`.
-- Dedicated content repository: not yet created. A chore prerequisite is logged on the story (create/configure the repo on GitHub, verify write permissions and branch protection) ahead of building `FilesystemContentSource` against it.
+- Dedicated content repository: created — [`lucalorenzon-blog-content`](https://github.com/lucalorenzon/lucalorenzon-blog-content) (private, per ADR-003), scaffolded with a README (frontmatter reference) and an example article. `FilesystemContentSource` has a real repository to read from once implemented; branch protection there is deferred (requires the repo to go public or GitHub Pro, per ADR-003's finding — see that ADR's Consequences).
 - `S001` implements `get_by_slug` only; `list_published` returns `FetchError::NotImplemented` until `S002`/`S003` add the real logic on the same interface.
 
 ## References

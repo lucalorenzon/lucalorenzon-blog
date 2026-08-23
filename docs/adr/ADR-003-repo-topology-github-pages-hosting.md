@@ -1,7 +1,7 @@
 # ADR-003: Repository topology and hosting for GitHub Pages deployment
 
 - **Date:** 2026-08-23
-- **Status:** Proposed (decision agreed; infrastructure actions — repo visibility change, content repo creation — not yet executed)
+- **Status:** Accepted (both infrastructure actions executed 2026-08-23: `lucalorenzon-blog` is public, `lucalorenzon-blog-content` created as a private repo — see Technical Notes)
 - **Stories:** EP-001-UC-001-S004 (automatizzare-pipeline-ci-build), EP-001-UC-001-S005 (distribuire-output-gestire-fallimento-deploy)
 
 ## Context
@@ -46,7 +46,9 @@ Given that, `lucalorenzon-blog` will be made public rather than upgrading to Git
 
 - GitHub Pages source: repository Settings → Pages → "Build and deployment" → "GitHub Actions" (not "Deploy from a branch").
 - Cross-repo checkout: the workflow's `actions/checkout` step for the content repository needs a token with read access to it — a fine-grained PAT scoped to that single repository (stored as a repository secret, e.g. `CONTENT_REPO_TOKEN`) or an SSH deploy key added to the content repository with the corresponding private key as a secret in the code repository. `persist-credentials: false` should be set on the default checkout of `lucalorenzon-blog` itself to avoid credential conflicts between the two checkouts in the same job.
-- Execution not yet performed as of this ADR: `gh repo edit lucalorenzon/lucalorenzon-blog --visibility public` (repo visibility change) and creation of the dedicated content repository. Both are follow-up actions, expected to be carried out explicitly after this ADR is agreed, and wired into the pipeline as part of S004/S005.
+- Executed 2026-08-23: `lucalorenzon-blog` visibility changed to public; branch protection applied to its `main` (no force-push, no deletion, linear history, `enforce_admins` — no required PR, to preserve the existing direct-push workflow); secret scanning, secret scanning push protection, Dependabot alerts/security/version updates, and private vulnerability reporting enabled (all free-plan features that were blocked while the repo was private). Before flipping visibility, the repository's full commit history was scanned for leaked credentials (none found) and four pre-2026 commits carrying a work email address were rewritten and force-pushed to remove that address from public history.
+- Executed 2026-08-23: `lucalorenzon-blog-content` created as a **private** repository, cloned locally at `~/lucalorenzon-blog-content`, scaffolded with a README (purpose, frontmatter reference) and one example article (`articles/hello-world.md`). Branch protection and secret scanning are not available on it while private (same Free-plan constraint as above) — deferred until/unless it is made public, or reconsidered when S004/S005 wire up the cross-repo checkout credential.
+- Still open, tracked on S004/S005: the actual GitHub Actions workflow that clones `lucalorenzon-blog-content` during the `lucalorenzon-blog` build (PAT or deploy key), and the Pages publish step itself.
 
 ## References
 
