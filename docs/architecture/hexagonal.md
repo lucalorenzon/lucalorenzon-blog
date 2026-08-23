@@ -1,12 +1,15 @@
-# Architecture: Hexagonal (Ports and Adapters) — EP-001-UC-001-S001
+# Architecture: Hexagonal (Ports and Adapters) — EP-001-UC-001
 
-Scope: this document covers only what [EP-001-UC-001-S001](../stories/EP-001-UC-001-S001-modellare-articolo-dominio-content-source.md) delivers — the `Article` domain type and the `ContentSource` port. It is not a whole-application hexagonal design; later stories (S002..S005) extend the same domain core and port, and each may add its own primary ports/adapters as they land.
+Scope: this document covers the `Article` domain type and the `ContentSource` port as delivered across UC-001's stories. It is not a whole-application hexagonal design; each story extends the same domain core and port, and each may add its own primary ports/adapters as they land. Sections below are annotated with the story that introduced them.
+
+- **S001** ([story](../stories/EP-001-UC-001-S001-modellare-articolo-dominio-content-source.md)): `Article`, value objects, `ContentSource.get_by_slug`/`list_published` (shape), `FetchError`, both adapters.
+- **S002** ([story](../stories/EP-001-UC-001-S002-verificare-unicita-slug.md)): `ContentSource.exists`, `SlugUniquenessError`, `ensure_slug_is_unique` domain service.
 
 ## Application purpose
 Represent a blog article as a domain type with enforced invariants, and define the interface (port) for reading it from an external content source — with no infrastructure leaking into the domain.
 
 ## Primary actors and their adapters
-None in this story. `Article`/`ContentSource` have no primary port of their own yet — they become reachable through primary ports defined by later stories in UC-001 (S002 slug-uniqueness check, S003 SSG generation, S004 CI pipeline). This is deliberate, not an omission: S001's AC/AT scope is limited to domain construction and port shape.
+None yet. `Article`/`ContentSource` have no primary port of their own — they become reachable through primary ports defined by later stories in UC-001 (S003 SSG generation, S004 CI pipeline). This is deliberate, not an omission: S001's AC/AT scope was limited to domain construction and port shape, and S002 (revised from an earlier forward-reference in this doc) turned out not to need one either — the slug-uniqueness check is a domain service consumed directly by whichever story wires the actual entrypoint (S004), not an entrypoint itself.
 
 ## Secondary actors and their adapters
 | System | Port | Adapter | Technology |
@@ -24,7 +27,8 @@ No `Clock` or `IdGenerator` ports: nothing in this story generates a timestamp o
 | `PublicationDate`, `Slug`, `Tag`, `Tags`, `Title` | Value Object | one smart constructor each; invariants (format, charset, constraints) fixed in [docs/design/article.md](../design/article.md) — `PublicationDate` = real `YYYY-MM-DD` calendar date; `Slug`/`Tag` = shared kebab-case ASCII charset; `Tags` = non-empty newtype; `Title` = non-blank, single-line |
 | `RawFrontmatter` | Boundary DTO | raw string fields read from the frontmatter, unvalidated; consumed exactly once by `Article::new`, never propagated past it. Lives next to `Article` (not in `ports`) because it is the input half of `Article`'s own smart constructor: `Article::new(raw: RawFrontmatter) -> Result<Article, ArticleError>` |
 | `ArticleError` | Domain Error | identifies the causing field via its own variant (Date/Slug/Tags/Title), each wrapping the field's typed error — shape fixed in [docs/design/article.md](../design/article.md), built with `thiserror` (`anyhow` explicitly excluded from the domain layer) |
-| `FetchError` | Domain Error (port-level) | `NotFound \| Io \| Malformed(ArticleError) \| NotImplemented` — shared by both `ContentSource` methods (agreed in the story's Decisions Log, 2026-08-21) |
+| `FetchError` | Domain Error (port-level) | `NotFound \| Io \| Malformed(ArticleError) \| NotImplemented` — shared by all `ContentSource` methods, `exists` included (agreed in S001's Decisions Log, 2026-08-21; extended by S002 without adding a variant — `exists` only ever produces `Ok(bool)` or `Err(Io(_))` in practice, the other variants stay structurally possible but unreachable, same asymmetry already tolerated for `NotImplemented`) |
+| `SlugUniquenessError` (S002) | Domain Error | `AlreadyExists` (slug occupied) \| `CheckFailed(FetchError)` (infra couldn't determine — only `Io` reachable) |
 
 ## Secondary port
 
@@ -32,30 +36,40 @@ No `Clock` or `IdGenerator` ports: nothing in this story generates a timestamp o
 PORT         : ContentSource
 OPERATION    : get_by_slug(&self, slug: &Slug) -> Result<Article, FetchError>
 OPERATION    : list_published(&self) -> Result<Vec<Article>, FetchError>
-OUTPUT TYPES : Article / Vec<Article>, wrapped in Result<_, FetchError>
+OPERATION    : exists(&self, slug: &Slug) -> Result<bool, FetchError>            [S002]
+OUTPUT TYPES : Article / Vec<Article> / bool, wrapped in Result<_, FetchError>
 SECONDARY    : filesystem on the dedicated content repo (markdown-in-git)
 ```
 
-S001 implements `get_by_slug` with real logic. `list_published` returns `FetchError::NotImplemented` in this story — an explicit typed error, not a silent stub (`todo!()`) — and is replaced with real logic by S002/S003 on the same interface, no retrofit.
+S001 implements `get_by_slug` with real logic. `list_published` returns `FetchError::NotImplemented` — an explicit typed error, not a silent stub (`todo!()`) — until S003 (LISTING-PAGE) adds real logic; S002 does not need it (see Dependencies in the S002 story). `exists` (S002) checks file presence only — no read, no YAML parse, no `Article::new` — deliberately lighter than `get_by_slug`: the slug-uniqueness question ("is this filename already taken") doesn't need the file's content, only its presence, so `Malformed` never applies to it (a malformed file still occupies the slug).
 
-A single trait was chosen over segregating `ArticleReader`/`ArticleLister`: list-fetch is today one variation of the same fetch concept, not an independent operation — splitting now would be accidental complexity not justified by an actual need (agreed in the story's Decisions Log; independently converged upon by a `/modularity:design` trial, see `docs/licences/third-party-usage.md`).
+A single trait was chosen over segregating per-operation traits (`ArticleReader`/`ArticleLister`/…): each new operation so far is a variation on "ask the content source something about a slug," not an independent concern — splitting now would be accidental complexity not justified by an actual need (agreed in S001's Decisions Log for `get_by_slug`/`list_published`, reaffirmed in S002's for `exists`; independently converged upon by a `/modularity:design` trial, see `docs/licences/third-party-usage.md`).
+
+## Domain service (S002)
+
+```
+ensure_slug_is_unique(source: &impl ContentSource, candidate: &Slug) -> Result<(), SlugUniquenessError>
+```
+
+Maps `source.exists(candidate)`: `Ok(false)` → `Ok(())` (slug free); `Ok(true)` → `Err(AlreadyExists)`; `Err(Io(_))` → `Err(CheckFailed(_))`, propagated rather than swallowed. No dependency on `list_published` — reads a single slug, not the whole published set. Lives in `src/domain/slug_uniqueness.rs`, not inside `ports.rs` (which defines the port itself, not its consumers) nor `article.rs` (not an `Article` invariant — it's a cross-cutting check against an external source).
 
 ## Adapter table
 
 | Port | Side | Adapter(s) | Technology |
 |---|---|---|---|
-| `ContentSource` | Secondary | `FilesystemContentSource` | `std::fs`, `#[cfg(feature = "ssr")]`. Reads a `.md` file, parses its frontmatter into `RawFrontmatter`, calls `Article::new`; maps I/O failures → `FetchError::Io`, missing file → `FetchError::NotFound`, `ArticleError` → `FetchError::Malformed`, `list_published` → `FetchError::NotImplemented` |
-| `ContentSource` | Secondary | `InMemoryContentSource` | test fake, `#[cfg(test)]`, no I/O |
+| `ContentSource` | Secondary | `FilesystemContentSource` | `std::fs`, `#[cfg(feature = "ssr")]`. Reads a `.md` file, parses its frontmatter into `RawFrontmatter`, calls `Article::new`; maps I/O failures → `FetchError::Io`, missing file → `FetchError::NotFound`, `ArticleError` → `FetchError::Malformed`, `list_published` → `FetchError::NotImplemented`. `exists` (S002): a metadata/presence check on the same `{slug}.md` path, no file read |
+| `ContentSource` | Secondary | `InMemoryContentSource` | test fake, `#[cfg(test)]`, no I/O. `exists` (S002): `HashMap` key lookup |
 
 `FilesystemContentSource` is gated to `ssr` because filesystem access is meaningless in the `hydrate` (WASM/browser) target — keeping it out of that build also keeps the WASM bundle lean, consistent with adapters never leaking into targets that don't need them.
 
 ## Composition root location
-None changed by this story. `src/main.rs` is untouched: there is no primary port/use case yet to wire `ContentSource` into (arrives with S002/S003/S004). Future wiring sketch, for continuity only:
+Still untouched after S002. `src/main.rs` has no primary port/use case yet to wire `ContentSource` into (arrives with S003/S004). Future wiring sketch, for continuity only:
 
 ```
-// Not implemented in S001 — sketch for a later story's composition root
+// Not implemented yet — sketch for a later story's composition root
 content_source = FilesystemContentSource::new(content_repo_path)
 // e.g. S003: site_generator = GenerateSite::new(content_source)
+// e.g. S004: ensure_slug_is_unique(&content_source, &candidate_slug)?
 ```
 
 ## Directory structure
@@ -72,6 +86,7 @@ src/
       tag.rs
       title.rs
     ports.rs                  ← ContentSource, FetchError
+    slug_uniqueness.rs        ← SlugUniquenessError, ensure_slug_is_unique() [S002]
   adapters/
     secondary/
       content_source/
