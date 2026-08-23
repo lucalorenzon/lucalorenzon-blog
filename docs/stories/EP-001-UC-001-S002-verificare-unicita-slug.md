@@ -26,8 +26,11 @@ Hexagonal design artefact: [docs/architecture/hexagonal.md](../architecture/hexa
 Parse-dont-validate design artefact: [docs/design/slug-uniqueness.md](../design/slug-uniqueness.md)
 
 ### Next steps after agreement
-- [ ] `/acceptance-tests EP-001-UC-001-S002` — story-level AT table (narrower than UC level)
+- [x] `/acceptance-tests EP-001-UC-001-S002` — story-level AT table (narrower than UC level) → [AT-EP-001-UC-001-S002](../acceptance-tests/AT-EP-001-UC-001-S002-verificare-unicita-slug.md)
 - [ ] `/story-size EP-001-UC-001-S002`       — assign XS / S / M / L / XL / XXL
+
+### Acceptance Tests
+[AT-EP-001-UC-001-S002-verificare-unicita-slug](../acceptance-tests/AT-EP-001-UC-001-S002-verificare-unicita-slug.md)
 
 ### Open questions
 - AT-UC-001 nota esplicitamente che UC-001 non specifica se il controllo di unicità avviene in uno step CI dedicato o durante il build stesso — questa story decide solo la logica di dominio/porta; il punto esatto nella pipeline è materia di [[EP-001-UC-001-S004]].
