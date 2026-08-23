@@ -56,8 +56,8 @@ Epic: EP-001 | UC: UC-001 | Story: EP-001-UC-001-S001
 ## Open Issues
 
 - ~~**Formato "malformato" per data/slug/tag/titolo non ancora deciso**~~ — risolto in `/parse-dont-validate` (2026-08-23): `PublicationDate` = `YYYY-MM-DD` calendario reale; `Slug`/`Tag` = kebab-case ASCII minuscolo condiviso; `Title` = non vuoto dopo trim, nessun carattere di controllo. Dettaglio: [docs/design/article.md](../design/article.md).
-- **Tipo/messaggio esatto dell'errore di costruzione**: forma Rust fissata in `/parse-dont-validate` — `ArticleError` è un enum con una variante per campo (`Date`/`Slug`/`Tags`/`Title`), ciascuna avvolgente l'errore tipato del value object corrispondente (vedi [docs/design/article.md](../design/article.md)). Il messaggio esatto (`#[error(...)]`) è nel design artefact; resta da verificare in `/test` che l'implementazione corrisponda.
-- **Fallimenti di lettura da ContentSource (I/O, file non trovato) non coperti**: gli AC di questa story riguardano solo la costruzione del tipo `Article` da un frontespizio e la forma dell'interfaccia della porta, non il comportamento di errore della lettura filesystem stessa — non è chiaro se questa story includa anche quel caso o se sia materia di `/hexagonal-architecture` (adapter filesystem). Da chiarire nel design pipeline, non qui.
+- ~~**Tipo/messaggio esatto dell'errore di costruzione**~~ — risolto (2026-08-23): implementazione in `src/domain/article.rs` e `src/domain/value_objects/*.rs` corrisponde esattamente al design artefact; verificato dai 14 test di dominio (`cargo test`, tutti verdi).
+- ~~**Fallimenti di lettura da ContentSource (I/O, file non trovato) non coperti**~~ — risolto (2026-08-23): in scope di S001, coperti da `FilesystemContentSource` (`src/adapters/secondary/content_source/filesystem.rs`) — `NotFound` (file assente) e `Malformed` (frontmatter assente/non valido/campo invalido) testati su file temporanei reali. `FetchError::Io` (errori di I/O diversi da "file non trovato", es. permessi) resta mappato nel codice ma non ha un test automatico dedicato — dipendente da OS, giudicato non necessario per questa story; nessuna riga AT lo richiede.
 
 ---
 
