@@ -10,6 +10,7 @@ As Autore/Editore, voglio essere bloccato se scelgo uno slug già usato so that 
 | **UC** | UC-001 — Autore pubblica un nuovo articolo |
 | **Pattern** | Business rule variations |
 | **AT rows** | AT-UC-001 righe: 3b (slug duplicato) |
+| **Size** | S — estimated 2026-08-24, post design-pipeline. Implementation complete 2026-08-24: `ContentSource::exists` su entrambi gli adapter, `SlugUniquenessError`, `ensure_slug_is_unique` (5 righe AT coperte) |
 
 ### Acceptance criteria
 - Given un frontespizio altrimenti valido con uno slug uguale a quello di un articolo già pubblicato, when il sistema verifica l'unicità tramite `ContentSource`, then la pubblicazione non procede e l'errore identifica il conflitto di slug
@@ -27,7 +28,7 @@ Parse-dont-validate design artefact: [docs/design/slug-uniqueness.md](../design/
 
 ### Next steps after agreement
 - [x] `/acceptance-tests EP-001-UC-001-S002` — story-level AT table (narrower than UC level) → [AT-EP-001-UC-001-S002](../acceptance-tests/AT-EP-001-UC-001-S002-verificare-unicita-slug.md)
-- [ ] `/story-size EP-001-UC-001-S002`       — assign XS / S / M / L / XL / XXL
+- [x] `/story-size EP-001-UC-001-S002`       — assign XS / S / M / L / XL / XXL → S
 
 ### Acceptance Tests
 [AT-EP-001-UC-001-S002-verificare-unicita-slug](../acceptance-tests/AT-EP-001-UC-001-S002-verificare-unicita-slug.md)
