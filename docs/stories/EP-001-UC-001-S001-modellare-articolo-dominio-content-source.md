@@ -25,7 +25,7 @@ Before any implementation, complete in order:
 - [x] `/software-design`        — coupling, ownership, accidental complexity
 - [x] `/hexagonal-architecture` — ports, adapters, composition root
 - [x] `/parse-dont-validate`    — domain types and invariants
-- [ ] `/sw-practices`           — naming, error handling, bootstrap
+- [x] `/sw-practices`           — naming, error handling, bootstrap
 
 Hexagonal design artefact: [docs/architecture/hexagonal.md](../architecture/hexagonal.md)
 Parse-dont-validate design artefact: [docs/design/article.md](../design/article.md)

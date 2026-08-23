@@ -1,4 +1,5 @@
 pub mod app;
+pub mod domain;
 pub mod layout;
 
 pub mod components;

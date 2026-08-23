@@ -27,6 +27,7 @@ leptos-use = { version = "0.19", features = ["docs"] }
 leptos_icons = { version = "0.7" }
 icondata = { version = "0.7" }
 serde = { version = "1.0", features = ["derive"] }
+thiserror = "2"
 
 [features]
 csr = ["leptos/csr"]
