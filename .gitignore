@@ -15,6 +15,12 @@ playwright/.cache/
 .idea
 .DS_Store
 
+# Never commit local secrets/credentials
+.env
+.env.*
+*.pem
+*.key
+
 /end2end/*.js
 /end2end/*.js.map
 /end2end/tests/*.js
