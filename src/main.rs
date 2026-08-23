@@ -36,13 +36,10 @@ async fn main() -> std::io::Result<()> {
             .service(Files::new("/assets", site_root.to_string()))
             // serve the favicon from /favicon.ico
             .service(favicon)
-            .leptos_routes(
-                routes.to_owned(),
-                {
-                    let leptos_options = leptos_options.to_owned();
-                    move || shell(leptos_options.clone())
-                },
-            )
+            .leptos_routes(routes.to_owned(), {
+                let leptos_options = leptos_options.to_owned();
+                move || shell(leptos_options.clone())
+            })
             .app_data(web::Data::new(leptos_options.to_owned()))
         //.wrap(middleware::Compress::default())
     })

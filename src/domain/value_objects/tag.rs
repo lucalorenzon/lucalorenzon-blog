@@ -15,7 +15,9 @@ impl Tag {
         if is_kebab_case(raw) {
             Ok(Self(raw.to_string()))
         } else {
-            Err(TagError::Malformed { raw: raw.to_string() })
+            Err(TagError::Malformed {
+                raw: raw.to_string(),
+            })
         }
     }
 

@@ -20,10 +20,14 @@ impl PublicationDate {
             .filter(|s| !s.is_empty())
             .ok_or(PublicationDateError::Missing)?;
 
-        let malformed = || PublicationDateError::Malformed { raw: raw.to_string() };
+        let malformed = || PublicationDateError::Malformed {
+            raw: raw.to_string(),
+        };
 
         let parts: Vec<&str> = raw.split('-').collect();
-        let [y, m, d] = parts.as_slice() else { return Err(malformed()) };
+        let [y, m, d] = parts.as_slice() else {
+            return Err(malformed());
+        };
         if y.len() != 4 || m.len() != 2 || d.len() != 2 {
             return Err(malformed());
         }

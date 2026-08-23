@@ -1,8 +1,8 @@
+use crate::layout::{ArticleAbstract, ArticleContent, ArticleTitle, Layout};
 use leptos::prelude::*;
-use leptos_meta::{Html, Meta, MetaTags, Stylesheet, Body, Title, provide_meta_context};
-use leptos_router::components::{Router, Routes, Route};
+use leptos_meta::{provide_meta_context, Body, Html, Meta, MetaTags, Stylesheet, Title};
+use leptos_router::components::{Route, Router, Routes};
 use leptos_router::path;
-use crate::layout::{Layout, ArticleTitle, ArticleAbstract, ArticleContent};
 
 /// The document shell rendered around `<App/>` during server-side rendering.
 ///
@@ -45,13 +45,11 @@ pub fn App() -> impl IntoView {
                 </Routes>
         </Router>
     }
-
 }
 
 /// Renders the home page of your application.
 #[component]
 fn HomePage() -> impl IntoView {
-
     view! {
         // sets the document title
         <Title text="Lvk@73r Blog | Homepage" />

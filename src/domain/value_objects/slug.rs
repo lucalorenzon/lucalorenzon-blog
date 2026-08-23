@@ -19,7 +19,9 @@ impl Slug {
         if is_kebab_case(raw) {
             Ok(Self(raw.to_string()))
         } else {
-            Err(SlugError::Malformed { raw: raw.to_string() })
+            Err(SlugError::Malformed {
+                raw: raw.to_string(),
+            })
         }
     }
 
@@ -33,7 +35,10 @@ impl Slug {
 pub(crate) fn is_kebab_case(s: &str) -> bool {
     !s.is_empty()
         && s.split('-').all(|segment| {
-            !segment.is_empty() && segment.chars().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit())
+            !segment.is_empty()
+                && segment
+                    .chars()
+                    .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit())
         })
 }
 

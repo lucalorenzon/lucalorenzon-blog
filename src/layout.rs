@@ -1,13 +1,11 @@
 use leptos::children::ChildrenFragment;
 use leptos::prelude::*;
 
-
-use crate::components::headers::headers::BlogHeader;
 use crate::components::footers::footer::BlogFooter;
+use crate::components::headers::headers::BlogHeader;
 
 #[component]
-pub fn Layout( children: ChildrenFragment ) -> impl IntoView {
-
+pub fn Layout(children: ChildrenFragment) -> impl IntoView {
     let mut nodes = children().nodes.into_iter();
     let article_title = nodes.next();
     let article_abstract = nodes.next();
@@ -28,8 +26,7 @@ pub fn Layout( children: ChildrenFragment ) -> impl IntoView {
             </main>
             <BlogFooter />
         }.into_any()
-    }
-    else {
+    } else {
         view! {
             <BlogHeader />
             <main class="h-screen z-0 overflow-auto grow-1">

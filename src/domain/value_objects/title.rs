@@ -17,7 +17,9 @@ impl Title {
             .ok_or(TitleError::Missing)?;
 
         if raw.chars().any(|c| c.is_control()) {
-            return Err(TitleError::Malformed { raw: raw.to_string() });
+            return Err(TitleError::Malformed {
+                raw: raw.to_string(),
+            });
         }
         Ok(Self(raw.to_string()))
     }
