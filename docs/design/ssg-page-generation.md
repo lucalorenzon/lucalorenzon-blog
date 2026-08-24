@@ -141,3 +141,39 @@ effective_image(article: &Article) -> &str
 ### Boundary location
 Called from `src/pages/{article_page,listing_page,home_page}.rs` when
 building each page's view — not from the domain, not from `ContentSource`.
+
+---
+
+## Dependency decision: markdown → HTML (agreed 2026-08-24, `/sw-practices`)
+
+`Body` carries raw markdown text; ARTICLE-PAGE needs actual HTML. **Adopted:
+`pulldown-cmark`** (checked against crates.io before adopting, per this
+project's established dependency-audit practice — [docs/design/article.md](article.md)'s
+own precedent: max stable `0.13.4`, last published 2026-05-20, actively
+maintained, pure-Rust CommonMark pull parser, no transitive C dependency).
+Rendering the `Body` → HTML string is presentation logic (same reasoning as
+`effective_abstract`/`effective_image`): it belongs in `src/pages/`, not in
+`domain/` — `Body` itself stays raw markdown text, never pre-rendered at
+construction, so nothing in the domain needs to know HTML exists. Not added
+to `Cargo.toml` yet — deferred to the `feat` commit that actually calls it
+from `src/pages/article_page.rs` (avoids an added-but-unused dependency
+sitting in the manifest in the meantime, same discipline as `article.md`'s
+deferred `chrono`).
+
+## Data-flow refinement (agreed 2026-08-24, `/sw-practices`)
+
+`/hexagonal-architecture` decided article data reaches page components as
+already-resolved data, no `#[server]`/`Resource` needed. Confirmed against
+`leptos_router`'s actual static-route API
+(`leptos-rs/leptos examples/static_routing/src/app.rs`): a routed
+`<Route path=path!("/articles/:slug") view=ArticlePage ssr=SsrMode::Static(...)/>`
+invokes `ArticlePage` as a zero-argument view function, the same way for
+every route — it cannot receive a custom `Article` prop directly from a
+parent. The refined mechanism, still consistent with "no server function,
+no Resource": `ArticlePage` reads the `:slug` route param via
+`leptos_router::hooks::use_params_map()`, then resolves the `Article`
+synchronously through a `ContentSource` obtained via `expect_context`
+(provided once, at the composition root, wrapping `<Router>` — the same
+adapter instance used to build `prerender_params`). `ListingPage`/`HomePage`
+(parameterless routes) read the full sorted article list the same way, via
+context, rather than a route param.
