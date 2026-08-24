@@ -29,7 +29,7 @@ Hexagonal design artefact: [docs/architecture/hexagonal.md](../architecture/hexa
 Parse-dont-validate artefact: [docs/design/ssg-page-generation.md](../design/ssg-page-generation.md)
 
 ### Next steps after agreement
-- [ ] `/acceptance-tests EP-001-UC-001-S003` — story-level AT table (narrower than UC level)
+- [x] `/acceptance-tests EP-001-UC-001-S003` — story-level AT table (narrower than UC level): [AT-EP-001-UC-001-S003](../acceptance-tests/AT-EP-001-UC-001-S003-generare-sito-statico-ssg.md)
 - [ ] `/story-size EP-001-UC-001-S003`       — assign XS / S / M / L / XL / XXL
 
 ### Open questions
