@@ -73,11 +73,9 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 | ADR | Title | Date | Status |
 |---|---|---|---|
 | [ADR-001](../adr/ADR-001-leptos-target-version.md) | Leptos target version | 2026-08-14 | Applicata (2026-08-20) |
-| — | SSG + islands al posto di SSR | — | Da creare |
+| [ADR-004](../adr/ADR-004-ssg-islands-replaces-ssr.md) | SSG + islands al posto di SSR | 2026-08-24 | Proposed (formalizzata per EP-001-UC-001-S003, implementazione non ancora iniziata) |
 | [ADR-002](../adr/ADR-002-content-markdown-in-git.md) | Content come markdown-in-git via porta ContentSource, nessun CMS | 2026-08-23 | Accepted (dominio, porta e adapter implementati e testati; repo contenuti creato) |
 | [ADR-003](../adr/ADR-003-repo-topology-github-pages-hosting.md) | Topologia repo e hosting per il deploy su GitHub Pages | 2026-08-23 | Accepted (lucalorenzon-blog pubblico + hardened, lucalorenzon-blog-content creato privato) |
-
-> La ADR mancante (SSG + islands al posto di SSR) resta da creare con `/adr` — raccomandata dall'assessment architetturale collegato, non ancora formalizzata.
 
 ## Use Cases
 

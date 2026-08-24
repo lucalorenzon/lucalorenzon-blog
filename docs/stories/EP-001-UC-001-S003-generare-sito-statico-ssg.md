@@ -33,7 +33,7 @@ Before any implementation, complete in order:
 - Meccanismo di paginazione della LISTING-PAGE non deciso (già segnalato come Open Issue in EP-001 e in UC-003) — non blocca questa story se si assume una LISTING-PAGE senza paginazione come primo incremento, ma va riallineato quando UC-003 verrà splittata.
 
 ### Escalation
-Questa decisione corrisponde all'ADR già raccomandato dall'epic ma non ancora creato: **"SSG + islands al posto di SSR"**. Formalizzare con `/adr` prima o durante il design pipeline di questa story — è la decisione più impattante e meno reversibile dell'intera UC-001 (tocca l'intero bootstrap dell'applicazione, non solo la pubblicazione articoli).
+Questa decisione corrisponde a [ADR-004](../adr/ADR-004-ssg-islands-replaces-ssr.md) — **"SSG + islands al posto di SSR"**, formalizzata il 2026-08-24. Resta la decisione più impattante e meno reversibile dell'intera UC-001 (tocca l'intero bootstrap dell'applicazione, non solo la pubblicazione articoli); il meccanismo esatto di implementazione è demandato al design pipeline di questa story (ADR-004, sezione Technical Notes).
 
 ### Dependencies
 - Richiede il tipo `Article` di [[EP-001-UC-001-S001]].
