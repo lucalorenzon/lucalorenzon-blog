@@ -53,6 +53,29 @@ Runs the Playwright suite in `end2end/` (see `end2end-cmd`/`end2end-dir` in `Car
 cd end2end && npx playwright test tests/example.spec.ts
 ```
 
+## Test coverage
+
+Requires the `llvm-tools-preview` rustup component and [`cargo-llvm-cov`](https://github.com/taiki-e/cargo-llvm-cov):
+
+```sh
+rustup component add llvm-tools-preview
+cargo install cargo-llvm-cov --locked
+```
+
+Both wrap the same stable, official mechanism documented in the [rustc book](https://doc.rust-lang.org/rustc/instrument-coverage.html) (`-C instrument-coverage` + LLVM's `llvm-profdata`/`llvm-cov`) — `cargo-llvm-cov` just automates the merge/discovery steps that tool would otherwise require running by hand.
+
+```sh
+cargo llvm-cov --lib --features ssr
+```
+
+For a browsable HTML report:
+
+```sh
+cargo llvm-cov --lib --features ssr --html --open
+```
+
+`--features ssr` is required: the test code (and `ContentSource` adapters) only compile under that feature.
+
 ## Project structure
 
 - `src/app.rs` — the `App` root component: `<Html>`/`<Meta>`/`<Stylesheet>`/`<Body>` setup and routes
