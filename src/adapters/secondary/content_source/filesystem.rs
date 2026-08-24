@@ -37,16 +37,15 @@ struct YamlFrontmatter {
     image: Option<String>,
 }
 
-impl From<YamlFrontmatter> for RawFrontmatter {
-    fn from(yaml: YamlFrontmatter) -> Self {
-        RawFrontmatter {
-            date: yaml.date,
-            slug: yaml.slug,
-            tags: yaml.tags,
-            title: yaml.title,
-            abstract_text: yaml.abstract_text,
-            image: yaml.image,
-        }
+fn with_body(yaml: YamlFrontmatter, body: Option<String>) -> RawFrontmatter {
+    RawFrontmatter {
+        date: yaml.date,
+        slug: yaml.slug,
+        tags: yaml.tags,
+        title: yaml.title,
+        abstract_text: yaml.abstract_text,
+        image: yaml.image,
+        body,
     }
 }
 
@@ -69,6 +68,27 @@ fn extract_yaml_block(content: &str) -> &str {
     }
 }
 
+/// Extracts the article body: everything after the closing `---` fence of
+/// the YAML block. `None` for anything that doesn't have a well-formed
+/// closing fence — same "let `Article::new` report it" strategy as
+/// `extract_yaml_block`, via `Body::parse(None)` → `BodyError::Missing`.
+fn extract_body(content: &str) -> Option<&str> {
+    let rest = content.strip_prefix("---")?;
+    let rest = rest
+        .strip_prefix("\r\n")
+        .or_else(|| rest.strip_prefix('\n'))
+        .unwrap_or(rest);
+
+    let end = rest.find("\n---")?;
+    let after_fence = &rest[end + "\n---".len()..];
+    let after_fence = after_fence
+        .strip_prefix("\r\n")
+        .or_else(|| after_fence.strip_prefix('\n'))
+        .unwrap_or(after_fence);
+
+    Some(after_fence)
+}
+
 impl ContentSource for FilesystemContentSource {
     fn get_by_slug(&self, slug: &Slug) -> Result<Article, FetchError> {
         let path = self.articles_dir.join(format!("{slug}.md"));
@@ -79,12 +99,30 @@ impl ContentSource for FilesystemContentSource {
 
         let yaml_block = extract_yaml_block(&content);
         let frontmatter: YamlFrontmatter = yaml_serde::from_str(yaml_block).unwrap_or_default();
+        let body = extract_body(&content).map(str::to_string);
 
-        Article::new(frontmatter.into()).map_err(FetchError::Malformed)
+        Article::new(with_body(frontmatter, body)).map_err(FetchError::Malformed)
     }
 
     fn list_published(&self) -> Result<Vec<Article>, FetchError> {
-        Err(FetchError::NotImplemented)
+        let entries = std::fs::read_dir(&self.articles_dir)?;
+        let mut articles = Vec::new();
+
+        for entry in entries {
+            let path = entry?.path();
+            if path.extension().and_then(|ext| ext.to_str()) != Some("md") {
+                continue;
+            }
+            let Some(stem) = path.file_stem().and_then(|s| s.to_str()) else {
+                continue;
+            };
+            let Ok(slug) = Slug::parse(Some(stem)) else {
+                continue;
+            };
+            articles.push(self.get_by_slug(&slug)?);
+        }
+
+        Ok(articles)
     }
 
     fn exists(&self, slug: &Slug) -> Result<bool, FetchError> {
@@ -157,13 +195,97 @@ mod tests {
     }
 
     #[test]
-    fn list_published_is_not_yet_implemented() {
-        let dir = temp_content_dir("list_published_is_not_yet_implemented");
+    fn extract_body_returns_content_after_closing_fence() {
+        assert_eq!(
+            extract_body("---\ndate: 2026-08-23\n---\nBody.\n"),
+            Some("Body.\n")
+        );
+    }
+
+    #[test]
+    fn extract_body_returns_none_when_no_leading_fence() {
+        assert_eq!(extract_body("no frontmatter here\n"), None);
+    }
+
+    #[test]
+    fn extract_body_returns_none_when_no_closing_fence() {
+        assert_eq!(extract_body("---\ndate: 2026-08-23\n"), None);
+    }
+
+    #[test]
+    fn reads_body_after_frontmatter() {
+        let dir = temp_content_dir("reads_body_after_frontmatter");
+        fs::write(
+            dir.join("hello-world.md"),
+            "---\ndate: 2026-08-23\nslug: hello-world\ntags:\n  - rust\ntitle: Hello\n---\nBody.\n",
+        )
+        .unwrap();
+
+        let source = FilesystemContentSource::new(&dir);
+        let slug = Slug::parse(Some("hello-world")).unwrap();
+
+        let article = source
+            .get_by_slug(&slug)
+            .expect("should read a well-formed article");
+
+        assert_eq!(article.body().as_str(), "Body.");
+        fs::remove_dir_all(&dir).ok();
+    }
+
+    // Component: ContentSource::list_published — EP-001-UC-001-S003
+
+    #[test]
+    fn list_published_returns_every_article_in_the_directory() {
+        let dir = temp_content_dir("list_published_returns_every_article_in_the_directory");
+        fs::write(
+            dir.join("hello-world.md"),
+            "---\ndate: 2026-08-23\nslug: hello-world\ntags:\n  - rust\ntitle: Hello\n---\nBody.\n",
+        )
+        .unwrap();
+        fs::write(
+            dir.join("second.md"),
+            "---\ndate: 2026-08-22\nslug: second\ntags:\n  - rust\ntitle: Second\n---\nBody two.\n",
+        )
+        .unwrap();
+
+        let source = FilesystemContentSource::new(&dir);
+
+        let mut slugs: Vec<String> = source
+            .list_published()
+            .expect("list_published should not fail")
+            .iter()
+            .map(|a| a.slug().as_str().to_string())
+            .collect();
+        slugs.sort();
+
+        assert_eq!(slugs, vec!["hello-world", "second"]);
+        fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn list_published_returns_empty_for_empty_directory() {
+        let dir = temp_content_dir("list_published_returns_empty_for_empty_directory");
+        let source = FilesystemContentSource::new(&dir);
+
+        assert!(
+            source
+                .list_published()
+                .expect("list_published should not fail")
+                .is_empty()
+        );
+        fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn list_published_propagates_malformed_article() {
+        let dir = temp_content_dir("list_published_propagates_malformed_article");
+        fs::write(dir.join("broken.md"), "no frontmatter here\n").unwrap();
+
         let source = FilesystemContentSource::new(&dir);
 
         assert!(matches!(
             source.list_published(),
-            Err(FetchError::NotImplemented)
+            Err(FetchError::Malformed(_))
         ));
         fs::remove_dir_all(&dir).ok();
     }

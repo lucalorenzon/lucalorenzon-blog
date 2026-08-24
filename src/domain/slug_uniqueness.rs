@@ -36,6 +36,7 @@ mod tests {
             title: Some("Title".to_string()),
             abstract_text: None,
             image: None,
+            body: Some("Body content.".to_string()),
         })
         .expect("well-formed fixture should construct")
     }
