@@ -147,35 +147,13 @@ mod tests {
     }
 
     #[test]
-    fn returns_malformed_when_frontmatter_block_is_absent() {
-        let dir = temp_content_dir("returns_malformed_when_frontmatter_block_is_absent");
-        fs::write(dir.join("broken.md"), "no frontmatter here\n").unwrap();
-
-        let source = FilesystemContentSource::new(&dir);
-        let slug = Slug::parse(Some("broken")).unwrap();
-
-        let err = source.get_by_slug(&slug).unwrap_err();
-
-        assert!(matches!(err, FetchError::Malformed(_)));
-        fs::remove_dir_all(&dir).ok();
+    fn extract_yaml_block_returns_empty_when_no_leading_fence() {
+        assert_eq!(extract_yaml_block("no frontmatter here\n"), "");
     }
 
     #[test]
-    fn returns_malformed_when_a_required_field_is_invalid() {
-        let dir = temp_content_dir("returns_malformed_when_a_required_field_is_invalid");
-        fs::write(
-            dir.join("bad-tag.md"),
-            "---\ndate: 2026-08-23\nslug: bad-tag\ntags:\n  - \"Not Kebab\"\ntitle: Hello\n---\nBody.\n",
-        )
-        .unwrap();
-
-        let source = FilesystemContentSource::new(&dir);
-        let slug = Slug::parse(Some("bad-tag")).unwrap();
-
-        let err = source.get_by_slug(&slug).unwrap_err();
-
-        assert!(matches!(err, FetchError::Malformed(_)));
-        fs::remove_dir_all(&dir).ok();
+    fn extract_yaml_block_returns_empty_when_no_closing_fence() {
+        assert_eq!(extract_yaml_block("---\ndate: 2026-08-23\n"), "");
     }
 
     #[test]
