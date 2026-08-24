@@ -4,12 +4,15 @@ Scope: this document covers the `Article` domain type and the `ContentSource` po
 
 - **S001** ([story](../stories/EP-001-UC-001-S001-modellare-articolo-dominio-content-source.md)): `Article`, value objects, `ContentSource.get_by_slug`/`list_published` (shape), `FetchError`, both adapters.
 - **S002** ([story](../stories/EP-001-UC-001-S002-verificare-unicita-slug.md)): `ContentSource.exists`, `SlugUniquenessError`, `ensure_slug_is_unique` domain service.
+- **S003** ([story](../stories/EP-001-UC-001-S003-generare-sito-statico-ssg.md)): `ContentSource.list_published` (real logic), `Article.body`, presentation-layer view-model (effective abstract/image), page components (ARTICLE-PAGE/LISTING-PAGE/HOME-PAGE), composition root wired for the first time (SSG generator, per [ADR-004](../adr/ADR-004-ssg-islands-replaces-ssr.md)).
 
 ## Application purpose
 Represent a blog article as a domain type with enforced invariants, and define the interface (port) for reading it from an external content source — with no infrastructure leaking into the domain.
 
 ## Primary actors and their adapters
-None yet. `Article`/`ContentSource` have no primary port of their own — they become reachable through primary ports defined by later stories in UC-001 (S003 SSG generation, S004 CI pipeline). This is deliberate, not an omission: S001's AC/AT scope was limited to domain construction and port shape, and S002 (revised from an earlier forward-reference in this doc) turned out not to need one either — the slug-uniqueness check is a domain service consumed directly by whichever story wires the actual entrypoint (S004), not an entrypoint itself.
+**S003**: the build/CI process (a developer running the SSG binary locally today; CI in [[EP-001-UC-001-S004]] later) — drives the composition root directly. No dedicated primary port (`BuildStaticSite` or similar) is introduced: there is exactly one caller and exactly one implementation, so an interface here would only add indirection with nothing to substitute — the composition root itself *is* the primary adapter and the "primary port" collapses into a plain function call (`main()`). If a second caller ever needs to trigger a build through a different channel, that is the trigger to extract a real primary port, not before.
+
+S001/S002 still have no primary port of their own for the same reason as before — they're consumed through the S003 composition root and the (still unwired) S004 CI entrypoint, not exposed independently.
 
 ## Secondary actors and their adapters
 | System | Port | Adapter | Technology |
@@ -23,7 +26,7 @@ No `Clock` or `IdGenerator` ports: nothing in this story generates a timestamp o
 
 | Concept | Type | Invariants |
 |---|---|---|
-| `Article` | Entity (identity = `slug`) | `date`, `slug`, ≥1 `tag`, `title` present and well-formed — construction rejected otherwise; `abstract` and `image` optional, not validated here (their default computation is [EP-001-UC-001-S003](../stories/EP-001-UC-001-S003-generare-sito-statico-ssg.md)'s responsibility) |
+| `Article` | Entity (identity = `slug`) | `date`, `slug`, ≥1 `tag`, `title`, and (from **S003**) `body` present and well-formed — construction rejected otherwise; `abstract` and `image` stay optional and unvalidated (deliberately — their *effective* value for display is a presentation concern, computed by S003's view-model, never baked into `Article` itself; see Presentation section below) |
 | `PublicationDate`, `Slug`, `Tag`, `Tags`, `Title` | Value Object | one smart constructor each; invariants (format, charset, constraints) fixed in [docs/design/article.md](../design/article.md) — `PublicationDate` = real `YYYY-MM-DD` calendar date; `Slug`/`Tag` = shared kebab-case ASCII charset; `Tags` = non-empty newtype; `Title` = non-blank, single-line |
 | `RawFrontmatter` | Boundary DTO | raw string fields read from the frontmatter, unvalidated; consumed exactly once by `Article::new`, never propagated past it. Lives next to `Article` (not in `ports`) because it is the input half of `Article`'s own smart constructor: `Article::new(raw: RawFrontmatter) -> Result<Article, ArticleError>` |
 | `ArticleError` | Domain Error | identifies the causing field via its own variant (Date/Slug/Tags/Title), each wrapping the field's typed error — shape fixed in [docs/design/article.md](../design/article.md), built with `thiserror` (`anyhow` explicitly excluded from the domain layer) |
@@ -41,7 +44,7 @@ OUTPUT TYPES : Article / Vec<Article> / bool, wrapped in Result<_, FetchError>
 SECONDARY    : filesystem on the dedicated content repo (markdown-in-git)
 ```
 
-S001 implements `get_by_slug` with real logic. `list_published` returns `FetchError::NotImplemented` — an explicit typed error, not a silent stub (`todo!()`) — until S003 (LISTING-PAGE) adds real logic; S002 does not need it (see Dependencies in the S002 story). `exists` (S002) checks file presence only — no read, no YAML parse, no `Article::new` — deliberately lighter than `get_by_slug`: the slug-uniqueness question ("is this filename already taken") doesn't need the file's content, only its presence, so `Malformed` never applies to it (a malformed file still occupies the slug).
+S001 implements `get_by_slug` with real logic. `list_published` gets real logic in **S003** (LISTING-PAGE/HOME-PAGE need the full set): filesystem adapter enumerates `.md` files in `articles_dir` and reuses `get_by_slug` per entry; in-memory adapter returns the articles it was constructed with. The port makes no ordering guarantee — chronological order for HOME-PAGE is applied by the caller (composition root), not by `list_published` itself, so the port's contract doesn't need to change if a future page needs a different order. `exists` (S002) checks file presence only — no read, no YAML parse, no `Article::new` — deliberately lighter than `get_by_slug`: the slug-uniqueness question ("is this filename already taken") doesn't need the file's content, only its presence, so `Malformed` never applies to it (a malformed file still occupies the slug).
 
 A single trait was chosen over segregating per-operation traits (`ArticleReader`/`ArticleLister`/…): each new operation so far is a variation on "ask the content source something about a slug," not an independent concern — splitting now would be accidental complexity not justified by an actual need (agreed in S001's Decisions Log for `get_by_slug`/`list_published`, reaffirmed in S002's for `exists`; independently converged upon by a `/modularity:design` trial, see `docs/licences/third-party-usage.md`).
 
@@ -53,24 +56,50 @@ ensure_slug_is_unique(source: &impl ContentSource, candidate: &Slug) -> Result<(
 
 Maps `source.exists(candidate)`: `Ok(false)` → `Ok(())` (slug free); `Ok(true)` → `Err(AlreadyExists)`; `Err(Io(_))` → `Err(CheckFailed(_))`, propagated rather than swallowed. No dependency on `list_published` — reads a single slug, not the whole published set. Lives in `src/domain/slug_uniqueness.rs`, not inside `ports.rs` (which defines the port itself, not its consumers) nor `article.rs` (not an `Article` invariant — it's a cross-cutting check against an external source).
 
+## Presentation (S003)
+
+Not a port/adapter pair — deliberately. Two things live in `src/pages/`:
+
+- **View-model functions** — `effective_abstract(&Article) -> String` (truncates `body` when `abstract_text` is absent), `effective_image(&Article) -> &str` (falls back to a predefined asset path when `image` is absent). Plain functions, no `leptos` types, no I/O — unit-testable exactly like domain code, but kept out of `domain/` because the truncation length and fallback asset path are presentation/brand policy, not invariants of what an `Article` *is* (agreed in `/software-design`, Decisions Log 2026-08-24).
+- **Page components** — `ArticlePage`, `ListingPage`, `HomePage`: plain `#[component]`s (not `#[island]` — no client hydration, no interactivity), consuming `Article`/`Vec<Article>` as ordinary props. They build on `Layout`/`ArticleTitle`/`ArticleAbstract`/`ArticleContent` (`src/layout.rs`, unchanged since before S003), replacing the hardcoded lorem-ipsum currently in `app.rs`.
+
+No secondary port for "rendering" is introduced: `leptos`/`leptos_router` are used directly by the composition root and by these components, not wrapped behind a domain interface. There is one implementation and no substitution need (unlike `ContentSource`, which genuinely has two — filesystem and in-memory-for-tests) — wrapping a UI framework used exactly one way would be indirection without a reason.
+
+**Data flow, no `#[server]` function needed:** the composition root resolves every `Article` synchronously (via `ContentSource`, itself synchronous) *before* rendering starts, and passes already-resolved data into the page components as plain props (or via `provide_context`, for the router's per-route render callback). No Leptos `Resource`/`#[server]` boundary is needed for article data, because there is no client-server split to bridge here — the "server" and the "renderer" are the same in-process call during `generate()`. This sidesteps the guardrail from `/software-design` (no island may call a `#[server]` fn at runtime) for this story entirely: these pages aren't islands, and don't need the mechanism the guardrail warns about. The guardrail still stands for any *future* island that might need article data.
+
 ## Adapter table
 
 | Port | Side | Adapter(s) | Technology |
 |---|---|---|---|
-| `ContentSource` | Secondary | `FilesystemContentSource` | `std::fs`, `#[cfg(feature = "ssr")]`. Reads a `.md` file, parses its frontmatter into `RawFrontmatter`, calls `Article::new`; maps I/O failures → `FetchError::Io`, missing file → `FetchError::NotFound`, `ArticleError` → `FetchError::Malformed`, `list_published` → `FetchError::NotImplemented`. `exists` (S002): a metadata/presence check on the same `{slug}.md` path, no file read |
-| `ContentSource` | Secondary | `InMemoryContentSource` | test fake, `#[cfg(test)]`, no I/O. `exists` (S002): `HashMap` key lookup |
+| `ContentSource` | Secondary | `FilesystemContentSource` | `std::fs`, `#[cfg(feature = "ssr")]`. Reads a `.md` file, parses its frontmatter into `RawFrontmatter`, calls `Article::new`; maps I/O failures → `FetchError::Io`, missing file → `FetchError::NotFound`, `ArticleError` → `FetchError::Malformed`. `exists` (S002): a metadata/presence check on the same `{slug}.md` path, no file read. `list_published` (S003): lists `.md` filenames in `articles_dir`, calls `get_by_slug` per entry — no separate parsing path |
+| `ContentSource` | Secondary | `InMemoryContentSource` | test fake, `#[cfg(test)]`, no I/O. `exists` (S002): `HashMap` key lookup. `list_published` (S003): returns the articles it was constructed with, as-is |
 
 `FilesystemContentSource` is gated to `ssr` because filesystem access is meaningless in the `hydrate` (WASM/browser) target — keeping it out of that build also keeps the WASM bundle lean, consistent with adapters never leaking into targets that don't need them.
 
 ## Composition root location
-Still untouched after S002. `src/main.rs` has no primary port/use case yet to wire `ContentSource` into (arrives with S003/S004). Future wiring sketch, for continuity only:
+`src/main.rs`, rewritten in place (not moved to a new directory — the existing flat `main.rs` convention is kept; the `ssg/` folder sketched in the original architecture assessment is not adopted, per "reconcile with what actually exists" agreed for this story). Content, target vs. today's always-on `actix-web` bootstrap:
 
 ```
-// Not implemented yet — sketch for a later story's composition root
-content_source = FilesystemContentSource::new(content_repo_path)
-// e.g. S003: site_generator = GenerateSite::new(content_source)
-// e.g. S004: ensure_slug_is_unique(&content_source, &candidate_slug)?
+// src/main.rs — S003 composition root (build-time SSG generator)
+content_source = FilesystemContentSource::new(content_repo_path)   // env-configured, ssr-only
+articles       = content_source.list_published()?                  // Vec<Article>, unordered per port contract
+articles.sort_by_key(|a| Reverse(a.date()))                        // chronological policy applied here, not in the port
+
+(routes, static_route_generator) = leptos_actix::generate_route_list_with_ssg(|| view! { <App/> })
+
+// ARTICLE-PAGE: one StaticRoute per published slug
+article_route = StaticRoute::new().prerender_params(|| async {
+    articles.iter().map(|a| param_map_for(a.slug())).collect()
+})
+// LISTING-PAGE / HOME-PAGE: parameterless StaticRoutes, article list provided via context
+
+static_route_generator.generate(&leptos_options).await   // writes real .html files under site-root
+
+// production/build path: process exits here — no HttpServer::bind().run() — ADR-004
+// dev convenience (`cargo leptos watch`) may still start a listener; left to /sw-practices
 ```
+
+`ensure_slug_is_unique` (S002) stays unwired by this story — it belongs to the *publishing* flow (validating a candidate slug before a new article is accepted), not the *build* flow (generating pages for already-accepted articles); its composition-root wiring is still deferred to S004.
 
 ## Directory structure
 
@@ -93,9 +122,16 @@ src/
         mod.rs
         filesystem.rs         ← FilesystemContentSource, #[cfg(feature = "ssr")]
         fake.rs                ← InMemoryContentSource, #[cfg(test)]
+  pages/                       ← [S003] presentation, not a port — see Presentation section
+    mod.rs
+    view_model.rs              ← effective_abstract(), effective_image() — pure, no leptos types
+    article_page.rs            ← ArticlePage #[component]
+    listing_page.rs            ← ListingPage #[component]
+    home_page.rs                ← HomePage #[component]
+  main.rs                      ← [S003] composition root, rewritten (SSG generator, was actix always-on)
 ```
 
-`lib.rs` gains `pub mod domain;` and `pub mod adapters;`, both unconditional: `domain` is pure logic and must compile on every target (`ssr`, `hydrate`, `csr`); `adapters` itself is unconditional but its `filesystem` submodule is cfg-gated internally, not the `mod adapters;` declaration.
+`lib.rs` gains `pub mod domain;` and `pub mod adapters;`, both unconditional: `domain` is pure logic and must compile on every target (`ssr`, `hydrate`, `csr`); `adapters` itself is unconditional but its `filesystem` submodule is cfg-gated internally, not the `mod adapters;` declaration. `pages` (S003) is unconditional too — its components must compile for `hydrate` (client bundle) as well as `ssr`, even though none of them are `#[island]`s yet.
 
 ## Testing strategy
 
@@ -104,6 +140,8 @@ src/
 | `Article`, value objects, `ArticleError` | Unit | None |
 | `FilesystemContentSource` | Integration | Real temp files on disk — no DB, no network |
 | Any future application service (S002+) | Unit, via `InMemoryContentSource` | None — never the filesystem adapter |
+| `view_model` (S003: `effective_abstract`, `effective_image`) | Unit | None — plain functions |
+| `ArticlePage`/`ListingPage`/`HomePage` (S003) | Rendered via Leptos SSR (`render_to_string` or the composition root's own `generate()`) | None for the component tree itself; end-to-end file-output verification is [[EP-001-UC-001-S004]]'s concern (CI), not this story's unit tests |
 
 ## Dependency rule
 All imports point inward: `adapters` → `domain`. `domain` imports nothing outside itself (no `std::fs`, no Leptos/actix-web types, no framework annotations).
