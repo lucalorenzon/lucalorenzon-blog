@@ -118,7 +118,10 @@ No secondary port for "rendering" is introduced: `leptos`/`leptos_router` are us
 // src/main.rs — S003 composition root (build-time SSG generator)
 content_source = FilesystemContentSource::new(content_repo_path)   // env-configured, ssr-only; derives articles_dir AND images_dir internally
 articles       = content_source.list_published()?                  // Vec<Article>, unordered per port contract
-articles.sort_by_key(|a| Reverse(a.date()))                        // chronological policy applied here, not in the port
+articles.sort_by(|a, b| {                                          // chronological policy applied here, not in the port
+    a.date().cmp(b.date()).reverse()                               // most recent first
+        .then_with(|| a.slug().as_str().cmp(b.slug().as_str()))    // deterministic tie-break, same-day articles
+});
 // wherever a page resolves an Article's image (via the same ContentSource context used for get_by_slug):
 // domain::resolve_image(&content_source, article.image())?, then view_model::effective_image_path(&resolved)
 // eprintln! warning when the result is Fallback{attempted: Some(_)}
@@ -136,6 +139,18 @@ static_route_generator.generate(&leptos_options).await   // writes real .html fi
 // production/build path: process exits here — no HttpServer::bind().run() — ADR-004
 // dev convenience (`cargo leptos watch`) may still start a listener; left to /sw-practices
 ```
+
+**Deterministic ordering (S003, residuality extension, 2026-08-30):** two
+articles published on the same date need a stable, repeatable order —
+otherwise HOME-PAGE/LISTING-PAGE could render same-day entries in a
+different order on every rebuild (`list_published`'s port contract makes no
+ordering guarantee, so the underlying iteration order isn't stable either).
+`sort_by` with a comparator (`date` reversed, `Slug` as tie-break) is used
+rather than `sort_by_key(|a| (Reverse(a.date()), a.slug().clone()))`:
+`PublicationDate` is `Copy` (cheap to key on directly), but `Slug` wraps a
+`String` — `sort_by_key` would force a `.clone()` of every article's slug
+just to build an owned key, where `sort_by`'s comparator compares
+`&Slug`/`&str` by reference instead, no clone at all.
 
 `ensure_slug_is_unique` (S002) stays unwired by this story — it belongs to the *publishing* flow (validating a candidate slug before a new article is accepted), not the *build* flow (generating pages for already-accepted articles); its composition-root wiring is still deferred to S004.
 
