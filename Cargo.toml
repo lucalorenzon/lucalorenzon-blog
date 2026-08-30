@@ -30,6 +30,7 @@ icondata = { version = "0.7" }
 serde = { version = "1.0", features = ["derive"] }
 yaml_serde = { version = "0.10", optional = true }
 thiserror = "2"
+pulldown-cmark = { version = "0.13.4", default-features = false, features = ["html"] }
 
 [features]
 csr = ["leptos/csr"]

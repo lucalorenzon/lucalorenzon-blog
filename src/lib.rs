@@ -2,6 +2,7 @@ pub mod adapters;
 pub mod app;
 pub mod domain;
 pub mod layout;
+pub mod pages;
 
 pub mod components;
 
