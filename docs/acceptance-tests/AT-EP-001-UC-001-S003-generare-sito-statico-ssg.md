@@ -40,6 +40,7 @@ come il trigger CI ([[EP-001-UC-001-S004]]).
 |---|---|---|---|
 | 1 articolo pubblicato | include una voce per il suo slug | uguale a LISTING-PAGE (caso particolare, 1 solo articolo) | AC-2, AC-3 |
 | 3 articoli pubblicati con date diverse | include una voce per ciascuno slug | voci in ordine cronologico decrescente (più recente prima) | AC-2, AC-3 |
+| 2 articoli pubblicati con la **stessa data**, slug `b-article` e `a-article` | include una voce per ciascuno slug | `a-article` prima di `b-article` — tie-break deterministico su `Slug` (ordine alfabetico), non l'ordine di iterazione di `list_published` | tie-break, residuality 2026-08-30 |
 
 ---
 
@@ -50,26 +51,37 @@ come il trigger CI ([[EP-001-UC-001-S004]]).
 | `Article.abstract_text` | `Article.body` | `effective_abstract()`? | ref |
 |---|---|---|---|
 | presente (`Some(Abstract)`) | qualsiasi | il testo dell'abstract, invariato | AC-4 |
-| assente (`None`) | `"Some content."` | `?UNKNOWN?` — troncamento del body a una lunghezza non ancora decisa (vedi Open Issues) | AC-4 |
-| assente (`None`) | body più corto della soglia di troncamento | `?UNKNOWN?` — il body intero, o troncato comunque? Stessa decisione pendente | AC-4 |
+| assente (`None`) | ≤ 200 caratteri | il body per intero, invariato — nessun taglio, nessuna ellissi | AC-4 |
+| assente (`None`) | > 200 caratteri | body troncato all'ultimo confine di parola raggiungibile entro 200 caratteri, con "…" finale — valore esatto per un body di test specifico lasciato a `/test` (stessa logica della riga markdown→HTML sotto) | AC-4 |
 
 ---
 
-## Component: `effective_image` — fallback quando l'immagine è assente
+## Component: `resolve_image` — risoluzione dell'immagine (residuality extension, 2026-08-30/31)
+
+> Source: Story AC-5, estesa da `/residuality` a "referenziata ma assente su disco"
+
+| `Article.image` | `ContentSource::image_exists`? | `resolve_image()`? | ref |
+|---|---|---|---|
+| assente (`None`) | n/a, non invocato | `Ok(Fallback { attempted: None })` | AC-5 |
+| presente (`Some(path)`) | `Ok(true)` | `Ok(Own(path))` | AC-5 |
+| presente (`Some(path)`) | `Ok(false)` | `Ok(Fallback { attempted: Some(path) })` | residuality 2026-08-30 |
+| presente (`Some(path)`) | `Err(Io(_))` | `Err(Io(_))` — propagato, non inghiottito | residuality 2026-08-30 |
+
+---
+
+## Component: `effective_image_path` — mapping a path renderizzabile
 
 > Source: Story AC-5
 
-| `Article.image` | `effective_image()`? | ref |
+| `ResolvedImage` | `effective_image_path()`? | ref |
 |---|---|---|
-| presente (`Some(ImagePath)`) | il path dell'immagine, invariato | AC-5 |
-| assente (`None`) | `?UNKNOWN?` — asset di fallback non ancora scelto da Luca (vedi Open Issues e la story's Open questions) | AC-5 |
+| `Own(path)` | il path, invariato | AC-5 |
+| `Fallback { .. }` (entrambe le varianti) | `/assets/images/article-image-not-found.svg` (nuovo SVG dedicato, confermato da Luca 2026-08-30 — non `ostia_sea_top_image.webp`) | AC-5 |
 
 ---
 
 ## Open Issues
 
-- **Lunghezza di troncamento per `effective_abstract`**: non decisa. Nessuna riga di questa tabella con abstract assente può avere un valore atteso esatto finché non è fissata. Bloccante solo per l'implementazione di `effective_abstract`, non per il resto della story (value object `Body`/`Abstract`/`ImagePath`, `list_published`, già implementati e testati indipendentemente da questa decisione).
-- **Asset di fallback per `effective_image`**: non deciso (stessa nota nella story, Open questions) — `assets/images/ostia_sea_top_image.webp` esiste ma è oggi lo sfondo del layout, non un placeholder per articoli; riusarlo richiede conferma esplicita di Luca, non un default silenzioso.
 - **Rendering markdown → HTML esatto** (contenuto di ARTICLE-PAGE): la riga "generazione ARTICLE-PAGE" assume che `pulldown-cmark` (deciso in `/sw-practices`, vedi `docs/design/ssg-page-generation.md`) produca HTML a partire dal body — il valore atteso esatto per un body di test specifico non è fissato qui (dipende dalla resa CommonMark esatta), lasciato ai test di implementazione (`/test`) come confronto sull'HTML effettivamente prodotto dalla libreria, non come valore inventato in questa tabella.
 - **Ordine di `list_published`**: la tabella conferma esplicitamente che la porta non garantisce un ordine (deciso in `/hexagonal-architecture`) — l'ordinamento cronologico per HOME-PAGE è testato separatamente nella tabella "generazione LISTING-PAGE / HOME-PAGE", a livello di composition root, non di `list_published` stesso.
 

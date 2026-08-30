@@ -107,15 +107,18 @@ passed through.
 
 ---
 
-## Presentation view-model: `effective_abstract` / `effective_image`
+## Presentation view-model: `effective_abstract`
 
-**Not domain types.** Confirmed in `/hexagonal-architecture`
-(`docs/architecture/hexagonal.md`, Presentation section): these are plain
-functions in `src/pages/view_model.rs`, deliberately outside `domain/` —
-the truncation length and the fallback image path are presentation/brand
-policy, not facts about what an `Article` is.
+**Not a domain type.** Confirmed in `/hexagonal-architecture`
+(`docs/architecture/hexagonal.md`, Presentation section): a plain function in
+`src/pages/view_model.rs`, deliberately outside `domain/` — the truncation
+length is presentation/brand policy, not a fact about what an `Article` is.
+(`effective_image` — the analogous function for images — no longer exists on
+its own: superseded below by `resolve_image` + `effective_image_path`, split
+across domain and presentation once the "referenced but missing on disk"
+case required I/O.)
 
-### Why their *output* stays a plain `String`/`&str`, not a new type
+### Why its output stays a plain `String`, not a new type
 Parse-dont-validate protects a value against **re-validation downstream** —
 it earns its keep when a value crosses a boundary and gets checked again and
 again. `effective_abstract`'s output has no such future: it is produced once,
@@ -127,16 +130,24 @@ rule out by construction (it always returns non-empty, already-plain text).
 Introducing `EffectiveAbstract(String)` here would be a type with no
 invariant of its own to enforce — ceremony, not protection.
 
+### Truncation rule (confirmed by Luca, 2026-08-30: 200 characters)
+
 ```
 effective_abstract(article: &Article) -> String
   // article.abstract_text (Abstract) present → its text, as-is
-  // absent → truncate article.body (Body) to a presentation-chosen length
-
-effective_image(article: &Article) -> &str
-  // article.image (ImagePath) present → its path, as-is
-  // absent → a predefined fallback asset path (asset choice: open question,
-  //          see story's Open questions — not decided by this design step)
+  // absent → truncate article.body (Body):
+  //   body.char_count() <= 200 → the body, unchanged (nothing was cut,
+  //     no ellipsis)
+  //   body.char_count() > 200  → the body cut at the last word boundary
+  //     at or before 200 characters, with a trailing "…"
 ```
+
+Word-boundary cut (never mid-word) and the "…" suffix are my own default,
+not something Luca confirmed beyond the 200-character figure — a standard,
+low-impact, easily-revisited convention, not a design decision worth its own
+checkpoint. The exact character-by-character result for a given test body is
+left to `/test` (same tactic already used for markdown→HTML rendering,
+below), not hand-computed here.
 
 ### Boundary location
 Called from `src/pages/{article_page,listing_page,home_page}.rs` when
