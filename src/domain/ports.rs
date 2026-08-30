@@ -1,4 +1,5 @@
 use crate::domain::article::{Article, ArticleError};
+use crate::domain::value_objects::image_path::ImagePath;
 use crate::domain::value_objects::slug::Slug;
 
 #[derive(Debug, thiserror::Error)]
@@ -19,4 +20,8 @@ pub trait ContentSource {
     /// Presence-only check: does a document already occupy `slug`? No read,
     /// no parsing — a malformed document still counts as present.
     fn exists(&self, slug: &Slug) -> Result<bool, FetchError>;
+    /// Presence-only check for an article-referenced image, against the
+    /// content repo's own image storage — mirrors `exists`, keyed by
+    /// `ImagePath` instead of `Slug`. [S003, residuality extension]
+    fn image_exists(&self, image: &ImagePath) -> Result<bool, FetchError>;
 }

@@ -4,18 +4,27 @@ use serde::Deserialize;
 
 use crate::domain::article::{Article, RawFrontmatter};
 use crate::domain::ports::{ContentSource, FetchError};
+use crate::domain::value_objects::image_path::ImagePath;
 use crate::domain::value_objects::slug::Slug;
 
 /// Reads articles from `.md` files with YAML frontmatter on the dedicated
 /// content repo's checkout. Filesystem access is meaningless outside `ssr`.
 pub struct FilesystemContentSource {
     articles_dir: PathBuf,
+    /// `articles_dir/assets/images` — a temporary placement, confirmed by
+    /// Luca 2026-08-30: article images live in this same content repo
+    /// checkout, not this application's own `assets/`. See
+    /// docs/design/ssg-page-generation.md.
+    images_dir: PathBuf,
 }
 
 impl FilesystemContentSource {
     pub fn new(articles_dir: impl Into<PathBuf>) -> Self {
+        let articles_dir = articles_dir.into();
+        let images_dir = articles_dir.join("assets/images");
         Self {
-            articles_dir: articles_dir.into(),
+            articles_dir,
+            images_dir,
         }
     }
 }
@@ -127,6 +136,15 @@ impl ContentSource for FilesystemContentSource {
 
     fn exists(&self, slug: &Slug) -> Result<bool, FetchError> {
         let path = self.articles_dir.join(format!("{slug}.md"));
+        match std::fs::metadata(&path) {
+            Ok(_) => Ok(true),
+            Err(err) if err.kind() == std::io::ErrorKind::NotFound => Ok(false),
+            Err(err) => Err(FetchError::Io(err)),
+        }
+    }
+
+    fn image_exists(&self, image: &ImagePath) -> Result<bool, FetchError> {
+        let path = self.images_dir.join(image.as_str());
         match std::fs::metadata(&path) {
             Ok(_) => Ok(true),
             Err(err) if err.kind() == std::io::ErrorKind::NotFound => Ok(false),
@@ -327,6 +345,32 @@ mod tests {
         let slug = Slug::parse(Some("does-not-exist")).unwrap();
 
         assert!(!source.exists(&slug).expect("exists should not fail"));
+        fs::remove_dir_all(&dir).ok();
+    }
+
+    // Component: ContentSource::image_exists — residuality extension, EP-001-UC-001-S003
+
+    #[test]
+    fn image_exists_returns_true_for_a_file_present_under_images_dir() {
+        let dir = temp_content_dir("image_exists_returns_true_for_a_file_present_under_images_dir");
+        let images_dir = dir.join("assets/images");
+        fs::create_dir_all(&images_dir).unwrap();
+        fs::write(images_dir.join("cover.webp"), b"fake image bytes").unwrap();
+
+        let source = FilesystemContentSource::new(&dir);
+        let image = ImagePath::parse(Some("cover.webp")).unwrap();
+
+        assert!(source.image_exists(&image).expect("image_exists should not fail"));
+        fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn image_exists_returns_false_for_a_missing_file() {
+        let dir = temp_content_dir("image_exists_returns_false_for_a_missing_file");
+        let source = FilesystemContentSource::new(&dir);
+        let image = ImagePath::parse(Some("does-not-exist.webp")).unwrap();
+
+        assert!(!source.image_exists(&image).expect("image_exists should not fail"));
         fs::remove_dir_all(&dir).ok();
     }
 }
