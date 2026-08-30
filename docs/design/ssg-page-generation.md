@@ -144,6 +144,135 @@ building each page's view — not from the domain, not from `ContentSource`.
 
 ---
 
+## Presentation view-model: `ResolvedImage` — image existence resolution (residuality extension, agreed 2026-08-30)
+
+`/residuality`'s Stressor Analysis (2026-08-30, full detail in Hindsight bank
+`personal-blog`, tag `story:EP-001-UC-001-S003`) surfaced a real gap in the AC
+"immagine di sintesi assente": an article can also **reference** an image
+that was never committed to the content repo, or was later deleted — a
+distinct case from "no image was set at all". `effective_image` above only
+handles the latter.
+
+### The type
+
+```rust
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ResolvedImage {
+    Own(ImagePath),
+    Fallback { attempted: Option<ImagePath> },
+}
+```
+
+`attempted` distinguishes the two fallback causes: `None` means the article
+never set an image (expected, not a problem); `Some(path)` means an image
+*was* referenced but does not exist on disk (a real content defect worth
+surfacing). Neither is an error — resolution *finding no file* always
+produces a usable value by design; "the referenced file is missing" is not a
+construction failure, it's an outcome this type exists to represent. A
+genuine I/O failure reading the content repo is still a real error, handled
+by `FetchError::Io` exactly as it already is for `ContentSource::exists` (see
+Boundary location below) — the "no error" property is about the missing-file
+case specifically, not an absolute absence of `Result` anywhere in the path.
+
+### Why this needs a dedicated type, not a plain `&str` (unlike `effective_abstract`/`effective_image`)
+
+The existing deroga (`effective_abstract`/`effective_image`'s output staying
+a plain `String`/`&str`, above) applies only when the value has a single
+consumer. `ResolvedImage`'s result has **two**: the path actually rendered in
+the page, and a build-time audit signal (a logged warning when an author's
+image reference has gone stale — an FMEA finding from the same Stressor
+Analysis). Both must agree on what happened for the same resolution;
+collapsing straight to a rendered path would either lose the audit signal or
+force a second, independently-computed check that could drift from the
+first. This distinction was found by applying the existing single-consumer
+deroga to this new case and discovering it didn't hold — a design-craft
+lesson in its own right, not just applied silently here.
+
+### Boundary location — mediated by `ContentSource`, not raw I/O in the composition root (revised 2026-08-30)
+
+Checking whether a referenced image exists on disk is I/O — but the
+composition root already funnels every other piece of content-repo I/O
+through `ContentSource` (`get_by_slug`/`list_published`/`exists`), never raw
+`std::fs`. Doing it differently for images here would be inconsistent, and
+would cost real testability: any page component test needing a
+`ResolvedImage` would need real temp-dir I/O instead of the existing
+`InMemoryContentSource` fake — breaking the "view_model — Unit, None" row of
+the Testing strategy table below for anything that touches images. Corrected
+design: `ContentSource` gains a new operation, and `resolve_image` becomes a
+domain function mediated by it, parallel to `ensure_slug_is_unique`
+(`src/domain/slug_uniqueness.rs`) — see
+[docs/architecture/hexagonal.md](../architecture/hexagonal.md) for the full
+port/service placement. `resolve_image` itself stays free of logging; the
+audit warning (below) is the caller's responsibility, once it observes the
+already-resolved outcome, not something baked into resolution itself:
+
+```rust
+// src/domain/image_resolution.rs
+pub fn resolve_image(
+    source: &impl ContentSource,
+    image: Option<&ImagePath>,
+) -> Result<ResolvedImage, FetchError> {
+    let Some(path) = image else {
+        return Ok(ResolvedImage::Fallback { attempted: None });
+    };
+    if source.image_exists(path)? {
+        Ok(ResolvedImage::Own(path.clone()))
+    } else {
+        Ok(ResolvedImage::Fallback { attempted: Some(path.clone()) })
+    }
+}
+```
+
+### `images_dir` — where article images physically live (temporary, confirmed 2026-08-30)
+
+Article images live in `assets/images/` inside the same dedicated content
+repo checkout as the articles themselves — **not** this application repo's
+own `assets/`. Now an internal detail of `FilesystemContentSource` (a second
+field alongside `articles_dir`, both derived from the same
+`content_repo_path` constructor argument — no new environment variable, no
+composition-root-level config), not something the composition root computes
+itself. Explicitly a temporary placement, confirmed by Luca as good enough
+for this story: a proper asset-storage design (a separate
+`AssetSource`/`ImageSource` port, possibly a different physical location) is
+backlog, its own future story, not addressed here.
+
+### The fallback asset
+
+A dedicated SVG (`assets/images/article-image-not-found.svg`, **this**
+application's own `assets/`, not the content repo — a brand/UI asset, not
+article content): a new minimal placeholder, not a reuse of
+`ostia_sea_top_image.webp` (confirmed by Luca 2026-08-30 — that asset stays
+the layout's fixed background, unrelated to article content). Its site path
+is a `view_model.rs` constant; no I/O needed to reference it — the site's own
+assets are guaranteed present by the build, unlike an author-referenced image
+`resolve_image` must check.
+
+```rust
+const FALLBACK_IMAGE_PATH: &str = "/assets/images/article-image-not-found.svg";
+
+pub fn effective_image_path(resolved: &ResolvedImage) -> &str {
+    match resolved {
+        ResolvedImage::Own(path) => path.as_str(),
+        ResolvedImage::Fallback { .. } => FALLBACK_IMAGE_PATH,
+    }
+}
+```
+
+### Audit signal (FMEA finding, 2026-08-30)
+
+When `resolve_image` returns `Fallback { attempted: Some(path) }` — an image
+was referenced but not found — the caller (wherever a page resolves an
+`Article`'s image, via the same `ContentSource` context already in scope)
+logs a build-time warning (`eprintln!`, no new dependency: the SSG generator
+runs once per build, not as a long-running service, so a build-log line is a
+sufficient audit trail; a real structured-logging pipeline is out of scope).
+`Fallback { attempted: None }` logs nothing — the author simply didn't set
+an image, not a defect. Logging is deliberately not inside `resolve_image`
+itself: the domain function stays free of side effects beyond the one port
+call, same discipline already followed by `ensure_slug_is_unique`.
+
+---
+
 ## Dependency decision: markdown → HTML (agreed 2026-08-24, `/sw-practices`)
 
 `Body` carries raw markdown text; ARTICLE-PAGE needs actual HTML. **Adopted:

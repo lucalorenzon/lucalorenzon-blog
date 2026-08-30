@@ -33,6 +33,7 @@ No `Clock` or `IdGenerator` ports: nothing in this story generates a timestamp o
 | `ArticleError` | Domain Error | identifies the causing field via its own variant (Date/Slug/Tags/Title), each wrapping the field's typed error — shape fixed in [docs/design/article.md](../design/article.md), built with `thiserror` (`anyhow` explicitly excluded from the domain layer) |
 | `FetchError` | Domain Error (port-level) | `NotFound \| Io \| Malformed(ArticleError) \| NotImplemented` — shared by all `ContentSource` methods, `exists` included (agreed in S001's Decisions Log, 2026-08-21; extended by S002 without adding a variant — `exists` only ever produces `Ok(bool)` or `Err(Io(_))` in practice, the other variants stay structurally possible but unreachable, same asymmetry already tolerated for `NotImplemented`) |
 | `SlugUniquenessError` (S002) | Domain Error | `AlreadyExists` (slug occupied) \| `CheckFailed(FetchError)` (infra couldn't determine — only `Io` reachable) |
+| `ResolvedImage` (**S003**, residuality extension) | Domain type (not a Value Object — no smart constructor of its own; produced by `resolve_image`) | `Own(ImagePath)` \| `Fallback { attempted: Option<ImagePath> }` — no invariant to violate, every `resolve_image` outcome is a legal `ResolvedImage`; carries no brand knowledge (the fallback asset path stays a presentation constant in `view_model.rs`) — fixed in [docs/design/ssg-page-generation.md](../design/ssg-page-generation.md) |
 
 ## Secondary port
 
@@ -41,9 +42,17 @@ PORT         : ContentSource
 OPERATION    : get_by_slug(&self, slug: &Slug) -> Result<Article, FetchError>
 OPERATION    : list_published(&self) -> Result<Vec<Article>, FetchError>
 OPERATION    : exists(&self, slug: &Slug) -> Result<bool, FetchError>            [S002]
+OPERATION    : image_exists(&self, image: &ImagePath) -> Result<bool, FetchError> [S003, residuality extension]
 OUTPUT TYPES : Article / Vec<Article> / bool, wrapped in Result<_, FetchError>
 SECONDARY    : filesystem on the dedicated content repo (markdown-in-git)
 ```
+
+`image_exists` (S003) mirrors `exists` exactly: a presence-only check, no read,
+against `images_dir` instead of `articles_dir` (both derived from the same
+`content_repo_path` at construction) — `Ok(bool)` for a normal check,
+`Err(Io(_))` only for a genuine I/O failure. Reuses `FetchError` rather than
+inventing a new error type, same reuse-before-inventing discipline applied
+elsewhere this session.
 
 S001 implements `get_by_slug` with real logic. `list_published` gets real logic in **S003** (LISTING-PAGE/HOME-PAGE need the full set): filesystem adapter enumerates `.md` files in `articles_dir` and reuses `get_by_slug` per entry; in-memory adapter returns the articles it was constructed with. The port makes no ordering guarantee — chronological order for HOME-PAGE is applied by the caller (composition root), not by `list_published` itself, so the port's contract doesn't need to change if a future page needs a different order. `exists` (S002) checks file presence only — no read, no YAML parse, no `Article::new` — deliberately lighter than `get_by_slug`: the slug-uniqueness question ("is this filename already taken") doesn't need the file's content, only its presence, so `Malformed` never applies to it (a malformed file still occupies the slug).
 
@@ -57,12 +66,37 @@ ensure_slug_is_unique(source: &impl ContentSource, candidate: &Slug) -> Result<(
 
 Maps `source.exists(candidate)`: `Ok(false)` → `Ok(())` (slug free); `Ok(true)` → `Err(AlreadyExists)`; `Err(Io(_))` → `Err(CheckFailed(_))`, propagated rather than swallowed. No dependency on `list_published` — reads a single slug, not the whole published set. Lives in `src/domain/slug_uniqueness.rs`, not inside `ports.rs` (which defines the port itself, not its consumers) nor `article.rs` (not an `Article` invariant — it's a cross-cutting check against an external source).
 
+## Domain service: `resolve_image` (S003, residuality extension, 2026-08-30)
+
+```
+resolve_image(source: &impl ContentSource, image: Option<&ImagePath>) -> Result<ResolvedImage, FetchError>
+```
+
+Maps `image`: `None` → `Ok(Fallback { attempted: None })` (no image was ever
+set — not a defect); `Some(path)` → `source.image_exists(path)`: `Ok(true)` →
+`Ok(Own(path.clone()))`, `Ok(false)` → `Ok(Fallback { attempted: Some(path.clone()) })`,
+`Err(Io(_))` → propagated as-is, same "never swallow" discipline as
+`ensure_slug_is_unique`. Lives in `src/domain/image_resolution.rs`, alongside
+`ResolvedImage` itself — same placement pattern as `slug_uniqueness.rs`: a
+cross-cutting check against `ContentSource`, not an `Article` invariant and
+not part of the port definition itself. Originally drafted as a
+composition-root-local function taking a raw `images_dir: &Path` (bypassing
+`ContentSource`); corrected same day once the inconsistency with every other
+content-repo I/O path (and the resulting test cost) was raised — see the
+Presentation section above and
+[docs/design/ssg-page-generation.md](../design/ssg-page-generation.md) for
+the full reasoning. Deliberately carries no logging of its own — the caller
+logs the audit warning once it observes `Fallback { attempted: Some(_) }`,
+keeping this function's only side effect the one port call.
+
 ## Presentation (S003)
 
 Not a port/adapter pair — deliberately. Two things live in `src/pages/`:
 
 - **View-model functions** — `effective_abstract(&Article) -> String` (truncates `body` when `abstract_text` is absent), `effective_image(&Article) -> &str` (falls back to a predefined asset path when `image` is absent). Plain functions, no `leptos` types, no I/O — unit-testable exactly like domain code, but kept out of `domain/` because the truncation length and fallback asset path are presentation/brand policy, not invariants of what an `Article` *is* (agreed in `/software-design`, Decisions Log 2026-08-24).
 - **Page components** — `ArticlePage`, `ListingPage`, `HomePage`: plain `#[component]`s (not `#[island]` — no client hydration, no interactivity), consuming `Article`/`Vec<Article>` as ordinary props. They build on `Layout`/`ArticleTitle`/`ArticleAbstract`/`ArticleContent` (`src/layout.rs`, unchanged since before S003), replacing the hardcoded lorem-ipsum currently in `app.rs`.
+
+**Image resolution (S003, residuality extension, 2026-08-30, corrected same day):** `effective_image`'s fallback (AC "immagine di sintesi assente") is extended to also cover "referenced but missing on disk", surfaced by `/residuality`'s Stressor Analysis. `ResolvedImage { Own(ImagePath) | Fallback { attempted: Option<ImagePath> } }` (`src/domain/image_resolution.rs`) replaces a direct string result for this step. The existence check is I/O — first drafted as a composition-root-local function outside any port, then corrected: that broke the pattern every other content-repo I/O already follows (behind `ContentSource`, substitutable via `InMemoryContentSource` in tests) and would have forced real temp-dir I/O onto any page-component test touching images. `resolve_image(source: &impl ContentSource, image: Option<&ImagePath>) -> Result<ResolvedImage, FetchError>` is a domain function mediated by a new `ContentSource::image_exists` operation instead — see the Domain service subsection below. Full type, the two-consumer reasoning for why this is a dedicated type unlike `effective_abstract`/`effective_image`, and the audit-logging behavior: [docs/design/ssg-page-generation.md](../design/ssg-page-generation.md).
 
 No secondary port for "rendering" is introduced: `leptos`/`leptos_router` are used directly by the composition root and by these components, not wrapped behind a domain interface. There is one implementation and no substitution need (unlike `ContentSource`, which genuinely has two — filesystem and in-memory-for-tests) — wrapping a UI framework used exactly one way would be indirection without a reason.
 
@@ -72,8 +106,8 @@ No secondary port for "rendering" is introduced: `leptos`/`leptos_router` are us
 
 | Port | Side | Adapter(s) | Technology |
 |---|---|---|---|
-| `ContentSource` | Secondary | `FilesystemContentSource` | `std::fs`, `#[cfg(feature = "ssr")]`. Reads a `.md` file, parses its frontmatter into `RawFrontmatter`, calls `Article::new`; maps I/O failures → `FetchError::Io`, missing file → `FetchError::NotFound`, `ArticleError` → `FetchError::Malformed`. `exists` (S002): a metadata/presence check on the same `{slug}.md` path, no file read. `list_published` (S003): lists `.md` filenames in `articles_dir`, calls `get_by_slug` per entry — no separate parsing path |
-| `ContentSource` | Secondary | `InMemoryContentSource` | test fake, `#[cfg(test)]`, no I/O. `exists` (S002): `HashMap` key lookup. `list_published` (S003): returns the articles it was constructed with, as-is |
+| `ContentSource` | Secondary | `FilesystemContentSource` | `std::fs`, `#[cfg(feature = "ssr")]`. Reads a `.md` file, parses its frontmatter into `RawFrontmatter`, calls `Article::new`; maps I/O failures → `FetchError::Io`, missing file → `FetchError::NotFound`, `ArticleError` → `FetchError::Malformed`. `exists` (S002): a metadata/presence check on the same `{slug}.md` path, no file read. `list_published` (S003): lists `.md` filenames in `articles_dir`, calls `get_by_slug` per entry — no separate parsing path. `image_exists` (S003, residuality extension): a metadata/presence check under a second field, `images_dir` (`content_repo_path.join("assets/images")`, set once at construction alongside `articles_dir`) |
+| `ContentSource` | Secondary | `InMemoryContentSource` | test fake, `#[cfg(test)]`, no I/O. `exists` (S002): `HashMap` key lookup. `list_published` (S003): returns the articles it was constructed with, as-is. `image_exists` (S003, residuality extension): membership check against a set of paths the test declares as "existing", constructed alongside the fake's known articles |
 
 `FilesystemContentSource` is gated to `ssr` because filesystem access is meaningless in the `hydrate` (WASM/browser) target — keeping it out of that build also keeps the WASM bundle lean, consistent with adapters never leaking into targets that don't need them.
 
@@ -82,9 +116,12 @@ No secondary port for "rendering" is introduced: `leptos`/`leptos_router` are us
 
 ```
 // src/main.rs — S003 composition root (build-time SSG generator)
-content_source = FilesystemContentSource::new(content_repo_path)   // env-configured, ssr-only
+content_source = FilesystemContentSource::new(content_repo_path)   // env-configured, ssr-only; derives articles_dir AND images_dir internally
 articles       = content_source.list_published()?                  // Vec<Article>, unordered per port contract
 articles.sort_by_key(|a| Reverse(a.date()))                        // chronological policy applied here, not in the port
+// wherever a page resolves an Article's image (via the same ContentSource context used for get_by_slug):
+// domain::resolve_image(&content_source, article.image())?, then view_model::effective_image_path(&resolved)
+// eprintln! warning when the result is Fallback{attempted: Some(_)}
 
 (routes, static_route_generator) = leptos_actix::generate_route_list_with_ssg(|| view! { <App/> })
 
@@ -117,6 +154,7 @@ src/
       title.rs
     ports.rs                  ← ContentSource, FetchError
     slug_uniqueness.rs        ← SlugUniquenessError, ensure_slug_is_unique() [S002]
+    image_resolution.rs       ← ResolvedImage, resolve_image() [S003, residuality extension]
   adapters/
     secondary/
       content_source/
@@ -141,6 +179,7 @@ src/
 | `Article`, value objects, `ArticleError` | Unit | None |
 | `FilesystemContentSource` | Integration | Real temp files on disk — no DB, no network |
 | Any future application service (S002+) | Unit, via `InMemoryContentSource` | None — never the filesystem adapter |
+| `resolve_image` (S003, residuality extension) | Unit, via `InMemoryContentSource`'s declared-existing-paths set | None — real temp-dir I/O stays confined to `FilesystemContentSource`'s own tests, same as every other `ContentSource` operation |
 | `view_model` (S003: `effective_abstract`, `effective_image`) | Unit | None — plain functions |
 | `ArticlePage`/`ListingPage`/`HomePage` (S003) | Rendered via Leptos SSR (`render_to_string` or the composition root's own `generate()`) | None for the component tree itself; end-to-end file-output verification is [[EP-001-UC-001-S004]]'s concern (CI), not this story's unit tests |
 
