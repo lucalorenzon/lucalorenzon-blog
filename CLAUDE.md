@@ -30,10 +30,11 @@ There is no separate lint/format command configured beyond standard `cargo fmt` 
 
 ### Compilation targets (cfg-gated via feature flags)
 
-The crate compiles to three different targets depending on enabled features (`Cargo.toml`):
-- `ssr` (actix-web server binary, `src/main.rs`) — pulls in `actix-web`, `actix-files`, `leptos_actix`
-- `hydrate` (WASM client bundle, `src/lib.rs` `hydrate()` entrypoint) — hydrates only the interactive **islands**, not the whole page
-- `csr` (pure client-side rendering, unused in normal dev/prod flow — only relevant for tools like Tauri)
+The crate compiles to two targets depending on enabled features (`Cargo.toml`):
+- `ssr` (server/build binary, `src/main.rs`) — pulls in `actix-web`, `actix-files`, `leptos_actix`; also gates `app`/`pages` (routing, page components, `ContentSource` usage) in `lib.rs` — none of that content-bearing code compiles into the client bundle
+- `hydrate` (WASM client bundle, `src/lib.rs` `hydrate()` entrypoint) — hydrates only the interactive **islands** (`src/components/`), not the whole page; `hydrate_islands()` works purely off markers already in the server-rendered HTML, no dependency on routing or page content (verified against Leptos 0.8.20 source, EP-001-UC-001-S003)
+
+A third target, `csr` (pure client-side rendering, for a hypothetical future Tauri build), existed as an unused placeholder and was removed 2026-08-31 — it referenced `app`/`pages` directly and would have forced content-bearing code back into non-`ssr` builds; nobody built with it. A future Tauri effort would need its own `ContentSource` adapter (e.g. reading bundled assets) and can reintroduce a client target then, not by reviving this one.
 
 `cargo-leptos` builds both the `ssr` binary and the `hydrate` WASM bundle from the same crate in one pass (see `[package.metadata.leptos]` in `Cargo.toml`: `bin-features = ["ssr"]`, `lib-features = ["hydrate"]`).
 

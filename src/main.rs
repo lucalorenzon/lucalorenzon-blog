@@ -48,27 +48,9 @@ async fn main() -> std::io::Result<()> {
     .await
 }
 
-#[cfg(not(any(feature = "ssr", feature = "csr")))]
+#[cfg(not(feature = "ssr"))]
 pub fn main() {
-    // no client-side main function
-    // unless we want this to work with e.g., Trunk for pure client-side testing
-    // see lib.rs for hydration function instead
-    // see optional feature `csr` instead
-}
-
-#[cfg(all(not(feature = "ssr"), feature = "csr"))]
-pub fn main() {
-    // a client-side main function is required for using `trunk serve`
-    // prefer using `cargo leptos serve` instead
-    // to run: `trunk serve --open --features csr`
-    use blog_start::app::*;
-    use leptos::prelude::*;
-
-    console_error_panic_hook::set_once();
-
-    leptos::mount::mount_to_body(move || {
-        // note: for testing it may be preferrable to replace this with a
-        // more specific component, although leptos_router should still work
-        view! { <App/> }
-    });
+    // No client-side main function: the wasm bundle ships via
+    // wasm-bindgen's own entrypoint (lib.rs's `hydrate()`), invoked
+    // directly by the generated JS glue, not through this binary's main.
 }

@@ -70,6 +70,14 @@ impl Article {
         &self.date
     }
 
+    pub fn title(&self) -> &Title {
+        &self.title
+    }
+
+    pub fn tags(&self) -> &Tags {
+        &self.tags
+    }
+
     pub fn abstract_text(&self) -> Option<&Abstract> {
         self.abstract_text.as_ref()
     }

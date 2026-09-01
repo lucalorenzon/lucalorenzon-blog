@@ -9,6 +9,9 @@ use crate::domain::value_objects::slug::Slug;
 
 /// Reads articles from `.md` files with YAML frontmatter on the dedicated
 /// content repo's checkout. Filesystem access is meaningless outside `ssr`.
+/// `Clone` (cheap: two `PathBuf`s) so it can be provided via Leptos
+/// context, which clones on every `expect_context` read.
+#[derive(Clone)]
 pub struct FilesystemContentSource {
     articles_dir: PathBuf,
     /// `articles_dir/assets/images` — a temporary placement, confirmed by

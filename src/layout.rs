@@ -2,7 +2,7 @@ use leptos::children::ChildrenFragment;
 use leptos::prelude::*;
 
 use crate::components::footers::footer::BlogFooter;
-use crate::components::headers::headers::BlogHeader;
+use crate::components::headers::header::BlogHeader;
 
 #[component]
 pub fn Layout(children: ChildrenFragment) -> impl IntoView {
@@ -36,6 +36,22 @@ pub fn Layout(children: ChildrenFragment) -> impl IntoView {
 
 
         }.into_any()
+    }
+}
+
+/// Chrome (header/footer) for pages that aren't article-shaped —
+/// LISTING-PAGE/HOME-PAGE (EP-001-UC-001-S003), which have no
+/// title/abstract/content triplet to slot into `Layout`. Takes any
+/// content as a single, ordinary `children`, unlike `Layout`'s fixed
+/// 3-slot fragment.
+#[component]
+pub fn ListLayout(children: Children) -> impl IntoView {
+    view! {
+        <BlogHeader />
+        <main class="h-screen z-0 overflow-auto grow-1">
+            {children()}
+        </main>
+        <BlogFooter />
     }
 }
 

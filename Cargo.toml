@@ -33,7 +33,6 @@ thiserror = "2"
 pulldown-cmark = { version = "0.13.4", default-features = false, features = ["html"] }
 
 [features]
-csr = ["leptos/csr"]
 hydrate = ["leptos/hydrate"]
 ssr = [
   "dep:actix-files",

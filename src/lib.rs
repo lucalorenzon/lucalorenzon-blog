@@ -1,7 +1,9 @@
 pub mod adapters;
+#[cfg(feature = "ssr")]
 pub mod app;
 pub mod domain;
 pub mod layout;
+#[cfg(feature = "ssr")]
 pub mod pages;
 
 pub mod components;
