@@ -22,8 +22,10 @@ struct ListingEntry {
 /// recent first, deterministic tie-break on `Slug`) — same policy as the
 /// composition root's own sort, duplicated here rather than shared because
 /// the composition root does not (yet) pass a pre-sorted list down; see
-/// docs/architecture/hexagonal.md.
-fn resolve_listing_entries(source: &FilesystemContentSource) -> Vec<ListingEntry> {
+/// docs/architecture/hexagonal.md. Generic over `ContentSource`, not
+/// `FilesystemContentSource` — same reasoning as
+/// `resolve_article_presentation` in `article_page.rs`.
+fn resolve_listing_entries(source: &impl ContentSource) -> Vec<ListingEntry> {
     let mut articles: Vec<Article> = source.list_published().expect(
         "a malformed article must abort the build, not silently exclude it \
          — AT-EP-001-UC-001-S003",

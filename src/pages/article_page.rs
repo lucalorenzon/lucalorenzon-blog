@@ -23,9 +23,15 @@ struct ArticlePresentation {
 /// Resolves `:slug` to a fully-formed `ArticlePresentation`, or `None` when
 /// the slug is missing/malformed/unresolvable. Doesn't depend on being
 /// inside a matched `<Route>` (unlike `use_params_map()`), so it's testable
-/// without a real router — see the module's tests.
+/// without a real router — see the module's tests. Generic over
+/// `ContentSource`, not `FilesystemContentSource`: the only place that
+/// needs to know the concrete adapter is `ArticlePage`'s own
+/// `expect_context` call below (Leptos context is keyed by concrete type,
+/// not by trait — there's no way around naming one there), everything
+/// else stays adapter-agnostic, same as `resolve_image`/
+/// `ensure_slug_is_unique` in the domain layer.
 fn resolve_article_presentation(
-    content_source: &FilesystemContentSource,
+    content_source: &impl ContentSource,
     slug_param: Option<&str>,
 ) -> Option<ArticlePresentation> {
     let article = slug_param
