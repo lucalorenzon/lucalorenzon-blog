@@ -17,7 +17,7 @@ pub fn Layout(children: ChildrenFragment) -> impl IntoView {
     {
         view! {
             <BlogHeader  />
-            <main class="bg-cover bg-[url('/assets/images/ostia_sea_top_image.webp')] bg-fixed h-screen z-0 -mt-[80px] overflow-auto grow-1">
+            <main class="bg-cover bg-[url('/images/ostia_sea_top_image.webp')] bg-fixed h-screen z-0 -mt-[80px] overflow-auto grow-1">
                 <article class="dark:bg-black/70 bg-white/70 mt-[60vh]" >
                 {article_title}
                 {article_abstract}
