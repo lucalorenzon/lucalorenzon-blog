@@ -1,5 +1,5 @@
 use crate::components::logos::logo::Logo;
-use crate::components::menu::menu::Menu;
+use crate::components::menu::Menu;
 use icondata::LuSearch;
 use leptos::html::Div;
 use leptos::prelude::*;
