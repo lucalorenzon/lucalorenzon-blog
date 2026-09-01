@@ -1,4 +1,5 @@
 use leptos::prelude::*;
+use leptos_meta::Title;
 
 use crate::adapters::secondary::content_source::filesystem::FilesystemContentSource;
 use crate::domain::article::Article;
@@ -84,6 +85,7 @@ pub fn ListingPage() -> impl IntoView {
         .collect();
 
     view! {
+        <Title text="Lvk@73r Blog"/>
         <ListLayout>
             <ul>{entries}</ul>
         </ListLayout>

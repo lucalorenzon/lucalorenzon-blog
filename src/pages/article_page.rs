@@ -1,4 +1,5 @@
 use leptos::prelude::*;
+use leptos_meta::Title;
 use leptos_router::hooks::use_params_map;
 
 use crate::adapters::secondary::content_source::filesystem::FilesystemContentSource;
@@ -66,6 +67,7 @@ pub fn ArticlePage() -> impl IntoView {
 
     match resolve_article_presentation(&content_source, slug_param.as_deref()) {
         Some(presentation) => view! {
+            <Title text=format!("{} | Lvk@73r Blog", presentation.title)/>
             <Layout>
                 <ArticleTitle>{presentation.title}</ArticleTitle>
                 <ArticleAbstract>{presentation.abstract_text}</ArticleAbstract>
