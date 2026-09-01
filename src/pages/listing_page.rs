@@ -3,7 +3,7 @@ use leptos_meta::Title;
 
 use crate::adapters::secondary::content_source::filesystem::FilesystemContentSource;
 use crate::domain::article::Article;
-use crate::domain::image_resolution::resolve_image;
+use crate::domain::image_resolution::{ResolvedImage, resolve_image};
 use crate::domain::ports::ContentSource;
 use crate::layout::ListLayout;
 use crate::pages::view_model::{effective_abstract, effective_image_path};
@@ -48,7 +48,21 @@ fn resolve_listing_entries(source: &impl ContentSource) -> Vec<ListingEntry> {
                 "image_exists I/O failure must abort the build, not fall back silently \
                  — AT-EP-001-UC-001-S003",
             );
-            let image_path = effective_image_path(&resolved_image).to_string();
+            // Audit signal (FMEA finding, docs/design/ssg-page-generation.md)
+            // — same caller-side logging as ArticlePage's, duplicated rather
+            // than centralized: LISTING-PAGE and ARTICLE-PAGE each resolve
+            // the same article's image independently today.
+            if let ResolvedImage::Fallback {
+                attempted: Some(attempted),
+            } = &resolved_image
+            {
+                eprintln!(
+                    "warning: article {:?} references image {:?}, not found — using fallback",
+                    slug,
+                    attempted.as_str()
+                );
+            }
+            let image_path = effective_image_path(&resolved_image);
             let href = format!("/articles/{slug}");
             ListingEntry {
                 href,

@@ -249,8 +249,8 @@ backlog, its own future story, not addressed here.
 
 ### The fallback asset
 
-A dedicated SVG (`assets/images/article-image-not-found.svg`, **this**
-application's own `assets/`, not the content repo — a brand/UI asset, not
+A dedicated SVG (`assets/images/article-image-not-found.svg` in this
+**repo's own** source tree, not the content repo — a brand/UI asset, not
 article content): a new minimal placeholder, not a reuse of
 `ostia_sea_top_image.webp` (confirmed by Luca 2026-08-30 — that asset stays
 the layout's fixed background, unrelated to article content). Its site path
@@ -258,13 +258,38 @@ is a `view_model.rs` constant; no I/O needed to reference it — the site's own
 assets are guaranteed present by the build, unlike an author-referenced image
 `resolve_image` must check.
 
-```rust
-const FALLBACK_IMAGE_PATH: &str = "/assets/images/article-image-not-found.svg";
+**Site path corrected 2026-09-01**, found via a real `cargo leptos build`,
+not assumed: `cargo-leptos`'s `assets-dir` sync flattens `assets/*` straight
+into `site-root/*` — `assets/images/x.svg` in this repo's source becomes
+`/images/x.svg` in the generated site, **not** `/assets/images/x.svg`. The
+original `FALLBACK_IMAGE_PATH` used the wrong prefix from S003's first
+implementation slice (2026-08-31) through this correction — a real,
+reproducible 404 in every build until now, never caught because nothing
+had exercised a real `cargo leptos build` yet.
 
-pub fn effective_image_path(resolved: &ResolvedImage) -> &str {
+The same real-build check surfaced a second, related gap: an article's own
+`ImagePath` (e.g. `cover.webp`, whatever the author wrote) was rendered
+as-is — a relative path, resolving wrong from a nested route like
+`/articles/hello-world`, and pointing at a file cargo-leptos never
+copies into the generated site at all (content-repo images and this
+app's own `assets-dir` are different physical locations). **Minimal fix
+confirmed by Luca 2026-09-01** (a full fix needs its own future
+epic — multiple topics: real asset-storage location, collision
+avoidance, `AssetSource`/`ImageSource` port): the composition root
+(`main.rs`) copies the content repo's `images_dir` into the generated
+site's `/images` directory (same directory the fallback SVG already
+lives in — accepted collision risk, not solved here), and
+`effective_image_path` roots an `Own` path under that same
+`/images` prefix instead of using it unprefixed.
+
+```rust
+const ARTICLE_IMAGES_BASE_PATH: &str = "/images";
+const FALLBACK_IMAGE_PATH: &str = "/images/article-image-not-found.svg";
+
+pub fn effective_image_path(resolved: &ResolvedImage) -> String {
     match resolved {
-        ResolvedImage::Own(path) => path.as_str(),
-        ResolvedImage::Fallback { .. } => FALLBACK_IMAGE_PATH,
+        ResolvedImage::Own(path) => format!("{ARTICLE_IMAGES_BASE_PATH}/{}", path.as_str()),
+        ResolvedImage::Fallback { .. } => FALLBACK_IMAGE_PATH.to_string(),
     }
 }
 ```

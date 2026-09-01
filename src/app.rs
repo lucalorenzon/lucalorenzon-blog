@@ -3,7 +3,7 @@ use crate::domain::ports::ContentSource;
 use crate::pages::{ArticlePage, HomePage, ListingPage};
 use leptos::prelude::*;
 use leptos_meta::{Body, Html, Meta, MetaTags, Stylesheet, provide_meta_context};
-use leptos_router::components::{Route, Router, Routes};
+use leptos_router::components::{FlatRoutes, Route, Router};
 use leptos_router::static_routes::StaticRoute;
 use leptos_router::{SsrMode, path};
 
@@ -32,8 +32,10 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
 
 /// The content repo checkout `FilesystemContentSource` reads from — no
 /// default, no silent fallback: a missing value aborts the build
-/// immediately rather than reading from an unintended path.
-fn content_repo_path() -> String {
+/// immediately rather than reading from an unintended path. `pub`: also
+/// used by `main.rs` to locate `images_dir` for the minimal image-copy
+/// fix (2026-09-01).
+pub fn content_repo_path() -> String {
     std::env::var("CONTENT_REPO_PATH")
         .expect("CONTENT_REPO_PATH must be set to the dedicated content repo's checkout path")
 }
@@ -66,9 +68,22 @@ pub fn App() -> impl IntoView {
         <Stylesheet id="leptos" href="/pkg/blog_start.css"/>
         <Body {..} class="bg-white text-blue dark:bg-black dark:text-blue-100 flex flex-col h-screen overflow-y-auto" />
         <Router>
-                <Routes fallback=NotFound>
+                <FlatRoutes fallback=NotFound>
+                    // Not `path!("")`/`path!("/")`: leptos_actix 0.8.7's
+                    // StaticRouteGenerator fabricates a mock HTTP request per
+                    // route to render it (test::TestRequest::with_uri), and
+                    // the root path resolves to an empty string internally —
+                    // an empty string isn't a valid URI, so generation panics
+                    // (InvalidUri(Empty)), confirmed empirically against both
+                    // spellings; this doesn't affect live request handling,
+                    // only this build-time mechanism, which the old
+                    // always-on server never exercised. `/_home` is a
+                    // literal segment so the resolved path is never empty;
+                    // main.rs renames the resulting `_home.html` to
+                    // `index.html` after generation — not a real page to
+                    // visit directly.
                     <Route
-                        path=path!("/")
+                        path=path!("/_home")
                         view=HomePage
                         ssr=SsrMode::Static(StaticRoute::new())
                     />
@@ -93,7 +108,7 @@ pub fn App() -> impl IntoView {
                         )
                     />
                     <Route path=path!("/*any") view=NotFound/>
-                </Routes>
+                </FlatRoutes>
         </Router>
     }
 }

@@ -4,7 +4,7 @@ use crate::domain::article::Article;
 use crate::domain::image_resolution::ResolvedImage;
 
 const ABSTRACT_TRUNCATION_LIMIT: usize = 200;
-const FALLBACK_IMAGE_PATH: &str = "/assets/images/article-image-not-found.svg";
+const FALLBACK_IMAGE_PATH: &str = "/images/article-image-not-found.svg";
 
 /// The article's own abstract when the author wrote one; otherwise `Body`
 /// truncated to `ABSTRACT_TRUNCATION_LIMIT` characters at the last word
@@ -28,13 +28,27 @@ fn truncate(text: &str, limit: usize) -> String {
     truncated
 }
 
-/// The path to render for an article's image: its own path when resolved,
-/// or a fixed fallback asset (this application's own, not content-repo
-/// data) when resolution fell back for any reason.
-pub fn effective_image_path(resolved: &ResolvedImage) -> &str {
+/// Where the composition root copies the content repo's `images_dir` into
+/// the generated site (minimal fix, 2026-09-01) — `/images`, not
+/// `/assets/images`: `cargo-leptos` flattens `assets-dir`'s contents
+/// directly into `site-root` (`assets/images/x.svg` → `/images/x.svg`,
+/// confirmed against a real `cargo leptos build`'s actual output, not
+/// assumed), same real location `FALLBACK_IMAGE_PATH` (this app's own
+/// asset) already lived at. Shares that directory with this app's own
+/// brand assets — a real asset-storage design (separate location, no
+/// collision risk) is its own future epic — flagged, not solved here.
+const ARTICLE_IMAGES_BASE_PATH: &str = "/images";
+
+/// The path to render for an article's image: its own path, rooted under
+/// `ARTICLE_IMAGES_BASE_PATH` (an author-written path like `cover.webp` is
+/// relative and would resolve wrong from a nested page like
+/// `/articles/hello-world` — confirmed empirically via a real
+/// `cargo leptos build`), or a fixed fallback asset (this application's
+/// own, not content-repo data) when resolution fell back for any reason.
+pub fn effective_image_path(resolved: &ResolvedImage) -> String {
     match resolved {
-        ResolvedImage::Own(path) => path.as_str(),
-        ResolvedImage::Fallback { .. } => FALLBACK_IMAGE_PATH,
+        ResolvedImage::Own(path) => format!("{ARTICLE_IMAGES_BASE_PATH}/{}", path.as_str()),
+        ResolvedImage::Fallback { .. } => FALLBACK_IMAGE_PATH.to_string(),
     }
 }
 
@@ -95,10 +109,10 @@ mod tests {
     // Component: effective_image_path, AT-EP-001-UC-001-S003
 
     #[test]
-    fn returns_the_resolved_path_when_own() {
+    fn returns_the_resolved_path_rooted_under_the_images_base_path_when_own() {
         let path = ImagePath::parse(Some("image.webp")).unwrap();
         let resolved = ResolvedImage::Own(path);
-        assert_eq!(effective_image_path(&resolved), "image.webp");
+        assert_eq!(effective_image_path(&resolved), "/images/image.webp");
     }
 
     #[test]
@@ -106,7 +120,7 @@ mod tests {
         let resolved = ResolvedImage::Fallback { attempted: None };
         assert_eq!(
             effective_image_path(&resolved),
-            "/assets/images/article-image-not-found.svg"
+            "/images/article-image-not-found.svg"
         );
     }
 
@@ -116,7 +130,7 @@ mod tests {
         let resolved = ResolvedImage::Fallback { attempted };
         assert_eq!(
             effective_image_path(&resolved),
-            "/assets/images/article-image-not-found.svg"
+            "/images/article-image-not-found.svg"
         );
     }
 

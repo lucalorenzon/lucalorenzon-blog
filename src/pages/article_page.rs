@@ -3,7 +3,7 @@ use leptos_meta::Title;
 use leptos_router::hooks::use_params_map;
 
 use crate::adapters::secondary::content_source::filesystem::FilesystemContentSource;
-use crate::domain::image_resolution::resolve_image;
+use crate::domain::image_resolution::{ResolvedImage, resolve_image};
 use crate::domain::ports::ContentSource;
 use crate::domain::value_objects::slug::Slug;
 use crate::layout::{ArticleAbstract, ArticleContent, ArticleTitle, Layout};
@@ -45,7 +45,21 @@ fn resolve_article_presentation(
         "image_exists I/O failure must abort the build, not fall back silently \
          — AT-EP-001-UC-001-S003",
     );
-    let image_path = effective_image_path(&resolved_image).to_string();
+    // Audit signal (FMEA finding, docs/design/ssg-page-generation.md):
+    // logged by the caller, not by resolve_image itself — a referenced
+    // image only ever goes stale between commits, not between resolution
+    // attempts, so this is a one-line build-log warning, not a real error.
+    if let ResolvedImage::Fallback {
+        attempted: Some(attempted),
+    } = &resolved_image
+    {
+        eprintln!(
+            "warning: article {:?} references image {:?}, not found — using fallback",
+            article.slug().as_str(),
+            attempted.as_str()
+        );
+    }
+    let image_path = effective_image_path(&resolved_image);
     let content_html = markdown_to_html(article.body().as_str());
 
     Some(ArticlePresentation {

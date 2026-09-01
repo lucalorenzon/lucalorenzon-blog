@@ -75,8 +75,8 @@ come il trigger CI ([[EP-001-UC-001-S004]]).
 
 | `ResolvedImage` | `effective_image_path()`? | ref |
 |---|---|---|
-| `Own(path)` | il path, invariato | AC-5 |
-| `Fallback { .. }` (entrambe le varianti) | `/assets/images/article-image-not-found.svg` (nuovo SVG dedicato, confermato da Luca 2026-08-30 — non `ostia_sea_top_image.webp`) | AC-5 |
+| `Own(path)` | `/images/{path}` (radicato sotto `/images` — corretto 2026-09-01, non più il path grezzo invariato: relativo, si sarebbe risolto male da `/articles/hello-world`) | AC-5 |
+| `Fallback { .. }` (entrambe le varianti) | `/images/article-image-not-found.svg` (nuovo SVG dedicato, confermato da Luca 2026-08-30; path corretto 2026-09-01 — `cargo-leptos` sincronizza `assets/*` dentro `site-root/*` senza mantenere il prefisso `assets/`, verificato con una build reale — non `ostia_sea_top_image.webp`) | AC-5 |
 
 ---
 
