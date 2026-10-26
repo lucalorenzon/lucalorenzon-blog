@@ -53,7 +53,9 @@ its state:
 
 Cards move with `git mv`, so their history follows them. When a card moves,
 links to it from other documents are updated in the same commit. The date
-prefix keeps `docs/done/` in the order the work was finished.
+prefix keeps `docs/done/` in the order the work was finished. Each of the
+three folders holds a `.gitkeep`, so it exists, and links to it work, even
+when it has no cards.
 
 ## Model routing
 
