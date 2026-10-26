@@ -56,9 +56,10 @@ previous site.
    relative path, so it works the same under either address. It becomes
    a real decision once pages link to each other. Until then the site goes
    live on the standard GitHub Pages address.
-4. **Old remote branches.** Whether to delete the branches left on GitHub
-   from the previous site (`chore/ci-build-check` and the Dependabot
-   branches). Deleting a remote branch cannot be undone.
+
+Closed without a decision: **old remote branches.** By the time it came
+up, GitHub held only `main`; the other branches of the previous site were
+already gone from the remote, and no pull request was open.
 
 ## Next — challenge the skeleton
 
