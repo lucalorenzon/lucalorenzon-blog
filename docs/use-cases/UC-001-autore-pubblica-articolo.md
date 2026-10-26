@@ -61,12 +61,15 @@
 | EP-001-UC-001-S003 | Generare il sito statico da un Article (ARTICLE-PAGE, LISTING-PAGE, HOME-PAGE) | Done (2026-09-01) — size XL, assegnata a posteriori |
 | EP-001-UC-001-S004 | Rigenerare e pubblicare il sito a ogni push su `main` del repo contenuti | Pending discussion — riscritta 2026-10-26 |
 | EP-001-UC-001-S005 | Pubblicare il sito su GitHub Pages a ogni push di codice, compreso il primo deploy | Pending discussion — riscritta 2026-10-26 |
-| EP-001-UC-001-S006 | Servire il sito sotto una context root configurabile (`CONTEXT_ROOT`) | Decision agreed (2026-10-26) — next: `/acceptance-tests` |
+| EP-001-UC-001-S006 | Pubblicare una homepage "in costruzione" sotto una context root configurabile (`CONTEXT_ROOT`) | Decision agreed, AT approvate, size XL → split per decisione (2026-10-26) — next: revisione `/acceptance-tests` |
 | EP-001-UC-001-S007 | Validare l'insieme dei contenuti prima della generazione | Pending discussion |
 | EP-001-UC-001-S008 | Costruire e pubblicare gli artefatti fissi come Release | Pending discussion |
 | EP-001-UC-001-S009 | Controllare l'output generato prima del deploy | Pending discussion |
+| EP-001-UC-001-S011 | Reintrodurre le islands (menu e header dinamico) sotto `CONTEXT_ROOT` | Pending discussion — dallo split di S006 (2026-10-26) |
+| EP-001-UC-001-S012 | Pubblicare pagine di esempio dal repo contenuti sotto `CONTEXT_ROOT` | Pending discussion — dallo split di S006 (2026-10-26) |
+| EP-001-UC-001-S013 | Riscrivere secondo `CONTEXT_ROOT` i link interni scritti dall'autore nel markdown | Pending discussion — dallo split di S006 (2026-10-26) |
 
-**Ordine di consegna (replan 2026-10-26):** S006 → S005 → S007 → S008 → S004 → S009, poi [EP-001-S010](../stories/EP-001-S010-verificare-sito-contenuti-test.md) (registrata sull'epic, non appartiene a questo UC). I numeri non seguono l'ordine perché S004 e S005 mantengono il significato con cui altri documenti già le citano (S004 = pipeline avviata dal push sui contenuti, S005 = deploy).
+**Ordine di consegna (replan 2026-10-26, aggiornato dopo lo split di S006):** S006 (homepage "in costruzione") → S005 (deploy su push di codice) → S011 (islands) → S012 (pagine di esempio dal repo contenuti) → S013 (link nel markdown) → S007 (validazione contenuti) → S008 (artefatti fissi come Release) → S004 (rigenerazione su push del repo contenuti) → S009 (controllo dell'output), poi [EP-001-S010](../stories/EP-001-S010-verificare-sito-contenuti-test.md) (registrata sull'epic, non appartiene a questo UC). I numeri non seguono l'ordine perché S004 e S005 mantengono il significato con cui altri documenti già le citano (S004 = pipeline avviata dal push sui contenuti, S005 = deploy).
 
 **Estensione mancante, segnalata da S009:** "output generato non valido" (link interno o risorsa non raggiungibile, risorsa oltre la soglia → deploy bloccato; link esterno rotto → solo avviso). Va aggiunta a questo UC e ad AT-UC-001 prima di implementare S009.
 

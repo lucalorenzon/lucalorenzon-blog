@@ -1,6 +1,6 @@
 ## EP-001-UC-001-S008 — Costruire e pubblicare gli artefatti fissi come Release
 
-> Creata nel replan del 2026-10-26: è la parte "artefatti" che l'utente aveva chiesto in S005, separata per rispettare una decisione per storia. **Ordine di consegna: 4° di 7** (S006 → S005 → S007 → **S008** → S004 → S009 → S010) — prima di S004, per scelta dell'utente: il push di contenuto non ricompila mai il codice.
+> Creata nel replan del 2026-10-26: è la parte "artefatti" che l'utente aveva chiesto in S005, separata per rispettare una decisione per storia. **Ordine di consegna: 7° di 10** (S006 → S005 → S011 → S012 → S013 → S007 → **S008** → S004 → S009 → S010) — prima di S004, per scelta dell'utente: il push di contenuto non ricompila mai il codice.
 
 **Decision:** Quali artefatti non cambiano quando cambia un contenuto e vengono quindi costruiti una sola volta per ogni push di codice: wasm, js, CSS, icone e asset statici, e il binario che genera l'HTML. Si decide anche dove vengono pubblicati (una Release, che a differenza degli artefatti di Actions non scade dopo 90 giorni) e come la pipeline dei contenuti sceglie la versione da usare.
 

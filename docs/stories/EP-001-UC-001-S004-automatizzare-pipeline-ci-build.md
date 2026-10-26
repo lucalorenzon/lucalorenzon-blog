@@ -1,6 +1,6 @@
 ## EP-001-UC-001-S004 — Rigenerare e pubblicare il sito a ogni push su `main` del repo contenuti
 
-> Riscritta nel replan del 2026-10-26: prima copriva anche validazione e build da sorgente, ora divise fra [[EP-001-UC-001-S007]] (validazione) e [[EP-001-UC-001-S008]] (artefatti fissi). **Ordine di consegna: 5° di 7** (S006 → S005 → S007 → S008 → **S004** → S009 → S010).
+> Riscritta nel replan del 2026-10-26: prima copriva anche validazione e build da sorgente, ora divise fra [[EP-001-UC-001-S007]] (validazione) e [[EP-001-UC-001-S008]] (artefatti fissi). **Ordine di consegna: 8° di 10** (S006 → S005 → S011 → S012 → S013 → S007 → S008 → **S004** → S009 → S010).
 
 **Decision:** Come un push su `main` del repo contenuti avvia la pipeline di questo repo (trigger e relativa credenziale, custodita nel repo contenuti), che genera il sito usando gli artefatti fissi già pubblicati invece di ricompilare il codice, e come l'esito, compreso un fallimento, arriva all'autore sul suo stesso push.
 
@@ -41,7 +41,7 @@ Before any implementation, complete in order:
 - I log della pipeline sono pubblici: accettato, perché su `main` arriva solo ciò che va pubblicato.
 
 ### Dependencies
-- [[EP-001-UC-001-S008]] (artefatti fissi), [[EP-001-UC-001-S007]] (validazione), [[EP-001-UC-001-S005]] (passo di deploy), [[EP-001-UC-001-S006]] (`CONTEXT_ROOT`).
+- [[EP-001-UC-001-S008]] (artefatti fissi), [[EP-001-UC-001-S007]] (validazione), [[EP-001-UC-001-S005]] (passo di deploy), [[EP-001-UC-001-S006]] (`CONTEXT_ROOT`), [[EP-001-UC-001-S012]] (lettura del repo contenuti in CI e relativa credenziale, riusata qui; questa storia aggiunge solo la credenziale del trigger), [[EP-001-UC-001-S013]] (link nel markdown riscritti prima che l'autore pubblichi da solo).
 
 ### Decisions Log
 | Date | Decision | Reasoning | Alternatives Considered |

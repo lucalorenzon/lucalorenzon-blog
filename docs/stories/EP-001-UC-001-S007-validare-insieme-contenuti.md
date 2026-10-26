@@ -1,6 +1,6 @@
 ## EP-001-UC-001-S007 — Validare l'insieme dei contenuti prima della generazione
 
-> Creata nel replan del 2026-10-26. **Ordine di consegna: 3° di 7** (S006 → S005 → **S007** → S008 → S004 → S009 → S010).
+> Creata nel replan del 2026-10-26. **Ordine di consegna: 6° di 10** (S006 → S005 → S011 → S012 → S013 → **S007** → S008 → S004 → S009 → S010).
 
 **Decision:** La validazione dei contenuti diventa un passo esplicito, eseguito una volta sull'intero insieme di articoli prima della generazione delle pagine. Si decide dove vive questo passo e come segnala gli errori: messaggi leggibili che nominano file e campo, codice di uscita diverso da zero, nessun file saltato in silenzio. Le pagine smettono di essere il luogo in cui un articolo malformato viene scoperto.
 

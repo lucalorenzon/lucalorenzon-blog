@@ -1,6 +1,6 @@
 ## EP-001-UC-001-S009 — Controllare l'output generato prima del deploy
 
-> Creata nel replan del 2026-10-26. **Ordine di consegna: 6° di 7** (S006 → S005 → S007 → S008 → S004 → **S009** → S010).
+> Creata nel replan del 2026-10-26. **Ordine di consegna: 9° di 10** (S006 → S005 → S011 → S012 → S013 → S007 → S008 → S004 → **S009** → S010).
 
 **Decision:** Cosa si controlla sull'output generato prima del deploy, con quale soglia, e cosa blocca e cosa avvisa. Concordato al momento dello split: un link interno, un'immagine o un CSS non raggiungibili, o una risorsa oltre la dimensione massima X configurabile, **bloccano** il deploy. Un link esterno rotto produce **solo un avviso**. Il controllo vale per entrambe le pipeline, su push di codice e su push di contenuto.
 

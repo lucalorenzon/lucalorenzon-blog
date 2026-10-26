@@ -1,48 +1,55 @@
-## EP-001-UC-001-S006 — Servire il sito sotto una context root configurabile (`CONTEXT_ROOT`)
+## EP-001-UC-001-S006 — Pubblicare una homepage "in costruzione" sotto una context root configurabile (`CONTEXT_ROOT`)
 
-> Creata nel replan del 2026-10-26. **Ordine di consegna: 1° di 7** (**S006** → S005 → S007 → S008 → S004 → S009 → S010).
-> Nata come "`base_url` configurabile": rinominata `CONTEXT_ROOT` il 2026-10-26 (vedi Decisions Log). Il nome del file resta invariato per non rompere i riferimenti.
+> Creata nel replan del 2026-10-26 come "`base_url` configurabile", rinominata `CONTEXT_ROOT` e poi divisa per decisione lo stesso giorno (dimensionata XL, hard stop): questa storia è il primo pezzo (D1). Gli altri: [[EP-001-UC-001-S011]] (islands), [[EP-001-UC-001-S012]] (pagine di esempio dal repo contenuti), [[EP-001-UC-001-S013]] (link nel markdown). Il nome del file resta invariato per non rompere i riferimenti.
+> **Ordine di consegna: 1° di 10** (**S006** → S005 → S011 → S012 → S013 → S007 → S008 → S004 → S009 → S010).
 
-**Decision:** Come ogni percorso prodotto dal sito (route, CSS, wasm/js in `/pkg`, immagini, asset, link interni — compresi quelli scritti dall'autore nel markdown degli articoli) deriva da una `CONTEXT_ROOT` sempre definita e configurabile, invece di percorsi assoluti dalla radice. È un principio permanente, non un adattamento temporaneo all'indirizzo di GitHub Pages: un sito deve essere rilocabile, e spostarlo (es. al dominio personale) è un cambio di configurazione più una nuova build, mai una revisione dei link. Decisione trasversale → richiede un ADR.
+**Decision:** Come si definisce `CONTEXT_ROOT` (contratto: obbligatoria, forma del valore, dove si dichiara in sviluppo e in CI) e come le risorse del codice (CSS, favicon, logo) e la struttura dell'output ne derivano, provato su una homepage temporanea "in costruzione" scritta nel codice. Principio trasversale di tutta la serie: ogni percorso prodotto dal sito deriva da `CONTEXT_ROOT`, spostare il sito è un cambio di configurazione più una nuova build, mai una revisione dei link. Richiede un ADR.
 
-As Visitatore del sito, voglio che stili, immagini, link e interattività funzionino a qualunque indirizzo il sito sia pubblicato, so that vedo sempre un sito completo e navigabile.
+Per mettere online questa homepage senza percorsi rotti, la storia **sospende temporaneamente** due cose, ciascuna riattivata da una storia nominata:
+- le **islands** (menu, cambio tema, header dinamico) → riattivate da [[EP-001-UC-001-S011]]; deviazione temporanea da ADR-004 da annotare;
+- la **generazione dei contenuti** (route di articoli ed elenco, lettura del repo contenuti, copia delle immagini) → riattivata da [[EP-001-UC-001-S012]].
+
+As Visitatore del sito, voglio vedere all'indirizzo pubblico del sito una homepage "in costruzione" completa di stili, logo e favicon, so that capisco che il sito esiste e sta arrivando, senza pagine rotte.
 
 | Field | Value |
 |---|---|
 | **Epic** | EP-001 — Rilancio del blog personale come presenza professionale |
 | **UC** | UC-001 — Autore pubblica un nuovo articolo |
-| **Pattern** | Major effort isolation |
-| **AT rows** | AT-UC-001 righe: 1-5 (success guarantee "articolo raggiungibile pubblicamente"); epic AC-1 |
+| **Pattern** | Major effort isolation (split per decisione da XL) |
+| **AT rows** | AT-UC-001 righe: 1-5 (success guarantee "raggiungibile pubblicamente", limitatamente alla homepage); epic AC-1 |
+| **Size** | XL prima dello split (41 righe AT, ~7 componenti) — da rimisurare dopo la revisione di `/acceptance-tests` |
 
 ### Acceptance criteria
-- Given `CONTEXT_ROOT` = `/lucalorenzon-blog/`, when il sito generato è servito sotto quel prefisso, then CSS, wasm/js, immagini, asset (logo e favicon compresi) e link interni risolvono tutti, senza 404
+- Given `CONTEXT_ROOT` = `/lucalorenzon-blog/`, when il sito generato è servito sotto quel prefisso, then la homepage "in costruzione" si carica con CSS, favicon e logo, senza 404
 - Given `CONTEXT_ROOT` = `/` (dominio personale), when il sito generato è servito alla radice, then vale lo stesso
 - Given `CONTEXT_ROOT` non definita, when si lancia la build, then la build si ferma con un errore che la nomina
-- Given un articolo il cui markdown contiene un link o un'immagine con percorso dalla radice (`/articles/altro`, `/images/x.webp`), when il sito è generato con un prefisso, then nell'HTML il percorso include la `CONTEXT_ROOT`; link esterni (`https://…`, `//…`) e ancore (`#…`) restano invariati
-- Given il sito servito sotto un prefisso, when il visitatore usa le islands (cambio tema, header), then l'hydration funziona
-- Given lo sviluppo locale (`cargo leptos watch`) con `CONTEXT_ROOT` = `/` dichiarata esplicitamente nella configurazione di sviluppo, when il sito è servito in locale, then continua a funzionare
+- Given due build con `CONTEXT_ROOT` diverse, when si confronta l'output, then l'elenco dei file è identico (nessuna sottocartella col nome del prefisso)
+- Given la build di questa storia, when termina, then l'output non contiene pagine di articoli né l'elenco, e la build non legge il repo contenuti
+- Given la homepage generata, when la si apre, then l'header contiene solo logo e titolo (nessun menu, nessuna icona di ricerca), c'è il footer statico e l'HTML non contiene script di hydration
+- Given lo sviluppo locale (`cargo leptos watch`) con `CONTEXT_ROOT` = `/` dichiarata esplicitamente nella configurazione di sviluppo, when il sito è servito in locale, then la homepage si carica senza 404
 
-Acceptance tests: [AT-EP-001-UC-001-S006](../acceptance-tests/AT-EP-001-UC-001-S006-servire-sito-context-root-configurabile.md)
+Acceptance tests: [AT-EP-001-UC-001-S006](../acceptance-tests/AT-EP-001-UC-001-S006-servire-sito-context-root-configurabile.md) — righe del pezzo D1 approvate il 2026-10-26; le righe delle due sospensioni (contenuti, islands/header) sono da aggiungere in `/acceptance-tests`.
 
 ### Design pipeline
 Before any implementation, complete in order:
-- [ ] `/adr`                    — `CONTEXT_ROOT` configurabile come principio trasversale
+- [ ] `/adr`                    — `CONTEXT_ROOT` come principio trasversale; nota in ADR-004 sulla sospensione temporanea delle islands
 - [ ] `/residuality`            — Step 0 decide se si applica; poi ricontrollo `/story-size`
 - [ ] `/software-design`        — coupling, ownership, accidental complexity
 - [ ] `/hexagonal-architecture` — ports, adapters, composition root
-- [ ] `/parse-dont-validate`    — domain types and invariants
+- [ ] `/parse-dont-validate`    — domain types and invariants (forma del valore di `CONTEXT_ROOT`)
 - [ ] `/sw-practices`           — naming, error handling, bootstrap
 
 ### Next steps after agreement
-- [ ] `/acceptance-tests EP-001-UC-001-S006` — story-level AT table (narrower than UC level)
-- [ ] `/story-size EP-001-UC-001-S006`       — assign XS / S / M / L / XL / XXL
+- [ ] `/acceptance-tests EP-001-UC-001-S006` — revisione: righe delle sospensioni, homepage "in costruzione"
+- [ ] `/story-size EP-001-UC-001-S006`       — rimisurare dopo lo split
 
 ### Open questions
-- **Meccanismo Leptos (design, non requisito).** Verificato sul sorgente (leptos 0.8.22, leptos_router 0.8.17): `HydrationScripts` ha la prop `root` ("a base url, not including a trailing slash"), `Router` ha la prop `base`; l'islands router usa gli `href` così come sono (il controllo sul `basePath` è commentato in `islands_routing.js`), quindi i link devono già contenere il prefisso. **Da verificare:** se `Router base` fa scrivere alla generazione statica i file sotto `site_root/<prefisso>/…` (sbagliato per Pages, dove il prefisso corrisponde già alla radice dell'artefatto). Candidato a uno `/spike` breve in `/adr` o `/software-design`.
-- **Lettura in compilazione o in generazione** (vedi [[EP-001-UC-001-S008]]): accettato che spostare il sito richieda una nuova Release, quindi la lettura in compilazione è ammessa; la scelta concreta resta a `/adr`. Se si sceglie la generazione, wasm/js/CSS della Release non devono contenere percorsi (oggi è così: nessun `url()` nel CSS, nessun percorso nelle islands).
+- **Meccanismo Leptos (design, non requisito).** Verificato sul sorgente (leptos 0.8.22, leptos_router 0.8.17): `HydrationScripts` ha la prop `root` ("a base url, not including a trailing slash"), `Router` ha la prop `base`. **Da verificare:** se `Router base` fa scrivere alla generazione statica i file sotto `site_root/<prefisso>/…` (sbagliato per Pages, dove il prefisso corrisponde già alla radice dell'artefatto). Candidato a uno `/spike` breve in `/adr` o `/software-design`: riguarda questa storia per la riga "struttura dell'output identica".
+- **Lettura in compilazione o in generazione** (vedi [[EP-001-UC-001-S008]]): accettato che spostare il sito richieda una nuova Release, quindi la lettura in compilazione è ammessa; la scelta concreta resta a `/adr`.
+- **`CONTENT_REPO_PATH` durante la sospensione dei contenuti** (design): resta obbligatoria pur senza lettori, o torna con [[EP-001-UC-001-S012]]?
 
 ### Dependencies
-- Nessuna: è la prima storia dell'ordine di consegna.
+- Nessuna: è la prima storia dell'ordine di consegna. [[EP-001-UC-001-S005]] (deploy su push di codice) la segue subito, per portarla online.
 
 ### Decisions Log
 | Date | Decision | Reasoning | Alternatives Considered |
@@ -51,8 +58,10 @@ Before any implementation, complete in order:
 | 2026-10-26 | Spostare il sito = cambio di configurazione + nuova build (una nuova Release, vedi S008); i link non si toccano mai | Basta che lo spostamento non richieda di rivedere i link; un output che funzioni ovunque senza ricompilare non è richiesto | Output rilocabile senza rebuild (percorsi relativi per pagina); rigenerazione con gli artefatti della Release esistente senza ricompilare |
 | 2026-10-26 | La context root è solo il percorso (`/lucalorenzon-blog/`, `/`), non l'origine | L'origine (`https://…`) servirà a canonical/sitemap, oggi fuori scope; arriverà come configurazione separata | URL completo come unico valore |
 | 2026-10-26 | Nome: `CONTEXT_ROOT`, non `BASE_URL` | "url" suggerisce un indirizzo completo; il concetto è il percorso da cui il sito è servito | `BASE_URL`, `base_url` |
-| 2026-10-26 | I link interni scritti dall'autore nel markdown sono in scope: la conversione markdown→HTML aggiunge da sola la `CONTEXT_ROOT` ai link e alle immagini con percorso dalla radice (opzione A). Ripiego su segnaposto `$CONTEXT_ROOT/…` scritto dall'autore (opzione B) solo se A risulta complicata in design | A lascia all'autore la regola più semplice ("scrivi come se il sito fosse alla radice") e resta solo codice. Fattibilità: `pulldown-cmark` 0.13 (già usato) espone `Tag::Link`/`Tag::Image` con `dest_url`. Limite accettato: HTML grezzo nel markdown (`<a href>`, `<img src>`) non viene riscritto | B — segnaposto: sostituzione banale, ma diventa un contratto del contenuto da documentare e un link dimenticato si rompe in silenzio |
-| 2026-10-26 | Logo (`/assets/logoIcon.png`, bug preesistente: gli asset sono copiati alla radice del sito) e favicon rientrano in S006, non in un `fix` separato | L'AC "asset senza 404" li copre già; correggerli altrove duplicherebbe lo stesso lavoro sui percorsi | `fix` dedicato per il logo |
-| 2026-10-26 | La riscrittura dei link markdown non è una seconda decisione: stesso principio applicato a un punto in più, nessuno split | 1 storia = 1 decisione resta rispettato; il rischio di crescita lo misura `/story-size` (hard stop oltre L) | Storia separata per i link nel contenuto |
+| 2026-10-26 | Logo (`/assets/logoIcon.png`, bug preesistente: gli asset sono copiati alla radice del sito) e favicon rientrano qui, non in un `fix` separato | L'AC "asset senza 404" li copre già; correggerli altrove duplicherebbe lo stesso lavoro sui percorsi | `fix` dedicato per il logo |
+| 2026-10-26 | Dimensionata XL (41 righe AT) → split per decisione, non per numero di righe, in quattro storie in base al valore visibile: D1 homepage "in costruzione" (questa), islands ([[EP-001-UC-001-S011]]), pagine di esempio ([[EP-001-UC-001-S012]]), link nel markdown ([[EP-001-UC-001-S013]]) | Le storie dividono le decisioni; molte righe sotto una sola decisione si affrontano in una sessione dedicata. Ogni pezzo ha valore visibile da solo | Tagli per ridurre righe (es. solo configurazione: nessun valore visibile) |
+| 2026-10-26 | D1 online subito: il deploy su push di codice ([[EP-001-UC-001-S005]]) viene subito dopo questa storia | L'obiettivo è vedere la homepage sul sito, non solo in locale | Verifica solo in locale sotto prefisso, deploy dopo tutta la serie |
+| 2026-10-26 | Niente contenuto online fino a [[EP-001-UC-001-S012]]: questa storia sospende la generazione dei contenuti; la pagina "in costruzione" è scritta nel codice | Pubblicare pagine di articoli con immagini e link rotti, anche se non linkate, non è accettabile | Pubblicare anche le pagine degli articoli generate dal repo contenuti |
+| 2026-10-26 | Islands sospese fino a [[EP-001-UC-001-S011]]; nell'header restano solo logo e titolo: niente menu (il selettore tema sarebbe inerte) e niente icona di ricerca (inerte già oggi, nessuna funzione di ricerca) | Nessun comando visibile senza effetto | Menu visibile con selettore inerte |
 
-INVEST: I✓ N✓ V✓ E✓ S✓ T✓  |  1 Decision: ✓  |  Coherence: ✓
+INVEST: I✓ N✓ V✓ E✓ S? T✓  |  1 Decision: ✓  |  Coherence: ✓  (S da riconfermare con `/story-size`)

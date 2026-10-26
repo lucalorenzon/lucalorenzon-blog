@@ -1,6 +1,6 @@
 ## EP-001-S010 — Verificare il sito generato con contenuti di test
 
-> Creata nel replan del 2026-10-26. Riguarda il Visitatore, non la pubblicazione: non appartiene a UC-001, quindi è tracciata direttamente sugli AC dell'epic. **Ordine di consegna: 7° di 7** (S006 → S005 → S007 → S008 → S004 → S009 → **S010**).
+> Creata nel replan del 2026-10-26. Riguarda il Visitatore, non la pubblicazione: non appartiene a UC-001, quindi è tracciata direttamente sugli AC dell'epic. **Ordine di consegna: 10° di 10** (S006 → S005 → S011 → S012 → S013 → S007 → S008 → S004 → S009 → **S010**).
 
 **Decision:** Cosa verifica la suite end-to-end Playwright sul sito generato a partire da un insieme di contenuti di test, non dal repo contenuti reale: comportamento delle pagine e delle islands, accessibilità WCAG 2.2 AA, SEO di base (AC-6). La storia comprende anche il far passare la suite: meta description e gestione dei `#` nel corpo markdown, che oggi producono un secondo `<h1>`.
 
