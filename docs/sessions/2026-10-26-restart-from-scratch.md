@@ -82,7 +82,7 @@ Both tracked as backlog cards:
   open, not blocking until pages link to each other.
 - [Challenge the live skeleton with `residuality`](../backlog/challenge-skeleton-with-residuality.md):
   when the user calls it.
-- [Run build, deploy and tests only when the code changes](../wip/run-pipeline-only-on-code-changes.md):
+- [Run build, deploy and tests only when the code changes](../done/2026-10-27_run-pipeline-only-on-code-changes.md):
   asked by the user after documentation-only commits triggered full
   publications; options open.
 

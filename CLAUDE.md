@@ -40,6 +40,21 @@ Overridden for this repository:
 - **The user directs.** Other skills are invoked by the user when needed. Do
   the agreed step, report the outcome, then wait.
 
+## Backlog cards
+
+A card is a file that moves through three folders, so the folder alone tells
+its state:
+
+| Folder | State | File name |
+|---|---|---|
+| `docs/backlog/` | Noticed, not started | `<name>.md` |
+| `docs/wip/` | Being worked on now | `<name>.md` |
+| `docs/done/` | Finished | `yyyy-MM-dd_<name>.md`, the date being the day it moved to `done` |
+
+Cards move with `git mv`, so their history follows them. When a card moves,
+links to it from other documents are updated in the same commit. The date
+prefix keeps `docs/done/` in the order the work was finished.
+
 ## Model routing
 
 | Kind of work | Model |
@@ -88,7 +103,8 @@ Why each choice was made: `docs/plan.md`, "Decisions taken".
 | `.github/workflows/deploy.yml` | Check, build, test, publish, then test the live site |
 | `docs/plan.md` | Current plan (Now / Next / Later), decisions taken and open |
 | `docs/backlog/` | Tickets: things noticed but deliberately not done yet, with the reason |
-| `docs/wip/` | Backlog cards being worked on now; a card moves here from `docs/backlog/` when work on it starts |
+| `docs/wip/` | Backlog cards being worked on now (see "Backlog cards") |
+| `docs/done/` | Finished backlog cards, prefixed with the date they were finished |
 | `docs/sessions/` | One minute per working session |
 | `docs/licences/third-party-usage.md` | Usage log for the CC BY-NC-SA `modularity` plugin, enabled in `.claude/settings.json` (required by the global licensing rule) |
 

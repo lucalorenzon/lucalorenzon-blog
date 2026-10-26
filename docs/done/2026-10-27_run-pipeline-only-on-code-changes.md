@@ -1,7 +1,10 @@
 # Backlog: run build, deploy and tests only when the code changes
 
 - **Opened:** 2026-10-26
-- **Status:** in progress — option B chosen on 2026-10-27, see "Decision".
+- **Status:** done on 2026-10-27 — option B, see "Decision". The commit that
+  changed the workflow (`7a21480`) ran every job, as expected for a code
+  change; the outcome of the first documentation-only run is recorded in the
+  session minute of 2026-10-27.
 
 ## Decision
 
