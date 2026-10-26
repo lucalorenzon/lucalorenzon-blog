@@ -23,6 +23,7 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 - Il sito generato ottiene punteggio Lighthouse >90 (performance)
 - Il layout rispetta WCAG 2.2 AA
 - Google Tag Manager è attivo e traccia le visite
+- Ogni pagina generata ha i requisiti SEO di base: title, meta description, un solo h1
 
 ## Actors
 
@@ -43,7 +44,7 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 - Verifica dei requisiti non funzionali: Lighthouse >90, WCAG 2.2 AA sul layout esistente
 
 ### Out of scope
-- SEO on-page tattico (meta OG/Twitter card, canonical URL, JSON-LD)
+- SEO on-page tattico (meta OG/Twitter card, canonical URL, JSON-LD) — non include i requisiti di base di AC-6 (title, meta description, un solo h1), che restano in scope
 - Discoverability (robots.txt, sitemap, feed RSS/Atom)
 - Pagine di identità professionale (chi sono, contatti)
 - Consenso/cookie-banner prima del caricamento di GTM (vedi Open Issues per il rischio associato)
@@ -67,6 +68,7 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 | AC-3 | Il sito generato ottiene punteggio Lighthouse >90 (performance) | Audit Lighthouse sull'output di build |
 | AC-4 | Il layout rispetta WCAG 2.2 AA | Audit di accessibilità (es. axe / Lighthouse a11y) |
 | AC-5 | Google Tag Manager è attivo e traccia le visite | Verifica in GTM/GA che gli eventi di visita arrivano |
+| AC-6 | Ogni pagina generata ha un `<title>`, una meta description e un solo `<h1>` | Test end-to-end Playwright sul sito generato con contenuti di test (EP-001-S010) |
 
 ## ADRs
 
@@ -108,3 +110,4 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 | 2026-08-24 | Completata EP-001-UC-001-S002 (unicità slug): `ContentSource::exists`, dominio `SlugUniquenessError`/`ensure_slug_is_unique`. Size **S** |
 | 2026-09-01 | Completata (chiusa formalmente a posteriori) EP-001-UC-001-S003 (SSG: ARTICLE-PAGE/LISTING-PAGE/HOME-PAGE, ADR-004 implementata). Verifica end-to-end con build reale ha trovato e corretto 3 bug reali (path fallback immagine, path immagine propria dell'articolo mai copiata nel sito generato). Size **XL** — assegnata retroattivamente, eccezione nota: story pianificata/condotta sotto un sistema di regole LLM precedente, servita anche da banco di prova per le modifiche al nuovo sistema; non passata dal gate odierno "XL/XXL → torna a `/sw-story-split`". **Emerso un candidato a thin epic non ancora creato**: storage immagini articolo proprio (oggi fix minimo — immagini copiate da `images_dir` del repo contenuti in `site-root/images` a build time — location, collisioni e porta `AssetSource` dedicata restano da decidere in una story/epic separata) |
 | 2026-09-01 | Creato [EP-002](EP-002-contenuto-visivo-scalabile-articoli.md) — contenuto visivo scalabile per gli articoli: storage immagini disaccoppiato da git (`AssetSource`, limiti spazio GitHub free tier) + adattamento responsive per breakpoint (copertina e immagini nel corpo del testo). Assorbe il residuo #7 dello Stressor Analysis di S003 |
+| 2026-10-26 | Aggiunto AC-6 (SEO di base: title, meta description, un solo h1), chiesto durante il replan di S004/S005. Precisato che l'esclusione "SEO on-page tattico" non lo copre. Oggi non soddisfatto: manca la meta description, e un `#` nel corpo markdown produce un secondo `<h1>` |
