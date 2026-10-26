@@ -1,8 +1,9 @@
 # Backlog: run the browser tests inside the official Playwright image
 
 - **Opened:** 2026-10-26
-- **Status:** deferred. The site stays on the current setup and the problem
-  is watched; this ticket is picked up if it happens again.
+- **Status:** scheduled for the next working session. First deferred on
+  2026-10-26 to watch whether the slowdown recurred; it recurred in the
+  next two runs (see "Measurements"), so the user decided to address it.
 
 ## Why this was asked
 
@@ -17,10 +18,26 @@ Ubuntu's package server delivered 24.9 MB at 45 kB/s, which took 9 min 11 s.
 Chromium itself downloaded in 4 seconds. In the same run, a few minutes
 earlier, the same step in the build job took 19 seconds.
 
-So the cause was an occasional slowdown of the package server GitHub's
-runners use, not a defect in the pipeline. Both test runs, before and
-after publishing, depend on that server on every run, so the slowdown can
-come back at any time and delay a publication.
+So the cause was a slowdown of the package server GitHub's runners use,
+not a defect in the pipeline. Both test runs, before and after
+publishing, depend on that server on every run, so the slowdown can come
+back at any time and delay a publication.
+
+## Measurements
+
+Duration of the step that installs Chromium and its system libraries,
+per run of the "Build and deploy" workflow. The rest of the workflow takes
+about a minute and a half in total.
+
+| Run | Date (UTC) | Before publishing (`build`) | After publishing (`verify-live`) | Whole run |
+|---|---|---|---|---|
+| [40409740212](https://github.com/lucalorenzon/lucalorenzon-blog/actions/runs/40409740212) | 2026-10-26 22:05 | 19 s | **568 s** | ~13 min |
+| [40413126574](https://github.com/lucalorenzon/lucalorenzon-blog/actions/runs/40413126574) | 2026-10-26 22:40 | normal | normal | ~2 min |
+| [40415178173](https://github.com/lucalorenzon/lucalorenzon-blog/actions/runs/40415178173) | 2026-10-26 22:48 | **657 s** | **205 s** | ~15 min |
+
+Slow in 3 of the 6 installs, across 2 of the 3 runs: recurring, not a
+one-off, at least on that day. Chromium itself always downloaded in a few
+seconds; the time goes into the system libraries.
 
 ## Proposal
 
@@ -59,11 +76,13 @@ What it changes in `.github/workflows/deploy.yml`:
   manual change to the workflow, and forgetting it breaks the test run.
 - **More moving parts.** One more job, a site artifact passed between
   jobs, and one more required check in the ruleset.
-- **It solves a problem seen once.** At the time of writing the slowdown
-  had happened in one run out of one.
+- **The problem may be temporary.** The measurements cover a single
+  evening; the package server may recover. This no longer argues for
+  waiting: three slow installs out of six already cost about 24 minutes.
 
 ## When to pick this up
 
-If a browser test step takes much longer than usual again for the same
-reason (system library download), or when `residuality` reviews the
-pipeline and flags this dependency.
+Next working session, as decided by the user on 2026-10-27. The
+"Cons" above stay to be weighed when choosing how to do it, in
+particular how to keep the image tag aligned with the Playwright
+package.

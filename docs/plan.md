@@ -68,10 +68,11 @@ Run `residuality` against the live skeleton and decide the following
 increments from its outcome
 ([backlog card](backlog/challenge-skeleton-with-residuality.md)).
 
-Input already known for that review:
-[run the browser tests inside the official Playwright image](backlog/run-browser-tests-in-playwright-image.md)
-(deferred: an occasional slowdown of Ubuntu's package server delayed the
-first publication by about nine minutes).
+First, in the next session:
+[run the browser tests inside the official Playwright image](backlog/run-browser-tests-in-playwright-image.md).
+Slowdowns of Ubuntu's package server while installing Chromium's system
+libraries delayed two of the first three publications by 10 to 13
+minutes.
 
 ## Later
 

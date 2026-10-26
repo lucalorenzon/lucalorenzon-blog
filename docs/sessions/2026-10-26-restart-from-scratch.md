@@ -81,7 +81,14 @@ Both tracked as backlog cards:
 - [Choose the site's public address](../backlog/choose-site-address.md):
   open, not blocking until pages link to each other.
 - [Challenge the live skeleton with `residuality`](../backlog/challenge-skeleton-with-residuality.md):
-  the planned next step, when the user calls it.
+  when the user calls it.
 - [Run build, deploy and tests only when the code changes](../backlog/run-pipeline-only-on-code-changes.md):
   asked by the user after documentation-only commits triggered full
   publications; options open.
+
+## Next step
+
+The Chromium slowdown recurred in a later run (two slow runs out of
+three, see the card's "Measurements"), so the user decided on 2026-10-27
+that the next session starts with
+[running the browser tests inside the official Playwright image](../backlog/run-browser-tests-in-playwright-image.md).
