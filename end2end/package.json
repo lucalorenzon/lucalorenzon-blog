@@ -1,0 +1,11 @@
+{
+  "name": "lucalorenzon-blog-end2end",
+  "private": true,
+  "description": "End-to-end browser test of the blog (Playwright, Chromium)",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
+}

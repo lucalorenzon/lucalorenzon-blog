@@ -13,6 +13,22 @@ Rust + [Leptos](https://github.com/leptos-rs/leptos), styled with
 [Tailwind CSS](https://tailwindcss.com/), generated as a static site and
 hosted on GitHub Pages.
 
+## Build and test locally
+
+Requirements: Rust (stable, installed automatically from
+`rust-toolchain.toml`), Node.js 24, Python 3, Linux x64.
+
+```sh
+scripts/build-site.sh            # builds the site into target/site
+cargo test                       # unit tests
+cd end2end && npm ci && npx playwright install chromium
+npx playwright test              # opens the built site in a browser
+```
+
+Every push to `main` runs the same checks on GitHub, publishes the site
+to GitHub Pages and then runs the browser test again on the public
+address.
+
 ## Documentation
 
 | Document | Path | Description |

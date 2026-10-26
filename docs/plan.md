@@ -17,8 +17,8 @@ previous site.
 |---|---|---|---|
 | 1 | Remove the previous site from the repository | Only what is reused remains | done |
 | 2 | Project working rules, README, this plan, session minutes folder | Future sessions start from the new rules | done |
-| 3 | Leptos + Tailwind build that generates a static `index.html` with "Sito in costruzione" | The page opens locally from the build output | in progress |
-| 4 | GitHub Actions workflow publishing to GitHub Pages; Pages enabled on the repository | The site is live | to do |
+| 3 | Leptos + Tailwind build that generates a static `index.html` with "Sito in costruzione" | The page opens locally from the build output | done |
+| 4 | GitHub Actions workflow publishing to GitHub Pages, guarded by a browser test before and after publishing; Pages enabled on the repository | The site is live, and a test proves a visitor sees "Sito in costruzione" | in progress |
 | 5 | Memory reset: local Claude Code memory updated, Hindsight bank emptied, ticket in `ll-dev-setup` for the missing `project-init` template | No outdated rule survives | done |
 
 ### Decisions taken
@@ -38,6 +38,15 @@ previous site.
    server, an async runtime and WebAssembly into the build to produce one
    page of text. Comparing the two again is a natural question for the
    `residuality` challenge once articles arrive.
+5. **End-to-end browser test: before and after publishing.** One
+   Playwright test (Chromium) opens the page, checks that its main heading
+   reads "Sito in costruzione" and that the stylesheet loads. The same test
+   runs twice in the pipeline: on the freshly built site served locally,
+   so a broken page is never published; and on the public address right
+   after publishing, because only that run proves what a visitor actually
+   sees (sub-path, Pages settings, the deployment itself). The second run
+   can only report a problem once the site is already published; that was
+   accepted as the price of checking the live site.
 
 ### Open decisions
 

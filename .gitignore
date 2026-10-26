@@ -13,3 +13,8 @@
 .env.*
 *.pem
 *.key
+
+# End-to-end test output
+end2end/node_modules/
+end2end/test-results/
+end2end/playwright-report/

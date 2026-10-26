@@ -66,17 +66,27 @@ next step. The minute is committed as the session's last commit.
 
 ## Stack
 
-- [Leptos](https://github.com/leptos-rs/leptos) — version: open decision, see
-  `docs/plan.md`
-- [Tailwind CSS](https://tailwindcss.com/) v4, compiled by `cargo-leptos`
-- Static site generation; hosting on GitHub Pages, published by GitHub Actions
+- [Leptos](https://github.com/leptos-rs/leptos) 0.8.22, used only to render
+  pages to static HTML at build time (no server, no WebAssembly yet)
+- [Tailwind CSS](https://tailwindcss.com/) v4, standalone command-line tool
+  pinned by version and checksum in `scripts/build-site.sh`
+- Hosting on GitHub Pages, published by GitHub Actions
+- [Playwright](https://playwright.dev/) end-to-end test, run before and after
+  each publication
 - Rust stable toolchain, pinned in `rust-toolchain.toml`
+
+Why each choice was made: `docs/plan.md`, "Decisions taken".
 
 ## Repository map
 
 | Path | Content |
 |---|---|
-| `docs/plan.md` | Current plan (Now / Next / Later) and open decisions |
+| `src/` | The Leptos page component and the build program that writes `index.html` |
+| `style/input.css` | Tailwind entry point |
+| `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
+| `end2end/` | Playwright end-to-end test |
+| `.github/workflows/deploy.yml` | Check, build, test, publish, then test the live site |
+| `docs/plan.md` | Current plan (Now / Next / Later), decisions taken and open |
 | `docs/sessions/` | One minute per working session |
 | `docs/licences/third-party-usage.md` | Usage log for the CC BY-NC-SA `modularity` plugin, enabled in `.claude/settings.json` (required by the global licensing rule) |
 
