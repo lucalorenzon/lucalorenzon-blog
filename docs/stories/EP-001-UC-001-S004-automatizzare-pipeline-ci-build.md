@@ -41,7 +41,7 @@ Before any implementation, complete in order:
 - I log della pipeline sono pubblici: accettato, perché su `main` arriva solo ciò che va pubblicato.
 
 ### Dependencies
-- [[EP-001-UC-001-S008]] (artefatti fissi), [[EP-001-UC-001-S007]] (validazione), [[EP-001-UC-001-S005]] (passo di deploy), [[EP-001-UC-001-S006]] (`base_url`).
+- [[EP-001-UC-001-S008]] (artefatti fissi), [[EP-001-UC-001-S007]] (validazione), [[EP-001-UC-001-S005]] (passo di deploy), [[EP-001-UC-001-S006]] (`CONTEXT_ROOT`).
 
 ### Decisions Log
 | Date | Decision | Reasoning | Alternatives Considered |

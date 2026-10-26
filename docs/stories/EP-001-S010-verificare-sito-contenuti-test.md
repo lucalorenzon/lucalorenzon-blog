@@ -37,7 +37,7 @@ Before any implementation, complete in order:
 - **Possibili due decisioni** (verifica + adeguamento del sito): se `/story-size` dà più di L, la storia torna a `/sw-story-split`.
 
 ### Dependencies
-- Nessuna dipendenza di design. Usa la `base_url` di [[EP-001-UC-001-S006]] per servire il sito sotto test.
+- Nessuna dipendenza di design. Usa la `CONTEXT_ROOT` di [[EP-001-UC-001-S006]] per servire il sito sotto test.
 
 ### Decisions Log
 | Date | Decision | Reasoning | Alternatives Considered |

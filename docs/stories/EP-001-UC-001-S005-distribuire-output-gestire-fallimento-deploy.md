@@ -39,7 +39,7 @@ Before any implementation, complete in order:
 - Si parte dall'indirizzo di GitHub Pages; il dominio personale arriva dopo, come semplice cambio di configurazione ([[EP-001-UC-001-S006]]).
 
 ### Dependencies
-- [[EP-001-UC-001-S006]] (`base_url`): senza, sotto `lucalorenzon.github.io/lucalorenzon-blog/` CSS, wasm, immagini e link interni restano rotti.
+- [[EP-001-UC-001-S006]] (`CONTEXT_ROOT`): senza, sotto `lucalorenzon.github.io/lucalorenzon-blog/` CSS, wasm, immagini e link interni restano rotti.
 - Output generato da [[EP-001-UC-001-S003]].
 
 ### Decisions Log
