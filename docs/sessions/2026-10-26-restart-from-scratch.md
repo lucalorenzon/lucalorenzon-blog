@@ -66,8 +66,9 @@ Outside the repository:
 
 - Deleting a Hindsight bank removes its content but not its mission: the
   recreated bank came back with the old mission, which had to be replaced
-  separately. Possible note for the Hindsight rules bank; not written,
-  waiting for the user.
+  separately. Written, with the user's confirmation, to the `llm-rules`
+  bank as a reliability learning (document
+  `hindsight-delete-bank-keeps-mission`, dated to the event).
 - The first live-site test took 9 min 40 s because Ubuntu's package
   server was slow (see backlog ticket).
 - GitHub is moving `ubuntu-latest` to Ubuntu 26; the first run already ran
@@ -75,10 +76,9 @@ Outside the repository:
 
 ## Open points
 
-- Site address (custom domain or sub-path): open, not blocking until pages
-  link to each other.
-- The Hindsight note above, if the user wants it.
+Both tracked as backlog cards:
 
-## Next step
-
-Challenge the live skeleton with `residuality`, when the user calls it.
+- [Choose the site's public address](../backlog/choose-site-address.md):
+  open, not blocking until pages link to each other.
+- [Challenge the live skeleton with `residuality`](../backlog/challenge-skeleton-with-residuality.md):
+  the planned next step, when the user calls it.

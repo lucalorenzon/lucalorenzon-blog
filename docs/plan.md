@@ -55,7 +55,8 @@ previous site.
    Not blocking now: the single page refers to its stylesheet by a
    relative path, so it works the same under either address. It becomes
    a real decision once pages link to each other. Until then the site goes
-   live on the standard GitHub Pages address.
+   live on the standard GitHub Pages address
+   ([backlog card](backlog/choose-site-address.md)).
 
 Closed without a decision: **old remote branches.** By the time it came
 up, GitHub held only `main`; the other branches of the previous site were
@@ -64,7 +65,8 @@ already gone from the remote, and no pull request was open.
 ## Next — challenge the skeleton
 
 Run `residuality` against the live skeleton and decide the following
-increments from its outcome.
+increments from its outcome
+([backlog card](backlog/challenge-skeleton-with-residuality.md)).
 
 Input already known for that review:
 [run the browser tests inside the official Playwright image](backlog/run-browser-tests-in-playwright-image.md)
