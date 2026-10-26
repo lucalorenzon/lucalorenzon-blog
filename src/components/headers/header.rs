@@ -4,7 +4,7 @@ use icondata::LuSearch;
 use leptos::html::Div;
 use leptos::prelude::*;
 use leptos_icons::Icon;
-use leptos_use::use_element_visibility;
+use leptos_use_element_visibility::use_element_visibility;
 
 #[island]
 pub fn DynamicHeader(children: Children) -> impl IntoView {
