@@ -1,0 +1,70 @@
+# Build check for the code repository: every PR and push to main must lint,
+# test and build (server + WASM) before it lands. Not the content-publishing
+# pipeline — that is EP-001-UC-001-S004, triggered from the content repo.
+#
+# Left out on purpose, because each one is already red on main and would make
+# this check fail from day one: `cargo fmt --check`, `cargo audit` (h2 via
+# actix-http) and the Playwright end-to-end suite. Add each back here once its
+# own chore fixes it.
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  # Same version used locally; bump deliberately, together with its checksum.
+  CARGO_LEPTOS_VERSION: "0.3.7"
+  CARGO_LEPTOS_SHA256: "fda80f4845e92d0e8f5ec13cf1a46982ba7a518ae01182e7e4201312944bc05d"
+
+jobs:
+  build:
+    name: Lint, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # No arguments: installs the channel pinned in rust-toolchain.toml.
+      - name: Install Rust toolchain
+        run: |
+          rustup toolchain install --profile minimal
+          rustup component add clippy
+          rustup target add wasm32-unknown-unknown
+
+      - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+
+      # Prebuilt release binary instead of `cargo install` (minutes of compile),
+      # verified against a checksum pinned above rather than one fetched alongside it.
+      - name: Install cargo-leptos
+        run: |
+          archive="cargo-leptos-x86_64-unknown-linux-gnu.tar.gz"
+          curl -sSfL -o "$archive" \
+            "https://github.com/leptos-rs/cargo-leptos/releases/download/v${CARGO_LEPTOS_VERSION}/${archive}"
+          echo "${CARGO_LEPTOS_SHA256}  ${archive}" | sha256sum --check --strict
+          tar xzf "$archive"
+          install -m 0755 cargo-leptos-x86_64-unknown-linux-gnu/cargo-leptos "$HOME/.cargo/bin/cargo-leptos"
+          rm -rf "$archive" cargo-leptos-x86_64-unknown-linux-gnu
+          cargo leptos --version
+
+      - name: Clippy (server)
+        run: cargo clippy --features ssr -- -D warnings
+
+      - name: Clippy (client / WASM)
+        run: cargo clippy --lib --features hydrate --target wasm32-unknown-unknown -- -D warnings
+
+      - name: Unit tests
+        run: cargo test --features ssr
+
+      - name: Release build (server + WASM)
+        run: cargo leptos build --release
