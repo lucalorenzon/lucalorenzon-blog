@@ -89,6 +89,14 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 | UC-004 | Header si adatta allo scroll e al contesto della pagina | ⬇ Subfunction | Draft |
 | UC-005 | Visitatore usa il menu di navigazione | ⬇ Subfunction | Draft |
 
+## Stories
+
+Storie tracciate direttamente sugli AC dell'epic, senza un UC. Le storie di UC-001 sono elencate in [UC-001](../use-cases/UC-001-autore-pubblica-articolo.md#stories), con l'ordine di consegna.
+
+| Story ID | Title | Status |
+|---|---|---|
+| EP-001-S010 | Verificare il sito generato con contenuti di test (Playwright: comportamento, WCAG, SEO di base) | Pending discussion |
+
 ## Open Issues
 
 - ~~GTM è in scope di questo epic ma il consenso/cookie-banner è esplicitamente fuori scope...~~ — **risolto** (2026-08-21): il consenso/cookie-banner sarà affrontato in un epic compliance dedicato, separato da EP-001 (non ancora creato/numerato). **Vincolo:** GTM non va distribuito in produzione da EP-001 finché quell'epic non ha coperto il consenso — rischio di non conformità UE altrimenti.
@@ -111,3 +119,4 @@ Stato attuale (fotografato nell'assessment architetturale collegato): sito Lepto
 | 2026-09-01 | Completata (chiusa formalmente a posteriori) EP-001-UC-001-S003 (SSG: ARTICLE-PAGE/LISTING-PAGE/HOME-PAGE, ADR-004 implementata). Verifica end-to-end con build reale ha trovato e corretto 3 bug reali (path fallback immagine, path immagine propria dell'articolo mai copiata nel sito generato). Size **XL** — assegnata retroattivamente, eccezione nota: story pianificata/condotta sotto un sistema di regole LLM precedente, servita anche da banco di prova per le modifiche al nuovo sistema; non passata dal gate odierno "XL/XXL → torna a `/sw-story-split`". **Emerso un candidato a thin epic non ancora creato**: storage immagini articolo proprio (oggi fix minimo — immagini copiate da `images_dir` del repo contenuti in `site-root/images` a build time — location, collisioni e porta `AssetSource` dedicata restano da decidere in una story/epic separata) |
 | 2026-09-01 | Creato [EP-002](EP-002-contenuto-visivo-scalabile-articoli.md) — contenuto visivo scalabile per gli articoli: storage immagini disaccoppiato da git (`AssetSource`, limiti spazio GitHub free tier) + adattamento responsive per breakpoint (copertina e immagini nel corpo del testo). Assorbe il residuo #7 dello Stressor Analysis di S003 |
 | 2026-10-26 | Aggiunto AC-6 (SEO di base: title, meta description, un solo h1), chiesto durante il replan di S004/S005. Precisato che l'esclusione "SEO on-page tattico" non lo copre. Oggi non soddisfatto: manca la meta description, e un `#` nel corpo markdown produce un secondo `<h1>` |
+| 2026-10-26 | Replan completo di S004/S005 con `sw-story-split` → 7 storie, in ordine di consegna: S006 `base_url` configurabile, S005 deploy su push di codice (compreso il primo), S007 validazione dell'insieme dei contenuti, S008 artefatti fissi come Release, S004 rigenerazione su push dei contenuti, S009 controllo dell'output prima del deploy, EP-001-S010 Playwright. ADR-003 riconfermata (inversione pubblico/privato valutata e scartata). Si parte dall'indirizzo GitHub Pages; il dominio personale arriva dopo, come cambio di configurazione |

@@ -1,20 +1,23 @@
-## EP-001-UC-001-S005 — Distribuire l'output generato e gestire il fallimento di deploy
+## EP-001-UC-001-S005 — Pubblicare il sito su GitHub Pages a ogni push di codice, compreso il primo deploy
 
-**Decision:** Con quale meccanismo l'output statico generato viene distribuito in produzione, e cosa succede quando il deploy fallisce — il sistema deve mantenere attiva l'ultima versione distribuita con successo e informare l'autore tramite lo stesso canale (check fallito su GitHub Actions + email), essendo il deploy uno step della stessa pipeline.
+> Riscritta nel replan del 2026-10-26: lo scope (deploy e ultima versione buona) resta, si aggiungono il primo deploy e la ripubblicazione a ogni push di codice. **Ordine di consegna: 2° di 7** (S006 → **S005** → S007 → S008 → S004 → S009 → S010) — è la storia che porta il sito online.
 
-As Autore/Editore, voglio che un deploy fallito non lasci il sito in uno stato rotto e che io ne sia informato so that i visitatori vedono sempre una versione funzionante del sito, anche quando la mia ultima pubblicazione non è andata a buon fine.
+**Decision:** Con quale meccanismo l'output generato viene pubblicato su GitHub Pages a ogni push di codice su `main` (rigenerando con i contenuti attuali del repo contenuti), compreso il primo deploy, e come resta online l'ultima versione pubblicata con successo quando un deploy fallisce.
+
+As Autore/Editore, voglio che ogni modifica al codice del sito arrivi online con i contenuti attuali, e che un deploy fallito non rompa il sito, so that i visitatori vedono sempre una versione funzionante e aggiornata.
 
 | Field | Value |
 |---|---|
 | **Epic** | EP-001 — Rilancio del blog personale come presenza professionale |
 | **UC** | UC-001 — Autore pubblica un nuovo articolo |
 | **Pattern** | Workflow steps + Simple/Complex |
-| **AT rows** | AT-UC-001 righe: 1-5 (happy path, limitatamente a "distribuzione riuscita → sito aggiornato servito"), 4a (distribuzione fallisce) |
+| **AT rows** | AT-UC-001 righe: 1-5 (limitatamente a "distribuzione riuscita → sito aggiornato servito"), 4a (distribuzione fallisce) |
 
 ### Acceptance criteria
-- Given un output statico generato con successo da [[EP-001-UC-001-S003]], when il deploy riesce, then il sito servito ai visitatori riflette la nuova versione, con l'articolo raggiungibile
-- Given un output statico generato con successo, when il deploy fallisce, then il sistema mantiene attiva l'ultima versione distribuita con successo (non la nuova build)
-- Given un deploy fallito, when la pipeline lo rileva, then l'autore è informato tramite check fallito su GitHub Actions con dettaglio nel log, più email di notifica standard di GitHub, e può ripetere la pubblicazione
+- Given nessun sito ancora pubblicato, when la pipeline su `main` riesce, then il sito è raggiungibile all'indirizzo di GitHub Pages con stili, immagini, link e interattività funzionanti
+- Given un push di codice su `main` con build riuscita, when il deploy riesce, then il sito servito riflette il nuovo codice con i contenuti attuali del repo contenuti
+- Given un push di codice su `main`, when il deploy fallisce, then resta servita l'ultima versione pubblicata con successo, il check fallisce con dettaglio nel log e l'autore riceve l'email standard di GitHub
+- Given una pull request (non un push su `main`), when la CI gira, then non avviene nessun deploy
 
 ### Design pipeline
 Before any implementation, complete in order:
@@ -28,10 +31,16 @@ Before any implementation, complete in order:
 - [ ] `/story-size EP-001-UC-001-S005`       — assign XS / S / M / L / XL / XXL
 
 ### Open questions
-- Meccanismo di deploy concreto (target di hosting, come "l'ultima versione distribuita con successo" resta servita — es. atomic swap, versioning per commit) non ancora deciso; materia del design pipeline di questa story, non risolvibile a livello di story-split.
+- Verificare che il deploy di Pages tramite Actions sia atomico (un deploy fallito non sostituisce il sito servito). Se lo è, l'estensione 4a è comportamento nativo e non va costruita.
+- Rapporto con il workflow `ci.yml` già esistente: deploy come job successivo dello stesso workflow o workflow separato.
+- Credenziale di lettura del repo contenuti (ADR-003, Technical Notes): PAT fine-grained o deploy key.
+
+### Constraints agreed at split (2026-10-26)
+- Si parte dall'indirizzo di GitHub Pages; il dominio personale arriva dopo, come semplice cambio di configurazione ([[EP-001-UC-001-S006]]).
 
 ### Dependencies
-- Richiede l'output generato da [[EP-001-UC-001-S003]] e si aggancia allo stesso canale di segnalazione errori introdotto da [[EP-001-UC-001-S004]].
+- [[EP-001-UC-001-S006]] (`base_url`): senza, sotto `lucalorenzon.github.io/lucalorenzon-blog/` CSS, wasm, immagini e link interni restano rotti.
+- Output generato da [[EP-001-UC-001-S003]].
 
 ### Decisions Log
 | Date | Decision | Reasoning | Alternatives Considered |

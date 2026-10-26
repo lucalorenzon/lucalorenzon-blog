@@ -58,9 +58,17 @@
 |---|---|---|
 | EP-001-UC-001-S001 | Modellare l'articolo e la porta ContentSource | Done (2026-08-23) — dominio + porta `ContentSource`/`FetchError` + adapter `FilesystemContentSource`/`InMemoryContentSource`, 19 test verdi, AT rows 1-5/3a + AC-6 coperte |
 | EP-001-UC-001-S002 | Verificare l'unicità dello slug rispetto agli articoli già pubblicati | Done (2026-08-24) — `ContentSource::exists`, `SlugUniquenessError`, `ensure_slug_is_unique`, 26 test verdi |
-| EP-001-UC-001-S003 | Generare il sito statico da un Article (ARTICLE-PAGE, LISTING-PAGE, HOME-PAGE) | Pending discussion |
-| EP-001-UC-001-S004 | Automatizzare la pipeline CI: trigger su push e segnalazione errori | Pending discussion |
-| EP-001-UC-001-S005 | Distribuire l'output generato e gestire il fallimento di deploy | Pending discussion |
+| EP-001-UC-001-S003 | Generare il sito statico da un Article (ARTICLE-PAGE, LISTING-PAGE, HOME-PAGE) | Done (2026-09-01) — size XL, assegnata a posteriori |
+| EP-001-UC-001-S004 | Rigenerare e pubblicare il sito a ogni push su `main` del repo contenuti | Pending discussion — riscritta 2026-10-26 |
+| EP-001-UC-001-S005 | Pubblicare il sito su GitHub Pages a ogni push di codice, compreso il primo deploy | Pending discussion — riscritta 2026-10-26 |
+| EP-001-UC-001-S006 | Servire il sito sotto una `base_url` configurabile | Pending discussion |
+| EP-001-UC-001-S007 | Validare l'insieme dei contenuti prima della generazione | Pending discussion |
+| EP-001-UC-001-S008 | Costruire e pubblicare gli artefatti fissi come Release | Pending discussion |
+| EP-001-UC-001-S009 | Controllare l'output generato prima del deploy | Pending discussion |
+
+**Ordine di consegna (replan 2026-10-26):** S006 → S005 → S007 → S008 → S004 → S009, poi [EP-001-S010](../stories/EP-001-S010-verificare-sito-contenuti-test.md) (registrata sull'epic, non appartiene a questo UC). I numeri non seguono l'ordine perché S004 e S005 mantengono il significato con cui altri documenti già le citano (S004 = pipeline avviata dal push sui contenuti, S005 = deploy).
+
+**Estensione mancante, segnalata da S009:** "output generato non valido" (link interno o risorsa non raggiungibile, risorsa oltre la soglia → deploy bloccato; link esterno rotto → solo avviso). Va aggiunta a questo UC e ad AT-UC-001 prima di implementare S009.
 
 **Estensione 2a (push respinto per conflitto o permessi mancanti) non ha una story dedicata**: è comportamento nativo di git/GitHub (il repo respinge il push, l'autore risolve conflitto/permessi fuori dal sistema che stiamo costruendo) — nessuno sviluppo applicativo la copre. Segnalato qui per non assorbirla silenziosamente in un'altra story (Step 7 di `sw-story-split`).
 
