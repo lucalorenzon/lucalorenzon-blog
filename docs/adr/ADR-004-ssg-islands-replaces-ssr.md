@@ -1,7 +1,7 @@
 # ADR-004: SSG + islands al posto di SSR
 
 - **Date:** 2026-08-24
-- **Status:** Proposed
+- **Status:** Accepted (implemented in EP-001-UC-001-S003, verified with a real build 2026-09-01; status line aligned with EP-001 on 2026-10-26)
 - **Stories:** EP-001-UC-001-S003
 
 ## Context
