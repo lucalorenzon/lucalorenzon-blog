@@ -87,6 +87,7 @@ Why each choice was made: `docs/plan.md`, "Decisions taken".
 | `end2end/` | Playwright end-to-end test |
 | `.github/workflows/deploy.yml` | Check, build, test, publish, then test the live site |
 | `docs/plan.md` | Current plan (Now / Next / Later), decisions taken and open |
+| `docs/backlog/` | Tickets: things noticed but deliberately not done yet, with the reason |
 | `docs/sessions/` | One minute per working session |
 | `docs/licences/third-party-usage.md` | Usage log for the CC BY-NC-SA `modularity` plugin, enabled in `.claude/settings.json` (required by the global licensing rule) |
 

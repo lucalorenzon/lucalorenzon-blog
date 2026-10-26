@@ -18,7 +18,7 @@ previous site.
 | 1 | Remove the previous site from the repository | Only what is reused remains | done |
 | 2 | Project working rules, README, this plan, session minutes folder | Future sessions start from the new rules | done |
 | 3 | Leptos + Tailwind build that generates a static `index.html` with "Sito in costruzione" | The page opens locally from the build output | done |
-| 4 | GitHub Actions workflow publishing to GitHub Pages, guarded by a browser test before and after publishing; Pages enabled on the repository | The site is live, and a test proves a visitor sees "Sito in costruzione" | in progress |
+| 4 | GitHub Actions workflow publishing to GitHub Pages, guarded by a browser test before and after publishing; Pages enabled on the repository | The site is live, and a test proves a visitor sees "Sito in costruzione" | done (live at https://lucalorenzon.github.io/lucalorenzon-blog/) |
 | 5 | Memory reset: local Claude Code memory updated, Hindsight bank emptied, ticket in `ll-dev-setup` for the missing `project-init` template | No outdated rule survives | done |
 
 ### Decisions taken
@@ -64,6 +64,11 @@ previous site.
 
 Run `residuality` against the live skeleton and decide the following
 increments from its outcome.
+
+Input already known for that review:
+[run the browser tests inside the official Playwright image](backlog/run-browser-tests-in-playwright-image.md)
+(deferred: an occasional slowdown of Ubuntu's package server delayed the
+first publication by about nine minutes).
 
 ## Later
 

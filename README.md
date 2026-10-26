@@ -34,6 +34,7 @@ address.
 | Document | Path | Description |
 |---|---|---|
 | Plan | [docs/plan.md](docs/plan.md) | What is being built now, next and later, and the decisions still open |
+| Backlog | [docs/backlog/](docs/backlog/) | Things noticed but deliberately not done yet, with the reason |
 | Session minutes | [docs/sessions/](docs/sessions/) | One record per working session: decisions and why |
 | Working rules | [CLAUDE.md](CLAUDE.md) | How this project is developed |
 
