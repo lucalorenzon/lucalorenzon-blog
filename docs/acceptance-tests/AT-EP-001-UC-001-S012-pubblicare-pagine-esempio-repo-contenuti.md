@@ -55,3 +55,7 @@ ipsum" quando esistono).
   l'infrastruttura Playwright di [[EP-001-S010]], o finché il design di
   S006 non adatta il server di sviluppo.
 - **Righe da aggiungere** (vedi nota in cima).
+- **Sfondo delle pagine articolo nel CSS**: il CSS generato contiene
+  `url("/images/ostia_sea_top_image.webp")` (classe Tailwind in
+  `src/layout.rs:20`). Sotto prefisso dà 404: serve una riga in
+  `/acceptance-tests` (rilevato nella revisione AT di S006, 2026-10-26).
