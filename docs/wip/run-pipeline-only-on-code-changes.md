@@ -1,7 +1,41 @@
 # Backlog: run build, deploy and tests only when the code changes
 
 - **Opened:** 2026-10-26
-- **Status:** proposed, not decided.
+- **Status:** in progress — option B chosen on 2026-10-27, see "Decision".
+
+## Decision
+
+Option B, chosen by the user on 2026-10-27, in a simpler form than the
+one described below: the skip happens per job, not per step.
+
+- **Why B over A.** A would block, forever, any pull request that touches
+  only documentation — for example one opened by a remote session. B costs
+  one extra small job and leaves no such dead end.
+- **Why per job.** The GitHub documentation states that a job skipped by
+  its own `if:` condition reports its check as successful, while a whole
+  workflow skipped by a path filter leaves it pending. So a first job,
+  `changes`, lists the changed files with `git diff` (no third-party
+  action), and `build` runs only if that job did not answer
+  "documentation only"; `deploy` and `verify-live` depend on `build` and
+  are skipped with it. The heavy steps stay free of conditions.
+- **Safe default.** Whenever the answer is uncertain — manual run, first
+  push of a branch, force push, empty change list — everything runs. If
+  the detection job itself fails, `build` (with its tests) still runs,
+  while publication may be skipped and the run shows as failed. A broken
+  detector can cost an extra run, never let an untested change through
+  the required `build` check.
+- **Renames count as code changes.** The comparison ignores renames
+  (`--no-renames`), so a file moved from code into `docs/` is seen as a
+  code file deleted, and triggers a run.
+- **Ignore list.** As proposed below: `docs/`, `README.md`, `CLAUDE.md`,
+  `LICENSE`.
+- **Option C dropped:** two workflows that must mirror each other are an
+  easy place for a silent mistake.
+
+How to verify on GitHub: the commit that changes the workflow touches
+`.github/`, so it must run everything; the next documentation-only commit
+must show `build`, `deploy` and `verify-live` as skipped and the `build`
+check as passed.
 
 ## Why this was asked
 

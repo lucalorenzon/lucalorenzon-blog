@@ -3,6 +3,10 @@
 # The same browser test (end2end/) runs twice: on the freshly built site served
 # locally, before anything is published (job build, also on pull requests), and
 # on the public address right after publishing (job verify-live).
+# Documentation-only changes skip build, test and publication. The workflow is
+# still always triggered (no paths filters) because the "build" check is
+# required: a job skipped by a job-level "if" is reported as skipped, which
+# counts as success, while a workflow skipped by paths filters never reports.
 name: Build and deploy
 
 on:
@@ -20,7 +24,86 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    outputs:
+      code: ${{ steps.detect.outputs.code }}
+    steps:
+      - name: Check out the repository with its history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Detect whether anything other than documentation changed
+        id: detect
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          # Documentation-only files: an ignore-list, not an allow-list. A code
+          # folder forgotten in an allow-list would silently never be
+          # published; a doc file missing from this list only costs one
+          # unnecessary run.
+          is_doc() {
+            case "$1" in
+              docs/* | README.md | CLAUDE.md | LICENSE) return 0 ;;
+              *) return 1 ;;
+            esac
+          }
+
+          # When in doubt, run everything.
+          decide() {
+            echo "Decision: code=$1 ($2)"
+            echo "code=$1" >> "$GITHUB_OUTPUT"
+            exit 0
+          }
+
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            decide true "manual run"
+          fi
+
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            # The checkout is the merge commit; its first parent is the base.
+            changed=$(git diff --no-renames --name-only HEAD^1 HEAD)
+          elif [ "$EVENT_NAME" = "push" ]; then
+            # A new branch or a force push leaves no usable "before" commit.
+            if [ "$BEFORE" = "0000000000000000000000000000000000000000" ] \
+              || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+              decide true "no usable previous commit"
+            fi
+            changed=$(git diff --no-renames --name-only "$BEFORE" "$AFTER")
+          else
+            decide true "unexpected event"
+          fi
+
+          echo "Changed files:"
+          echo "$changed"
+
+          if [ -z "$changed" ]; then
+            decide true "empty list of changed files"
+          fi
+
+          while IFS= read -r file; do
+            if ! is_doc "$file"; then
+              decide true "not documentation: $file"
+            fi
+          done <<< "$changed"
+
+          decide false "documentation only"
+
   build:
+    # Skipped only when detection explicitly said "documentation only". If
+    # detection fails its output is empty and build runs anyway, so a broken
+    # detector can never let an untested pull request pass the required check.
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.code != 'false' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -79,6 +162,7 @@ jobs:
           path: target/site
 
   deploy:
+    # Skipped together with build on documentation-only changes.
     needs: build
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
