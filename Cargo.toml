@@ -24,7 +24,8 @@ leptos_actix = { version = "0.8", optional = true, features = [
 ] }
 leptos_router = { version = "0.8" }
 wasm-bindgen = "0.2"
-leptos-use = { version = "0.19", features = ["docs"] }
+leptos-use-breakpoints = { version = "0.20" }
+leptos-use-element-visibility = { version = "0.20" }
 leptos_icons = { version = "0.7" }
 icondata = { version = "0.7" }
 serde = { version = "1.0", features = ["derive"] }
@@ -42,7 +43,8 @@ ssr = [
   "leptos/ssr",
   "leptos_meta/ssr",
   "leptos_router/ssr",
-  "leptos-use/ssr",
+  "leptos-use-breakpoints/ssr",
+  "leptos-use-element-visibility/ssr",
 ]
 
 # Defines a size-optimized profile for the WASM bundle in release mode
