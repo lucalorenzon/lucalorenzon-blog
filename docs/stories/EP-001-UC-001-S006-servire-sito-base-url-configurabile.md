@@ -22,6 +22,8 @@ As Visitatore del sito, voglio che stili, immagini, link e interattività funzio
 - Given il sito servito sotto un prefisso, when il visitatore usa le islands (cambio tema, header), then l'hydration funziona
 - Given lo sviluppo locale (`cargo leptos watch`) con `CONTEXT_ROOT` = `/` dichiarata esplicitamente nella configurazione di sviluppo, when il sito è servito in locale, then continua a funzionare
 
+Acceptance tests: [AT-EP-001-UC-001-S006](../acceptance-tests/AT-EP-001-UC-001-S006-servire-sito-context-root-configurabile.md)
+
 ### Design pipeline
 Before any implementation, complete in order:
 - [ ] `/adr`                    — `CONTEXT_ROOT` configurabile come principio trasversale
