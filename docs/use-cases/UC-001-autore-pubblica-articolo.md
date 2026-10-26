@@ -61,7 +61,7 @@
 | EP-001-UC-001-S003 | Generare il sito statico da un Article (ARTICLE-PAGE, LISTING-PAGE, HOME-PAGE) | Done (2026-09-01) — size XL, assegnata a posteriori |
 | EP-001-UC-001-S004 | Rigenerare e pubblicare il sito a ogni push su `main` del repo contenuti | Pending discussion — riscritta 2026-10-26 |
 | EP-001-UC-001-S005 | Pubblicare il sito su GitHub Pages a ogni push di codice, compreso il primo deploy | Pending discussion — riscritta 2026-10-26 |
-| EP-001-UC-001-S006 | Pubblicare una homepage "in costruzione" sotto una context root configurabile (`CONTEXT_ROOT`) | Decision agreed, AT approvate, size XL → split per decisione (2026-10-26) — next: revisione `/acceptance-tests` |
+| EP-001-UC-001-S006 | Pubblicare una homepage "in costruzione" sotto una context root configurabile (`CONTEXT_ROOT`) | Decision agreed, AT approvate, size XL → split per decisione, AT riviste, size L (2026-10-26) — next: `/adr` |
 | EP-001-UC-001-S007 | Validare l'insieme dei contenuti prima della generazione | Pending discussion |
 | EP-001-UC-001-S008 | Costruire e pubblicare gli artefatti fissi come Release | Pending discussion |
 | EP-001-UC-001-S009 | Controllare l'output generato prima del deploy | Pending discussion |

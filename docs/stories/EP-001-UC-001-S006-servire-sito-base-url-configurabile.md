@@ -40,8 +40,8 @@ Before any implementation, complete in order:
 - [ ] `/sw-practices`           — naming, error handling, bootstrap
 
 ### Next steps after agreement
-- [ ] `/acceptance-tests EP-001-UC-001-S006` — revisione: righe delle sospensioni, homepage "in costruzione"
-- [ ] `/story-size EP-001-UC-001-S006`       — rimisurare dopo lo split
+- [x] `/acceptance-tests EP-001-UC-001-S006` — revisione: righe delle sospensioni, homepage "in costruzione" (`ca9f825`)
+- [x] `/story-size EP-001-UC-001-S006`       — rimisurare dopo lo split: L (`b94dea3`)
 
 ### Open questions
 - **Meccanismo Leptos (design, non requisito).** Verificato sul sorgente (leptos 0.8.22, leptos_router 0.8.17): `HydrationScripts` ha la prop `root` ("a base url, not including a trailing slash"), `Router` ha la prop `base`. **Da verificare:** se `Router base` fa scrivere alla generazione statica i file sotto `site_root/<prefisso>/…` (sbagliato per Pages, dove il prefisso corrisponde già alla radice dell'artefatto). Candidato a uno `/spike` breve in `/adr` o `/software-design`: riguarda questa storia per la riga "struttura dell'output identica".
