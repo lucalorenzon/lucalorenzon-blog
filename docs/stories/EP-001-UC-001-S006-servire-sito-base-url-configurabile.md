@@ -17,7 +17,7 @@ As Visitatore del sito, voglio vedere all'indirizzo pubblico del sito una homepa
 | **UC** | UC-001 — Autore pubblica un nuovo articolo |
 | **Pattern** | Major effort isolation (split per decisione da XL) |
 | **AT rows** | AT-UC-001 righe: 1-5 (success guarantee "raggiungibile pubblicamente", limitatamente alla homepage); epic AC-1 |
-| **Size** | XL prima dello split (41 righe AT, ~7 componenti) — da rimisurare dopo la revisione di `/acceptance-tests` |
+| **Size** | L — estimated 2026-10-26 dopo lo split (25 righe AT, ~5 componenti, precedente `CONTENT_REPO_PATH`/`Slug::parse`); l'utente la considera fattibile in una sessione. Prima dello split: XL (41 righe AT) |
 
 ### Acceptance criteria
 - Given `CONTEXT_ROOT` = `/lucalorenzon-blog/`, when il sito generato è servito sotto quel prefisso, then la homepage "in costruzione" si carica con CSS e favicon, senza 404
@@ -65,4 +65,4 @@ Before any implementation, complete in order:
 | 2026-10-26 | Testo della homepage temporanea: `Site under construction`, in inglese | Il sito è dichiarato `lang="en"` e l'interfaccia è in inglese; un testo italiano sarebbe incoerente per screen reader e SEO | "Sito in costruzione" in italiano |
 | 2026-10-26 | Islands sospese fino a [[EP-001-UC-001-S011]]; nell'header restano solo logo e titolo: niente menu (il selettore tema sarebbe inerte) e niente icona di ricerca (inerte già oggi, nessuna funzione di ricerca) | Nessun comando visibile senza effetto | Menu visibile con selettore inerte |
 
-INVEST: I✓ N✓ V✓ E✓ S? T✓  |  1 Decision: ✓  |  Coherence: ✓  (S da riconfermare con `/story-size`)
+INVEST: I✓ N✓ V✓ E✓ S✓ T✓  |  1 Decision: ✓  |  Coherence: ✓
