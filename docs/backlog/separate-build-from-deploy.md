@@ -3,7 +3,7 @@
 - **Opened:** 2026-10-27
 - **Status:** noticed, not started. Asked by the user while the
   Playwright image card
-  (`docs/wip/run-browser-tests-in-playwright-image.md`) was being worked
+  (`docs/done/2026-10-27_run-browser-tests-in-playwright-image.md`) was being worked
   on.
 
 ## Why this was asked

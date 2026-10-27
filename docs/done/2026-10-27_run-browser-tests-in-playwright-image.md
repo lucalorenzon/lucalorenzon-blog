@@ -1,9 +1,50 @@
 # Backlog: run the browser tests inside the official Playwright image
 
 - **Opened:** 2026-10-26
-- **Status:** scheduled for the next working session. First deferred on
+- **Status:** done on 2026-10-27, see "Decision". First deferred on
   2026-10-26 to watch whether the slowdown recurred; it recurred in the
   next two runs (see "Measurements"), so the user decided to address it.
+
+## Decision
+
+Implemented as proposed below, in commit `14800f8`; the image tag is
+derived from the code (option B, chosen by the user on 2026-10-27).
+
+- **The image follows the lock file.** Dependabot does not update
+  container images referenced in a workflow: it updates only actions
+  written as `owner/repo@version`, and its documentation lists container
+  registry references as unsupported. So the `build` job reads the
+  installed `@playwright/test` version from `end2end/package-lock.json`,
+  checks that it looks like `1.2.3`, and both test jobs run in
+  `mcr.microsoft.com/playwright:v<version>-noble`. The code stays the
+  single source of truth: a Dependabot update of the package needs no
+  workflow edit. Rejected: writing the tag by hand in the workflow, which
+  would make every such update fail until the workflow is fixed by hand.
+- **Jobs.** `build` no longer runs the browser test; it uploads the built
+  site as an artifact kept for one day. A new job, `browser-test`, runs
+  the test before publishing inside the image; `deploy` waits for both;
+  `verify-live` runs in the same image.
+- **`browser-test` runs whenever `build` succeeded**, even if the change
+  detection job failed. Without that explicit condition a failed
+  detector would skip the test, and a skipped job counts as passed: the
+  required check would be green with no test run.
+- **Required check.** The ruleset "Require CI on main" now requires
+  `browser-test` as well as `build` (changed with `gh api` on 2026-10-27,
+  at the user's request).
+
+### Results
+
+- Tried locally first, with the user running Docker (the user's account
+  is deliberately not in the `docker` group): the image runs as root,
+  contains Node 24 and Python 3.12 (so the local test server needs no
+  change), and the test passes.
+- First run on GitHub,
+  [40425877211](https://github.com/lucalorenzon/lucalorenzon-blog/actions/runs/40425877211):
+  every job passed; whole run 2 min 13 s; `browser-test` 29 s and
+  `verify-live` 35 s, most of it pulling the image from Microsoft's
+  registry. Nothing is installed from Ubuntu's package server any more.
+- The "Cons" below still hold for "more moving parts"; the version
+  alignment one is solved by the decision above.
 
 ## Why this was asked
 

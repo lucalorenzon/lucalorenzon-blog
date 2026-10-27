@@ -51,7 +51,7 @@ it. It happened right away: the session minute and the backlog cards of
 
 The cost is runner minutes and waiting time, and exposure to occasional
 slowdowns such as the 9-minute one recorded in
-`docs/wip/run-browser-tests-in-playwright-image.md`, all for a
+`docs/done/2026-10-27_run-browser-tests-in-playwright-image.md`, all for a
 publication identical to the previous one.
 
 ## The catch: the required `build` check

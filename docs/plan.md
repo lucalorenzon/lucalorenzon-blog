@@ -46,7 +46,10 @@ previous site.
    after publishing, because only that run proves what a visitor actually
    sees (sub-path, Pages settings, the deployment itself). The second run
    can only report a problem once the site is already published; that was
-   accepted as the price of checking the live site.
+   accepted as the price of checking the live site. Since 2026-10-27 both
+   runs use Playwright's official container image, whose version is read
+   from `end2end/package-lock.json`
+   ([card](done/2026-10-27_run-browser-tests-in-playwright-image.md)).
 
 ### Open decisions
 
@@ -68,11 +71,14 @@ Run `residuality` against the live skeleton and decide the following
 increments from its outcome
 ([backlog card](backlog/challenge-skeleton-with-residuality.md)).
 
-First, in the next session:
-[run the browser tests inside the official Playwright image](wip/run-browser-tests-in-playwright-image.md).
-Slowdowns of Ubuntu's package server while installing Chromium's system
-libraries delayed two of the first three publications by 10 to 13
-minutes.
+Done on 2026-10-27, before this:
+[the browser tests run inside the official Playwright image](done/2026-10-27_run-browser-tests-in-playwright-image.md),
+because slowdowns of Ubuntu's package server while installing Chromium's
+system libraries had delayed two of the first three publications by 10
+to 13 minutes.
+
+Also noticed, not scheduled:
+[separate the build from a tag-triggered deploy, with a CHANGELOG](backlog/separate-build-from-deploy.md).
 
 ## Later
 
