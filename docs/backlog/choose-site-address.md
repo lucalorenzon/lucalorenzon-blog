@@ -8,8 +8,8 @@
 The site is live at the standard GitHub Pages address,
 `https://lucalorenzon.github.io/lucalorenzon-blog/`, which serves it
 under a sub-path (`/lucalorenzon-blog/`). The alternative is a custom
-domain. The choice was postponed on 2026-10-26 (`docs/plan.md`,
-decision 2) because a single page that refers to its stylesheet by a
+domain. The choice was postponed on 2026-10-26 (`docs/done/2026-10-26_put-working-skeleton-live.md`,
+"Which public address?") because a single page that refers to its stylesheet by a
 relative path works the same under either address.
 
 It stops being free once pages link to each other: every internal link

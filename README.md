@@ -33,7 +33,7 @@ address.
 
 | Document | Path | Description |
 |---|---|---|
-| Plan | [docs/plan.md](docs/plan.md) | What is being built now, next and later, and the decisions still open |
+| Plan | [docs/plan.md](docs/plan.md) | What is being worked on now, next and later |
 | Backlog | [docs/backlog/](docs/backlog/) | Things noticed but deliberately not done yet, with the reason |
 | Work in progress | [docs/wip/](docs/wip/) | Backlog cards being worked on now |
 | Done | [docs/done/](docs/done/) | Finished backlog cards, prefixed with the date they were finished |

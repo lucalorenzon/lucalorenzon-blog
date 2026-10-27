@@ -170,7 +170,7 @@ contributions, the person stays the author and fully accountable, while
   each publication
 - Rust stable toolchain, pinned in `rust-toolchain.toml`
 
-Why each choice was made: `docs/plan.md`, "Decisions taken".
+Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 
 ## Repository map
 
@@ -181,7 +181,7 @@ Why each choice was made: `docs/plan.md`, "Decisions taken".
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
 | `end2end/` | Playwright end-to-end test |
 | `.github/workflows/deploy.yml` | Check, build, test, publish, then test the live site |
-| `docs/plan.md` | Current plan (Now / Next / Later), decisions taken and open |
+| `docs/plan.md` | The project's board: Now / Next / Later (see "The plan") |
 | `docs/backlog/` | Tickets: things noticed but deliberately not done yet, with the reason |
 | `docs/wip/` | Backlog cards being worked on now (see "Backlog cards") |
 | `docs/done/` | Finished backlog cards, prefixed with the date they were finished |

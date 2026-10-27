@@ -26,7 +26,7 @@ rather than to decide here:
 
 - **Static generation.** The build program was chosen over `leptos_axum`'s
   built-in static generation because it is thinner for one page
-  (`docs/plan.md`, decision 3). How it holds up with many pages and
+  (`docs/done/2026-10-26_put-working-skeleton-live.md`). How it holds up with many pages and
   articles is an open question.
 - **Site address.** Sub-path or custom domain is still open
   (`docs/backlog/choose-site-address.md`); a sub-path affects every link
@@ -43,4 +43,4 @@ rather than to decide here:
 ## Done when
 
 The analysis is written down, and the user has decided which residues to
-act on; those become the next slices in `docs/plan.md`.
+act on; those become new cards, placed in `docs/plan.md`.
