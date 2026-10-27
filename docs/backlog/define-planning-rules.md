@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-10-27
 - **Status:** proposal, open; to be picked up right after the card
-  [make the session minute record who contributed what](../wip/revise-session-minute-format.md),
+  [make the session minute record who contributed what](../done/2026-10-27_revise-session-minute-format.md),
   in the same session, as the user decided.
 
 ## Why this was asked

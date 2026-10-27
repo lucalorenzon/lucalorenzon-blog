@@ -77,9 +77,37 @@ of work to sub-agents run on the matching model.
 ## Session minutes
 
 Every working session ends with a minute in `docs/sessions/`, named
-`YYYY-MM-DD-<topic>.md`, containing: the session's goal, the decisions taken
-and why, what was done (with commit references), open points, and the agreed
-next step. The minute is committed as the session's last commit.
+`YYYY-MM-DD-<topic>.md`, committed as the session's last commit. The minute
+records how the session went and who contributed what; once committed it is
+not edited. What a card already says is linked, not repeated. Sections, in
+this order:
+
+1. **Participants and goal:** the user, the agent and its sub-agents with
+   their models; the goal, with a link to the card.
+2. **Decisions:** a numbered table with the MADR roles: decision-makers (who
+   decided), consulted (who gave input), informed (who was told afterwards).
+3. **Discussion:** one short point per topic, saying who raised it, who
+   proposed what and how it ended, with a reference to the decisions it led
+   to. Only what shaped the decisions; technical details stay in the card.
+4. **Outcome:** what changed, with commit references.
+5. **Open points**, if any: questions left unresolved.
+6. **Next steps:** the actions that came out of the session, each with a
+   link to the card that carries it. When they are done is decided by the
+   plan, not by the minute.
+
+Reference: `docs/sessions/2026-10-27-run-browser-tests-in-playwright-image.md`.
+Earlier minutes keep their earlier format. Why this format:
+`docs/done/2026-10-27_revise-session-minute-format.md`.
+
+## Commit attribution
+
+The user is the only author of every commit. Work done with an agent ends
+with an `Assisted-by:` line naming the model that did it (for example
+`Assisted-by: Claude Haiku 5.5`), instead of `Co-Authored-By:`; a
+sub-agent names its own model. The `Claude-Session:` line stays, to trace a
+commit back to its session. Why: as in Fedora's policy on AI-assisted
+contributions, the person stays the author and fully accountable, while
+`Co-Authored-By:` would put the agent on the same level.
 
 ## Stack
 
