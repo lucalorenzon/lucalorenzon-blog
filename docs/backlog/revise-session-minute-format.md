@@ -45,6 +45,36 @@ interaction instead:
   rule is local to this repository, so the change stays here and does not
   go to `ll-dev-setup`.
 
+## References found on 2026-10-27
+
+No standard was found for minutes of sessions between a person and an
+AI agent; these practices each cover a part of the problem.
+
+- **Who decided.** MADR, a common template for decision records, has
+  the fields `decision-makers`, `consulted` and `informed` (RACI-like).
+  Atlassian's DACI names a Driver, an Approver, Contributors and the
+  Informed.
+  [MADR notes](https://cdn.jsdelivr.net/npm/@harness-forge/cli@1.5.5/skills/madr-decision-log/references/madr-reference.md),
+  [DACI](https://www.atlassian.com/team-playbook/plays/daci).
+- **Who did what, per commit.** Fedora's AI-assisted contributions
+  policy (October 2025) recommends an `Assisted-by:` commit trailer; the
+  human contributor stays the author and fully accountable. More
+  precise than the `Co-Authored-By:` used so far, which puts the agent
+  on the same level as the author.
+  [Fedora policy](https://docs.fedoraproject.org/ca/council/policy/ai-contribution-policy/).
+- **How much the AI contributed, per piece of work.** IBM Research's AI
+  Attribution Toolkit (a research prototype, inspired by the CRediT
+  contributor roles used in science) produces a short statement: the
+  AI system used, what it contributed, how much the human changed or
+  curated it, and who holds final accountability.
+  [IBM blog](https://www.research.ibm.com/blog/AI-attribution-toolkit),
+  [repository](https://github.com/aiattribution/aiattribution.github.io).
+
+The minute of 2026-10-27
+(`docs/sessions/2026-10-27-run-browser-tests-in-playwright-image.md`)
+was used to try the shape: a workshop-style minute with a short
+decisions table.
+
 ## When to pick this up
 
 Whenever the user wants; ideally before the next minute is written, so
