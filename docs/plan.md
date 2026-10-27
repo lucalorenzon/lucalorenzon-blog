@@ -14,9 +14,6 @@ live since 2026-10-26
 
 ## Now
 
-- [Define the rules for planning and project management](wip/define-planning-rules.md),
-  in progress. Taken ahead of the `residuality` challenge: without these
-  rules, the work after it would be badly organised.
 - [Separate the build from a tag-triggered deploy, with a CHANGELOG](backlog/separate-build-from-deploy.md).
 
 ## Next

@@ -78,7 +78,7 @@ stays, to trace a commit back to its session.
 `ll-dev-setup` is left to the user, after seeing how they work here.
 Recording the order of the work and bringing `docs/plan.md` up to date
 went to a card of their own:
-[define the rules for planning and project management](../wip/define-planning-rules.md).
+[define the rules for planning and project management](2026-10-27_define-planning-rules.md).
 
 ## References
 

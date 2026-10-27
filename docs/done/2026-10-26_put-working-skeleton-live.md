@@ -3,7 +3,7 @@
 - **Opened and finished:** 2026-10-26.
 - **Status:** done on 2026-10-26. Written afterwards, on 2026-10-27, when
   the decisions moved out of `docs/plan.md` (card
-  [define the rules for planning and project management](../wip/define-planning-rules.md)).
+  [define the rules for planning and project management](2026-10-27_define-planning-rules.md)).
   It never went through `docs/backlog/` and `docs/wip/`: the card folders
   did not exist yet.
 
