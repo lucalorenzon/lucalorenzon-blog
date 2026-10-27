@@ -1,9 +1,15 @@
 # The site is published by this workflow (GitHub Pages source: "GitHub Actions").
 # Pull requests only build and check the site; they never deploy.
 # The same browser test (end2end/) runs twice: on the freshly built site served
-# locally, before anything is published (job build, also on pull requests), and
-# on the public address right after publishing (job verify-live).
-# Documentation-only changes skip build, test and publication. The workflow is
+# locally, before anything is published (job browser-test, also on pull
+# requests), and on the public address right after publishing (job verify-live).
+# Both run in Playwright's official container image, which already contains
+# Chromium and its system libraries, so nothing is installed from Ubuntu's
+# package server at test time. The image tag is read from
+# end2end/package-lock.json (job build, output playwright_version) because
+# Dependabot does not update images referenced in workflows: a bump of
+# @playwright/test then needs no workflow edit.
+# Documentation-only changes skip build, tests and publication. The workflow is
 # still always triggered (no paths filters) because the "build" check is
 # required: a job skipped by a job-level "if" is reported as skipped, which
 # counts as success, while a workflow skipped by paths filters never reports.
@@ -106,11 +112,25 @@ jobs:
     if: ${{ !cancelled() && needs.changes.outputs.code != 'false' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      playwright_version: ${{ steps.playwright.outputs.version }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+
+      # The check also keeps anything odd out of the image name.
+      - name: Read the Playwright version from the lock file
+        id: playwright
+        run: |
+          set -euo pipefail
+          version=$(jq -r '.packages["node_modules/@playwright/test"].version' end2end/package-lock.json)
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Unexpected @playwright/test version in end2end/package-lock.json: '$version'"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Install the Rust toolchain pinned in rust-toolchain.toml
         run: |
@@ -132,24 +152,14 @@ jobs:
       - name: Build the site
         run: scripts/build-site.sh
 
-      - name: Set up Node.js for the browser test
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      # The browser-test job needs the site, and runs on every event.
+      - name: Keep the built site for the browser test
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          node-version: 24
-          cache: npm
-          cache-dependency-path: end2end/package-lock.json
-
-      - name: Install the browser test dependencies
-        working-directory: end2end
-        run: npm ci
-
-      - name: Install Chromium for the browser test
-        working-directory: end2end
-        run: npx playwright install --with-deps chromium
-
-      - name: Browser test on the freshly built site
-        working-directory: end2end
-        run: npx playwright test
+          name: site
+          path: target/site
+          retention-days: 1
+          if-no-files-found: error
 
       - name: Configure Pages
         if: github.event_name != 'pull_request'
@@ -161,9 +171,44 @@ jobs:
         with:
           path: target/site
 
-  deploy:
-    # Skipped together with build on documentation-only changes.
+  browser-test:
+    # Runs whenever build succeeded, even if change detection failed, so the
+    # required browser-test check can never pass without a test; skipped
+    # together with build on documentation-only changes. --ipc=host is
+    # recommended by Playwright for Chromium.
     needs: build
+    if: ${{ !cancelled() && needs.build.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.build.outputs.playwright_version }}-noble
+      options: --ipc=host
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Download the built site
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site
+          path: target/site
+
+      - name: Install the browser test dependencies
+        working-directory: end2end
+        run: npm ci
+
+      - name: Browser test on the freshly built site
+        working-directory: end2end
+        run: npx playwright test
+
+  deploy:
+    # Skipped together with build on documentation-only changes. Publishes only
+    # after the browser test passed.
+    needs: [build, browser-test]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -182,32 +227,24 @@ jobs:
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
   verify-live:
-    needs: deploy
+    needs: [build, deploy]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: read
+    container:
+      image: mcr.microsoft.com/playwright:v${{ needs.build.outputs.playwright_version }}-noble
+      options: --ipc=host
     steps:
       - name: Check out the repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Set up Node.js for the browser test
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          node-version: 24
-          cache: npm
-          cache-dependency-path: end2end/package-lock.json
-
       - name: Install the browser test dependencies
         working-directory: end2end
         run: npm ci
-
-      - name: Install Chromium for the browser test
-        working-directory: end2end
-        run: npx playwright install --with-deps chromium
 
       - name: Browser test on the published site
         working-directory: end2end
