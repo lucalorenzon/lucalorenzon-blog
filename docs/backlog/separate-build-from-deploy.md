@@ -1,4 +1,4 @@
-# Backlog: separate the build from the deploy, publish from a tag
+# Separate the build from the deploy, publish from a tag
 
 - **Opened:** 2026-10-27
 - **Status:** noticed, not started. Asked by the user while the

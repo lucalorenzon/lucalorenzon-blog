@@ -1,4 +1,4 @@
-# Backlog: challenge the live skeleton with `residuality`
+# Challenge the live skeleton with `residuality`
 
 - **Opened:** 2026-10-26
 - **Status:** ready; starts when the user calls `residuality`.

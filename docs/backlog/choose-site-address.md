@@ -1,4 +1,4 @@
-# Backlog: choose the site's public address
+# Choose the site's public address
 
 - **Opened:** 2026-10-26
 - **Status:** open decision, not blocking yet.

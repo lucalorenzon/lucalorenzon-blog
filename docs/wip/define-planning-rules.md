@@ -1,4 +1,4 @@
-# Backlog: define the rules for planning and project management
+# Define the rules for planning and project management
 
 - **Opened:** 2026-10-27
 - **Status:** proposal, open; to be picked up right after the card
