@@ -18,22 +18,22 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 | 3 | Test job runs whenever `build` succeeded, so a failed change detection cannot turn the required check green | agent | — | user |
 | 4 | `browser-test` added to the required checks, by the agent with `gh api` | user | agent | — |
 | 5 | New card: build separate from a tag-triggered deploy, plus a `CHANGELOG.md` | user | — | agent |
-| 6 | CHANGELOG kept in that same card, provisionally | agent | — | user |
+| 6 | CHANGELOG part of that same card: versions need a document of what each contains | user | agent | — |
 
 ## Outcome
 
 - Workflow changed (`14800f8`); first run on GitHub passed in 2 min 13 s,
   nothing installed from Ubuntu's package server any more.
 - Ruleset "Require CI on main" now requires `build` and `browser-test`.
+- Documentation-only push (run
+  [40429002314](https://github.com/lucalorenzon/lucalorenzon-blog/actions/runs/40429002314)):
+  `build` and `browser-test` skipped, run successful.
 - Commits: `acd67ed` card to `wip`, `06c6aa2` new card, `14800f8`
   workflow, `fbb6786` card closed, `9aefec0` references added to the
   minute-format card, plus this minute.
 
 ## Open points
 
-- Confirm on the next push: documentation-only commits skip
-  `browser-test` together with `build`.
-- Decision 6 waits for the user's confirmation.
 - This minute is a format trial for the card
   [make the session minute record who contributed what](../backlog/revise-session-minute-format.md):
   workshop-style, MADR roles chosen by the user as the most used and

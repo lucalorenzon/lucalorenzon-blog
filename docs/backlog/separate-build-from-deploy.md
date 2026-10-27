@@ -27,7 +27,9 @@ version and the next.
   and then runs the browser test on the live site. It could be started by
   a tag (for example `v1.2.0`) instead of by the end of the build.
 - **CHANGELOG.** A `CHANGELOG.md` file that keeps the list of changes,
-  so each published version says what it brought.
+  so each published version says what it brought. Part of this card,
+  confirmed by the user on 2026-10-27: once versions are introduced, a
+  document tracking what each one contains belongs with them.
 
 ## Questions to settle before starting
 
@@ -49,8 +51,7 @@ is picked up.
 - **CHANGELOG format and how it is kept.** For example the "Keep a
   Changelog" layout, written by hand; whether each tag requires a
   CHANGELOG entry; whether the entry also becomes the text of a GitHub
-  release. The CHANGELOG is grouped here because it is tied to published
-  versions, but it is a separate decision and can become its own card.
+  release.
 - **Documentation-only changes.** The skip added on 2026-10-27
   (`docs/done/2026-10-27_run-pipeline-only-on-code-changes.md`) keeps
   working for the build; with a manual tag it is no longer needed for the
