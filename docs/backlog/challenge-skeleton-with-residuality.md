@@ -32,7 +32,7 @@ rather than to decide here:
   (`docs/backlog/choose-site-address.md`); a sub-path affects every link
   once pages link to each other.
 - **Browser test setup.** The test depends on Ubuntu's package server at
-  every run (`docs/backlog/run-browser-tests-in-playwright-image.md`).
+  every run (`docs/wip/run-browser-tests-in-playwright-image.md`).
 - **Single platform build.** `scripts/build-site.sh` supports only Linux
   x64, the platform of both the author's machine and the pipeline.
 - **Leptos dependencies.** `paste`, pulled in by Leptos, is reported as

@@ -35,7 +35,7 @@ only the rigid pipeline. The previous site is kept on the local branch
 | 10 | Running the tests in the official Playwright image: deferred to the backlog | Slowdown seen once; the fix adds a version to keep aligned by hand |
 
 Full reasoning for 5–8 and 10: `docs/plan.md` and
-`docs/backlog/run-browser-tests-in-playwright-image.md`.
+`docs/wip/run-browser-tests-in-playwright-image.md`.
 
 ## What was done
 
@@ -91,4 +91,4 @@ Both tracked as backlog cards:
 The Chromium slowdown recurred in a later run (two slow runs out of
 three, see the card's "Measurements"), so the user decided on 2026-10-27
 that the next session starts with
-[running the browser tests inside the official Playwright image](../backlog/run-browser-tests-in-playwright-image.md).
+[running the browser tests inside the official Playwright image](../wip/run-browser-tests-in-playwright-image.md).

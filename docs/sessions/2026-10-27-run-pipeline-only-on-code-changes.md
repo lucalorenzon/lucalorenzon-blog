@@ -66,4 +66,4 @@ pushing.
 
 As planned in the previous minute: run the browser tests inside the
 official Playwright image
-(`docs/backlog/run-browser-tests-in-playwright-image.md`).
+(`docs/wip/run-browser-tests-in-playwright-image.md`).

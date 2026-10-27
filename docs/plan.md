@@ -69,7 +69,7 @@ increments from its outcome
 ([backlog card](backlog/challenge-skeleton-with-residuality.md)).
 
 First, in the next session:
-[run the browser tests inside the official Playwright image](backlog/run-browser-tests-in-playwright-image.md).
+[run the browser tests inside the official Playwright image](wip/run-browser-tests-in-playwright-image.md).
 Slowdowns of Ubuntu's package server while installing Chromium's system
 libraries delayed two of the first three publications by 10 to 13
 minutes.
