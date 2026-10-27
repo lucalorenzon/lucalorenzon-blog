@@ -40,6 +40,39 @@ Overridden for this repository:
 - **The user directs.** Other skills are invoked by the user when needed. Do
   the agreed step, report the outcome, then wait.
 
+## The plan
+
+`docs/plan.md` is the project's board and the only file updated
+continuously. It maps the road toward the project's outcome in three
+horizons, kept short on purpose:
+
+- **Now:** the card being worked on, plus the few cards that are well
+  defined and clearly come first.
+- **Next:** what is expected to come right after.
+- **Later:** what is known or wished for, but not for now or right after.
+
+The plan is not an order of execution. Software development is learning, so
+the plan is reworked by successive approximations; its value is in making
+it. It changes whenever priorities change, also during a session, when a new
+card turns out more urgent than what was in Now. It holds no decisions: why
+something was decided is in its card, who decided it is in the session
+minute. The user, acting as Product Owner, sets the priorities, possibly
+discussing them with the agent. What matters most is not doing too many
+things at once.
+
+When a card needs many activities or decisions, the user and the agent
+discuss it together:
+
+- what can be done right away and gives value to the project at once;
+- which activities make it clearer where to go, and increase learning;
+- whether it can be cut vertically, for example by limiting the kind of data
+  handled, so the scope is narrow and the cognitive load small.
+
+Once a minimal slice is found and judged worth doing, its card is created in
+the backlog (two or three of the same size may be created together) and work
+starts. Planning stops there and resumes later: validating the plan's
+assumptions with code matters more than settling every detail in advance.
+
 ## Backlog cards
 
 A card is a file that moves through three folders, so the folder alone tells
@@ -49,7 +82,24 @@ its state:
 |---|---|---|
 | `docs/backlog/` | Noticed, not started | `<name>.md` |
 | `docs/wip/` | Being worked on now | `<name>.md` |
-| `docs/done/` | Finished | `yyyy-MM-dd_<name>.md`, the date being the day it moved to `done` |
+| `docs/done/` | Finished | `yyyy-MM-dd_<name>.md`, the date being the day the work finished |
+
+- `docs/backlog/` collects every idea or question noticed. A card may never
+  be done and end up superseded by others; from time to time a cleanup card
+  clears the backlog.
+- The card being worked on goes to `docs/wip/`. Usually it is the session's
+  only card, but that is not a fixed rule.
+- A card split into smaller ones does not go to `docs/done/`: the new cards
+  go to the backlog and the original file is deleted in the same commit. The
+  session minute records the split with that commit, and the git history
+  keeps the original text. The plan is updated to match.
+- A card's title names its subject, with no "Backlog:" prefix: the folder
+  tells the state.
+- A finished card reads as the answer to the questions it raised: title and
+  status with the closing date; why it was opened; the answers, each with
+  what was chosen and why, and the rejected options with their reason; the
+  results observed, if any. Proposal-time sections ("Proposal", "When to
+  pick this up") are removed.
 
 Cards move with `git mv`, so their history follows them. When a card moves,
 links to it from other documents are updated in the same commit. The date
