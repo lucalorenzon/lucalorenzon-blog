@@ -35,7 +35,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Open points
 
 - This minute is a format trial for the card
-  [make the session minute record who contributed what](../backlog/revise-session-minute-format.md):
+  [make the session minute record who contributed what](../wip/revise-session-minute-format.md):
   workshop-style, MADR roles chosen by the user as the most used and
   most readable. References found are in the card.
 - `acd67ed`, made by the Haiku sub-agent, names Opus in its
