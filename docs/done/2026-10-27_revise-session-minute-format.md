@@ -38,7 +38,7 @@ attribution". Each point below was settled with the user, one at a time.
   `ll-dev-setup` is left to the user, after seeing how it works here.
 - **Planning moved out.** Recording the order of the work, and bringing
   `docs/plan.md` up to date, went to a card of its own:
-  [define the rules for planning and project management](../backlog/define-planning-rules.md).
+  [define the rules for planning and project management](../wip/define-planning-rules.md).
 
 ## Why this was asked
 
