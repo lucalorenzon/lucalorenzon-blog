@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-10-28, while verifying the publication of version
   0.2.0 ([card](../done/2026-10-28_verify-publication-at-next-version.md)).
-- **Status:** noticed, not started. A malfunction: to be handled with the
+- **Status:** being worked on since 2026-10-28. A malfunction: handled with the
   `fix` skill.
 
 ## Why

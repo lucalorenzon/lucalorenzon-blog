@@ -14,11 +14,11 @@ live since 2026-10-26
 
 ## Now
 
-- [Run the live-site test when the snapshot is published](backlog/run-live-test-when-snapshot-is-published.md):
+- [Run the live-site test when the snapshot is published](wip/run-live-test-when-snapshot-is-published.md):
   found while [verifying the publication](done/2026-10-28_verify-publication-at-next-version.md)
   of version 0.2.0, live since 2026-10-28. Until it is fixed, every
   version published from the snapshot is published without its live
-  test. To be picked up at the next session.
+  test. Being worked on.
 
 ## Next
 
