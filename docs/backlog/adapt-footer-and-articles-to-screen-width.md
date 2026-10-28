@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-10-29, split from the card "Make the site responsive"
   (opened 2026-10-28). Its other half is
-  [adapt the header to screen width](adapt-header-to-screen-width.md).
+  [adapt the header to screen width](../wip/adapt-header-to-screen-width.md).
 - **Status:** noticed, not started.
 
 ## Why

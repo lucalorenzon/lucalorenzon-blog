@@ -14,15 +14,12 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing being worked on. The live-site test runs again after every
-  publication since version 0.2.1
-  ([card](done/2026-10-28_run-live-test-when-snapshot-is-published.md));
-  the next card is chosen from Next.
+- [Adapt the header to screen width](wip/adapt-header-to-screen-width.md):
+  ASCII-art logo and title in the header from 1024px, the text logo in
+  the header and the title in the page below.
 
 ## Next
 
-- [Adapt the header to screen width](backlog/adapt-header-to-screen-width.md):
-  the logo and the title on a phone.
 - [Add automated accessibility tests](backlog/add-automated-accessibility-tests.md),
   to keep checking the amber-on-black contrast and the rest.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).

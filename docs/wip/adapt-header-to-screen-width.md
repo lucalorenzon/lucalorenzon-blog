@@ -4,8 +4,8 @@
   (opened 2026-10-28 while the card
   [give the page a header, a footer and a favicon](../done/2026-10-28_add-header-footer-and-favicon.md)
   was being worked on). Its other half is
-  [adapt the footer and the articles to screen width](adapt-footer-and-articles-to-screen-width.md).
-- **Status:** noticed, not started.
+  [adapt the footer and the articles to screen width](../backlog/adapt-footer-and-articles-to-screen-width.md).
+- **Status:** being worked on since 2026-10-29.
 
 ## Why
 
@@ -17,7 +17,7 @@ this for the first version and asked for the header to adapt to screen
 size in a card of its own.
 
 A navigation menu will come later
-([card](add-site-navigation.md)) and will need room in the header too, so
+([card](../backlog/add-site-navigation.md)) and will need room in the header too, so
 the layout chosen here must leave space for it without being reworked.
 
 ## Decisions

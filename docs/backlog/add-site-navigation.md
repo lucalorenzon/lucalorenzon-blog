@@ -1,7 +1,7 @@
 # Add site navigation
 
 - **Opened:** 2026-10-29, raised by the user while the card
-  [adapt the header to screen width](adapt-header-to-screen-width.md)
+  [adapt the header to screen width](../wip/adapt-header-to-screen-width.md)
   was being discussed.
 - **Status:** noticed, not started.
 
@@ -14,7 +14,7 @@ need, not a form for it.
 
 The header already leaves room for it: on every width it holds the
 site's identity on the left and keeps space for this tool on the right
-([card](adapt-header-to-screen-width.md)).
+([card](../wip/adapt-header-to-screen-width.md)).
 
 ## Questions
 
