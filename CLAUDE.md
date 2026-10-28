@@ -180,6 +180,7 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | Path | Content |
 |---|---|
 | `src/` | The Leptos page component and the build program that writes `index.html` |
+| `assets/` | Files copied as they are into the site: the favicon, and the font with its licence and attribution |
 | `style/input.css` | Tailwind entry point |
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
 | `scripts/playwright-version.sh` | Prints the Playwright version locked in `end2end/`, which picks the test container image in both workflows |

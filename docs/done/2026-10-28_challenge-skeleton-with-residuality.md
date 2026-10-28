@@ -83,7 +83,7 @@ What a visitor should find, as the user described it:
 
 The residue, in `residuality`'s terms: the structure stays as it is; the
 page gains what ties it to its author. It became the card
-[give the page a header, a footer and a favicon, in a dark terminal style](../backlog/add-header-footer-and-favicon.md).
+[give the page a header, a footer and a favicon, in a dark terminal style](2026-10-28_add-header-footer-and-favicon.md).
 
 How it was cut: the agent first proposed four slices (frame, dark
 style, favicon, the author's story). The user judged that frame, style

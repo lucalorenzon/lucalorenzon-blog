@@ -14,15 +14,17 @@ live since 2026-10-26
 
 ## Now
 
-- [Give the page a header, a footer and a favicon, in a dark terminal style](wip/add-header-footer-and-favicon.md),
-  so a visitor can tell whose site it is. Chosen from the light pass of
-  [`residuality`](done/2026-10-28_challenge-skeleton-with-residuality.md),
+- [Verify the publication at the next version](backlog/verify-publication-at-next-version.md),
+  with version 0.2.0. It publishes the card
+  [give the page a header, a footer and a favicon](done/2026-10-28_add-header-footer-and-favicon.md),
   closed on 2026-10-28.
 
 ## Next
 
-- [Verify the publication at the next version](backlog/verify-publication-at-next-version.md),
-  together with the version that publishes the header and footer.
+- [Make the site responsive](backlog/make-site-responsive.md), starting
+  from the logo on a phone.
+- [Add automated accessibility tests](backlog/add-automated-accessibility-tests.md),
+  to keep checking the amber-on-black contrast and the rest.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
 
 ## Later

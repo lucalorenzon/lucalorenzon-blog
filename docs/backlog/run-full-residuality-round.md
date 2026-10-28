@@ -18,4 +18,4 @@ empirical test with fresh stressors.
   the full round" section of its card.
 - The site as it will be by then: at least the header, footer and
   favicon of the card
-  [give the page a header, a footer and a favicon](../wip/add-header-footer-and-favicon.md).
+  [give the page a header, a footer and a favicon](../done/2026-10-28_add-header-footer-and-favicon.md).
