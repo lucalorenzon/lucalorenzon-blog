@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Give the page a header, a footer and a favicon, in a dark terminal style](backlog/add-header-footer-and-favicon.md),
+- [Give the page a header, a footer and a favicon, in a dark terminal style](wip/add-header-footer-and-favicon.md),
   so a visitor can tell whose site it is. Chosen from the light pass of
   [`residuality`](done/2026-10-28_challenge-skeleton-with-residuality.md),
   closed on 2026-10-28.

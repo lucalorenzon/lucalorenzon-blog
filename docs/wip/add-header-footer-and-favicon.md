@@ -3,7 +3,7 @@
 - **Opened:** 2026-10-28, from the light pass of `residuality`
   ([card](../done/2026-10-28_challenge-skeleton-with-residuality.md),
   stressor 7).
-- **Status:** noticed, not started. The next card in the plan.
+- **Status:** being worked on since 2026-10-28.
 
 ## Why
 
