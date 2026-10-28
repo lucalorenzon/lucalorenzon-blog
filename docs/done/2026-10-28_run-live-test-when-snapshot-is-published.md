@@ -62,7 +62,8 @@ in `CHANGELOG.md`, published from the snapshot just like 0.2.0.
 Rejected: checking the workflow with `actionlint`. It checks syntax,
 expressions and the scripts inside the workflow, not which jobs end up
 skipped, so it would not have found this bug. Whether to use it for
-the rest is a separate question, left to a card in the backlog.
+the rest is a separate question, left to the card
+[check the workflows with actionlint](../backlog/lint-workflows-with-actionlint.md).
 
 ## Results
 

@@ -35,4 +35,6 @@ live since 2026-10-26
   before the first article.
 - [Place the 1985 photo](backlog/place-1985-photo.md), not on the home
   page.
+- [Check the workflows with actionlint](backlog/lint-workflows-with-actionlint.md),
+  in the pipeline rather than on one machine.
 - Articles and everything around them. Not planned yet, on purpose.
