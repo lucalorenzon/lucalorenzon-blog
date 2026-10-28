@@ -94,7 +94,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Fix the skipped live-site test, with version 0.2.1: card
-  [run the live-site test when the snapshot is published](../backlog/run-live-test-when-snapshot-is-published.md).
+  [run the live-site test when the snapshot is published](../done/2026-10-28_run-live-test-when-snapshot-is-published.md).
 - Make the site responsive: card
   [make the site responsive](../backlog/make-site-responsive.md).
 - Add automated accessibility tests: card

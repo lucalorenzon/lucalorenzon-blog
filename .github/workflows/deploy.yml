@@ -271,7 +271,7 @@ jobs:
   # only if every job before it, even indirectly, succeeded: when the
   # snapshot is published the job build is skipped, and verify-live was
   # skipped with it, silently (version 0.2.0). Why:
-  # docs/wip/run-live-test-when-snapshot-is-published.md.
+  # docs/done/2026-10-28_run-live-test-when-snapshot-is-published.md.
   verify-live:
     needs: [check-tag, deploy]
     if: ${{ !cancelled() && needs.deploy.result == 'success' }}

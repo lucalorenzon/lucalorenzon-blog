@@ -5,7 +5,7 @@
   was closed.
 - **Status:** done, closed on 2026-10-28, with version 0.2.0. One
   malfunction found, left to the card
-  [run the live-site test when the snapshot is published](../backlog/run-live-test-when-snapshot-is-published.md).
+  [run the live-site test when the snapshot is published](2026-10-28_run-live-test-when-snapshot-is-published.md).
 
 ## Why it was opened
 
@@ -48,7 +48,7 @@ the published site, was skipped, and the run still ended green. When
 indirectly and have no explicit condition; `verify-live` is one of them.
 With version 0.1.0 the site was always rebuilt, so this could not show.
 The fix was left by the user to the card
-[run the live-site test when the snapshot is published](../backlog/run-live-test-when-snapshot-is-published.md).
+[run the live-site test when the snapshot is published](2026-10-28_run-live-test-when-snapshot-is-published.md).
 
 For 0.2.0 the missing check was made by hand: see "Results".
 

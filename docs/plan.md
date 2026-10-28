@@ -14,11 +14,10 @@ live since 2026-10-26
 
 ## Now
 
-- [Run the live-site test when the snapshot is published](wip/run-live-test-when-snapshot-is-published.md):
-  found while [verifying the publication](done/2026-10-28_verify-publication-at-next-version.md)
-  of version 0.2.0, live since 2026-10-28. Until it is fixed, every
-  version published from the snapshot is published without its live
-  test. Being worked on.
+- Nothing being worked on. The live-site test runs again after every
+  publication since version 0.2.1
+  ([card](done/2026-10-28_run-live-test-when-snapshot-is-published.md));
+  the next card is chosen from Next.
 
 ## Next
 
