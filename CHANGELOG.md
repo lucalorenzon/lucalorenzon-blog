@@ -25,6 +25,8 @@ Why these rules: [the card that set them](docs/wip/separate-build-from-deploy.md
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-28
+
 ### Added
 
 - An "under construction" home page: the first version of the site.
