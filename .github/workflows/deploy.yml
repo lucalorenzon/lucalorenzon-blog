@@ -266,8 +266,15 @@ jobs:
               --notes-file notes.md --latest "site-$TAG.zip"
           fi
 
+  # Runs the browser test on the live site once the deploy succeeded. The
+  # explicit condition is needed because, without one, GitHub runs a job
+  # only if every job before it, even indirectly, succeeded: when the
+  # snapshot is published the job build is skipped, and verify-live was
+  # skipped with it, silently (version 0.2.0). Why:
+  # docs/wip/run-live-test-when-snapshot-is-published.md.
   verify-live:
     needs: [check-tag, deploy]
+    if: ${{ !cancelled() && needs.deploy.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
