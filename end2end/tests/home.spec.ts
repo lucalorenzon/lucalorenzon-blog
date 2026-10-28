@@ -12,20 +12,33 @@ test.beforeAll(() => {
   }
 });
 
-test('home page shows the heading and loads its stylesheet', async ({ page }) => {
+test('home page shows header, body and footer, and loads stylesheet, font and favicon', async ({
+  page,
+}) => {
   // GitHub Pages may take some seconds to serve a new deployment: when
   // checking the live site, retry the whole check for up to a minute.
   const check = async () => {
-    const stylesheet = page.waitForResponse(
-      (response) => new URL(response.url()).pathname.endsWith('/style.css'),
-      { timeout: 10_000 },
-    );
-    stylesheet.catch(() => {}); // a failed attempt must not leave an unhandled rejection
+    const waitFor = (suffix: string) => {
+      const response = page.waitForResponse(
+        (r) => new URL(r.url()).pathname.endsWith(suffix),
+        { timeout: 10_000 },
+      );
+      response.catch(() => {}); // a failed attempt must not leave an unhandled rejection
+      return response;
+    };
+    const stylesheet = waitFor('/style.css');
+    const font = waitFor('.woff');
     await page.goto('./');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Sito in costruzione', {
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Home Page', {
       timeout: 5_000,
     });
+    await expect(page.getByText('Sito in costruzione')).toBeVisible();
+    await expect(page.getByText('© Luca Lorenzon 2026')).toBeVisible();
+    await expect(page.getByRole('img', { name: 'Lvk@73r' })).toBeVisible();
     expect((await stylesheet).status()).toBe(200);
+    expect((await font).status()).toBe(200);
+    const favicon = await page.request.get(new URL('favicon.ico', page.url()).href);
+    expect(favicon.status()).toBe(200);
   };
 
   if (live) {

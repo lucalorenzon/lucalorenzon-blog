@@ -31,3 +31,4 @@ fi
 
 cargo run --release -- target/site
 "$TOOL" -i style/input.css -o target/site/style.css --minify
+cp -r assets/. target/site/
