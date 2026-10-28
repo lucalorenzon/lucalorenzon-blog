@@ -30,6 +30,14 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-28
+
+### Fixed
+
+- The browser test on the published site runs after every publication.
+  With version 0.2.0, published from the snapshot, it was skipped without
+  notice.
+
 ## [0.2.0] - 2026-10-28
 
 ### Added
