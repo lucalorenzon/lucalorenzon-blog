@@ -16,6 +16,11 @@ What each number means for this site:
 - **PATCH:** a security fix or a bug fix. While test articles live in this
   repository, adding one also counts as a patch.
 
+While the site is at version 0, a new design counts as MINOR, not MAJOR:
+the leading 0 says the site is still under construction, as its home page
+does. Set on 2026-10-28, when the first design came with version 0.2.0
+([card](docs/done/2026-10-28_add-header-footer-and-favicon.md)).
+
 A version tag is never moved. If one has to be deleted, its name is never
 used again: the next version takes the next number. GitHub can stop a tag
 from being moved, but not a deleted name from being reused, so this rule
@@ -24,6 +29,16 @@ holds only because it is written here.
 Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-from-deploy.md).
 
 ## [Unreleased]
+
+## [0.2.0] - 2026-10-28
+
+### Added
+
+- A header with the ASCII-art logo and the title "Home Page", and a
+  footer with the copyright, always at the bottom of the window.
+- An old-terminal look: amber text on black, in the IBM VGA 8x16 font
+  served by the site itself.
+- The favicon.
 
 ## [0.1.0] - 2026-10-28
 
