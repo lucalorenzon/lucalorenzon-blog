@@ -194,12 +194,23 @@ starts, so there is never a time when nothing, or two things, publish.
 2. **Deploy from a tag, rebuild path only.** The workflow is split into
    `build.yml` (never publishes) and `deploy.yml` (from a version tag),
    `CHANGELOG.md` and the guide in `README.md` are added, and the
-   environment stops accepting `main`. Then a first version is published
-   from a tag, end to end; its number is chosen then. The deploy does not
-   keep its own copy of the build: it calls `build.yml`, so the rebuild
-   path runs on every push and cannot break unnoticed, which removes most
-   of the cost accepted above for the two paths.
-3. **The snapshot.** The build keeps the `snapshot` Release up to date and
-   the deploy uses it when it was built from the tagged commit.
+   environment stops accepting `main`. The deploy does not keep its own
+   copy of the build: it calls `build.yml`, so the rebuild path runs on
+   every push and cannot break unnoticed, which removes most of the cost
+   accepted above for the two paths. Done on 2026-10-28 (commit
+   `efe3ff6`). The user chose `v0.1.0` for the first version. It was published from its
+   tag the same day (commit `794eb5f`); every job of the deploy passed,
+   including the browser test on the live site. Not yet seen on GitHub:
+   the deploy failing on a bad tag, a commit outside `main` or a missing
+   CHANGELOG section (the tag and CHANGELOG checks were tested locally).
+3. **The snapshot.** On `main`, after the browser test passed, the build
+   replaces the zip in the `snapshot` Release with `site-<commit>.zip`.
+   The commit is in the file name because a file is replaced in one
+   operation, so the site and its commit can never disagree; the release's
+   own tag does not follow `main`. The deploy looks for the zip of the
+   tagged commit: if it is there, it publishes it; otherwise it calls
+   `build.yml`. It downloads the zip at once and passes it on inside its
+   own run, so a newer build replacing the zip in the meantime cannot
+   change what is published.
 4. **A GitHub Release for each version**, with the CHANGELOG text and the
    site's zip.

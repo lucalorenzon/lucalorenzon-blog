@@ -4,9 +4,16 @@
 #   - the tag has the form vX.Y.Z (numbers without leading zeros);
 #   - the tagged commit is on main;
 #   - CHANGELOG.md, at the tagged commit, has a "## [X.Y.Z]" heading.
-# It then calls build.yml on the tagged commit, so the published site is built
-# and tested by the same definition used on every push, publishes the built
-# site, and finally runs the browser test on the live site.
+# It then publishes the site by one of two paths:
+#   - snapshot: build.yml keeps, for the last commit of main whose build and
+#     browser test passed, a zip of the tested site in the release "snapshot".
+#     When it was built from the tagged commit, that very site is published,
+#     with no second build;
+#   - rebuild: otherwise (a tag pushed while the build of its commit is still
+#     running, a tag on a documentation-only commit, a missing snapshot) the
+#     site is built and tested from the tagged commit by calling build.yml.
+# A snapshot exists only for a commit whose build and browser test passed.
+# Finally the browser test runs on the live site.
 # Why: docs/wip/separate-build-from-deploy.md.
 name: Deploy
 
@@ -28,6 +35,9 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
+    outputs:
+      commit: ${{ steps.commit.outputs.commit }}
+      playwright_version: ${{ steps.playwright.outputs.version }}
     steps:
       - name: Check out the tagged commit with the history
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -46,9 +56,11 @@ jobs:
           fi
 
       - name: Check the tagged commit is on main
+        id: commit
         run: |
           set -euo pipefail
           commit=$(git rev-parse 'HEAD^{commit}')
+          echo "commit=$commit" >> "$GITHUB_OUTPUT"
           if ! git rev-parse --verify --quiet origin/main > /dev/null; then
             git fetch --no-tags origin main
             main_ref=FETCH_HEAD
@@ -75,14 +87,81 @@ jobs:
             exit 1
           fi
 
-  build:
+      - name: Read the Playwright version from the lock file
+        id: playwright
+        run: |
+          set -euo pipefail
+          version=$(scripts/playwright-version.sh)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+  # Fast path: takes the snapshot of the tagged commit, if there is one, and
+  # passes it on as the artifact "site" of this run. Downloading it here, once,
+  # avoids a race where a newer build replaces the asset between this check
+  # and the publication. "Not found" is told apart from every other failure
+  # (network, authorisation, corrupt zip), which fails the job: only a
+  # missing snapshot may fall back to the rebuild.
+  snapshot:
     needs: check-tag
-    uses: ./.github/workflows/build.yml
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     permissions:
       contents: read
+    outputs:
+      found: ${{ steps.take.outputs.found }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      COMMIT: ${{ needs.check-tag.outputs.commit }}
+    steps:
+      - name: Take the snapshot of the tagged commit, if there is one
+        id: take
+        run: |
+          set -euo pipefail
+          if ! assets=$(gh release view snapshot --json assets --jq '.assets[].name' 2> view.err); then
+            if [ "$(cat view.err)" != "release not found" ]; then
+              cat view.err >&2
+              exit 1
+            fi
+            assets=""
+          fi
+          if ! grep -Fxq "site-$COMMIT.zip" <<< "$assets"; then
+            echo "::notice::No snapshot for commit $COMMIT: the site will be rebuilt."
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          mkdir -p download target/site
+          gh release download snapshot --pattern "site-$COMMIT.zip" --dir download
+          unzip -q "download/site-$COMMIT.zip" -d target/site
+          echo "::notice::Snapshot of commit $COMMIT found: it is published, the site is not rebuilt."
+          echo "found=true" >> "$GITHUB_OUTPUT"
+
+      - name: Keep the snapshot site for the publication
+        if: ${{ steps.take.outputs.found == 'true' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: site
+          path: target/site
+          retention-days: 1
+          if-no-files-found: error
+
+  # Slow path: rebuild and test the site from the tagged commit.
+  # build.yml has a job (snapshot) that requests contents: write. GitHub
+  # checks the permissions of every job of a called workflow against the
+  # grant of the calling job, even for a job that ends up skipped, so this
+  # caller must grant contents: write (and nothing more). The called
+  # workflow's jobs still declare their own permissions, and its snapshot
+  # job never runs from here: it only runs on a push to refs/heads/main,
+  # while this run's ref is a tag.
+  build:
+    needs: snapshot
+    if: ${{ needs.snapshot.outputs.found == 'false' }}
+    uses: ./.github/workflows/build.yml
+    permissions:
+      contents: write
 
   deploy:
-    needs: build
+    needs: [check-tag, snapshot, build]
+    if: ${{ !cancelled() && needs.check-tag.result == 'success' && (needs.snapshot.outputs.found == 'true' || needs.build.result == 'success') }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
@@ -114,13 +193,13 @@ jobs:
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
   verify-live:
-    needs: [build, deploy]
+    needs: [check-tag, deploy]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
       contents: read
     container:
-      image: mcr.microsoft.com/playwright:v${{ needs.build.outputs.playwright_version }}-noble
+      image: mcr.microsoft.com/playwright:v${{ needs.check-tag.outputs.playwright_version }}-noble
       options: --ipc=host
     steps:
       - name: Check out the repository

@@ -2,6 +2,9 @@
 # pull requests and manual runs. It never publishes: publishing is done by
 # deploy.yml from a version tag, which calls this workflow so that both use
 # one build definition (see docs/wip/separate-build-from-deploy.md).
+# On a push to main, after the browser test passed, it also keeps the release
+# "snapshot" up to date with a zip of the tested site (job snapshot), which
+# deploy.yml publishes when it was built from the tagged commit.
 # The browser test (end2end/) runs on the freshly built site served locally
 # (job browser-test).
 # It runs in Playwright's official container image, which already contains
@@ -133,16 +136,11 @@ jobs:
         with:
           persist-credentials: false
 
-      # The check also keeps anything odd out of the image name.
       - name: Read the Playwright version from the lock file
         id: playwright
         run: |
           set -euo pipefail
-          version=$(jq -r '.packages["node_modules/@playwright/test"].version' end2end/package-lock.json)
-          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "::error::Unexpected @playwright/test version in end2end/package-lock.json: '$version'"
-            exit 1
-          fi
+          version=$(scripts/playwright-version.sh)
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Install the Rust toolchain pinned in rust-toolchain.toml
@@ -208,3 +206,62 @@ jobs:
       - name: Browser test on the freshly built site
         working-directory: end2end
         run: npx playwright test
+
+  # Keeps the site of the last commit of main whose build and browser test
+  # passed, as an asset of the pre-release "snapshot", for deploy.yml. Never
+  # runs on pull requests, manual runs, when deploy.yml calls this workflow
+  # (the ref is then a tag), or after a documentation-only skip (the browser
+  # test did not run, so its result is not "success").
+  snapshot:
+    needs: [build, browser-test]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.browser-test.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      SHA: ${{ github.sha }}
+    steps:
+      - name: Download the tested site
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site
+          path: target/site
+
+      # The commit is in the file name, not in the release: an asset is
+      # replaced atomically, so the zip and the commit it was built from can
+      # never disagree. The release's tag does not move with main.
+      - name: Zip the content of the site
+        run: |
+          set -euo pipefail
+          (cd target/site && zip -qr "../../site-$SHA.zip" .)
+
+      - name: Create the release snapshot if it does not exist
+        run: |
+          set -euo pipefail
+          if ! gh release view snapshot > /dev/null 2> view.err; then
+            if [ "$(cat view.err)" != "release not found" ]; then
+              cat view.err >&2
+              exit 1
+            fi
+            gh release create snapshot --prerelease --latest=false --target "$SHA" \
+              --title "Snapshot of main" \
+              --notes "The site of the last commit of main whose build and browser test passed. The commit is in the file name. The tag snapshot itself does not follow main. Used by deploy.yml, see README."
+          fi
+
+      # Upload first, delete after: there is never a moment with no snapshot.
+      - name: Upload the new zip
+        run: gh release upload snapshot "site-$SHA.zip" --clobber
+
+      - name: Delete the older zips
+        run: |
+          set -euo pipefail
+          gh release view snapshot --json assets --jq '.assets[].name' \
+            | while IFS= read -r name; do
+                case "$name" in
+                  "site-$SHA.zip") ;;
+                  site-*.zip) gh release delete-asset snapshot "$name" -y ;;
+                esac
+              done

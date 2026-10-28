@@ -39,7 +39,8 @@ numbers and the rule on tag names are at the top of
    version's own, for example `## [1.2.0] - 2026-11-03`, and add an empty
    `## [Unreleased]` above it.
 2. Commit that change on `main` and push it. Wait for the build of that
-   commit to pass.
+   commit to pass: on `main`, a passed build saves the site it tested in
+   the GitHub Release `snapshot`, and the deploy reuses it.
 3. Tag that commit and push the tag:
 
    ```sh
@@ -50,8 +51,11 @@ numbers and the rule on tag names are at the top of
 The tag starts the workflow `.github/workflows/deploy.yml`. It fails,
 without publishing, if the tag is not of the form `vX.Y.Z`, if the commit
 is not on `main`, or if `CHANGELOG.md` has no section for that version.
-Otherwise it builds and tests the site from the tagged commit, publishes
-it to GitHub Pages and runs the browser test again on the public address.
+Otherwise it publishes the site saved in `snapshot`, if that site was
+built from the tagged commit; if not (the tag came before the build
+finished, or the commit changed only documentation), it builds and tests
+the site from the tagged commit first. Either way it then runs the
+browser test again on the public address.
 
 ## Documentation
 

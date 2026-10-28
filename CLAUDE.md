@@ -182,9 +182,10 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | `src/` | The Leptos page component and the build program that writes `index.html` |
 | `style/input.css` | Tailwind entry point |
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
+| `scripts/playwright-version.sh` | Prints the Playwright version locked in `end2end/`, which picks the test container image in both workflows |
 | `end2end/` | Playwright end-to-end test |
-| `.github/workflows/build.yml` | Check, build and test the site on every push and pull request; never publishes |
-| `.github/workflows/deploy.yml` | On a version tag: check the tag, run the build, publish, then test the live site |
+| `.github/workflows/build.yml` | Check, build and test the site on every push and pull request; on `main`, keep the tested site in the `snapshot` Release; never publishes |
+| `.github/workflows/deploy.yml` | On a version tag: check the tag, take the snapshot of that commit or rebuild it, publish, then test the live site |
 | `CHANGELOG.md` | What each published version brought, and the rules for version numbers and tags |
 | `docs/plan.md` | The project's board: Now / Next / Later (see "The plan") |
 | `docs/backlog/` | Tickets: things noticed but deliberately not done yet, with the reason |
