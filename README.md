@@ -25,9 +25,33 @@ cd end2end && npm ci && npx playwright install chromium
 npx playwright test              # opens the built site in a browser
 ```
 
-Every push to `main` runs the same checks on GitHub, publishes the site
-to GitHub Pages and then runs the browser test again on the public
-address.
+Every push to `main` and every pull request runs the same checks on
+GitHub (workflow `.github/workflows/build.yml`). Nothing is published by
+a push: the site goes live only when a version is published.
+
+## Publish a version
+
+A version is published from a tag, by hand. The meaning of the version
+numbers and the rule on tag names are at the top of
+[CHANGELOG.md](CHANGELOG.md).
+
+1. In `CHANGELOG.md`, turn the `## [Unreleased]` heading into the
+   version's own, for example `## [1.2.0] - 2026-11-03`, and add an empty
+   `## [Unreleased]` above it.
+2. Commit that change on `main` and push it. Wait for the build of that
+   commit to pass.
+3. Tag that commit and push the tag:
+
+   ```sh
+   git tag v1.2.0
+   git push origin v1.2.0
+   ```
+
+The tag starts the workflow `.github/workflows/deploy.yml`. It fails,
+without publishing, if the tag is not of the form `vX.Y.Z`, if the commit
+is not on `main`, or if `CHANGELOG.md` has no section for that version.
+Otherwise it builds and tests the site from the tagged commit, publishes
+it to GitHub Pages and runs the browser test again on the public address.
 
 ## Documentation
 

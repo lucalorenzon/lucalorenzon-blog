@@ -167,9 +167,10 @@ contributions, the person stays the author and fully accountable, while
   pages to static HTML at build time (no server, no WebAssembly yet)
 - [Tailwind CSS](https://tailwindcss.com/) v4, standalone command-line tool
   pinned by version and checksum in `scripts/build-site.sh`
-- Hosting on GitHub Pages, published by GitHub Actions
-- [Playwright](https://playwright.dev/) end-to-end test, run before and after
-  each publication
+- Hosting on GitHub Pages, published by GitHub Actions only when a version
+  tag `vX.Y.Z` is pushed (how: `README.md`, "Publish a version")
+- [Playwright](https://playwright.dev/) end-to-end test, run on every build
+  and again on the live site after each publication
 - Rust stable toolchain, pinned in `rust-toolchain.toml`
 
 Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
@@ -182,7 +183,9 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | `style/input.css` | Tailwind entry point |
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
 | `end2end/` | Playwright end-to-end test |
-| `.github/workflows/deploy.yml` | Check, build, test, publish, then test the live site |
+| `.github/workflows/build.yml` | Check, build and test the site on every push and pull request; never publishes |
+| `.github/workflows/deploy.yml` | On a version tag: check the tag, run the build, publish, then test the live site |
+| `CHANGELOG.md` | What each published version brought, and the rules for version numbers and tags |
 | `docs/plan.md` | The project's board: Now / Next / Later (see "The plan") |
 | `docs/backlog/` | Tickets: things noticed but deliberately not done yet, with the reason |
 | `docs/wip/` | Backlog cards being worked on now (see "Backlog cards") |

@@ -180,13 +180,26 @@ for that commit.
 `CHANGELOG.md` must stay out of the documentation-only list, so that a
 version's preparation commit is built and gets its snapshot.
 
-## Still to do
+## Steps
 
-Not in order of execution; how to proceed is agreed with the user.
+Agreed with the user on 2026-10-28. Each step works on its own. The
+build stops publishing in the same step where the deploy from a tag
+starts, so there is never a time when nothing, or two things, publish.
 
-- Split the workflow into a build and a deploy, with the snapshot, the
-  deploy's checks and the Release for each version.
-- Create `CHANGELOG.md`, with the rule on tag names and the first version.
-  The first version number is not chosen yet.
-- Change the GitHub settings: the environment and the tag ruleset.
-- Publish a first version from a tag, end to end.
+1. **GitHub settings.** Done on 2026-10-28 with `gh`: the `github-pages`
+   environment also accepts tags `v*`; ruleset "Version tags cannot be
+   moved" (no bypass); ruleset "Only admins delete version tags" (bypass:
+   repository administrators). Two rulesets, because a bypass applies to
+   a whole ruleset: a single one would also let administrators move tags.
+2. **Deploy from a tag, rebuild path only.** The workflow is split into
+   `build.yml` (never publishes) and `deploy.yml` (from a version tag),
+   `CHANGELOG.md` and the guide in `README.md` are added, and the
+   environment stops accepting `main`. Then a first version is published
+   from a tag, end to end; its number is chosen then. The deploy does not
+   keep its own copy of the build: it calls `build.yml`, so the rebuild
+   path runs on every push and cannot break unnoticed, which removes most
+   of the cost accepted above for the two paths.
+3. **The snapshot.** The build keeps the `snapshot` Release up to date and
+   the deploy uses it when it was built from the tagged commit.
+4. **A GitHub Release for each version**, with the CHANGELOG text and the
+   site's zip.

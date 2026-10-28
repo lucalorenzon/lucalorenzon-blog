@@ -1,215 +1,88 @@
-# The site is published by this workflow (GitHub Pages source: "GitHub Actions").
-# Pull requests only build and check the site; they never deploy.
-# The same browser test (end2end/) runs twice: on the freshly built site served
-# locally, before anything is published (job browser-test, also on pull
-# requests), and on the public address right after publishing (job verify-live).
-# Both run in Playwright's official container image, which already contains
-# Chromium and its system libraries, so nothing is installed from Ubuntu's
-# package server at test time. The image tag is read from
-# end2end/package-lock.json (job build, output playwright_version) because
-# Dependabot does not update images referenced in workflows: a bump of
-# @playwright/test then needs no workflow edit.
-# Documentation-only changes skip build, tests and publication. The workflow is
-# still always triggered (no paths filters) because the "build" check is
-# required: a job skipped by a job-level "if" is reported as skipped, which
-# counts as success, while a workflow skipped by paths filters never reports.
-name: Build and deploy
+# Publishes the site to GitHub Pages. Started by pushing a tag vX.Y.Z on a
+# commit of main, after CHANGELOG.md has the section of that version.
+# Checks, each failing the run visibly before anything is published:
+#   - the tag has the form vX.Y.Z (numbers without leading zeros);
+#   - the tagged commit is on main;
+#   - CHANGELOG.md, at the tagged commit, has a "## [X.Y.Z]" heading.
+# It then calls build.yml on the tagged commit, so the published site is built
+# and tested by the same definition used on every push, publishes the built
+# site, and finally runs the browser test on the live site.
+# Why: docs/wip/separate-build-from-deploy.md.
+name: Deploy
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  workflow_dispatch:
+    tags: ['v*']
 
 permissions:
   contents: read
 
+# One publication at a time, never cancelled half-way.
 concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: deploy
+  cancel-in-progress: false
 
 jobs:
-  changes:
+  check-tag:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
       contents: read
-    outputs:
-      code: ${{ steps.detect.outputs.code }}
     steps:
-      - name: Check out the repository with its history
+      - name: Check out the tagged commit with the history
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Detect whether anything other than documentation changed
-        id: detect
+      - name: Check the tag name
         env:
-          EVENT_NAME: ${{ github.event_name }}
-          BEFORE: ${{ github.event.before }}
-          AFTER: ${{ github.sha }}
+          TAG: ${{ github.ref_name }}
         run: |
           set -euo pipefail
-
-          # Documentation-only files: an ignore-list, not an allow-list. A code
-          # folder forgotten in an allow-list would silently never be
-          # published; a doc file missing from this list only costs one
-          # unnecessary run.
-          is_doc() {
-            case "$1" in
-              docs/* | README.md | CLAUDE.md | LICENSE) return 0 ;;
-              *) return 1 ;;
-            esac
-          }
-
-          # When in doubt, run everything.
-          decide() {
-            echo "Decision: code=$1 ($2)"
-            echo "code=$1" >> "$GITHUB_OUTPUT"
-            exit 0
-          }
-
-          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
-            decide true "manual run"
-          fi
-
-          if [ "$EVENT_NAME" = "pull_request" ]; then
-            # The checkout is the merge commit; its first parent is the base.
-            changed=$(git diff --no-renames --name-only HEAD^1 HEAD)
-          elif [ "$EVENT_NAME" = "push" ]; then
-            # A new branch or a force push leaves no usable "before" commit.
-            if [ "$BEFORE" = "0000000000000000000000000000000000000000" ] \
-              || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
-              decide true "no usable previous commit"
-            fi
-            changed=$(git diff --no-renames --name-only "$BEFORE" "$AFTER")
-          else
-            decide true "unexpected event"
-          fi
-
-          echo "Changed files:"
-          echo "$changed"
-
-          if [ -z "$changed" ]; then
-            decide true "empty list of changed files"
-          fi
-
-          while IFS= read -r file; do
-            if ! is_doc "$file"; then
-              decide true "not documentation: $file"
-            fi
-          done <<< "$changed"
-
-          decide false "documentation only"
-
-  build:
-    # Skipped only when detection explicitly said "documentation only". If
-    # detection fails its output is empty and build runs anyway, so a broken
-    # detector can never let an untested pull request pass the required check.
-    needs: changes
-    if: ${{ !cancelled() && needs.changes.outputs.code != 'false' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    outputs:
-      playwright_version: ${{ steps.playwright.outputs.version }}
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      # The check also keeps anything odd out of the image name.
-      - name: Read the Playwright version from the lock file
-        id: playwright
-        run: |
-          set -euo pipefail
-          version=$(jq -r '.packages["node_modules/@playwright/test"].version' end2end/package-lock.json)
-          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "::error::Unexpected @playwright/test version in end2end/package-lock.json: '$version'"
+          if ! [[ "$TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "::error::Tag '$TAG' is not of the form vX.Y.Z. Nothing was published."
             exit 1
           fi
-          echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Install the Rust toolchain pinned in rust-toolchain.toml
+      - name: Check the tagged commit is on main
         run: |
-          rustup toolchain install --profile minimal
-          rustup component add rustfmt clippy
+          set -euo pipefail
+          commit=$(git rev-parse 'HEAD^{commit}')
+          if ! git rev-parse --verify --quiet origin/main > /dev/null; then
+            git fetch --no-tags origin main
+            main_ref=FETCH_HEAD
+          else
+            main_ref=origin/main
+          fi
+          if ! git merge-base --is-ancestor "$commit" "$main_ref"; then
+            echo "::error::The tagged commit $commit is not on main. Nothing was published."
+            exit 1
+          fi
 
-      - name: Cache Rust build
-        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
+      - name: Check CHANGELOG.md has the section of this version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          version="${TAG#v}"
+          if [ ! -f CHANGELOG.md ]; then
+            echo "::error::CHANGELOG.md is missing at the tagged commit. Nothing was published."
+            exit 1
+          fi
+          if ! grep -Eq "^## \[${version//./\\.}\]( - .*)?$" CHANGELOG.md; then
+            echo "::error::CHANGELOG.md has no '## [$version]' heading at the tagged commit. Nothing was published."
+            exit 1
+          fi
 
-      - name: Check formatting
-        run: cargo fmt --check
-
-      - name: Lint
-        run: cargo clippy --all-targets -- -D warnings
-
-      - name: Test
-        run: cargo test
-
-      - name: Build the site
-        run: scripts/build-site.sh
-
-      # The browser-test job needs the site, and runs on every event.
-      - name: Keep the built site for the browser test
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: site
-          path: target/site
-          retention-days: 1
-          if-no-files-found: error
-
-      - name: Configure Pages
-        if: github.event_name != 'pull_request'
-        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
-
-      - name: Upload the site artifact
-        if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
-        with:
-          path: target/site
-
-  browser-test:
-    # Runs whenever build succeeded, even if change detection failed, so the
-    # required browser-test check can never pass without a test; skipped
-    # together with build on documentation-only changes. --ipc=host is
-    # recommended by Playwright for Chromium.
-    needs: build
-    if: ${{ !cancelled() && needs.build.result == 'success' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+  build:
+    needs: check-tag
+    uses: ./.github/workflows/build.yml
     permissions:
       contents: read
-    container:
-      image: mcr.microsoft.com/playwright:v${{ needs.build.outputs.playwright_version }}-noble
-      options: --ipc=host
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Download the built site
-        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
-        with:
-          name: site
-          path: target/site
-
-      - name: Install the browser test dependencies
-        working-directory: end2end
-        run: npm ci
-
-      - name: Browser test on the freshly built site
-        working-directory: end2end
-        run: npx playwright test
 
   deploy:
-    # Skipped together with build on documentation-only changes. Publishes only
-    # after the browser test passed.
-    needs: [build, browser-test]
-    if: github.event_name != 'pull_request'
+    needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
@@ -222,13 +95,26 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: Download the built site
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site
+          path: target/site
+
+      - name: Configure Pages
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+
+      - name: Upload the site artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: target/site
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
 
   verify-live:
     needs: [build, deploy]
-    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
