@@ -21,7 +21,7 @@ used again: the next version takes the next number. GitHub can stop a tag
 from being moved, but not a deleted name from being reused, so this rule
 holds only because it is written here.
 
-Why these rules: [the card that set them](docs/wip/separate-build-from-deploy.md).
+Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-from-deploy.md).
 
 ## [Unreleased]
 

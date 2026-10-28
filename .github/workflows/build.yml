@@ -1,7 +1,7 @@
 # This workflow checks, builds and browser-tests the site on pushes to main,
 # pull requests and manual runs. It never publishes: publishing is done by
 # deploy.yml from a version tag, which calls this workflow so that both use
-# one build definition (see docs/wip/separate-build-from-deploy.md).
+# one build definition (see docs/done/2026-10-28_separate-build-from-deploy.md).
 # On a push to main, after the browser test passed, it also keeps the release
 # "snapshot" up to date with a zip of the tested site (job snapshot), which
 # deploy.yml publishes when it was built from the tagged commit.

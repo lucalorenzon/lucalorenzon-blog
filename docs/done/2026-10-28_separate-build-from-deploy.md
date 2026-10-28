@@ -3,16 +3,16 @@
 - **Opened:** 2026-10-27, asked by the user while the Playwright image card
   (`docs/done/2026-10-27_run-browser-tests-in-playwright-image.md`) was
   being worked on.
-- **Status:** being worked on since 2026-10-28. The questions are answered
-  (below); the work itself is not done yet.
+- **Status:** done, closed on 2026-10-28. Two parts are still to be seen
+  working on GitHub, at the next real version: see "Not seen yet".
 
 ## Why this was asked
 
-Today one workflow (`.github/workflows/deploy.yml`) does everything: on
-every push to `main` it checks, builds and tests the site and, if all of
-that passes, publishes it straight away. Every code change merged into
-`main` therefore goes live immediately; there is no moment where the
-author decides "this is a version worth publishing".
+Until then one workflow (`.github/workflows/deploy.yml`) did everything:
+on every push to `main` it checked, built and tested the site and, if all
+of that passed, published it straight away. Every code change merged into
+`main` therefore went live immediately; there was no moment where the
+author decided "this is a version worth publishing".
 
 The user wants publishing to be a deliberate act, separate from the
 build, and a written record of what changed between one published
@@ -180,9 +180,10 @@ for that commit.
 `CHANGELOG.md` must stay out of the documentation-only list, so that a
 version's preparation commit is built and gets its snapshot.
 
-## Steps
+## How it was done
 
-Agreed with the user on 2026-10-28. Each step works on its own. The
+In four steps, agreed with the user on 2026-10-28. Each step works on its
+own. The
 build stops publishing in the same step where the deploy from a tag
 starts, so there is never a time when nothing, or two things, publish.
 
@@ -223,4 +224,34 @@ starts, so there is never a time when nothing, or two things, publish.
    zip of the published site. It is created right after publishing, alongside
    the browser test on the live site and whatever that test's result:
    the user decided that a failed live test says what to fix in a later
-   patch version, while the Release records what went live.
+   patch version, while the Release records what went live. Done on
+   2026-10-28 (commit `e4da19f`).
+
+Going back to an earlier version (a rollback), which the zip in each
+Release makes possible, came up during step 4. The user judged it not
+worth a card for now.
+
+## Results observed
+
+- `v0.1.0` was published from its tag through the rebuild path: the tag
+  checks, the build called by the deploy, the publication and the browser
+  test on the live site all passed.
+- A push to `main` no longer publishes: the builds of `efe3ff6`,
+  `794eb5f`, `4e2116e` and `e4da19f` ran without starting a deploy.
+- The build of `main` keeps the `snapshot` Release up to date: created
+  by `4e2116e`, its zip replaced by that of `e4da19f`, with no older zip
+  left behind.
+
+## Not seen yet
+
+Left to the next real version, by the user's choice: a version made only
+to test the publication would bring nothing to the site's visitors.
+
+- The deploy publishing the snapshot instead of rebuilding.
+- The Release of a version, with its CHANGELOG text and the site's zip.
+- The deploy failing on a malformed tag, a commit outside `main`, or a
+  missing CHANGELOG section (the tag and CHANGELOG checks were tested
+  locally only).
+
+Card that carries the check:
+[verify the publication at the next version](../backlog/verify-publication-at-next-version.md).

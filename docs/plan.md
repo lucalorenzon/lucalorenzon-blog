@@ -14,12 +14,16 @@ live since 2026-10-26
 
 ## Now
 
-- [Separate the build from a tag-triggered deploy, with a CHANGELOG](wip/separate-build-from-deploy.md).
+- Nothing yet: the next card is chosen by the user. The last one,
+  [publish from a version tag, with a CHANGELOG](done/2026-10-28_separate-build-from-deploy.md),
+  was closed on 2026-10-28.
 
 ## Next
 
 - [Challenge the live skeleton with `residuality`](backlog/challenge-skeleton-with-residuality.md),
   and decide the following increments from its outcome.
+- [Verify the publication at the next version](backlog/verify-publication-at-next-version.md),
+  together with the next version that changes the site.
 
 ## Later
 
