@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-10-28
+Last updated: 2026-10-29
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -21,14 +21,18 @@ live since 2026-10-26
 
 ## Next
 
-- [Make the site responsive](backlog/make-site-responsive.md), starting
-  from the logo on a phone.
+- [Adapt the header to screen width](backlog/adapt-header-to-screen-width.md):
+  the logo and the title on a phone.
 - [Add automated accessibility tests](backlog/add-automated-accessibility-tests.md),
   to keep checking the amber-on-black contrast and the rest.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
 
 ## Later
 
+- [Adapt the footer and the articles to screen width](backlog/adapt-footer-and-articles-to-screen-width.md),
+  with the rules for long titles already agreed.
+- [Add site navigation](backlog/add-site-navigation.md), once there is
+  more than one page to move between.
 - [Choose the site's public address](backlog/choose-site-address.md),
   before pages link to each other.
 - [Choose the licence of the articles](backlog/choose-articles-licence.md),

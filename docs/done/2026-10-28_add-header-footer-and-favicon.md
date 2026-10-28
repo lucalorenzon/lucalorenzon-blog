@@ -36,7 +36,8 @@ every screen.
 Rejected: the wide version (about 70 characters), which never fits a
 phone; switching to the plain text "Lvk@73r" on small screens, as the
 old site did. How the page adapts to screen size is a decision of its
-own, moved to the card [make the site responsive](../backlog/make-site-responsive.md).
+own, moved to the card [make the site responsive](../backlog/adapt-header-to-screen-width.md)
+(later split; the logo is handled in its header half).
 
 ### What does the page show?
 
