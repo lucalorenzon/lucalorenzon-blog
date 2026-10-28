@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-10-27
+Last updated: 2026-10-28
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Separate the build from a tag-triggered deploy, with a CHANGELOG](backlog/separate-build-from-deploy.md).
+- [Separate the build from a tag-triggered deploy, with a CHANGELOG](wip/separate-build-from-deploy.md).
 
 ## Next
 
