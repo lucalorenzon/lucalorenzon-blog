@@ -93,6 +93,15 @@ It is a recognised practice, but it would be a third place for decisions
 after cards and minutes: the kind of ceremony the restart set out to
 avoid.
 
+For the decisions to come, the same split holds: why a decision was taken
+is in its card (its text while open, an answer once closed), who took it
+is in the session minute, and the plan shows only its effect. A decision
+that belongs to no card, such as a technical choice made during a session
+or one that spans several cards, goes to an architectural decision record,
+written with the `adr` skill in `docs/adr/`. Settled after the card was
+first closed, when the user checked that this point had been understood
+the same way.
+
 ### How are cards written?
 
 - **The title names the subject**, with no "Backlog:" prefix: the folder

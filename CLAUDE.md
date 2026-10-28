@@ -56,7 +56,9 @@ the plan is reworked by successive approximations; its value is in making
 it. It changes whenever priorities change, also during a session, when a new
 card turns out more urgent than what was in Now. It holds no decisions: why
 something was decided is in its card, who decided it is in the session
-minute. The user, acting as Product Owner, sets the priorities, possibly
+minute. A decision that belongs to no card, such as a technical choice made
+during a session or one that spans several cards, is recorded with the `adr`
+skill in `docs/adr/` (the folder is created with the first record). The user, acting as Product Owner, sets the priorities, possibly
 discussing them with the agent. What matters most is not doing too many
 things at once.
 
