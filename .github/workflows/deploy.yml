@@ -13,6 +13,8 @@
 #     running, a tag on a documentation-only commit, a missing snapshot) the
 #     site is built and tested from the tagged commit by calling build.yml.
 # A snapshot exists only for a commit whose build and browser test passed.
+# Right after publishing it creates the GitHub Release of the version, with
+# the notes from CHANGELOG.md and the zip of the published site attached.
 # Finally the browser test runs on the live site.
 # Why: docs/wip/separate-build-from-deploy.md.
 name: Deploy
@@ -191,6 +193,78 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+
+  # Creates the GitHub Release of the version right after publishing, in
+  # parallel with verify-live and whether or not it passes: the Release
+  # documents what went live, and a failed live test says what to fix in a
+  # later patch version (decision recorded in
+  # docs/wip/separate-build-from-deploy.md). The zip of the exact site that
+  # was published lets an earlier version be published again without
+  # rebuilding it. Safe to re-run: an existing Release gets its notes and its
+  # zip replaced.
+  release:
+    needs: [check-tag, deploy]
+    if: ${{ !cancelled() && needs.deploy.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ github.ref_name }}
+    steps:
+      - name: Check out the tagged commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Download the published site
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site
+          path: target/site
+
+      - name: Zip the content of the site
+        run: |
+          set -euo pipefail
+          (cd target/site && zip -qr "../../site-$TAG.zip" .)
+
+      # Lines after the heading "## [X.Y.Z]" (optionally followed by " - date")
+      # up to the next "## [" heading, without leading and trailing blank
+      # lines. The version is compared as a fixed string, never as a pattern.
+      - name: Extract the notes of this version from CHANGELOG.md
+        run: |
+          set -euo pipefail
+          VERSION="${TAG#v}" awk '
+            BEGIN { heading = "## [" ENVIRON["VERSION"] "]" }
+            !on {
+              if ($0 == heading || index($0, heading " - ") == 1) on = 1
+              next
+            }
+            index($0, "## [") == 1 { exit }
+            $0 ~ /^[[:space:]]*$/ { if (started) blanks++; next }
+            { for (; blanks > 0; blanks--) print ""; started = 1; print }
+          ' CHANGELOG.md > notes.md
+          if [ ! -s notes.md ]; then
+            echo "Version ${TAG#v} has no notes in CHANGELOG.md." > notes.md
+          fi
+          cat notes.md
+
+      - name: Create the GitHub Release, or update it if it already exists
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" > /dev/null 2> view.err; then
+            gh release edit "$TAG" --notes-file notes.md
+            gh release upload "$TAG" "site-$TAG.zip" --clobber
+          else
+            if [ "$(cat view.err)" != "release not found" ]; then
+              cat view.err >&2
+              exit 1
+            fi
+            gh release create "$TAG" --verify-tag --title "$TAG" \
+              --notes-file notes.md --latest "site-$TAG.zip"
+          fi
 
   verify-live:
     needs: [check-tag, deploy]

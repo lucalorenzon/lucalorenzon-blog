@@ -54,8 +54,10 @@ is not on `main`, or if `CHANGELOG.md` has no section for that version.
 Otherwise it publishes the site saved in `snapshot`, if that site was
 built from the tagged commit; if not (the tag came before the build
 finished, or the commit changed only documentation), it builds and tests
-the site from the tagged commit first. Either way it then runs the
-browser test again on the public address.
+the site from the tagged commit first. Right after publishing it creates
+the GitHub Release `vX.Y.Z`, with that version's section of
+`CHANGELOG.md` as its text and the zip of the published site attached;
+at the same time it runs the browser test again on the public address.
 
 ## Documentation
 

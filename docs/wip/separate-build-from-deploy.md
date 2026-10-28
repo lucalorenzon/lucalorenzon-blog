@@ -211,6 +211,16 @@ starts, so there is never a time when nothing, or two things, publish.
    tagged commit: if it is there, it publishes it; otherwise it calls
    `build.yml`. It downloads the zip at once and passes it on inside its
    own run, so a newer build replacing the zip in the meantime cannot
-   change what is published.
+   change what is published. Done on 2026-10-28 (commit `4e2116e`): its
+   first build created the `snapshot` Release with the zip of that
+   commit. The deploy taking the snapshot is seen at the next version.
+   To call `build.yml`, the deploy must grant it permission to write to
+   the repository, even though the part that writes never runs when
+   called: GitHub checks the permissions of every job of a called
+   workflow, skipped or not. A separate workflow just for the snapshot
+   would avoid that, and was rejected as one more moving part.
 4. **A GitHub Release for each version**, with the CHANGELOG text and the
-   site's zip.
+   zip of the published site. It is created right after publishing, alongside
+   the browser test on the live site and whatever that test's result:
+   the user decided that a failed live test says what to fix in a later
+   patch version, while the Release records what went live.
