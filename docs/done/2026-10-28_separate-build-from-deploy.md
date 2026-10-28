@@ -254,4 +254,4 @@ to test the publication would bring nothing to the site's visitors.
   locally only).
 
 Card that carries the check:
-[verify the publication at the next version](../wip/verify-publication-at-next-version.md).
+[verify the publication at the next version](2026-10-28_verify-publication-at-next-version.md).

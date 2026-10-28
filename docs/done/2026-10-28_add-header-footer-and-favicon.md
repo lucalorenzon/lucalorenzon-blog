@@ -121,4 +121,4 @@ build time, so the build does not depend on another website.
 - The year in the footer is fixed in the code: it changes only when
   someone changes it.
 - Publishing it makes the next version, which also carries the card
-  [verify the publication at the next version](../wip/verify-publication-at-next-version.md).
+  [verify the publication at the next version](2026-10-28_verify-publication-at-next-version.md).

@@ -14,10 +14,11 @@ live since 2026-10-26
 
 ## Now
 
-- [Verify the publication at the next version](wip/verify-publication-at-next-version.md),
-  with version 0.2.0. It publishes the card
-  [give the page a header, a footer and a favicon](done/2026-10-28_add-header-footer-and-favicon.md),
-  closed on 2026-10-28.
+- [Run the live-site test when the snapshot is published](backlog/run-live-test-when-snapshot-is-published.md):
+  found while [verifying the publication](done/2026-10-28_verify-publication-at-next-version.md)
+  of version 0.2.0, live since 2026-10-28. Until it is fixed, every
+  version published from the snapshot is published without its live
+  test. To be picked up at the next session.
 
 ## Next
 
