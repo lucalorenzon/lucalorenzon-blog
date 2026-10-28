@@ -14,17 +14,23 @@ live since 2026-10-26
 
 ## Now
 
-- [Challenge the live skeleton with `residuality`](wip/challenge-skeleton-with-residuality.md),
-  in a light pass: one round of questions to find the next increment
-  that creates value.
+- [Give the page a header, a footer and a favicon, in a dark terminal style](backlog/add-header-footer-and-favicon.md),
+  so a visitor can tell whose site it is. Chosen from the light pass of
+  [`residuality`](done/2026-10-28_challenge-skeleton-with-residuality.md),
+  closed on 2026-10-28.
 
 ## Next
 
 - [Verify the publication at the next version](backlog/verify-publication-at-next-version.md),
-  together with the next version that changes the site.
+  together with the version that publishes the header and footer.
+- [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
 
 ## Later
 
 - [Choose the site's public address](backlog/choose-site-address.md),
   before pages link to each other.
+- [Choose the licence of the articles](backlog/choose-articles-licence.md),
+  before the first article.
+- [Place the 1985 photo](backlog/place-1985-photo.md), not on the home
+  page.
 - Articles and everything around them. Not planned yet, on purpose.
