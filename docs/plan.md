@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Verify the publication at the next version](backlog/verify-publication-at-next-version.md),
+- [Verify the publication at the next version](wip/verify-publication-at-next-version.md),
   with version 0.2.0. It publishes the card
   [give the page a header, a footer and a favicon](done/2026-10-28_add-header-footer-and-favicon.md),
   closed on 2026-10-28.

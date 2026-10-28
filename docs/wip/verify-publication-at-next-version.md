@@ -3,8 +3,7 @@
 - **Opened:** 2026-10-28, when the card
   [separate the build from the deploy](../done/2026-10-28_separate-build-from-deploy.md)
   was closed.
-- **Status:** noticed, not started. Done together with the next version
-  that changes the site; no version is made only for this check.
+- **Status:** being worked on since 2026-10-28, with version 0.2.0.
 
 ## Why
 
