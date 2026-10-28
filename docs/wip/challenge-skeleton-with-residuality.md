@@ -1,7 +1,9 @@
 # Challenge the live skeleton with `residuality`
 
 - **Opened:** 2026-10-26
-- **Status:** ready; starts when the user calls `residuality`.
+- **Status:** being worked on since 2026-10-28, in a light pass agreed
+  with the user: one round of questions to find the next increment that
+  creates value; the full analysis is left to a later round.
 
 ## Why
 

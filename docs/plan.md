@@ -14,14 +14,12 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing yet: the next card is chosen by the user. The last one,
-  [publish from a version tag, with a CHANGELOG](done/2026-10-28_separate-build-from-deploy.md),
-  was closed on 2026-10-28.
+- [Challenge the live skeleton with `residuality`](wip/challenge-skeleton-with-residuality.md),
+  in a light pass: one round of questions to find the next increment
+  that creates value.
 
 ## Next
 
-- [Challenge the live skeleton with `residuality`](backlog/challenge-skeleton-with-residuality.md),
-  and decide the following increments from its outcome.
 - [Verify the publication at the next version](backlog/verify-publication-at-next-version.md),
   together with the next version that changes the site.
 

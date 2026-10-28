@@ -38,4 +38,4 @@ confirmed by the user).
 
 Before the first increment that adds a second page or any internal link,
 or earlier if the `residuality` review
-(`docs/backlog/challenge-skeleton-with-residuality.md`) points at it.
+(`docs/wip/challenge-skeleton-with-residuality.md`) points at it.
