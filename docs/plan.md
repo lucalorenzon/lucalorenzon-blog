@@ -23,6 +23,9 @@ live since 2026-10-26
 - [Add automated accessibility tests](backlog/add-automated-accessibility-tests.md),
   to keep checking the amber-on-black contrast and the rest.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
+- [Name styles in the stylesheet](backlog/name-styles-in-the-stylesheet.md),
+  a rule for the whole site, recorded as an architectural decision.
+- [Fix the editor errors in the browser test](backlog/fix-editor-errors-in-browser-test.md).
 
 ## Later
 
