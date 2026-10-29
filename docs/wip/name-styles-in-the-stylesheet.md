@@ -3,7 +3,8 @@
 - **Opened:** 2026-10-29, raised by the user while reviewing the first
   attempt at the card
   [adapt the header to screen width](../wip/adapt-header-to-screen-width.md).
-- **Status:** noticed, not started.
+- **Status:** being worked on since 2026-10-29, before the code of the
+  header card, so that code is written once with named styles.
 
 ## Why
 

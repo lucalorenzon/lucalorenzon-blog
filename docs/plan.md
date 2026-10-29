@@ -15,16 +15,17 @@ live since 2026-10-26
 ## Now
 
 - [Adapt the header to screen width](wip/adapt-header-to-screen-width.md):
-  ASCII-art logo and title in the header from 1024px, the text logo in
-  the header and the title in the page below.
+  text logo below 768px, ASCII art above, title beside the logo from
+  1280px and under the header line below. Its browser tests are
+  written first; its code waits for the card below.
+- [Name styles in the stylesheet](wip/name-styles-in-the-stylesheet.md),
+  a rule for the whole site, recorded as an architectural decision.
 
 ## Next
 
 - [Add automated accessibility tests](backlog/add-automated-accessibility-tests.md),
   to keep checking the amber-on-black contrast and the rest.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
-- [Name styles in the stylesheet](backlog/name-styles-in-the-stylesheet.md),
-  a rule for the whole site, recorded as an architectural decision.
 - [Fix the editor errors in the browser test](backlog/fix-editor-errors-in-browser-test.md).
 
 ## Later
