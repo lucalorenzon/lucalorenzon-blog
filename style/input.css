@@ -54,7 +54,7 @@ body {
 }
 
 @utility text-logo-large {
-  @apply ml-2 text-[32px] leading-[32px] [grid-area:logo];
+  @apply ml-2 text-[32px] leading-8 [grid-area:logo];
 }
 
 @utility art-logo-left {
@@ -71,11 +71,11 @@ body {
 }
 
 @utility title-below-line-large {
-  @apply border-t border-amber pt-6 text-center text-[32px] leading-[32px] [grid-area:title];
+  @apply border-t border-amber pt-6 text-center text-[32px] leading-8 [grid-area:title];
 }
 
 @utility title-beside-logo {
-  @apply border-t-0 pt-0 text-center text-[32px] leading-[32px] [grid-area:title];
+  @apply border-t-0 pt-0 text-center text-[32px] leading-8 [grid-area:title];
 }
 
 @utility content-centred {
