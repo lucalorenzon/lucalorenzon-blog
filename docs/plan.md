@@ -24,8 +24,11 @@ live since 2026-10-26
 
 ## Next
 
-- [Add automated accessibility tests](backlog/add-automated-accessibility-tests.md),
-  to keep checking the amber-on-black contrast and the rest.
+- [Check accessibility in the build](backlog/check-accessibility-in-the-build.md),
+  with axe: levels A and AA, plus the AAA rules a tool can check, such
+  as the 7:1 contrast of the amber on black.
+- [Check accessibility by hand](backlog/check-accessibility-by-hand.md),
+  for what a tool cannot see, such as a screen reader.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
 
 ## Later
