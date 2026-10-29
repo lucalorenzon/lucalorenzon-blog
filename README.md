@@ -22,6 +22,7 @@ Requirements: Rust (stable, installed automatically from
 scripts/build-site.sh            # builds the site into target/site
 cargo test                       # unit tests
 cd end2end && npm ci && npx playwright install chromium
+npm run typecheck                # checks the browser test's types
 npx playwright test              # opens the built site in a browser
 ```
 

@@ -7,6 +7,8 @@
 # deploy.yml publishes when it was built from the tagged commit.
 # The browser test (end2end/) runs on the freshly built site served locally
 # (job browser-test).
+# The same job first checks the test's TypeScript types, because Playwright
+# runs the test without checking them.
 # It runs in Playwright's official container image, which already contains
 # Chromium and its system libraries, so nothing is installed from Ubuntu's
 # package server at test time. The image tag is read from
@@ -202,6 +204,10 @@ jobs:
       - name: Install the browser test dependencies
         working-directory: end2end
         run: npm ci
+
+      - name: Check the browser test's types
+        working-directory: end2end
+        run: npm run typecheck
 
       - name: Browser test on the freshly built site
         working-directory: end2end
