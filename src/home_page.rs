@@ -20,21 +20,26 @@ pub fn HomePage() -> impl IntoView {
                 <link rel="icon" href="favicon.ico" />
                 <link rel="stylesheet" href="style.css" />
             </head>
-            <body class="bg-black text-amber">
-                <div class="min-h-screen flex flex-col">
-                    <header class="grid grid-cols-[1fr_auto_1fr] items-center border-b border-amber">
+            <body>
+                <div class="page-fills-screen">
+                    <header class="header-two-rows xl:header-one-row">
+                        <div class="text-logo-large md:not-shown">"Lvk@73r"</div>
                         <pre
                             role="img"
                             aria-label="Lvk@73r"
-                            class="text-base leading-none"
+                            class="not-shown md:art-logo-left"
                         >{LOGO}</pre>
-                        <h1 class="text-[32px] leading-[32px] font-normal">"Home Page"</h1>
-                        <div></div>
+                        <h1 class="title-below-line md:title-below-line-large xl:title-beside-logo">"Home Page"</h1>
+                        <div
+                            data-testid="menu-slot"
+                            aria-hidden="true"
+                            class="reserved-menu-slot"
+                        ></div>
                     </header>
-                    <main class="grow flex items-center justify-center">
+                    <main class="content-centred">
                         <p>"Sito in costruzione"</p>
                     </main>
-                    <footer class="sticky bottom-0 bg-black border-t border-amber text-left">
+                    <footer class="footer-sticky-bottom">
                         <p>"© Luca Lorenzon 2026"</p>
                     </footer>
                 </div>
@@ -117,5 +122,47 @@ mod tests {
         let html = render_home_page();
         assert!(!html.contains("href=\"/"));
         assert!(!html.contains("src=\"/"));
+    }
+
+    #[test]
+    fn has_an_empty_reserved_menu_slot() {
+        let html = render_home_page();
+        assert!(html.contains("data-testid=\"menu-slot\""));
+        assert!(html.contains("aria-hidden=\"true\""));
+    }
+
+    #[test]
+    fn has_text_logo_for_narrow_screens() {
+        assert!(render_home_page().contains(">Lvk@73r</div>"));
+    }
+
+    /// ADR-001: the page carries only our own named variants.
+    #[test]
+    fn every_class_in_the_page_is_a_named_variant_of_the_stylesheet() {
+        let css = include_str!("../style/input.css");
+        let defined: Vec<&str> = css
+            .lines()
+            .filter_map(|l| l.strip_prefix("@utility "))
+            .map(|rest| rest.trim_end_matches('{').trim())
+            .collect();
+        assert!(!defined.is_empty());
+
+        let html = render_home_page();
+        let mut used = 0;
+        for chunk in html.split("class=\"").skip(1) {
+            let value = chunk.split('"').next().unwrap();
+            for token in value.split_whitespace() {
+                let name = token
+                    .strip_prefix("md:")
+                    .or_else(|| token.strip_prefix("xl:"))
+                    .unwrap_or(token);
+                assert!(
+                    defined.contains(&name),
+                    "class `{token}` is not an @utility in style/input.css"
+                );
+                used += 1;
+            }
+        }
+        assert!(used > 0);
     }
 }

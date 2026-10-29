@@ -1,8 +1,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { expect, test } from '@playwright/test';
-
-const live = Boolean(process.env.BASE_URL?.trim());
+import { live, retryWhenLive } from './support';
 
 test.beforeAll(() => {
   if (!live && !existsSync(resolve(__dirname, '../../target/site/index.html'))) {
@@ -15,8 +14,6 @@ test.beforeAll(() => {
 test('home page shows header, body and footer, and loads stylesheet, font and favicon', async ({
   page,
 }) => {
-  // GitHub Pages may take some seconds to serve a new deployment: when
-  // checking the live site, retry the whole check for up to a minute.
   const check = async () => {
     const waitFor = (suffix: string) => {
       const response = page.waitForResponse(
@@ -41,10 +38,5 @@ test('home page shows header, body and footer, and loads stylesheet, font and fa
     expect(favicon.status()).toBe(200);
   };
 
-  if (live) {
-    test.setTimeout(90_000);
-    await expect(check).toPass({ timeout: 60_000, intervals: [2_000, 5_000] });
-  } else {
-    await check();
-  }
+  await retryWhenLive(check);
 });

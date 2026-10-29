@@ -1,4 +1,6 @@
-@import "tailwindcss";
+/* Scan only the files listed with @source: Tailwind's automatic detection
+   would also pick up words from the documentation as classes. */
+@import "tailwindcss" source(none);
 @source "../src/**/*.rs";
 
 @font-face {
@@ -8,6 +10,9 @@
 }
 
 @theme {
+  --breakpoint-*: initial;
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-xl: 80rem; /* 1280px */
   --font-sans: "IBM VGA 8x16", monospace;
   --font-mono: "IBM VGA 8x16", monospace;
   --color-amber: #ffb000;
@@ -21,4 +26,62 @@ body {
   font-family: "IBM VGA 8x16", monospace;
   font-size: 16px;
   line-height: 16px;
+}
+
+/* Named visual variants (ADR-001). The page uses only these names, with an
+   optional md: or xl: prefix. Side padding of 8px lives on the logo and the
+   menu slot, so the header line can span the full page width. */
+
+@utility page-fills-screen {
+  @apply min-h-screen flex flex-col;
+}
+
+@utility not-shown {
+  @apply hidden;
+}
+
+/* Header: two rows below xl (logo and menu, then the title under the line). */
+@utility header-two-rows {
+  @apply grid items-center grid-cols-[1fr_auto] [grid-template-areas:'logo_menu''title_title'];
+}
+
+/* Header: one row from xl. Outer columns are at least as wide as their
+   content plus 8px padding plus the 24px gap to the title, so the title is
+   centred while there is room and shifted just enough otherwise.
+   368 = 8 + 336 (42 characters of 8px) + 24; 88 = 56 + 8 + 24. */
+@utility header-one-row {
+  @apply grid items-center border-b border-amber grid-cols-[minmax(368px,1fr)_minmax(0,max-content)_minmax(88px,1fr)] [grid-template-areas:'logo_title_menu'];
+}
+
+@utility text-logo-large {
+  @apply ml-2 text-[32px] leading-[32px] [grid-area:logo];
+}
+
+@utility art-logo-left {
+  @apply ml-2 block text-base leading-none [grid-area:logo];
+}
+
+@utility reserved-menu-slot {
+  @apply mr-2 h-6 w-14 justify-self-end [grid-area:menu];
+}
+
+/* Title under the header line: the line is its top border, edge to edge. */
+@utility title-below-line {
+  @apply border-t border-amber pt-6 text-center text-2xl leading-6 [grid-area:title];
+}
+
+@utility title-below-line-large {
+  @apply border-t border-amber pt-6 text-center text-[32px] leading-[32px] [grid-area:title];
+}
+
+@utility title-beside-logo {
+  @apply border-t-0 pt-0 text-center text-[32px] leading-[32px] [grid-area:title];
+}
+
+@utility content-centred {
+  @apply grow flex items-center justify-center;
+}
+
+@utility footer-sticky-bottom {
+  @apply sticky bottom-0 bg-black border-t border-amber px-2 text-left;
 }
