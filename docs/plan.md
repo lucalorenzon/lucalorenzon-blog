@@ -14,10 +14,10 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing being worked on. The browser test no longer shows errors in
-  the editor, and the build checks its types
-  ([card](done/2026-10-29_fix-editor-errors-in-browser-test.md)); the
-  next card is chosen from Next.
+- [Use Tailwind's canonical class for the 32px line height](wip/use-tailwind-canonical-line-height.md),
+  the last 3 warnings in the editor. The browser test no longer shows
+  errors, and the build checks its types
+  ([card](done/2026-10-29_fix-editor-errors-in-browser-test.md)).
 
 ## Next
 
