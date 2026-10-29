@@ -3,7 +3,7 @@
 - **Date:** 2026-10-29
 - **Status:** Accepted, as a trial: to be reviewed once the first pages
   are built with it
-- **Card:** [name styles in the stylesheet](../wip/name-styles-in-the-stylesheet.md)
+- **Card:** [name styles in the stylesheet](../done/2026-10-29_name-styles-in-the-stylesheet.md)
 
 ## Context
 
@@ -99,6 +99,6 @@ left out of the stylesheet when unused, like Tailwind's own classes.
 
 ## References
 
-- Card: [name styles in the stylesheet](../wip/name-styles-in-the-stylesheet.md)
-- First use: [adapt the header to screen width](../wip/adapt-header-to-screen-width.md)
+- Card: [name styles in the stylesheet](../done/2026-10-29_name-styles-in-the-stylesheet.md)
+- First use: [adapt the header to screen width](../done/2026-10-29_adapt-header-to-screen-width.md)
 - Tailwind CSS v4: `@theme`, `@utility`, `@apply` ([documentation](https://tailwindcss.com/docs))

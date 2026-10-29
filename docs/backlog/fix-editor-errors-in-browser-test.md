@@ -1,7 +1,7 @@
 # Fix the editor errors in the browser test
 
 - **Opened:** 2026-10-29, raised by the user while the card
-  [adapt the header to screen width](../wip/adapt-header-to-screen-width.md)
+  [adapt the header to screen width](../done/2026-10-29_adapt-header-to-screen-width.md)
   was being worked on.
 - **Status:** noticed, not started.
 

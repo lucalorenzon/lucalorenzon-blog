@@ -14,12 +14,12 @@ live since 2026-10-26
 
 ## Now
 
-- [Adapt the header to screen width](wip/adapt-header-to-screen-width.md):
-  text logo below 768px, ASCII art above, title beside the logo from
-  1280px and under the header line below. Its browser tests are
-  written first; its code waits for the card below.
-- [Name styles in the stylesheet](wip/name-styles-in-the-stylesheet.md),
-  a rule for the whole site, recorded as an architectural decision.
+- Nothing being worked on. The header adapts to screen width
+  ([card](done/2026-10-29_adapt-header-to-screen-width.md)), with styles
+  named by visual variant
+  ([ADR-001](adr/ADR-001-name-styles-by-visual-variant.md),
+  [card](done/2026-10-29_name-styles-in-the-stylesheet.md)); the next
+  card is chosen from Next.
 
 ## Next
 
