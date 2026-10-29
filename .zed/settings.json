@@ -1,0 +1,18 @@
+// Zed settings for this project only.
+{
+  // style/input.css uses Tailwind 4 syntax (@import ... source(none),
+  // @source, @theme, @utility), which is not standard CSS: Zed's generic
+  // CSS checker reports it as errors and warnings. CSS files here are
+  // checked by Tailwind's own CSS server instead, as Zed's Tailwind
+  // documentation suggests. Why: the card
+  // stop-generic-css-checker-on-tailwind-stylesheet in docs/done/.
+  "languages": {
+    "CSS": {
+      "language_servers": [
+        "tailwindcss-intellisense-css",
+        "!vscode-css-language-server",
+        "..."
+      ]
+    }
+  }
+}
