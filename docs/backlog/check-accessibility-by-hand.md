@@ -7,7 +7,7 @@
 ## Why
 
 An automated scanner such as axe, used by the card
-[check accessibility in the build](check-accessibility-in-the-build.md),
+[check accessibility in the build](../wip/check-accessibility-in-the-build.md),
 finds only part of the problems: most WCAG criteria, and most of level
 AAA, need a person. For example, how the page sounds in a screen reader,
 including the ASCII-art logo, which is marked as an image named

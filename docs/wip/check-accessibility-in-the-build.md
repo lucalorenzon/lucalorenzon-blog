@@ -4,7 +4,7 @@
   accessibility tests", opened on 2026-10-28 by the user while the card
   [give the page a header, a footer and a favicon](../done/2026-10-28_add-header-footer-and-favicon.md)
   was being worked on.
-- **Status:** noticed, not started.
+- **Status:** being worked on since 2026-10-29.
 
 ## Why
 
@@ -39,4 +39,4 @@ Decided with the user on 2026-10-29, when the original card was split:
 - **Failure:** any violation fails the build.
 
 What a tool cannot check is in the card
-[check accessibility by hand](check-accessibility-by-hand.md).
+[check accessibility by hand](../backlog/check-accessibility-by-hand.md).

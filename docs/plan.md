@@ -14,19 +14,12 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing being worked on. The editor shows no errors or warnings: the
-  browser test has its types and the build checks them
-  ([card](done/2026-10-29_fix-editor-errors-in-browser-test.md)), and
-  the stylesheet is checked by Tailwind's own server
-  ([card](done/2026-10-29_use-tailwind-canonical-line-height.md),
-  [card](done/2026-10-29_stop-generic-css-checker-on-tailwind-stylesheet.md));
-  the next card is chosen from Next.
+- [Check accessibility in the build](wip/check-accessibility-in-the-build.md),
+  with axe: levels A and AA, plus the AAA rules a tool can check, such
+  as the 7:1 contrast of the amber on black.
 
 ## Next
 
-- [Check accessibility in the build](backlog/check-accessibility-in-the-build.md),
-  with axe: levels A and AA, plus the AAA rules a tool can check, such
-  as the 7:1 contrast of the amber on black.
 - [Check accessibility by hand](backlog/check-accessibility-by-hand.md),
   for what a tool cannot see, such as a screen reader.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).

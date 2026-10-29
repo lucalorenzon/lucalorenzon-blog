@@ -76,7 +76,7 @@ contrast, computed with the WCAG formula, is 11.46:1, above both
 thresholds for normal text (4.5:1 for AA, 7:1 for AAA); white on black
 is 21:1. To keep checking this at every build, the user asked for the
 card add automated accessibility tests, since split; the contrast is
-checked by the card [check accessibility in the build](../backlog/check-accessibility-in-the-build.md).
+checked by the card [check accessibility in the build](../wip/check-accessibility-in-the-build.md).
 
 Rejected: white on black, more contrast but not the old-terminal look the
 user wants; green phosphor, not chosen by the user.
