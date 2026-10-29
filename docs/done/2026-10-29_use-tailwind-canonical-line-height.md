@@ -31,4 +31,4 @@ font size of exactly 32px, and the editor gives no warning for it.
   editor's generic CSS checker, which does not know Tailwind 4's syntax
   (`@utility`, `@theme`, `@source`, `source(none)`). They were there
   before this change, identical, and are a separate question: card
-  [stop the generic CSS checker on the Tailwind stylesheet](../wip/stop-generic-css-checker-on-tailwind-stylesheet.md).
+  [stop the generic CSS checker on the Tailwind stylesheet](2026-10-29_stop-generic-css-checker-on-tailwind-stylesheet.md).

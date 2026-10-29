@@ -14,12 +14,13 @@ live since 2026-10-26
 
 ## Now
 
-- [Stop the generic CSS checker on the Tailwind stylesheet](wip/stop-generic-css-checker-on-tailwind-stylesheet.md),
-  the last 16 messages in the editor. The browser test no longer shows
-  errors, the build checks its types
+- Nothing being worked on. The editor shows no errors or warnings: the
+  browser test has its types and the build checks them
   ([card](done/2026-10-29_fix-editor-errors-in-browser-test.md)), and
-  Tailwind's own warnings are gone
-  ([card](done/2026-10-29_use-tailwind-canonical-line-height.md)).
+  the stylesheet is checked by Tailwind's own server
+  ([card](done/2026-10-29_use-tailwind-canonical-line-height.md),
+  [card](done/2026-10-29_stop-generic-css-checker-on-tailwind-stylesheet.md));
+  the next card is chosen from Next.
 
 ## Next
 
