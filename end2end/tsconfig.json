@@ -1,0 +1,16 @@
+{
+  // Read by the editor, and by `tsc` in the build, to check the test's
+  // types. Playwright itself runs the test without checking them.
+  "compilerOptions": {
+    "target": "ES2023",
+    // DOM: the functions passed to page.evaluate run in the browser.
+    // ESNext.Disposable: Playwright's own types use Symbol.asyncDispose.
+    "lib": ["ES2023", "ESNext.Disposable", "DOM"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
+    "strict": true,
+    "noEmit": true
+  },
+  "include": ["playwright.config.ts", "tests/**/*.ts"]
+}
