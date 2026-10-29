@@ -14,9 +14,10 @@ live since 2026-10-26
 
 ## Now
 
-- [Fix the editor errors in the browser test](wip/fix-editor-errors-in-browser-test.md):
-  give the editor the types of Node and of the browser, then check the
-  test's types in the build so the errors cannot come back unnoticed.
+- Nothing being worked on. The browser test no longer shows errors in
+  the editor, and the build checks its types
+  ([card](done/2026-10-29_fix-editor-errors-in-browser-test.md)); the
+  next card is chosen from Next.
 
 ## Next
 
