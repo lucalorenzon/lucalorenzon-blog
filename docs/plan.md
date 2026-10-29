@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Stop the generic CSS checker on the Tailwind stylesheet](backlog/stop-generic-css-checker-on-tailwind-stylesheet.md),
+- [Stop the generic CSS checker on the Tailwind stylesheet](wip/stop-generic-css-checker-on-tailwind-stylesheet.md),
   the last 16 messages in the editor. The browser test no longer shows
   errors, the build checks its types
   ([card](done/2026-10-29_fix-editor-errors-in-browser-test.md)), and

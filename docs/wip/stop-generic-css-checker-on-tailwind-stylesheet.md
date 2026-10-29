@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-10-29, raised by the user while closing the card
   [use Tailwind's canonical class for the 32px line height](../done/2026-10-29_use-tailwind-canonical-line-height.md).
-- **Status:** noticed, not started.
+- **Status:** being worked on since 2026-10-29.
 
 ## Why
 
