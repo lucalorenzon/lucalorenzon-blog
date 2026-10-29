@@ -14,19 +14,15 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing being worked on. The header adapts to screen width
-  ([card](done/2026-10-29_adapt-header-to-screen-width.md)), with styles
-  named by visual variant
-  ([ADR-001](adr/ADR-001-name-styles-by-visual-variant.md),
-  [card](done/2026-10-29_name-styles-in-the-stylesheet.md)); the next
-  card is chosen from Next.
+- [Fix the editor errors in the browser test](wip/fix-editor-errors-in-browser-test.md):
+  give the editor the types of Node and of the browser, then check the
+  test's types in the build so the errors cannot come back unnoticed.
 
 ## Next
 
 - [Add automated accessibility tests](backlog/add-automated-accessibility-tests.md),
   to keep checking the amber-on-black contrast and the rest.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
-- [Fix the editor errors in the browser test](backlog/fix-editor-errors-in-browser-test.md).
 
 ## Later
 
