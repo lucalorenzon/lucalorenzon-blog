@@ -30,6 +30,18 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-29
+
+### Added
+
+- The header adapts to the width of the screen. On phones the logo
+  becomes the text "Lvk@73r", in large letters, and the page title moves
+  under the header line. From 768 pixels wide (tablets) the ASCII-art
+  logo comes back. From 1280 pixels the title sits beside the logo,
+  centred on the page while there is room.
+- Room on the right of the header for the navigation menu still to
+  come.
+
 ## [0.2.1] - 2026-10-28
 
 ### Fixed
