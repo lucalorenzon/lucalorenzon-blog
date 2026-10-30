@@ -9,7 +9,7 @@ what only an ear can judge, such as how "Home Page" and "Lvk@73r" sound.
 Why: the build checks what the page gives a screen reader, not how it sounds.
 The page is declared Italian but its title "Home Page" is English, and the
 logo's name is spelled out letter by letter; a regression there is only
-audible. Card: [run a screen reader check on demand](../wip/run-screen-reader-check-on-demand.md)
+audible. Card: [run a screen reader check on demand](../done/2026-10-30_run-screen-reader-check-on-demand.md)
 
 How to run it, from the repository root, at the computer (Orca speaks and takes
 the keyboard, so do not run it while using your own Orca):

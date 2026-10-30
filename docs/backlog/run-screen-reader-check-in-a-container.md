@@ -1,7 +1,7 @@
 # Run the screen reader check in a container
 
 - **Opened:** 2026-10-30, asked by the user while the card
-  [run a screen reader check on demand](../wip/run-screen-reader-check-on-demand.md)
+  [run a screen reader check on demand](../done/2026-10-30_run-screen-reader-check-on-demand.md)
   was being worked on.
 - **Status:** noticed, not started.
 

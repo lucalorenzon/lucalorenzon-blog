@@ -14,10 +14,11 @@ live since 2026-10-26
 
 ## Now
 
-- [Run a screen reader check on demand](wip/run-screen-reader-check-on-demand.md):
-  one local command that has Orca read the page, compares the
-  transcript with the previous run's and records how it sounds. First a
-  timeboxed trial of Orca on the user's machine.
+- Nothing being worked on. Accessibility is checked in the build (axe
+  and the accessibility tree) and, on demand on the user's computer,
+  with a screen reader
+  ([card](done/2026-10-30_run-screen-reader-check-on-demand.md)); the
+  next card is chosen from Next.
 
 ## Next
 
