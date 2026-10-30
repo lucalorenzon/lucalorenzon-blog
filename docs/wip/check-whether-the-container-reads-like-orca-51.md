@@ -3,7 +3,7 @@
 - **Opened:** 2026-10-30, asked by the user when the card
   [logo name not read by Orca 51](../done/2026-10-30_logo-name-not-read-by-orca-51.md)
   was closed with its two open questions.
-- **Status:** noticed, not started.
+- **Status:** being worked on since 2026-10-31.
 
 ## Why
 

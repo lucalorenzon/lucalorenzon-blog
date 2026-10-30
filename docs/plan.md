@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-10-30
+Last updated: 2026-10-31
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -14,7 +14,8 @@ live since 2026-10-26
 
 ## Now
 
-- Empty: the next card is chosen by the user.
+- [Check whether the container reads like Orca 51](wip/check-whether-the-container-reads-like-orca-51.md),
+  so the screen reader check can be trusted.
 
 ## Next
 
@@ -25,8 +26,6 @@ live since 2026-10-26
 
 ## Later
 
-- [Check whether the container reads like Orca 51](backlog/check-whether-the-container-reads-like-orca-51.md),
-  so the screen reader check can be trusted.
 - [Give the screen reader container an Italian voice](backlog/give-the-screen-reader-container-an-italian-voice.md),
   so the recording sounds as an Italian visitor would hear it.
 - [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
