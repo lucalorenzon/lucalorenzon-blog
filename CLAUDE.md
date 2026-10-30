@@ -185,6 +185,7 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
 | `scripts/playwright-version.sh` | Prints the Playwright version locked in `end2end/`, which picks the test container image in both workflows |
 | `scripts/screen_reader_check.py` | On-demand screen reader check with Orca and Firefox, on the user's GNOME desktop; its unit tests and log sample sit beside it (`test_screen_reader_check.py`, `fixtures/`) |
+| `scripts/screen-reader/` | The on-demand screen reader check: Orca 51 and Firefox ESR in a Docker container (`Dockerfile`, `entrypoint.sh`), the host program `check.py`, its unit tests and a log sample (`test_check.py`, `fixtures/`) |
 | `end2end/` | Playwright end-to-end test |
 | `.zed/settings.json` | Editor settings for this project: CSS files are checked by Tailwind's CSS server, not the generic one, which does not know Tailwind 4's syntax |
 | `.github/workflows/build.yml` | Check, build and test the site on every push and pull request; on `main`, keep the tested site in the `snapshot` Release; never publishes |

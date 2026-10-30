@@ -1,0 +1,52 @@
+# Trimmed from the debug file of a trial run of Orca 51.1 in the container
+# (card run-screen-reader-check-in-a-container): only the lines the
+# parser reads are kept. Not a real log: lines starting with # are ignored.
+15:51:57.643026 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:6"/>Screen <mark name="7:13"/>reader <mark name="14:17"/>on.</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: SOME
+15:52:06.277399 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:4"/>Luca <mark name="5:13"/>Lorenzon <mark name="14:15"/>- <mark name="16:20"/>Home <mark name="21:25"/>Page <mark name="26:27"/>— <mark name="28:35"/>Mozilla <mark name="36:43"/>Firefox</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: MOST
+15:52:06.492047 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:4"/>Luca <mark name="5:13"/>Lorenzon <mark name="14:15"/>- <mark name="16:20"/>Home <mark name="21:25"/>Page <mark name="26:27"/>— <mark name="28:35"/>Mozilla <mark name="36:43"/>Firefox <mark name="44:49"/>frame</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: MOST
+15:52:06.702333 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:4"/>Luca <mark name="5:13"/>Lorenzon <mark name="14:15"/>- <mark name="16:20"/>Home <mark name="21:25"/>Page</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language it, punctuation: MOST
+15:52:06.703264 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:8"/>document <mark name="9:12"/>web</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: MOST
+15:52:06.724264 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:6"/>Browse <mark name="7:11"/>mode</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: SOME
+15:52:06.896942 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:4"/>Page <mark name="5:8"/>has <mark name="9:10"/>3 <mark name="11:21"/>landmarks, <mark name="22:23"/>1 <mark name="24:32"/>heading.</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: SOME
+15:52:06.951078 - SAY ALL PRESENTER: Speaking (contents): [image: 'Lvk@73r' (0x7d514689da40)]'banner' (0 - 1)
+15:52:06.988735 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:6"/>banner</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: MOST
+15:52:14.599305 - SAY ALL PRESENTER: Speaking (contents): [image: 'Lvk@73r' (0x7d514689da40)]'code start' (0 - 1)
+15:52:14.611641 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:4"/>code <mark name="5:10"/>start</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: MOST
+15:52:15.671488 - SAY ALL PRESENTER: Speaking (contents): [image: 'Lvk@73r' (0x7d514689da40)]'code end' (0 - 1)
+15:52:15.682364 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:4"/>code <mark name="5:8"/>end</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: MOST
+15:52:16.623133 - SAY ALL PRESENTER: Speaking (contents): [heading: 'Home Page' (0x7d514689dd40)]'Home Page' (0 - 9)
+15:52:16.635640 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:4"/>Home <mark name="5:9"/>Page</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language it, punctuation: MOST
+15:52:17.658912 - SAY ALL PRESENTER: Speaking (contents): [heading: 'Home Page' (0x7d514689dd40)]'heading 1' (0 - 9)
+15:52:17.674384 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:7"/>heading <mark name="8:9"/>1</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: MOST
+15:52:18.657392 - SAY ALL PRESENTER: Speaking (contents): [paragraph (0x7d5146829e80)]'leaving banner.' (0 - 19)
+15:52:18.669775 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:7"/>leaving <mark name="8:15"/>banner.</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: MOST
+15:52:19.904798 - SAY ALL PRESENTER: Speaking (contents): [paragraph (0x7d5146829e80)]'main content' (0 - 19)
+15:52:19.915854 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:4"/>main <mark name="5:12"/>content</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: MOST
+15:52:21.043762 - SAY ALL PRESENTER: Speaking (contents): [paragraph (0x7d5146829e80)]'Sito in costruzione' (0 - 19)
+15:52:21.059897 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:4"/>Sito <mark name="5:7"/>in <mark name="8:19"/>costruzione</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language it, punctuation: MOST
+15:52:22.681560 - SAY ALL PRESENTER: Speaking (contents): [paragraph (0x7d5146a87a00)]'leaving main content.' (0 - 20)
+15:52:22.690369 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:7"/>leaving <mark name="8:12"/>main <mark name="13:21"/>content.</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: MOST
+15:52:24.225281 - SAY ALL PRESENTER: Speaking (contents): [paragraph (0x7d5146a87a00)]'information' (0 - 20)
+15:52:24.239883 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:11"/>information</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: MOST
+15:52:25.337963 - SAY ALL PRESENTER: Speaking (contents): [paragraph (0x7d5146a87a00)]'© Luca Lorenzon 2026' (0 - 20)
+15:52:25.353585 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:1"/>© <mark name="2:6"/>Luca <mark name="7:15"/>Lorenzon <mark name="16:20"/>2026</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language it, punctuation: MOST
+15:52:51.041652 - SPEECH DISPATCHER: Speaking '<speak><mark name="0:6"/>Screen <mark name="7:13"/>reader <mark name="14:18"/>off.</speak>' 
+                  ORCA rate 50, pitch 5.0, pitch-range 5.0, volume 10.0, language, punctuation: SOME

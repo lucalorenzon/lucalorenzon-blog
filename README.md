@@ -32,18 +32,26 @@ a push: the site goes live only when a version is published.
 
 ### Screen reader check, on demand
 
-Orca, GNOME's screen reader, reads the built site in Firefox while you
-listen; the command compares what it said with the reference transcript
-and asks a few questions only an ear can answer. It works only on a
-GNOME desktop with Orca 50 and Firefox, at the computer, since Orca
-speaks and takes the keyboard; a version that runs anywhere is planned.
+Orca 51, GNOME's screen reader, reads the built site in Firefox inside a
+Docker container; the command compares what it said with the reference
+transcript and records the run. It needs Docker, and asks for the `sudo`
+password if your user may not use Docker directly (only the Docker commands
+use `sudo`). Nothing is heard and nothing takes your keyboard: the container
+has a virtual screen and a sound output that drops the sound. It is run by
+hand, not by the pipeline.
 
 ```sh
-python3 scripts/screen_reader_check.py
-python3 -m unittest discover -s scripts -p 'test_*.py'   # its own tests
+python3 scripts/screen-reader/check.py
+python3 -m unittest discover -s scripts/screen-reader -p 'test_*.py'   # its own tests
 ```
 
-The results go to `docs/accessibility/`, to be committed afterwards.
+The results go to `docs/accessibility/`, to be committed afterwards. If the
+transcript differs from the reference, the command shows the difference and
+asks whether the change is intended.
+
+The older desktop command (`python3 scripts/screen_reader_check.py`, Orca
+50 on a GNOME desktop, with questions for the ear) still exists until it is
+removed.
 
 ## Publish a version
 

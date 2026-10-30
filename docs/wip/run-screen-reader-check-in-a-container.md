@@ -195,217 +195,64 @@ plays when a name or a text needs hearing. The null audio sink that
 unblocked Orca in the trial can be recorded from, so the file should
 cost little.
 
-## Appendix: trial files
+## Slices
 
-These are throwaway trial files, kept here so they survive the session.
-How to run them: build the image from a folder holding the two files,
-then run it with the built site mounted at `/site` (read-only) and an
-empty folder writable by uid 1000 at `/out`, where `<repository>` is
-the path of this repository. The user runs Docker; the agent has no
-access to it.
+Agreed with the user: three slices, one decision and one commit each.
+The local command goes last, so the site is never without a screen
+reader check.
 
-```
-sudo docker build -t sr-trial . 2>&1 | tee build.log
-sudo docker run --rm -v <repository>/target/site:/site:ro -v "$PWD/out":/out sr-trial 2>&1 | tee run.log
-```
+1. The container command in the repository, Orca pinned, transcript
+   compared with the reference, no audio. Done (below).
+2. The audio written to a file, and the end of the reading found from
+   its silence.
+3. The local command removed, with its tests, README and repository map
+   updated.
 
-`Dockerfile`:
+### Slice 1: the container command
 
-````dockerfile
-FROM debian:trixie-slim
+**Where do the files go? `scripts/screen-reader/` (decided by the user).**
+Every folder outside `docs/` starts the build, so only order counted:
+the local command already lives in `scripts/`, and a subfolder keeps
+everything about the check in one place. Rejected: a top-level
+`screen-reader/` beside `end2end/`, one more root folder for a command
+used rarely.
 
-# Orca comes from trixie-backports (51.x; trixie itself has 48.1).
-# Backports are used only for the packages asked for with -t. Orca 51
-# pulls speech-dispatcher 0.12.1 from there, so its espeak-ng module must
-# come from there too (the trixie one wants exactly 0.12.0).
-RUN echo 'deb http://deb.debian.org/debian trixie-backports main' \
-      > /etc/apt/sources.list.d/backports.list \
- && apt-get update \
- && apt-get install -y --no-install-recommends -t trixie-backports \
-      orca speech-dispatcher speech-dispatcher-espeak-ng \
- && apt-get install -y --no-install-recommends \
-      firefox-esr xvfb xauth dbus dbus-x11 at-spi2-core espeak-ng \
-      pulseaudio pulseaudio-utils \
-      openbox xdotool procps libglib2.0-bin fonts-dejavu-core ca-certificates \
- && rm -rf /var/lib/apt/lists/*
+What it does: `python3 scripts/screen-reader/check.py` builds the site,
+builds the image and runs it as the user's own uid (with `sudo docker`
+only if the user may not use Docker directly), extracts the transcript
+from Orca's debug file and compares it with
+`docs/accessibility/screen-reader-transcript.txt`, asks whether a
+change is intended, and appends the run to
+`docs/accessibility/screen-reader-checks.md`. It never commits. Agreed
+with the user before the code was written:
 
-# Same uid as the host user, so /out is writable.
-RUN groupadd --gid 1001 reader \
- && useradd --uid 1000 --gid 1001 --create-home --home-dir /home/reader --shell /bin/bash reader
+- only Orca is pinned (`51.1-1~bpo13+1`); Firefox ESR is not, since
+  Debian drops old ESR versions and a pin would break the build: a
+  Firefox change shows as a transcript change for the user to judge;
+- Orca 51 does not say "Finished loading", so the transcript starts at
+  the landmark summary;
+- the default voice's language is recorded as `system`, not the
+  desktop's `en`: the container has no user setting to depend on;
+- the first container run replaces the desktop reference; the old one
+  stays in git history.
 
-COPY run-trial.sh /usr/local/bin/run-trial.sh
-RUN chmod 755 /usr/local/bin/run-trial.sh
+Results:
 
-USER reader
-ENV HOME=/home/reader
-# Site mounted read-only at /site, output dir at /out.
-ENTRYPOINT ["/usr/local/bin/run-trial.sh"]
-````
+- 23 unit tests for the pure functions, with a 6 KB sample cut from a
+  real Orca 51 debug file; the local command's 23 tests still pass.
+- First run: dbus-daemon refused to start for a uid with no entry in
+  the image's passwd file. Fixed with `nss_wrapper`, which gives the
+  programs a passwd file of the container's own at run time, without
+  making the image's `/etc/passwd` writable.
+- Second run: Orca read the page whole; the user accepted the change,
+  and the container's reading is now the reference.
+- **The end-of-reading signal did not work.** The null sink stayed
+  RUNNING for the whole run, because speech-dispatcher keeps its sound
+  stream open while the voice is silent, so the run ended at the
+  90-second maximum instead of about 20 seconds after the reading. The
+  result is right, the run only slower. Slice 2 replaces the signal
+  with the silence of the recorded audio (agreed with the user).
 
-`run-trial.sh`:
-
-````bash
-#!/usr/bin/env bash
-# Trial: can Orca read a static page in Firefox inside a container?
-# Run with no argument: starts Xvfb, then re-invokes itself as "inner"
-# under dbus-run-session.
-set -u
-
-WM=${WM:-1}
-FOCUS=${FOCUS:-1}
-ORCA_WAIT=${ORCA_WAIT:-8}
-READ_SECONDS=${READ_SECONDS:-45}
-OUT=/out
-
-step() { printf '[%s] %s\n' "$(date +%H:%M:%S)" "$*"; }
-
-inner() {
-  export GTK_A11Y=atspi NO_AT_BRIDGE=0 GNOME_ACCESSIBILITY=1 MOZ_ENABLE_WAYLAND=0
-
-  step "start accessibility bus launcher"
-  launcher=/usr/libexec/at-spi-bus-launcher
-  if [ ! -x "$launcher" ]; then
-    step "$launcher missing; searching"
-    found=$(find /usr/lib* -path '*at-spi2-core*' -name 'at-spi-bus-launcher' 2>/dev/null | head -1)
-    step "found: ${found:-nothing}"
-    launcher=${found:-}
-  fi
-  [ -n "$launcher" ] && "$launcher" --launch-immediately &
-  bus_pid=$!
-  sleep 2
-
-  step "turn accessibility on"
-  gsettings set org.gnome.desktop.interface toolkit-accessibility true || step "gsettings failed (ignored)"
-  for prop in IsEnabled ScreenReaderEnabled; do
-    gdbus call --session --dest org.a11y.Bus --object-path /org/a11y/bus \
-      --method org.freedesktop.DBus.Properties.Set org.a11y.Status "$prop" "<true>" 2>&1
-    printf '%s = ' "$prop"
-    gdbus call --session --dest org.a11y.Bus --object-path /org/a11y/bus \
-      --method org.freedesktop.DBus.Properties.Get org.a11y.Status "$prop" 2>&1
-  done
-
-  wm_pid=""
-  if [ "$WM" = 1 ]; then
-    step "start openbox"
-    openbox >/out/openbox.log 2>&1 &
-    wm_pid=$!
-  fi
-
-  # Without a sound device speech-dispatcher hangs, and Orca with it:
-  # give it a null sink that accepts the sound and drops it.
-  step "start pulseaudio with a null sink"
-  pulseaudio --daemonize=yes --exit-idle-time=-1 --log-target=file:"$OUT/pulseaudio.log" \
-    || step "pulseaudio failed to start"
-  pactl load-module module-null-sink sink_name=null_out >/dev/null \
-    && pactl set-default-sink null_out && step "null sink is the default" \
-    || step "null sink setup failed"
-
-  step "start orca (before Firefox)"
-  # faulthandler: on SIGABRT, Python prints every thread's stack to stderr.
-  python3 -X faulthandler /usr/bin/orca --debug-file "$OUT/orca-debug.log" >"$OUT/orca-stderr.log" 2>&1 &
-  orca_pid=$!
-  sleep "$ORCA_WAIT"
-  if kill -0 "$orca_pid" 2>/dev/null; then step "orca alive (pid $orca_pid)"; else step "orca NOT alive"; fi
-
-  step "start firefox"
-  profile=$(mktemp -d)
-  cat >"$profile/user.js" <<'JS'
-user_pref("accessibility.force_disabled", 0);
-user_pref("browser.shell.checkDefaultBrowser", false);
-user_pref("browser.aboutwelcome.enabled", false);
-user_pref("startup.homepage_welcome_url", "");
-user_pref("startup.homepage_welcome_url.additional", "");
-user_pref("browser.startup.homepage_override.mstone", "ignore");
-user_pref("datareporting.policy.dataSubmissionEnabled", false);
-user_pref("datareporting.healthreport.uploadEnabled", false);
-user_pref("datareporting.policy.firstRunURL", "");
-user_pref("toolkit.telemetry.enabled", false);
-user_pref("toolkit.telemetry.reportingpolicy.firstRun", false);
-user_pref("browser.tabs.warnOnClose", false);
-JS
-  firefox-esr --new-instance --no-remote --profile "$profile" file:///site/index.html \
-    >/dev/null 2>"$OUT/firefox-stderr.log" &
-  ff_pid=$!
-
-  if [ "$FOCUS" = 1 ]; then
-    step "focus firefox window"
-    if timeout 30 xdotool search --sync --onlyvisible --class firefox windowactivate; then
-      step "focus ok"
-    else
-      step "focus failed or timed out"
-    fi
-  fi
-
-  step "wait ${READ_SECONDS}s for Orca to read"
-  sleep "$READ_SECONDS"
-
-  step "processes before quitting"
-  ps -eo pid,ppid,stat,wchan:24,etime,time,args | grep -vE ' ps | grep ' | cut -c1-200
-
-  # A clean quit flushes the debug file. If Orca does not quit, SIGABRT
-  # makes it print where it is stuck into orca-stderr.log.
-  if gdbus call --session --dest org.gnome.Orca.Service --object-path /org/gnome/Orca/Service \
-       --method org.gnome.Orca.Service.Quit >/dev/null 2>&1; then
-    step "quit orca (D-Bus quit sent)"
-  else
-    step "quit orca (no D-Bus service; SIGTERM)"
-    kill -TERM "$orca_pid" 2>/dev/null
-  fi
-  for _ in $(seq 10); do kill -0 "$orca_pid" 2>/dev/null || break; sleep 1; done
-  if kill -0 "$orca_pid" 2>/dev/null; then
-    step "orca still alive; SIGABRT (stack dump)"
-    kill -ABRT "$orca_pid" 2>/dev/null
-    sleep 3
-  else
-    step "orca quit"
-  fi
-
-  step "stop firefox, openbox, bus launcher"
-  kill "$ff_pid" 2>/dev/null
-  [ -n "$wm_pid" ] && kill "$wm_pid" 2>/dev/null
-  kill "$bus_pid" 2>/dev/null
-  sleep 2
-
-  mkdir -p "$OUT/speechd"
-  cp -r "$HOME"/.cache/speech-dispatcher/log/* "$OUT/speechd/" 2>/dev/null || step "no speech-dispatcher log"
-  step "inner done"
-}
-
-if [ "${1:-}" = inner ]; then
-  inner
-  exit 0
-fi
-
-step "versions"
-orca --version 2>&1
-firefox-esr --version 2>&1
-speech-dispatcher --version 2>&1 | head -1
-
-step "start Xvfb"
-Xvfb :99 -screen 0 1280x800x24 >"$OUT/xvfb.log" 2>&1 &
-xvfb_pid=$!
-export DISPLAY=:99
-for _ in $(seq 20); do [ -S /tmp/.X11-unix/X99 ] && break; sleep 0.5; done
-[ -S /tmp/.X11-unix/X99 ] && step "X ready" || step "X socket not found"
-
-# The accessibility bus and speech-dispatcher put their sockets here.
-export XDG_RUNTIME_DIR=/tmp/runtime-reader
-mkdir -p -m 700 "$XDG_RUNTIME_DIR"
-
-step "start inner under dbus-run-session"
-dbus-run-session -- "$0" inner
-
-step "summary"
-LOG=$OUT/orca-debug.log
-echo "orca-debug.log size: $(stat -c %s "$LOG" 2>/dev/null || echo missing) bytes"
-echo "Speaking lines: $(grep -c 'SPEECH DISPATCHER: Speaking' "$LOG" 2>/dev/null)"
-echo "First 30 utterances:"
-grep 'SPEECH DISPATCHER: Speaking' "$LOG" 2>/dev/null | head -30 | sed -E 's/<[^>]*>//g'
-if grep 'SPEECH DISPATCHER: Speaking' "$LOG" 2>/dev/null | grep -q 'Finished loading'; then
-  found=1; echo "Finished loading: SPOKEN"
-else
-  found=0; echo "Finished loading: NOT spoken"
-fi
-kill "$xvfb_pid" 2>/dev/null
-[ "$found" = 1 ]
-````
+The trial files that were kept in an appendix here are now in
+`scripts/screen-reader/`; their trial versions stay in this card's git
+history.
