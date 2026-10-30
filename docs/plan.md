@@ -21,6 +21,8 @@ live since 2026-10-26
 
 ## Next
 
+- [Run the screen reader check in a container](backlog/run-screen-reader-check-in-a-container.md),
+  so it works on any computer, not only the user's.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
 
 ## Later
