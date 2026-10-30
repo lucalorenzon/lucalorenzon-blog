@@ -11,7 +11,7 @@ Run from anywhere (it needs Docker; it may ask for the sudo password):
 
 Why a container: the version of Orca and of the voice is then the same on every
 machine, and nothing speaks or takes the keyboard. Card:
-docs/wip/run-screen-reader-check-in-a-container.md
+docs/done/2026-10-30_run-screen-reader-check-in-a-container.md
 
 The command never commits. It leaves the files in docs/accessibility/ changed,
 to be committed afterwards.
@@ -63,7 +63,7 @@ Why: the build checks what the page gives a screen reader, not how it sounds.
 The page is declared Italian but its title "Home Page" is English, and the
 logo's name is spelled out letter by letter; a regression there changes what
 Orca says. Cards: [run a screen reader check on demand](../done/2026-10-30_run-screen-reader-check-on-demand.md),
-[run it in a container](../wip/run-screen-reader-check-in-a-container.md)
+[run it in a container](../done/2026-10-30_run-screen-reader-check-in-a-container.md)
 
 How to run it, from the repository root (it needs Docker):
 

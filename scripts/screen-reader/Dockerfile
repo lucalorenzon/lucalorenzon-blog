@@ -1,6 +1,6 @@
 # Image for the on-demand screen reader check: Orca and Firefox ESR on a
 # virtual screen, with no real sound card. Card:
-# docs/wip/run-screen-reader-check-in-a-container.md
+# docs/done/2026-10-30_run-screen-reader-check-in-a-container.md
 FROM debian:trixie-slim
 
 # Orca 51 is only in trixie-backports (trixie itself has 48), and the exact

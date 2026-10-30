@@ -4,7 +4,7 @@
 sub-agents Haiku 5.5 (moving the card, building the site) and Sonnet 5.5
 (the trial files, the container command).
 **Goal:** open the card
-[run the screen reader check in a container](../wip/run-screen-reader-check-in-a-container.md)
+[run the screen reader check in a container](../done/2026-10-30_run-screen-reader-check-in-a-container.md)
 and answer its first question with a timeboxed trial. Technical details
 and reasons are in the card.
 
@@ -111,7 +111,7 @@ plan.
 - Slice 2, the audio written to a file and the end of the reading found
   from its silence (decisions 9, 14); slice 3, the local command removed
   (decision 9): card
-  [run the screen reader check in a container](../wip/run-screen-reader-check-in-a-container.md).
+  [run the screen reader check in a container](../done/2026-10-30_run-screen-reader-check-in-a-container.md).
 - Find out why Orca 51 skips the logo's name, and fix the markup if
   needed (decision 7): card
   [logo name not read by Orca 51](../backlog/logo-name-not-read-by-orca-51.md).

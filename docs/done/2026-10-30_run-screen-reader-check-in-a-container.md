@@ -3,7 +3,7 @@
 - **Opened:** 2026-10-30, asked by the user while the card
   [run a screen reader check on demand](../done/2026-10-30_run-screen-reader-check-on-demand.md)
   was being worked on.
-- **Status:** being worked on, since 2026-10-30.
+- **Status:** done on 2026-10-30.
 
 ## Why
 
@@ -16,28 +16,25 @@ words), and the format of Orca's debug file. On another machine the
 transcript would differ with the same page, so the comparison means
 nothing there.
 
-The user wants the check to work on any computer. Not urgent: the local
-command stays until this card replaces it.
+The user wants the check to work on any computer. The idea was a Docker
+image with a virtual screen, the accessibility bus, Orca, Firefox and a
+fixed synthetic voice, so the transcript is the same on any machine with
+Docker.
 
-## Idea to try
+## Answers in brief
 
-A Docker image with a virtual screen, the accessibility bus, Orca,
-Firefox and a fixed synthetic voice (for example espeak-ng through
-Speech Dispatcher). The transcript would be the same on any machine with
-Docker, and might even be compared in the build on GitHub. The audio
-would be written to a file, so the user can listen to it anywhere and
-judge the pronunciation.
-
-## Questions
-
-- Whether Orca runs without a real desktop session: a timeboxed trial,
-  as for the local command, before any design.
-- Whether the audio can be written to a file the user plays afterwards,
-  and how the user's answers are then recorded.
-- Whether the transcript comparison can run in the build, and what that
-  costs.
-- What happens to the local command: replaced, or kept for checks with
-  the user's own voice and setup.
+- **Does Orca run without a real desktop session?** Yes, on a virtual
+  screen, once it is given a sound output that drops the sound (trial
+  below). The command is `scripts/screen-reader/check.py`.
+- **Can the audio be written to a file?** Yes: the container records the
+  voice into `target/screen-reader/reading.wav`. The user no longer
+  answers questions for the ear on every run: listening is needed once,
+  when a name or a text is chosen ("What the check is for", below).
+- **Can the transcript comparison run in the build?** It could, but it
+  does not: the build checks the accessibility tree and will check the
+  declared languages; Orca in the container runs on demand.
+- **What happens to the local command?** Removed by this card, once the
+  container command worked.
 
 ## Trial: does Orca read the page in a container? Yes
 
@@ -54,7 +51,8 @@ the accessibility bus; the openbox window manager, so Firefox gets the
 focus without a click; PulseAudio with a null sink; Orca started before
 Firefox, as in the local command. The site is built on the host and
 mounted read-only. Versions: Orca 48.1, Firefox 153.6.0esr,
-speech-dispatcher 0.12.0. The files are in the appendix below.
+speech-dispatcher 0.12.0. The trial's files are in this card's git
+history; what became of them is in `scripts/screen-reader/`.
 
 ### Runs
 
@@ -102,8 +100,7 @@ user's own system and its updates.
 Open consequence: the local command compares the desktop reading with
 `docs/accessibility/screen-reader-transcript.txt`; once the reference
 comes from the container, the two readings differ by Orca version
-alone. What happens to the local command is still the open question
-above.
+alone. Resolved by removing the local command (below).
 
 ### Which Orca? 51.1 from trixie-backports (decided by the user)
 
@@ -206,7 +203,7 @@ reader check.
 2. The audio written to a file, and the end of the reading found from
    its silence. Done (below).
 3. The local command removed, with its tests, README and repository map
-   updated.
+   updated. Done (below).
 
 ### Slice 1: the container command
 
@@ -296,3 +293,11 @@ Results:
   speech-dispatcher keeps the last language it was given, Italian after
   the page's Italian text. It comes from the visitor's software, not
   from the site, and does not show in the transcript.
+
+### Slice 3: the local command removed
+
+`scripts/screen_reader_check.py`, its unit tests and its log sample are
+removed, with the README paragraph and the repository map row about
+them. The records it made stay in `docs/accessibility/screen-reader-checks.md`
+as history: a section with no "Where" line comes from it. The container
+command's tests still pass without it.

@@ -81,6 +81,6 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - Make the screen reader check work on any computer (decision 7): card
-  [run the screen reader check in a container](../wip/run-screen-reader-check-in-a-container.md).
+  [run the screen reader check in a container](../done/2026-10-30_run-screen-reader-check-in-a-container.md).
 - Cover the WCAG criteria axe cannot check (decision 6): card
   [cover the WCAG criteria axe cannot check](../backlog/cover-wcag-criteria-axe-cannot-check.md).

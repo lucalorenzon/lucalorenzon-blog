@@ -1,7 +1,7 @@
 # Check the declared languages in the build
 
 - **Opened:** 2026-10-30, decided by the user while the card
-  [run the screen reader check in a container](../wip/run-screen-reader-check-in-a-container.md)
+  [run the screen reader check in a container](../done/2026-10-30_run-screen-reader-check-in-a-container.md)
   was being worked on.
 - **Status:** noticed, not started.
 
