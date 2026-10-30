@@ -14,9 +14,10 @@ live since 2026-10-26
 
 ## Now
 
-- [Check accessibility in the build](wip/check-accessibility-in-the-build.md),
-  with axe: levels A and AA, plus the AAA rules a tool can check, such
-  as the 7:1 contrast of the amber on black.
+- Nothing being worked on. The build checks accessibility with axe,
+  levels A and AA plus the AAA rules a tool can check
+  ([card](done/2026-10-30_check-accessibility-in-the-build.md)); the
+  next card is chosen from Next.
 
 ## Next
 
