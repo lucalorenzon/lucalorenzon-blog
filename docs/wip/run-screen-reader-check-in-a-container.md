@@ -3,7 +3,7 @@
 - **Opened:** 2026-10-30, asked by the user while the card
   [run a screen reader check on demand](../done/2026-10-30_run-screen-reader-check-on-demand.md)
   was being worked on.
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-10-30.
 
 ## Why
 

@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-10-29
+Last updated: 2026-10-30
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -14,16 +14,12 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing being worked on. Accessibility is checked in the build (axe
-  and the accessibility tree) and, on demand on the user's computer,
-  with a screen reader
-  ([card](done/2026-10-30_run-screen-reader-check-on-demand.md)); the
-  next card is chosen from Next.
+- [Run the screen reader check in a container](wip/run-screen-reader-check-in-a-container.md),
+  so it works on any computer, not only the user's. First step: a
+  timeboxed trial of Orca without a real desktop session.
 
 ## Next
 
-- [Run the screen reader check in a container](backlog/run-screen-reader-check-in-a-container.md),
-  so it works on any computer, not only the user's.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
 
 ## Later

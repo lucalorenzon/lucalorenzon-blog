@@ -84,7 +84,7 @@ and the user's default voice, English, which appears in the transcript
 as the language of Orca's own words. On another computer the
 transcript would differ with the same page. The user wants a check that
 works on any computer, not urgently: card
-[run the screen reader check in a container](../backlog/run-screen-reader-check-in-a-container.md).
+[run the screen reader check in a container](../wip/run-screen-reader-check-in-a-container.md).
 
 The command's unit tests run locally only, not in the build.
 
