@@ -90,6 +90,52 @@ no D-Bus service to quit it. This time the debug file held the whole
 reading anyway, but a reliable way to stop Orca and flush its file is
 still to be found.
 
+## Which reference, which Orca
+
+### Which reading is the reference? The container's (decided by the user)
+
+The reference is the reading produced in the container, no longer the
+one taken on the user's desktop. Rejected: making the container match
+the desktop exactly (Orca 50.3), which would tie the image to the
+user's own system and its updates.
+
+Open consequence: the local command compares the desktop reading with
+`docs/accessibility/screen-reader-transcript.txt`; once the reference
+comes from the container, the two readings differ by Orca version
+alone. What happens to the local command is still the open question
+above.
+
+### Which Orca? 51.1 from trixie-backports (decided by the user)
+
+Debian has no Orca 50 for trixie: trixie has 48.1, trixie-backports
+(an official Debian repository) has 51.1, as do testing and unstable
+(checked on 2026-10-30 in the Debian archive). The user chose 51.1 from
+the backports, so the image stays on Debian stable. Rejected: Ubuntu
+for the exact 50 (Firefox there is a snap; it would need Mozilla's own
+repository); building Orca from source (most work).
+
+Orca 51 pulls speech-dispatcher 0.12.1 and at-spi2-core 2.62 from the
+backports; the espeak-ng module of speech-dispatcher must then come
+from the backports too, or apt refuses the mix (the first build
+failed on that).
+
+### Run with Orca 51.1
+
+- Orca read the page whole and **quit cleanly on SIGTERM** ("Screen
+  reader off."), which solves Orca 48's quit problem.
+- The debug file is back to Orca 50's format (SSML), so the local
+  command's parser should read it.
+- Still no "Finished loading" announcement before the reading.
+- **The logo is read as "code start", "code end", without its name**,
+  where Orca 50 says "Lvk @ 73r", "image". Recorded by the user as a
+  card in Now:
+  [logo name not read by Orca 51](../backlog/logo-name-not-read-by-orca-51.md).
+- Orca spends about seven seconds looking for a braille display that is
+  not there before it goes on reading.
+- Harmless warnings: the `ScreenReaderEnabled` property no longer
+  exists on the accessibility bus 2.62; Firefox, built for trixie's
+  libraries, warns about a caret event of the backported ones.
+
 ## Appendix: trial files
 
 These are throwaway trial files, kept here so they survive the session.
@@ -109,10 +155,17 @@ sudo docker run --rm -v <repository>/target/site:/site:ro -v "$PWD/out":/out sr-
 ````dockerfile
 FROM debian:trixie-slim
 
-RUN apt-get update \
+# Orca comes from trixie-backports (51.x; trixie itself has 48.1).
+# Backports are used only for the packages asked for with -t. Orca 51
+# pulls speech-dispatcher 0.12.1 from there, so its espeak-ng module must
+# come from there too (the trixie one wants exactly 0.12.0).
+RUN echo 'deb http://deb.debian.org/debian trixie-backports main' \
+      > /etc/apt/sources.list.d/backports.list \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends -t trixie-backports \
+      orca speech-dispatcher speech-dispatcher-espeak-ng \
  && apt-get install -y --no-install-recommends \
-      orca firefox-esr xvfb xauth dbus dbus-x11 at-spi2-core \
-      speech-dispatcher speech-dispatcher-espeak-ng espeak-ng \
+      firefox-esr xvfb xauth dbus dbus-x11 at-spi2-core espeak-ng \
       pulseaudio pulseaudio-utils \
       openbox xdotool procps libglib2.0-bin fonts-dejavu-core ca-certificates \
  && rm -rf /var/lib/apt/lists/*
@@ -232,8 +285,13 @@ JS
 
   # A clean quit flushes the debug file. If Orca does not quit, SIGABRT
   # makes it print where it is stuck into orca-stderr.log.
-  step "quit orca (SIGTERM)"
-  kill -TERM "$orca_pid" 2>/dev/null
+  if gdbus call --session --dest org.gnome.Orca.Service --object-path /org/gnome/Orca/Service \
+       --method org.gnome.Orca.Service.Quit >/dev/null 2>&1; then
+    step "quit orca (D-Bus quit sent)"
+  else
+    step "quit orca (no D-Bus service; SIGTERM)"
+    kill -TERM "$orca_pid" 2>/dev/null
+  fi
   for _ in $(seq 10); do kill -0 "$orca_pid" 2>/dev/null || break; sleep 1; done
   if kill -0 "$orca_pid" 2>/dev/null; then
     step "orca still alive; SIGABRT (stack dump)"
