@@ -9,7 +9,7 @@
 
 The tools the build can run (axe, and the accessibility tree compared by
 the card
-[check the accessibility tree in the build](../wip/check-accessibility-tree-in-the-build.md))
+[check the accessibility tree in the build](../done/2026-10-30_check-accessibility-tree-in-the-build.md))
 see what the page gives a screen reader, not how it sounds. For
 example: the page is declared Italian (`lang="it"`) but its title "Home
 Page" is English, which the Italian voice probably mispronounces (WCAG

@@ -1,7 +1,7 @@
 # Run the browser tests in more browsers
 
 - **Opened:** 2026-10-30, asked by the user while the card
-  [check the accessibility tree in the build](../wip/check-accessibility-tree-in-the-build.md)
+  [check the accessibility tree in the build](../done/2026-10-30_check-accessibility-tree-in-the-build.md)
   was being worked on.
 - **Status:** noticed, not started.
 

@@ -14,8 +14,11 @@ live since 2026-10-26
 
 ## Now
 
-- [Check the accessibility tree in the build](wip/check-accessibility-tree-in-the-build.md),
-  what a screen reader is given: roles, names, order.
+- Nothing being worked on. The build checks accessibility with axe and
+  compares the accessibility tree a screen reader is given
+  ([card](done/2026-10-30_check-accessibility-in-the-build.md),
+  [card](done/2026-10-30_check-accessibility-tree-in-the-build.md));
+  the next card is chosen from Next.
 
 ## Next
 
