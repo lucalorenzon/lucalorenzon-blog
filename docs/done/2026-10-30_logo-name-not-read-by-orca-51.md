@@ -5,7 +5,7 @@
   [run the screen reader check in a container](../done/2026-10-30_run-screen-reader-check-in-a-container.md).
 - **Status:** done on 2026-10-30. The two questions about the container
   moved to the card
-  [check whether the container reads like Orca 51](../wip/check-whether-the-container-reads-like-orca-51.md).
+  [check whether the container reads like Orca 51](2026-10-31_check-whether-the-container-reads-like-orca-51.md).
 
 ## Why
 

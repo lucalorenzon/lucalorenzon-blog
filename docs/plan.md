@@ -14,8 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Check whether the container reads like Orca 51](wip/check-whether-the-container-reads-like-orca-51.md),
-  so the screen reader check can be trusted.
+- Empty: the next card is chosen by the user.
 
 ## Next
 
