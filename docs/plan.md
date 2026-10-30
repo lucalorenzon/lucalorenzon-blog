@@ -14,15 +14,13 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing being worked on. The build checks accessibility with axe,
-  levels A and AA plus the AAA rules a tool can check
-  ([card](done/2026-10-30_check-accessibility-in-the-build.md)); the
-  next card is chosen from Next.
+- [Check the accessibility tree in the build](wip/check-accessibility-tree-in-the-build.md),
+  what a screen reader is given: roles, names, order.
 
 ## Next
 
-- [Check accessibility by hand](backlog/check-accessibility-by-hand.md),
-  for what a tool cannot see, such as a screen reader.
+- [Run a screen reader check on demand](backlog/run-screen-reader-check-on-demand.md),
+  with one local command, for how the page sounds.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
 
 ## Later
