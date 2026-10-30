@@ -30,6 +30,21 @@ Every push to `main` and every pull request runs the same checks on
 GitHub (workflow `.github/workflows/build.yml`). Nothing is published by
 a push: the site goes live only when a version is published.
 
+### Screen reader check, on demand
+
+Orca, GNOME's screen reader, reads the built site in Firefox while you
+listen; the command compares what it said with the reference transcript
+and asks a few questions only an ear can answer. It works only on a
+GNOME desktop with Orca 50 and Firefox, at the computer, since Orca
+speaks and takes the keyboard; a version that runs anywhere is planned.
+
+```sh
+python3 scripts/screen_reader_check.py
+python3 -m unittest discover -s scripts -p 'test_*.py'   # its own tests
+```
+
+The results go to `docs/accessibility/`, to be committed afterwards.
+
 ## Publish a version
 
 A version is published from a tag, by hand. The meaning of the version

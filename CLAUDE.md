@@ -184,6 +184,7 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | `style/input.css` | Tailwind entry point |
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
 | `scripts/playwright-version.sh` | Prints the Playwright version locked in `end2end/`, which picks the test container image in both workflows |
+| `scripts/screen_reader_check.py` | On-demand screen reader check with Orca and Firefox, on the user's GNOME desktop; its unit tests and log sample sit beside it (`test_screen_reader_check.py`, `fixtures/`) |
 | `end2end/` | Playwright end-to-end test |
 | `.zed/settings.json` | Editor settings for this project: CSS files are checked by Tailwind's CSS server, not the generic one, which does not know Tailwind 4's syntax |
 | `.github/workflows/build.yml` | Check, build and test the site on every push and pull request; on `main`, keep the tested site in the `snapshot` Release; never publishes |
@@ -194,6 +195,7 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | `docs/wip/` | Backlog cards being worked on now (see "Backlog cards") |
 | `docs/done/` | Finished backlog cards, prefixed with the date they were finished |
 | `docs/sessions/` | One minute per working session |
+| `docs/accessibility/` | Reference transcript and record of every screen reader check |
 | `docs/licences/third-party-usage.md` | Usage log for the CC BY-NC-SA `modularity` plugin, enabled in `.claude/settings.json` (required by the global licensing rule) |
 
 ## Memory
