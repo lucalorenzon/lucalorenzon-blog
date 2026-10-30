@@ -126,7 +126,7 @@ failed on that).
 - **The logo is read as "code start", "code end", without its name**,
   where Orca 50 says "Lvk @ 73r", "image". Recorded by the user as a
   card in Now:
-  [logo name not read by Orca 51](../backlog/logo-name-not-read-by-orca-51.md).
+  [logo name not read by Orca 51](../wip/logo-name-not-read-by-orca-51.md).
 - Orca spends about seven seconds looking for a braille display that is
   not there before it goes on reading.
 - Harmless warnings: the `ScreenReaderEnabled` property no longer

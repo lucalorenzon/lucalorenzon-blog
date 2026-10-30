@@ -3,7 +3,7 @@
 - **Opened:** 2026-10-30, asked by the user after an Orca 51 run of the
   card
   [run the screen reader check in a container](../done/2026-10-30_run-screen-reader-check-in-a-container.md).
-- **Status:** noticed, not started.
+- **Status:** being worked on since 2026-10-30.
 
 ## Why
 

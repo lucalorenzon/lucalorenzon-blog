@@ -39,4 +39,4 @@ Italian, as for an Italian visitor.
   is Italian enough while the site is Italian?
 - Does the logo's name ("Lvk@73r") sound different with an Italian
   default voice? That links to the card
-  [logo name not read by Orca 51](logo-name-not-read-by-orca-51.md).
+  [logo name not read by Orca 51](../wip/logo-name-not-read-by-orca-51.md).

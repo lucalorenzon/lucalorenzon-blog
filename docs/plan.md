@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Logo name not read by Orca 51](backlog/logo-name-not-read-by-orca-51.md):
+- [Logo name not read by Orca 51](wip/logo-name-not-read-by-orca-51.md):
   find out whether recent Orca versions skip the logo's name, and make
   the logo readable again if so.
 
