@@ -14,9 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Logo name not read by Orca 51](wip/logo-name-not-read-by-orca-51.md):
-  find out whether recent Orca versions skip the logo's name, and make
-  the logo readable again if so.
+- Empty: the next card is chosen by the user.
 
 ## Next
 
@@ -27,6 +25,8 @@ live since 2026-10-26
 
 ## Later
 
+- [Check whether the container reads like Orca 51](backlog/check-whether-the-container-reads-like-orca-51.md),
+  so the screen reader check can be trusted.
 - [Give the screen reader container an Italian voice](backlog/give-the-screen-reader-container-an-italian-voice.md),
   so the recording sounds as an Italian visitor would hear it.
 - [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
