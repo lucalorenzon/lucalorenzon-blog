@@ -25,6 +25,8 @@ live since 2026-10-26
 
 ## Later
 
+- [Run the browser tests in more browsers](backlog/run-browser-tests-in-more-browsers.md),
+  Firefox and WebKit besides Chromium.
 - [Adapt the footer and the articles to screen width](backlog/adapt-footer-and-articles-to-screen-width.md),
   with the rules for long titles already agreed.
 - [Add site navigation](backlog/add-site-navigation.md), once there is
