@@ -57,10 +57,6 @@ needs hearing:
 pw-play target/screen-reader/reading.wav   # or: xdg-open target/screen-reader/reading.wav
 ```
 
-The older desktop command (`python3 scripts/screen_reader_check.py`, Orca
-50 on a GNOME desktop, with questions for the ear) still exists until it is
-removed.
-
 ## Publish a version
 
 A version is published from a tag, by hand. The meaning of the version
