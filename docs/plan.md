@@ -25,6 +25,8 @@ live since 2026-10-26
 
 ## Later
 
+- [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
+  criterion by criterion, level A and AA.
 - [Run the browser tests in more browsers](backlog/run-browser-tests-in-more-browsers.md),
   Firefox and WebKit besides Chromium.
 - [Adapt the footer and the articles to screen width](backlog/adapt-footer-and-articles-to-screen-width.md),
