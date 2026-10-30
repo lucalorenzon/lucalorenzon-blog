@@ -39,60 +39,70 @@ judge the pronunciation.
 - What happens to the local command: replaced, or kept for checks with
   the user's own voice and setup.
 
-## Trial: does Orca read the page in a container? (in progress)
+## Trial: does Orca read the page in a container? Yes
 
 Agreed with the user on 2026-10-30: one hour at most, and the trial
-succeeds if Orca reads the site's page inside the container (its debug
-file holds the reading). Voice, audio file and the build comparison stay
-out of it: they are the other questions above.
-
-Time used so far: 10 minutes (08:37 to 08:47), paused by the user.
+succeeds if Orca reads the site's page inside the container. Voice,
+audio file and the build comparison stay out of it: they are the other
+questions above. Done in three runs and about 17 minutes (08:37 to
+08:47, paused by the user, then 16:32 to 16:39).
 
 Set-up, chosen for the trial only: Debian trixie, where Firefox is an
 ordinary package (on Ubuntu it is a snap, which does not work in a
 container); a virtual screen (Xvfb) instead of GNOME; a session bus with
 the accessibility bus; the openbox window manager, so Firefox gets the
-focus without a click; Orca started before Firefox, as in the local
-command. The site is built on the host and mounted read-only. The files
-are in the appendix below.
+focus without a click; PulseAudio with a null sink; Orca started before
+Firefox, as in the local command. The site is built on the host and
+mounted read-only. Versions: Orca 48.1, Firefox 153.6.0esr,
+speech-dispatcher 0.12.0. The files are in the appendix below.
 
-### First run
+### Runs
 
-Orca 48.1, Firefox 153.6.0esr, speech-dispatcher 0.12.0. Orca saw
-Firefox and said the window title ("Luca Lorenzon - Home Page — Mozilla
-Firefox frame") and "Page has 3 landmarks, 1 heading.", then nothing:
-no "Finished loading", no reading of the content. The debug file stops
-right after the landmark summary, and Orca did not quit on SIGTERM.
+1. **Orca announced the page, then went silent.** It said the window
+   title and "Page has 3 landmarks, 1 heading.", nothing more, and did
+   not quit on SIGTERM.
+2. **Diagnosis: Orca was stuck on the voice.** With Python's
+   faulthandler on, SIGABRT showed Orca's main thread waiting for
+   speech-dispatcher to answer, and speech-dispatcher itself waiting:
+   the container has no sound device. Rejected explanation: that Orca
+   went on reading and only the end of its debug file was lost.
+3. **With a null audio sink, Orca read the page whole.** PulseAudio
+   started before Orca, with a null sink as default output, which takes
+   the sound and drops it.
 
-Two explanations, not told apart yet: Orca got stuck, perhaps waiting on
-the voice, as the container has no sound device; or Orca went on reading
-and the end of its debug file, written in blocks, was lost when the
-process was killed. Orca 48 also writes its utterances as plain strings
-(`Speaking '...' as string`), not as SSML like Orca 50, so the local
-command's parser would not read this file as it is.
+### Result
 
-### Next run (prepared, not run yet)
+The reading has the same structure as the reference taken on the
+user's desktop (`docs/accessibility/screen-reader-transcript.txt`):
+the landmark summary, banner, the logo, image, "Home Page", heading 1,
+leaving banner, main content, "Sito in costruzione", leaving main
+content, information, "© Luca Lorenzon 2026". Orca asks for an Italian
+voice for the page's Italian text. The differences come from Orca 48
+against Orca 50 on the desktop:
 
-The script lists the processes before quitting (is speech-dispatcher
-running?) and sends Orca SIGABRT with Python's faulthandler on, so Orca
-prints where each thread is: idle means the file was cut short, stuck
-means something blocks it.
+- no "Finished loading" announcement before the reading;
+- the logo is sent to the voice as "Lvk@73r", not "Lvk @ 73r";
+- the debug file has another format (`Speaking '...' as string`, not
+  SSML), so the local command's parser does not read it as it is.
 
-How to run it: build the image from a folder holding the two files
-below, then run it with the built site mounted at `/site` (read-only)
-and an empty folder writable by uid 1000 at `/out`:
+Also observed: Orca 48 does not quit on SIGTERM even when idle, and has
+no D-Bus service to quit it. This time the debug file held the whole
+reading anyway, but a reliable way to stop Orca and flush its file is
+still to be found.
+
+## Appendix: trial files
+
+These are throwaway trial files, kept here so they survive the session.
+How to run them: build the image from a folder holding the two files,
+then run it with the built site mounted at `/site` (read-only) and an
+empty folder writable by uid 1000 at `/out`, where `<repository>` is
+the path of this repository. The user runs Docker; the agent has no
+access to it.
 
 ```
 sudo docker build -t sr-trial . 2>&1 | tee build.log
 sudo docker run --rm -v <repository>/target/site:/site:ro -v "$PWD/out":/out sr-trial 2>&1 | tee run.log
 ```
-
-where `<repository>` is the path of this repository. The user runs
-Docker; the agent has no access to it.
-
-## Appendix: trial files
-
-These are throwaway trial files, kept here so they survive the session.
 
 `Dockerfile`:
 
@@ -103,6 +113,7 @@ RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       orca firefox-esr xvfb xauth dbus dbus-x11 at-spi2-core \
       speech-dispatcher speech-dispatcher-espeak-ng espeak-ng \
+      pulseaudio pulseaudio-utils \
       openbox xdotool procps libglib2.0-bin fonts-dejavu-core ca-certificates \
  && rm -rf /var/lib/apt/lists/*
 
@@ -168,6 +179,15 @@ inner() {
     wm_pid=$!
   fi
 
+  # Without a sound device speech-dispatcher hangs, and Orca with it:
+  # give it a null sink that accepts the sound and drops it.
+  step "start pulseaudio with a null sink"
+  pulseaudio --daemonize=yes --exit-idle-time=-1 --log-target=file:"$OUT/pulseaudio.log" \
+    || step "pulseaudio failed to start"
+  pactl load-module module-null-sink sink_name=null_out >/dev/null \
+    && pactl set-default-sink null_out && step "null sink is the default" \
+    || step "null sink setup failed"
+
   step "start orca (before Firefox)"
   # faulthandler: on SIGABRT, Python prints every thread's stack to stderr.
   python3 -X faulthandler /usr/bin/orca --debug-file "$OUT/orca-debug.log" >"$OUT/orca-stderr.log" 2>&1 &
@@ -210,12 +230,18 @@ JS
   step "processes before quitting"
   ps -eo pid,ppid,stat,wchan:24,etime,time,args | grep -vE ' ps | grep ' | cut -c1-200
 
-  # Diagnosis run: dump Orca's stacks to orca-stderr.log, which tells
-  # whether it is idle (then the debug file was only cut short) or stuck.
-  step "SIGABRT to orca (stack dump)"
-  kill -ABRT "$orca_pid" 2>/dev/null
-  for _ in $(seq 5); do kill -0 "$orca_pid" 2>/dev/null || break; sleep 1; done
-  if kill -0 "$orca_pid" 2>/dev/null; then step "orca still alive; SIGKILL"; kill -KILL "$orca_pid"; fi
+  # A clean quit flushes the debug file. If Orca does not quit, SIGABRT
+  # makes it print where it is stuck into orca-stderr.log.
+  step "quit orca (SIGTERM)"
+  kill -TERM "$orca_pid" 2>/dev/null
+  for _ in $(seq 10); do kill -0 "$orca_pid" 2>/dev/null || break; sleep 1; done
+  if kill -0 "$orca_pid" 2>/dev/null; then
+    step "orca still alive; SIGABRT (stack dump)"
+    kill -ABRT "$orca_pid" 2>/dev/null
+    sleep 3
+  else
+    step "orca quit"
+  fi
 
   step "stop firefox, openbox, bus launcher"
   kill "$ff_pid" 2>/dev/null
