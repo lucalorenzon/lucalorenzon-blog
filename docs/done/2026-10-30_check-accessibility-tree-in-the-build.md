@@ -33,7 +33,7 @@ Rejected:
   machines on GitHub for a one-page site.
 
 None of them hears how the page sounds; that is the card
-[run a screen reader check on demand](../backlog/run-screen-reader-check-on-demand.md).
+[run a screen reader check on demand](../wip/run-screen-reader-check-on-demand.md).
 
 ### What is compared, and how strictly?
 

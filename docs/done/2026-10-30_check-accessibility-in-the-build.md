@@ -45,7 +45,7 @@ normal text. What it does not mean: the site is not "AAA", since most
 AAA criteria can only be checked by a person; that is the card
 check accessibility by hand, since split into
 [check the accessibility tree in the build](2026-10-30_check-accessibility-tree-in-the-build.md)
-and [run a screen reader check on demand](../backlog/run-screen-reader-check-on-demand.md).
+and [run a screen reader check on demand](../wip/run-screen-reader-check-on-demand.md).
 
 ### At which widths?
 

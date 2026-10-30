@@ -14,16 +14,13 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing being worked on. The build checks accessibility with axe and
-  compares the accessibility tree a screen reader is given
-  ([card](done/2026-10-30_check-accessibility-in-the-build.md),
-  [card](done/2026-10-30_check-accessibility-tree-in-the-build.md));
-  the next card is chosen from Next.
+- [Run a screen reader check on demand](wip/run-screen-reader-check-on-demand.md):
+  one local command that has Orca read the page, compares the
+  transcript with the previous run's and records how it sounds. First a
+  timeboxed trial of Orca on the user's machine.
 
 ## Next
 
-- [Run a screen reader check on demand](backlog/run-screen-reader-check-on-demand.md),
-  with one local command, for how the page sounds.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
 
 ## Later

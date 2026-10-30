@@ -3,7 +3,7 @@
 - **Opened:** 2026-10-30, from the split of the card "Check
   accessibility by hand", itself split on 2026-10-29 from the card "Add
   automated accessibility tests", opened on 2026-10-28 by the user.
-- **Status:** noticed, not started.
+- **Status:** being worked on since 2026-10-30.
 
 ## Why
 
@@ -23,6 +23,29 @@ already installed, the most common pair on Linux.
 
 The check by hand must start with one local command, so it can be
 repeated on demand to look for regressions.
+
+## Agreed direction
+
+Decided with the user on 2026-10-30. Orca 50.3, on the user's machine,
+writes every phrase it speaks to its debug file
+(`SPEECH OUTPUT: '<text>'`, with the voice used), and offers a D-Bus
+remote control (`org.gnome.Orca.Service`) to run its commands. So one
+command can serve the site, open it in Firefox, have Orca read it while
+the user listens, then compare the transcript with the previous run's
+and record the user's answers on what only an ear can judge (such as
+how "Home Page" and "Lvk@73r" are pronounced).
+
+Before writing that command, a timeboxed trial (one hour at most) on
+the user's machine checks what is not known yet:
+
+- whether Firefox, Orca and the remote control work together on
+  Wayland;
+- which Orca command reads the whole page;
+- whether the debug file tells the language of the voice for each
+  phrase.
+
+Orca acts on the user's real desktop (it speaks and takes the
+keyboard), so it is started only with the user at the computer.
 
 ## Questions
 
