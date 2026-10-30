@@ -15,14 +15,18 @@ live since 2026-10-26
 ## Now
 
 - [Run the screen reader check in a container](wip/run-screen-reader-check-in-a-container.md),
-  so it works on any computer, not only the user's. First step: a
-  timeboxed trial of Orca without a real desktop session.
+  run on demand, on any computer, without listening; it writes the audio
+  to a file for when a name or text needs hearing, and replaces the
+  local command.
 - [Logo name not read by Orca 51](backlog/logo-name-not-read-by-orca-51.md):
   find out whether recent Orca versions skip the logo's name, and make
   the logo readable again if so.
 
 ## Next
 
+- [Check the declared languages in the build](backlog/check-declared-languages-in-the-build.md),
+  the part of the screen reader check that depends on the site and the
+  accessibility tree does not cover.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
 
 ## Later

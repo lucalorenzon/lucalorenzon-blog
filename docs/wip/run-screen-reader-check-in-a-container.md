@@ -179,6 +179,22 @@ build, redundant with the tree for changes of the site, at the cost of
 about a minute per build and of updating Orca by hand. The logo case was
 found by changing Orca's version, not by repeating a fixed one.
 
+### What happens to the local command? Removed by this card (decided by the user)
+
+The local command (`scripts/screen_reader_check.py`, with its unit
+tests and log sample) is removed once the command in the container
+works, so the site is never left without a screen reader check. Its
+records in `docs/accessibility/` stay as history; the reference
+transcript is then taken from the container. Rejected: keeping it for
+occasional listening, now covered by the audio file below.
+
+### How is the reading heard when needed? The container writes the audio to a file (decided by the user)
+
+The container records what the voice says into an audio file the user
+plays when a name or a text needs hearing. The null audio sink that
+unblocked Orca in the trial can be recorded from, so the file should
+cost little.
+
 ## Appendix: trial files
 
 These are throwaway trial files, kept here so they survive the session.
