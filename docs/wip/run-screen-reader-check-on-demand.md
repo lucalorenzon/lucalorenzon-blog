@@ -47,6 +47,39 @@ the user's machine checks what is not known yet:
 Orca acts on the user's real desktop (it speaks and takes the
 keyboard), so it is started only with the user at the computer.
 
+## Trial on the user's machine (2026-10-30)
+
+About 35 minutes, Orca 50.3 with Firefox 158 (snap) on GNOME, Wayland,
+the site served locally. Started by the agent with the user at the
+computer.
+
+- **Firefox must start after Orca.** Orca did not see the user's
+  Firefox, already open: Firefox turns accessibility on only if a
+  screen reader is running when it starts. A separate instance
+  (`--new-instance --no-remote`, a temporary profile, with
+  `GNOME_ACCESSIBILITY=1`) was seen at once, without touching the
+  user's own Firefox. The snap reads only its own folders, so the
+  profile went under `~/snap/firefox/common/`, deleted afterwards.
+- **No command is needed to read the page.** When the page finished
+  loading, Orca read it whole on its own: image "Lvk@73r", heading
+  "Home Page", "Sito in costruzione", "© Luca Lorenzon 2026", after
+  "Page has 3 landmarks, 1 heading."
+- **The transcript can be captured.** The debug file holds each item
+  read (`SAY ALL PRESENTER: CONTENT: ... [heading: 'Home Page'] ...`),
+  what was sent to the voice (`SPEECH DISPATCHER: Speaking ...`, for
+  example `Lvk @ 73r`) and the language asked for (`language='it'` for
+  the page's content, English for Firefox's own messages: the user's
+  default voice is English, automatic language switching is on). Orca
+  writes the file in blocks, so it is read after Orca quits.
+- **The remote control works** (`org.gnome.Orca.Service`: `SayAll`,
+  `InterruptSpeech`, `Quit`), but `SayAll` reads the window in front,
+  from the current position: once it read the terminal, once only the
+  footer. Since the page is read on load, the command does not need it;
+  `Quit` is what it needs, to close Orca at the end.
+- **On Wayland the user gives the focus**, with a click on the window,
+  if the new window does not get it by itself.
+- Zed is not visible to Orca at all.
+
 ## Questions
 
 - What the command does. It can prepare everything (build and serve the
