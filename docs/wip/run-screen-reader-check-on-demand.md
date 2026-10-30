@@ -80,6 +80,38 @@ computer.
   if the new window does not get it by itself.
 - Zed is not visible to Orca at all.
 
+## Agreed design
+
+Decided with the user on 2026-10-30, after the trial:
+
+- **Where:** the reference transcript and the record of every run live
+  in `docs/accessibility/`: they are records of checks done by hand, to
+  be read as documents, and a change there alone does not start the
+  build on GitHub. Rejected: `end2end/screen-reader/`, where every run
+  would start the build.
+- **The command** builds and serves the site, starts Orca with its
+  debug file, opens a separate Firefox on the page (which Orca reads on
+  load), and when the user presses Enter closes Orca and that Firefox,
+  also after an error. It extracts the transcript (items read, text sent
+  to the voice, language) and compares it with the reference.
+- **A changed transcript** is shown; the user says whether the change
+  is intended. If yes, it becomes the new reference; if not, the run is
+  recorded as a regression and the reference stays.
+- **Questions to the user**, answered yes or no with an optional note:
+  1. Is "Lvk@73r" still read "elle vu cappa chiocciola settantatré
+     erre"? (Accepted by the user on 2026-10-30.)
+  2. Is "Home Page" still pronounced as understandably as on
+     2026-10-30? (Accepted by the user that day.)
+  3. Does the Italian text ("Sito in costruzione", "© Luca Lorenzon
+     2026") sound natural?
+  4. Anything else odd? (Free note.)
+
+  The questions check readings that the transcript cannot: the same
+  text can sound different after an update of Orca or of the voice.
+- **When:** on demand, as the user asked; no fixed rule for now.
+- The command never commits: it leaves the files in
+  `docs/accessibility/` changed, to be committed afterwards.
+
 ## Questions
 
 - What the command does. It can prepare everything (build and serve the
