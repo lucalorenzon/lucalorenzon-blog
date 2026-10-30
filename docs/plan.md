@@ -31,6 +31,8 @@ live since 2026-10-26
 
 ## Later
 
+- [Give the screen reader container an Italian voice](backlog/give-the-screen-reader-container-an-italian-voice.md),
+  so the recording sounds as an Italian visitor would hear it.
 - [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
   criterion by criterion, level A and AA.
 - [Run the browser tests in more browsers](backlog/run-browser-tests-in-more-browsers.md),
