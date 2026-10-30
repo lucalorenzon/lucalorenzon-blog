@@ -51,3 +51,12 @@ The command never commits: commit the changed files here afterwards.
 - **Firefox:** 153.6.0esr-1~deb13u1
 - **speech-dispatcher:** 0.12.1-5~bpo13+1
 - **Transcript:** same as the reference
+
+## 2026-10-30 23:13
+
+- **Commit:** `0283427` with uncommitted changes
+- **Where:** container
+- **Orca:** 51.1-1~bpo13+1
+- **Firefox:** 153.6.0esr-1~deb13u1
+- **speech-dispatcher:** 0.12.1-5~bpo13+1
+- **Transcript:** changed, change accepted (reference updated)

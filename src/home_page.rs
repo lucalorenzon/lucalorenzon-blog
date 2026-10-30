@@ -24,11 +24,11 @@ pub fn HomePage() -> impl IntoView {
                 <div class="page-fills-screen">
                     <header class="header-two-rows xl:header-one-row">
                         <div class="text-logo-large md:not-shown">"Lvk@73r"</div>
-                        <pre
+                        <div
                             role="img"
                             aria-label="Lvk@73r"
                             class="not-shown md:art-logo-left"
-                        >{LOGO}</pre>
+                        >{LOGO}</div>
                         <h1 class="title-below-line md:title-below-line-large xl:title-beside-logo">"Home Page"</h1>
                         <div
                             data-testid="menu-slot"
@@ -103,6 +103,14 @@ mod tests {
         let html = render_home_page();
         assert!(html.contains("role=\"img\""));
         assert!(html.contains("aria-label=\"Lvk@73r\""));
+    }
+
+    /// Orca 51 presents a `<pre>` as a code block and does not speak its name
+    /// (card docs/wip/logo-name-not-read-by-orca-51.md).
+    #[test]
+    fn logo_is_not_a_pre_element() {
+        let html = render_home_page();
+        assert!(!html.contains("<pre"));
     }
 
     #[test]

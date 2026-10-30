@@ -58,7 +58,7 @@ body {
 }
 
 @utility art-logo-left {
-  @apply ml-2 block text-base leading-none [grid-area:logo];
+  @apply ml-2 block text-base leading-none whitespace-pre [grid-area:logo];
 }
 
 @utility reserved-menu-slot {
