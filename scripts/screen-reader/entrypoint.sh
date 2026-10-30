@@ -6,48 +6,16 @@ set -u
 
 ORCA_WAIT=${ORCA_WAIT:-8}
 # The reading is over when sound has played and then stopped for this long.
-# Orca can stay silent for several seconds between two items, so keep it well
-# above that gap.
+# This is read from the recorded silence (record.py), not from the null
+# sink's state: speech-dispatcher keeps its stream open, so the sink stays
+# RUNNING and never goes idle. Orca can stay silent for several seconds
+# between two items, so keep it well above that gap.
 QUIET_SECONDS=${QUIET_SECONDS:-10}
 MAX_SECONDS=${MAX_SECONDS:-90}
 OUT=/out
 SINK=null_out
 
 step() { printf '[%s] %s\n' "$(date +%H:%M:%S)" "$*"; }
-
-sink_state() {
-  pactl list sinks short 2>/dev/null | awk -v sink="$SINK" '$2 == sink { print $NF }'
-}
-
-# End-of-reading signal: the state of the null sink. It is RUNNING while
-# sound is sent to it and IDLE otherwise, so "was RUNNING, then not RUNNING
-# for QUIET_SECONDS" means the voice has said everything. Chosen because it
-# needs nothing from Orca and cannot be fooled by its log. Risk: if
-# speech-dispatcher keeps its stream open the sink never goes idle; every
-# state change is printed, so the log shows it, and MAX_SECONDS still ends
-# the run.
-wait_for_reading_end() {
-  local start=$SECONDS seen_running=0 last_state="" quiet_since=$SECONDS state
-  while :; do
-    state=$(sink_state)
-    if [ "$state" != "$last_state" ]; then
-      step "sink $SINK: ${state:-unknown}"
-      last_state=$state
-    fi
-    if [ "$state" = RUNNING ]; then
-      seen_running=1
-      quiet_since=$SECONDS
-    elif [ "$seen_running" = 1 ] && [ $((SECONDS - quiet_since)) -ge "$QUIET_SECONDS" ]; then
-      step "reading over: quiet for ${QUIET_SECONDS}s"
-      return
-    fi
-    if [ $((SECONDS - start)) -ge "$MAX_SECONDS" ]; then
-      step "maximum of ${MAX_SECONDS}s reached (seen running: $seen_running)"
-      return
-    fi
-    sleep 0.5
-  done
-}
 
 # Orca 51 quits on SIGTERM and flushes its debug file then. SIGABRT is the
 # last resort: Python prints every thread's stack (faulthandler) to
@@ -112,6 +80,12 @@ inner() {
     && pactl set-default-sink $SINK && step "null sink is the default" \
     || step "null sink setup failed"
 
+  # Started before Orca, so the file holds everything Orca says. It ends by
+  # itself when the reading is over (or at MAX_SECONDS).
+  python3 /usr/local/bin/record.py --out "$OUT/reading.wav" \
+    --quiet "$QUIET_SECONDS" --max "$MAX_SECONDS" &
+  rec_pid=$!
+
   # Firefox turns accessibility on only if a screen reader is running when
   # it starts, hence Orca first.
   step "start orca"
@@ -149,7 +123,7 @@ JS
     step "focus failed or timed out"
   fi
 
-  wait_for_reading_end
+  wait "$rec_pid"
 
   quit_orca "$orca_pid"
 

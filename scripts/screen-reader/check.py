@@ -2,6 +2,8 @@
 """On-demand screen reader check in a Docker container: Orca 51 reads the built
 site in Firefox, the transcript is compared with the reference, the run is
 recorded.
+The sound of the reading is kept in target/screen-reader/reading.wav (overwritten
+each run), to be listened to.
 
 Run from anywhere (it needs Docker; it may ask for the sudo password):
 
@@ -35,6 +37,7 @@ ACCESSIBILITY_DIR = REPO_ROOT / "docs" / "accessibility"
 REFERENCE_PATH = ACCESSIBILITY_DIR / "screen-reader-transcript.txt"
 RECORD_PATH = ACCESSIBILITY_DIR / "screen-reader-checks.md"
 SITE_DIR = REPO_ROOT / "target" / "site"
+AUDIO_PATH = REPO_ROOT / "target" / "screen-reader" / "reading.wav"
 IMAGE = "lucalorenzon-blog-screen-reader"
 
 # Outcomes of the transcript comparison, as written in the record.
@@ -282,6 +285,17 @@ def run_container(docker: list[str], out_dir: Path) -> None:
                     IMAGE], check=True)
 
 
+def keep_audio(out_dir: Path) -> bool:
+    """Copy the container's recording out of the temporary folder; False when
+    there is none (the check does not depend on it)."""
+    recording = out_dir / "reading.wav"
+    if not recording.exists():
+        return False
+    AUDIO_PATH.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(recording, AUDIO_PATH)
+    return True
+
+
 def main() -> int:
     docker = find_docker()
     commit, dirty = git_state()  # before the run writes anything under docs/
@@ -299,6 +313,7 @@ def main() -> int:
         except subprocess.CalledProcessError as error:
             fail(f"docker failed: {' '.join(map(str, error.cmd[:3]))} ... "
                  f"exited with {error.returncode}")
+        audio_kept = keep_audio(out_dir)
         log_path = out_dir / "orca-debug.log"
         log_text = (log_path.read_text(encoding="utf-8", errors="replace")
                     if log_path.exists() else "")
@@ -320,6 +335,10 @@ def main() -> int:
         shutil.rmtree(out_dir, ignore_errors=True)
 
     append_record(format_record(when, commit, dirty, versions, result))
+    if audio_kept:
+        print(f"\nAudio of the reading: {AUDIO_PATH}")
+    else:
+        print("\nNo audio file was produced by the container.")
     print("\nNothing was committed. Files changed, to be committed:")
     print(run_text(["git", "status", "--short", "--", "docs/accessibility"])
           or "  (none)")

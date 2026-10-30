@@ -29,7 +29,10 @@ RUN apt-get update \
 RUN mkdir -p -m 1777 /tmp/.X11-unix
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod 755 /usr/local/bin/entrypoint.sh
+# Records the null sink and decides when the reading is over (python3 is
+# already in the image: Debian's tools depend on it).
+COPY record.py /usr/local/bin/record.py
+RUN chmod 755 /usr/local/bin/entrypoint.sh /usr/local/bin/record.py
 
 # No user is created here: the host runs the container with
 # --user <uid>:<gid> so that /out is writable by the host user, whatever its

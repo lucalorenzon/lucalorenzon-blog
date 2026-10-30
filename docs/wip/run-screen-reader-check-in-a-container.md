@@ -204,7 +204,7 @@ reader check.
 1. The container command in the repository, Orca pinned, transcript
    compared with the reference, no audio. Done (below).
 2. The audio written to a file, and the end of the reading found from
-   its silence.
+   its silence. Done (below).
 3. The local command removed, with its tests, README and repository map
    updated.
 
@@ -256,3 +256,43 @@ Results:
 The trial files that were kept in an appendix here are now in
 `scripts/screen-reader/`; their trial versions stay in this card's git
 history.
+
+### Slice 2: the audio file and the end of the reading
+
+**Where does the audio file go? `target/screen-reader/reading.wav`
+(decided by the user).** It is overwritten on every run and never
+committed: the folder is already ignored by git, and a recording changes
+at every run even when the page does not, so committing it would add
+about a megabyte per run for nothing the transcript does not already
+record. Rejected: keeping it in `docs/accessibility/` as history.
+
+What it does: `scripts/screen-reader/record.py` starts before Orca,
+records the null sink's monitor with `parec` into a WAV file, and
+measures the loudness of every half second. The reading is over when the
+voice has been heard and then ten seconds have passed in silence; ninety
+seconds stay the maximum. It replaces the sink-state signal of slice 1.
+`check.py` copies the file out of the container's folder and prints
+where it is.
+
+- **Silence threshold:** a loudness of 100 on a scale up to 32767. The
+  null sink gives exact zeros when nothing plays, and the voice is in
+  the thousands, so any low value separates them. Rejected: `sox`, which
+  can record and stop on silence by itself but adds a package to the
+  image and shows less of what it decides in the log.
+- **Quiet time stays ten seconds:** Orca is silent for about six seconds
+  while it looks for a braille display, after announcing itself and
+  before the reading.
+
+Results:
+
+- 20 unit tests for the decision logic; all 37 tests of the folder pass.
+- Run on 2026-10-30: the recording ended on "reading over" ten seconds
+  after the last word, 39.5 seconds in all instead of the 90 of slice 1;
+  the transcript was the same as the reference.
+- The user listened to the file: the whole reading is there.
+- **Orca's own words are pronounced as Italian.** "Leaving banner" is
+  read with the Italian voice, letter sounds and all. Orca speaks its
+  own words in English (the container has no Italian locale), but
+  speech-dispatcher keeps the last language it was given, Italian after
+  the page's Italian text. It comes from the visitor's software, not
+  from the site, and does not show in the transcript.

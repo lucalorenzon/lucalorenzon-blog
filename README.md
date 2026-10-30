@@ -37,8 +37,8 @@ Docker container; the command compares what it said with the reference
 transcript and records the run. It needs Docker, and asks for the `sudo`
 password if your user may not use Docker directly (only the Docker commands
 use `sudo`). Nothing is heard and nothing takes your keyboard: the container
-has a virtual screen and a sound output that drops the sound. It is run by
-hand, not by the pipeline.
+has a virtual screen and a sound output that is recorded instead of played.
+It is run by hand, not by the pipeline.
 
 ```sh
 python3 scripts/screen-reader/check.py
@@ -48,6 +48,14 @@ python3 -m unittest discover -s scripts/screen-reader -p 'test_*.py'   # its own
 The results go to `docs/accessibility/`, to be committed afterwards. If the
 transcript differs from the reference, the command shows the difference and
 asks whether the change is intended.
+
+What the voice said is kept in `target/screen-reader/reading.wav`,
+overwritten on every run and never committed, for when a name or a text
+needs hearing:
+
+```sh
+pw-play target/screen-reader/reading.wav   # or: xdg-open target/screen-reader/reading.wav
+```
 
 The older desktop command (`python3 scripts/screen_reader_check.py`, Orca
 50 on a GNOME desktop, with questions for the ear) still exists until it is
