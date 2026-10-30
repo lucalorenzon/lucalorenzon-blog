@@ -136,6 +136,49 @@ failed on that).
   exists on the accessibility bus 2.62; Firefox, built for trixie's
   libraries, warns about a caret event of the backported ones.
 
+## What the check is for
+
+### Does the reading's quality depend on the site or on the visitor's software? Both, on different things
+
+Asked by the user. The site is responsible for what the page gives the
+screen reader: structure (landmarks, headings and their levels), names
+(such as the logo's), the language of each part, reading order, and
+what is hidden as decoration. The visitor's software is responsible for
+how that sounds: voice, pronunciation, speed, how verbose it is and how
+it presents some elements, and the visitor's own settings. In between,
+WCAG asks the site to use techniques the screen readers in use really
+support.
+
+So what depends on the site shows in a written transcript and can be
+compared without listening; listening judges mostly the voice, which
+the site does not control. Listening still helps once, when a name or a
+text is chosen (does "Lvk@73r" read aloud make sense?), not as a check
+repeated on every build. This drops the reason given by the card
+[run a screen reader check on demand](../done/2026-10-30_run-screen-reader-check-on-demand.md)
+for listening on every run: that the same text may sound different
+after an update of Orca or of the voice.
+
+### Where does each part of the check run? Languages in the build, Orca on demand (decided by the user)
+
+The build already compares the accessibility tree (roles, names,
+heading levels, order) in `end2end/tests/accessibility.spec.ts`: that
+covers most of what depends on the site. It does not see the language
+of each part; a small check of the declared languages goes into the
+build: card
+[check the declared languages in the build](../backlog/check-declared-languages-in-the-build.md).
+
+Orca in the container stays a tool run on demand, on any computer with
+Docker and without listening, when the screen reader or the markup
+changes. Its value is the case the tree cannot see: markup that is
+correct by the standard but that a real screen reader presents
+differently, as the logo with Orca 51.
+
+Rejected: Orca in the pipeline. With Orca's version pinned, as it must
+be for a stable comparison, it would repeat the same reading on every
+build, redundant with the tree for changes of the site, at the cost of
+about a minute per build and of updating Orca by hand. The logo case was
+found by changing Orca's version, not by repeating a fixed one.
+
 ## Appendix: trial files
 
 These are throwaway trial files, kept here so they survive the session.
