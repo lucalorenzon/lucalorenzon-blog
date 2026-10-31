@@ -14,10 +14,14 @@ live since 2026-10-26
 
 ## Now
 
-- Empty: the next card is chosen by the user.
+- [Put the curriculum on the home page](backlog/put-curriculum-on-home-page.md),
+  the site's first real content.
 
 ## Next
 
+- [Choose the site's public address](backlog/choose-site-address.md),
+  right after the curriculum, so the domain is first indexed on a site
+  with real content.
 - [Check the declared languages in the build](backlog/check-declared-languages-in-the-build.md),
   the part of the screen reader check that depends on the site and the
   accessibility tree does not cover.
@@ -33,10 +37,9 @@ live since 2026-10-26
   Firefox and WebKit besides Chromium.
 - [Adapt the footer and the articles to screen width](backlog/adapt-footer-and-articles-to-screen-width.md),
   with the rules for long titles already agreed.
-- [Add site navigation](backlog/add-site-navigation.md), once there is
-  more than one page to move between.
-- [Choose the site's public address](backlog/choose-site-address.md),
-  before pages link to each other.
+- [Add site navigation](backlog/add-site-navigation.md), after the two
+  articles already on Medium, when the home page becomes the list of
+  contents.
 - [Choose the licence of the articles](backlog/choose-articles-licence.md),
   before the first article.
 - [Place the 1985 photo](backlog/place-1985-photo.md), not on the home
