@@ -30,6 +30,13 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-31
+
+### Fixed
+
+- Screen readers say the site's name on the ASCII-art logo again.
+  Orca 51 read it as a block of code and skipped its name.
+
 ## [0.3.0] - 2026-10-29
 
 ### Added
