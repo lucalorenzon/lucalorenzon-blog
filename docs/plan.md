@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Put the curriculum on the home page](backlog/put-curriculum-on-home-page.md),
+- [Put the curriculum on the home page](wip/put-curriculum-on-home-page.md),
   the site's first real content.
 
 ## Next
