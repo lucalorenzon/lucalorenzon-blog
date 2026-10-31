@@ -44,6 +44,8 @@ live since 2026-10-26
   before the first article.
 - [Place the 1985 photo](backlog/place-1985-photo.md), not on the home
   page.
+- [Take the site's content from several repositories](backlog/take-content-from-several-repositories.md),
+  once copying the curriculum and the articles by hand stops scaling.
 - [Check the workflows with actionlint](backlog/lint-workflows-with-actionlint.md),
   in the pipeline rather than on one machine.
 - Articles and everything around them. Not planned yet, on purpose.
