@@ -78,9 +78,44 @@ body {
   @apply border-t-0 pt-0 text-center text-[32px] leading-8 [grid-area:title];
 }
 
-/* Content: one block column of text, centred, at most 80 characters wide. */
+/* Content: one block column of text, centred, at most 80 characters wide.
+   The HTML inside is rendered from Markdown and carries no classes, so the
+   look of its elements is written here, nested. Temporary look until a
+   design system arrives. All sizes and spacings are multiples of 8px, so
+   the bitmap font stays sharp. */
 @utility long-text-column {
   @apply grow w-full max-w-[80ch] mx-auto px-2;
+
+  /* Sections: an amber line above, generous space before. */
+  & h2 {
+    @apply mt-8 border-t border-amber pt-2 text-2xl leading-6;
+  }
+
+  /* Roles: inverse video, as wide as the text. */
+  & h3 {
+    @apply mt-6 w-fit bg-amber px-2 text-black;
+  }
+
+  /* "Main work" and similar: underlined. */
+  & h4 {
+    @apply mt-4 underline;
+  }
+
+  & p {
+    @apply mt-2;
+  }
+
+  & ul {
+    @apply mt-2 list-[square] pl-6;
+  }
+
+  & li {
+    @apply mt-2;
+  }
+
+  & a {
+    @apply underline;
+  }
 }
 
 @utility footer-sticky-bottom {

@@ -13,3 +13,19 @@ export async function retryWhenLive(check: () => Promise<void>): Promise<void> {
     await check();
   }
 }
+
+// The devices every layout test runs on.
+export const VIEWPORTS = [
+  { name: 'iPhone SE', width: 320, height: 568 },
+  { name: 'iPhone 15', width: 393, height: 659 },
+  { name: 'Pixel 7', width: 412, height: 839 },
+  { name: 'iPhone 15 landscape', width: 659, height: 393 },
+  { name: 'boundary 767', width: 767, height: 800 },
+  { name: 'iPad Mini', width: 768, height: 1024 },
+  { name: 'iPad 7th gen', width: 810, height: 1080 },
+  { name: 'iPad Mini landscape', width: 1024, height: 768 },
+  { name: 'iPad Pro 11 landscape', width: 1194, height: 834 },
+  { name: 'boundary 1279', width: 1279, height: 800 },
+  { name: 'Laptop', width: 1280, height: 720 },
+  { name: 'Full HD', width: 1920, height: 1080 },
+];
