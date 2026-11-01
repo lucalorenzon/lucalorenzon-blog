@@ -3,9 +3,10 @@
 - **Opened:** 2026-11-01, by the user, reading the published site. It
   joins two cards opened the same day, "space out the lines of text"
   and "make the text colours easier to read", and adds the font.
-- **Status:** open, in Now. Since 2026-11-01 it also carries the checks
-  for WCAG criteria 1.4.8 and 1.4.12, moved here from the card
-  [cover the WCAG criteria axe cannot check](cover-wcag-criteria-axe-cannot-check.md),
+- **Status:** being worked on since 2026-11-01. Since the same day it
+  also carries the checks for WCAG criteria 1.4.8 and 1.4.12, moved here
+  from the card
+  [cover the WCAG criteria axe cannot check](../backlog/cover-wcag-criteria-axe-cannot-check.md),
   which now comes after this one.
 
 ## Why

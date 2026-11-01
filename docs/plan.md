@@ -18,7 +18,7 @@ live since 2026-10-26
   instead of GitHub's, now that the site lives at
   `https://www.lucalorenzon.com/`
   ([card](done/2026-11-01_choose-site-address.md)).
-- [Improve the site's readability](backlog/improve-site-readability.md):
+- [Improve the site's readability](wip/improve-site-readability.md):
   one choice of font and its size, line spacing and colours, which
   depend on one another, with the checks for WCAG criteria 1.4.8 and
   1.4.12 written together with it.
