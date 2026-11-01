@@ -6,7 +6,7 @@
 - **Status:** noticed, not started; in Now since 2026-11-01. Widened
   to level AAA on 2026-11-01; the same day, criteria 1.4.8 and 1.4.12
   moved to the card
-  [improve the site's readability](../wip/improve-site-readability.md), and
+  [improve the site's readability](../done/2026-11-02_improve-site-readability.md), and
   this card comes after it.
 
 ## Why
@@ -34,7 +34,7 @@ the goal.
 ### Widened to level AAA
 
 On 2026-11-01 the user found the published curriculum hard to read
-(card [improve the site's readability](../wip/improve-site-readability.md)).
+(card [improve the site's readability](../done/2026-11-02_improve-site-readability.md)).
 The criterion that speaks to it most, 1.4.8 visual presentation (line
 spacing, width of the text, space between paragraphs), is level AAA,
 outside this card as first written; axe has no rule for it. The user
@@ -55,7 +55,7 @@ only those about reading.
 
 ### Where do criteria 1.4.8 and 1.4.12 go?
 
-**To the card [improve the site's readability](../wip/improve-site-readability.md)
+**To the card [improve the site's readability](../done/2026-11-02_improve-site-readability.md)
 (chosen by the user on 2026-11-01),** with their checks written there,
 in the same commit as the new font, line spacing and colour. That card
 now comes first; this one comes after it.

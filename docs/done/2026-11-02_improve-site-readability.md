@@ -3,11 +3,10 @@
 - **Opened:** 2026-11-01, by the user, reading the published site. It
   joins two cards opened the same day, "space out the lines of text"
   and "make the text colours easier to read", and adds the font.
-- **Status:** being worked on since 2026-11-01. Since the same day it
-  also carries the checks for WCAG criteria 1.4.8 and 1.4.12, moved here
-  from the card
-  [cover the WCAG criteria axe cannot check](../backlog/cover-wcag-criteria-axe-cannot-check.md),
-  which now comes after this one.
+- **Status:** done on 2026-11-02, published in version 0.5.0. It also
+  carried the checks for WCAG criteria 1.4.8 and 1.4.12, moved here on
+  2026-11-01 from the card
+  [cover the WCAG criteria axe cannot check](../backlog/cover-wcag-criteria-axe-cannot-check.md).
 
 ## Why
 
@@ -33,9 +32,9 @@ readability would be judged against criteria rather than impressions
 only. Moving the two criteria here keeps that aim, and lets the rest of
 the WCAG card come afterwards.
 
-## What the stylesheet does today
+## What the stylesheet did before
 
-In `style/input.css`:
+In `style/input.css`, up to version 0.4.0:
 
 - **Line height equals font size:** 16px on 16px, a ratio of 1.0, set
   on `html, body`. Paragraphs and list items are 8px apart (`mt-2`);
@@ -94,7 +93,7 @@ the user noticed:
   consecutive blocks do not overlap; a measure of the line height fits
   there.
 
-## Answers already given
+## Answers
 
 ### Which text gets the new line spacing?
 
@@ -258,9 +257,14 @@ in the same commit, 2026-11-02):
   (chosen by the user on 2026-11-02): they do not depend on the font,
   line spacing and colour chosen here.
 
-## Questions to answer
+## Results observed
 
-- **How the result is judged** beyond the tests: complete combinations
-  were compared in the playground (decided by the user on 2026-11-01,
-  in line with the choice being one decision); what remains is the
-  user's reading on the live site and on a phone.
+- **Published** in version 0.5.0 on 2026-11-02; the build's browser
+  tests, the new readability test included, passed before and after
+  publication, on the live site too.
+- **The user's reading on the live site:** the text is much more
+  readable. On wide screens, though, the 60ch column leaves much empty
+  space at the sides. The text size is fine; the empty space is what
+  weighs. That is a decision on the layout of the page, not on font,
+  spacing or colour, so it went to a card of its own:
+  [use the space beside the text on wide screens](../backlog/use-space-beside-text-on-wide-screens.md).

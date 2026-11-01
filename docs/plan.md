@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-01
+Last updated: 2026-11-02
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -18,16 +18,15 @@ live since 2026-10-26
   instead of GitHub's, now that the site lives at
   `https://www.lucalorenzon.com/`
   ([card](done/2026-11-01_choose-site-address.md)).
-- [Improve the site's readability](wip/improve-site-readability.md):
-  one choice of font and its size, line spacing and colours, which
-  depend on one another, with the checks for WCAG criteria 1.4.8 and
-  1.4.12 written together with it.
 - [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
-  criterion by criterion, levels A, AA and AAA, after readability:
-  for each one, whether it is done now, next or later.
+  criterion by criterion, levels A, AA and AAA, now that readability
+  is done ([card](done/2026-11-02_improve-site-readability.md)): for
+  each one, whether it is done now, next or later.
 
 ## Next
 
+- [Use the space beside the text on wide screens](backlog/use-space-beside-text-on-wide-screens.md),
+  left empty by the narrower column of version 0.5.0.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page.
 - [Check the declared languages in the build](backlog/check-declared-languages-in-the-build.md),
