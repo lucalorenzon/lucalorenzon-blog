@@ -14,8 +14,9 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing in progress: the next card is chosen by the user. The site is
-  served at `https://www.lucalorenzon.com/` since 2026-11-01
+- [Serve the site's own "page not found"](backlog/serve-own-not-found-page.md),
+  instead of GitHub's, now that the site lives at
+  `https://www.lucalorenzon.com/`
   ([card](done/2026-11-01_choose-site-address.md)).
 
 ## Next
