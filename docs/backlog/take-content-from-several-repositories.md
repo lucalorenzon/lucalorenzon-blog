@@ -1,7 +1,7 @@
 # Take the site's content from several repositories
 
 - **Opened:** 2026-10-31, by the user, while the card
-  [put the curriculum on the home page](../wip/put-curriculum-on-home-page.md)
+  [put the curriculum on the home page](../done/2026-11-01_put-curriculum-on-home-page.md)
   was being worked on.
 - **Status:** noticed, not started.
 
