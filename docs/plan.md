@@ -52,5 +52,7 @@ live since 2026-10-26
   so a returning visitor does not keep the old look.
 - [Check the workflows with actionlint](backlog/lint-workflows-with-actionlint.md),
   in the pipeline rather than on one machine.
+- [Refer to cards by name in frozen documents](backlog/refer-to-cards-by-name-in-frozen-documents.md),
+  so moving a card no longer breaks links in minutes and finished cards.
 - Articles and everything around them, including the look shared by
   pages written in Markdown. Not planned yet, on purpose.
