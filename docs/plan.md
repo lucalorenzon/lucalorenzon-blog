@@ -18,11 +18,13 @@ live since 2026-10-26
   instead of GitHub's, now that the site lives at
   `https://www.lucalorenzon.com/`
   ([card](done/2026-11-01_choose-site-address.md)).
-- [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
-  criterion by criterion, levels A, AA and AAA, before readability, so
-  it is judged against criteria.
 - [Improve the site's readability](backlog/improve-site-readability.md):
-  font, line spacing and colours, which depend on one another.
+  one choice of font and its size, line spacing and colours, which
+  depend on one another, with the checks for WCAG criteria 1.4.8 and
+  1.4.12 written together with it.
+- [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
+  criterion by criterion, levels A, AA and AAA, after readability:
+  for each one, whether it is done now, next or later.
 
 ## Next
 

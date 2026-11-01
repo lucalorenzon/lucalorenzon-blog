@@ -3,8 +3,10 @@
 - **Opened:** 2026-11-01, by the user, reading the published site. It
   joins two cards opened the same day, "space out the lines of text"
   and "make the text colours easier to read", and adds the font.
-- **Status:** open, in Now, after the card
-  [cover the WCAG criteria axe cannot check](cover-wcag-criteria-axe-cannot-check.md).
+- **Status:** open, in Now. Since 2026-11-01 it also carries the checks
+  for WCAG criteria 1.4.8 and 1.4.12, moved here from the card
+  [cover the WCAG criteria axe cannot check](cover-wcag-criteria-axe-cannot-check.md),
+  which now comes after this one.
 
 ## Why
 
@@ -25,14 +27,10 @@ card:
   ([card](../done/2026-10-28_add-header-footer-and-favicon.md)):
   changing either one decides how much of that look is left.
 
-A card holds one decision, so when this one is picked up it is split
-again, probably in the order the dependencies suggest: font, then line
-spacing, then colour.
-
-It comes after the card on the WCAG criteria axe cannot check, which
-the user asked to widen to level AAA, so readability is judged against
-criteria the build or a written check covers, not against impressions
-only.
+The card on the WCAG criteria had been put before this one so
+readability would be judged against criteria rather than impressions
+only. Moving the two criteria here keeps that aim, and lets the rest of
+the WCAG card come afterwards.
 
 ## What the stylesheet does today
 
@@ -104,6 +102,48 @@ text column: the footer and any future page that does not use the
 column start from the same line spacing. The header is not affected,
 as above.
 
+### One decision or three?
+
+**One decision with three parameters (chosen by the user on
+2026-11-01):** the best compromise between the font and its size, the
+line spacing and the colour. When the cards were joined, the plan was
+to split this one again when picked up (font, then line spacing, then
+colour); the user withdrew that.
+
+- **Why:** the parameters depend on one another, so separate cards
+  would mean settling one, adjusting another, then changing the first
+  again. The header's adaptation to screen width was handled the same
+  way: logo and title were sized together in one card, not one after
+  the other
+  ([card](../done/2026-10-29_adapt-header-to-screen-width.md)).
+- **Rejected:** three cards, font, line spacing and colour, one after
+  the other, for the back and forth above.
+- **Risk kept in view:** a large card. It is contained by comparing a
+  few complete combinations side by side, rather than exploring each
+  parameter on its own, as the header's values were chosen by looking
+  at a playground page with several devices at once.
+
+### Where do the checks for criteria 1.4.8 and 1.4.12 go?
+
+**In this card, together with the choice (chosen by the user on
+2026-11-01):** the checks land in the same commit as the new font, line
+spacing and colour, with the build green.
+
+- **Why:** the two criteria are the yardstick of this same decision.
+  The line spacing chosen has to meet 1.4.8 and to hold up when the
+  reader raises it, as 1.4.12 asks; separating the checks from each
+  other, or from the choice they measure, brings back the same back and
+  forth.
+- **Rejected:** checks written first, in cards of their own. The page
+  does not meet 1.4.8 today (line height 1.0, the criterion asks for at
+  least 1.5), so the build would stay red until this card is done,
+  blocking every publication meanwhile, and code would be committed that
+  does not pass its own tests.
+- **Rejected:** a check written first and marked as an expected failure,
+  which Playwright allows. The build stays green and the yardstick
+  exists before the choice, but the mark has to be removed, and
+  remembered, once the choice is made.
+
 ## Questions to answer
 
 - **The font:** whether IBM VGA 8x16 stays, and if not, which font, and
@@ -112,12 +152,19 @@ as above.
   space between paragraphs and list items changes with it.
 - **What to do with the colour:** softer values of amber and black,
   amber kept only for lines and headings, or other colours.
-- **How the build catches it next time:** a test that measures the
-  line height in the text column (criterion 1.4.8); a test that raises
-  line height and spacing as a reader would and checks that no text
-  overlaps or is cut off (criterion 1.4.12). The card on the WCAG
-  criteria may already decide this.
+- **What the checks for criteria 1.4.8 and 1.4.12 measure.** For
+  1.4.8, a test that measures line spacing and the space between
+  paragraphs in the text column; the criterion also asks for lines no
+  wider than 80 characters, text not justified, colours the reader can
+  choose, and text that can be enlarged to 200% without scrolling
+  sideways to read a line, and it is met when "a mechanism is
+  available" for each, not only by the page as first shown. For 1.4.12,
+  a test that raises line height to 1.5 times the font size, the space
+  after paragraphs to 2 times, letter spacing to 0.12 times and word
+  spacing to 0.16 times, as a reader would, and checks that no text
+  overlaps or is cut off.
 - **How the result is judged** beyond the tests: the user's reading,
-  on the live site and on a phone, one change at a time so the effects
-  are not confused. Images of the page with each option, side by side,
-  can help before deciding.
+  on the live site and on a phone, comparing complete combinations of
+  font, line spacing and colour (decided by the user on 2026-11-01, in
+  line with the choice being one decision). Images of the page with
+  each combination, side by side, can help before deciding.

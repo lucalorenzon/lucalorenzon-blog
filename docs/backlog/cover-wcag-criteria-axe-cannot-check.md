@@ -4,7 +4,10 @@
   [run a screen reader check on demand](../done/2026-10-30_run-screen-reader-check-on-demand.md)
   was being worked on.
 - **Status:** noticed, not started; in Now since 2026-11-01. Widened
-  to level AAA on 2026-11-01.
+  to level AAA on 2026-11-01; the same day, criteria 1.4.8 and 1.4.12
+  moved to the card
+  [improve the site's readability](improve-site-readability.md), and
+  this card comes after it.
 
 ## Why
 
@@ -39,20 +42,44 @@ asked to widen the card to level AAA and to do it before the
 readability card, so that card is judged against criteria the build or
 a written check covers.
 
-The criteria the readability card needs first: 1.4.8 (AAA) and 1.4.12
-text spacing (AA). Other AAA criteria about reading, such as unusual
-words (3.1.3), abbreviations (3.1.4) and reading level (3.1.5), concern
-the content more than the look.
+Other AAA criteria about reading, such as unusual words (3.1.3),
+abbreviations (3.1.4) and reading level (3.1.5), concern the content
+more than the look, and stay in this card.
+
+## Answers already given
+
+### Does the card cover the whole of level AAA?
+
+**Yes (confirmed by the user on 2026-11-01):** every AAA criterion, not
+only those about reading.
+
+### Where do criteria 1.4.8 and 1.4.12 go?
+
+**To the card [improve the site's readability](improve-site-readability.md)
+(chosen by the user on 2026-11-01),** with their checks written there,
+in the same commit as the new font, line spacing and colour. That card
+now comes first; this one comes after it.
+
+- **Why:** the two criteria measure that card's decision, one choice of
+  font, line spacing and colour. A check written first would fail today
+  and keep the build red, blocking every publication, until the choice
+  is made. The reasons in full, with the rejected options, are in that
+  card.
+- **Rejected:** three cards from this one (criterion 1.4.12, criterion
+  1.4.8, the other criteria). It would have separated the two criteria
+  from each other and from the decision they measure.
 
 ## Questions
 
-- Which WCAG 2.2 criteria of levels A, AA and AAA are not covered by the
-  build or by the screen reader check, criterion by criterion. The
-  W3C's method for evaluating a site, WCAG-EM, is a possible guide.
+- Which WCAG 2.2 criteria of levels A, AA and AAA, apart from 1.4.8 and
+  1.4.12, are not covered by the build or by the screen reader check,
+  criterion by criterion. The W3C's method for evaluating a site,
+  WCAG-EM, is a possible guide.
 - How each uncovered criterion is checked: automatically (for example
   axe's best-practice rules, or a test written for it), on demand like
   the screen reader check, or by hand with a written result.
 - Whether AAA criteria that cannot be met, or that a personal site
   does not aim at, are listed with the reason rather than checked.
 - When: the page today has no links, forms or keyboard targets, so
-  several criteria have nothing to apply to yet.
+  several criteria have nothing to apply to yet. For each criterion,
+  whether it is done now, comes next, or goes to Later.
