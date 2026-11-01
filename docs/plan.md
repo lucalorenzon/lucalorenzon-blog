@@ -27,6 +27,9 @@ live since 2026-10-26
 
 - [Use the space beside the text on wide screens](backlog/use-space-beside-text-on-wide-screens.md),
   left empty by the narrower column of version 0.5.0.
+- [Check performance in the build](backlog/check-performance-in-the-build.md),
+  Lighthouse or similar, so a choice that makes the site slower or
+  heavier does not go unnoticed.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page.
 - [Check the declared languages in the build](backlog/check-declared-languages-in-the-build.md),
@@ -58,5 +61,9 @@ live since 2026-10-26
   in the pipeline rather than on one machine.
 - [Refer to cards by name in frozen documents](backlog/refer-to-cards-by-name-in-frozen-documents.md),
   so moving a card no longer breaks links in minutes and finished cards.
+- [Show the check results as badges in the README](backlog/show-check-results-as-readme-badges.md),
+  from shields.io, after the performance check.
+- [Measure the CO2 of a page view](backlog/measure-co2-of-a-page-view.md),
+  an estimate from the bytes transferred.
 - Articles and everything around them, including the look shared by
   pages written in Markdown. Not planned yet, on purpose.
