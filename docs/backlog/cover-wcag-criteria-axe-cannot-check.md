@@ -69,10 +69,22 @@ now comes first; this one comes after it.
   1.4.8, the other criteria). It would have separated the two criteria
   from each other and from the decision they measure.
 
+### Which parts of criterion 1.4.8 come back here?
+
+**Two (chosen by the user on 2026-11-02):** colours the reader can
+choose, and text that can be enlarged to 200% without scrolling
+sideways to read a line. The readability card's test covers the other
+parts: line height, space between paragraphs, at most 80 characters per
+line, no justified text. These two do not depend on the font, line
+spacing and colour chosen there, and the criterion counts them met when
+"a mechanism is available", such as the browser's own settings.
+
 ## Questions
 
-- Which WCAG 2.2 criteria of levels A, AA and AAA, apart from 1.4.8 and
-  1.4.12, are not covered by the build or by the screen reader check,
+- Which WCAG 2.2 criteria of levels A, AA and AAA are not covered by
+  the build or by the screen reader check, criterion by criterion:
+  1.4.12 and most of 1.4.8 are covered by the readability card's test,
+  the two parts of 1.4.8 above are not,
   criterion by criterion. The W3C's method for evaluating a site,
   WCAG-EM, is a possible guide.
 - How each uncovered criterion is checked: automatically (for example

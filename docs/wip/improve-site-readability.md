@@ -252,14 +252,14 @@ in the same commit, 2026-11-02):
   line of 94 characters.
 - **Not tested:** the other parts of 1.4.8, colours chosen by the reader
   and text enlarged to 200% without scrolling sideways, which the
-  criterion lets a "mechanism" such as the browser provide. Where they
-  are checked is an open question, below.
+  criterion lets a "mechanism" such as the browser provide. They went
+  back to the card
+  [cover the WCAG criteria axe cannot check](../backlog/cover-wcag-criteria-axe-cannot-check.md)
+  (chosen by the user on 2026-11-02): they do not depend on the font,
+  line spacing and colour chosen here.
 
 ## Questions to answer
 
-- **The rest of criterion 1.4.8:** where colours chosen by the reader
-  and text enlarged to 200% are checked, in this card or in the card on
-  the WCAG criteria axe cannot check, which today leaves 1.4.8 out.
 - **How the result is judged** beyond the tests: complete combinations
   were compared in the playground (decided by the user on 2026-11-01,
   in line with the choice being one decision); what remains is the
