@@ -30,6 +30,8 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-02
+
 ### Changed
 
 - The text is easier to read: it is set in the Literata font, served by the
