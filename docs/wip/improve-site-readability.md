@@ -145,14 +145,85 @@ spacing and colour, with the build green.
   exists before the choice, but the mark has to be removed, and
   remembered, once the choice is made.
 
+### Which combination?
+
+**Chosen by the user on 2026-11-02,** after trying combinations in a
+playground page:
+
+| Parameter | Value |
+|---|---|
+| Font of the text (column and footer) | Literata, 16px, regular, italic and bold |
+| Font of the header | IBM VGA 8x16, unchanged, with its own sizes |
+| Line height | 1.5 (24px) |
+| Space between paragraphs | 36px |
+| Space between list items | 12px |
+| Letter spacing | none added |
+| Width of the text column | 60ch (today 80ch) |
+| Colours | `#DD9911` on `#000000` everywhere amber was used: text, lines, inverse video, footer; contrast 8.64:1 |
+
+- **Why Literata.** Proportional fonts, with or without serifs, read
+  much better than every monospace one tried, pixel fonts included: the
+  difference comes mostly from letters of different widths, more than
+  from serifs. Among the proportional ones the user found Literata the
+  most relaxing to read. It was designed for long reading on screen,
+  under the SIL Open Font License, so the site can serve it itself.
+- **Why the header keeps IBM VGA 8x16.** The old-terminal look stays
+  where it does not weigh on reading: the logo, the title and the amber.
+  The font's rules (sizes in multiples of 8px) now apply to the header
+  only. The user asked not to treat the look chosen on 2026-10-28 as
+  fixed: it was a deliberate try, and the problem observed (the site
+  reads badly) comes first.
+- **Why 36px between paragraphs.** It meets both readings of criterion
+  1.4.8 noted above: the empty space between paragraphs is 1.5 times the
+  line height (36px), and the distance between their lines (60px) is
+  more than that. Which reading to adopt no longer needs deciding.
+- **Why 60ch.** Criterion 1.4.8 asks for at most 80 characters per line.
+  With a proportional font a line holds more characters than the width
+  of 80 zeros, which is what 80ch measures: at 80ch Literata reaches 94
+  characters on wide screens, at 67ch exactly 80. How many characters a
+  line holds depends on its words, so a width tuned to today's text
+  leaves no room for the next one. At 60ch the longest line is 72
+  characters, a margin of 8, and inside the 45 to 75 characters usually
+  recommended for reading. Measured in ch, the column keeps the same
+  number of characters if the text size changes; measured in pixels it
+  would not.
+- **Why `#DD9911`.** A softer amber than `#FFB000`, less glaring on
+  black, still well above the 7:1 the build requires. The user's first
+  try, `#CC8800`, was at 7.09:1, too close to that limit.
+- **Criterion 1.4.12** holds with this combination: with line height,
+  paragraph, letter and word spacing raised as the criterion asks, no
+  text overlaps or is cut off on any of the five devices, from 320 by
+  568 pixels to 1920 by 1080, and the footer takes at most 10% of a
+  small phone's screen.
+
+**Rejected:**
+
+- **IBM VGA 8x16 and 9x16, Olivetti Thin 8x16 and 9x16** (pixel fonts
+  from the same pack as today's): the letter shapes of old terminals,
+  hard to read at length. Olivetti Thin's one-pixel strokes also make
+  the text look dimmer than its measured contrast.
+- **IBM Plex Mono, Atkinson Hyperlegible Mono, Courier Prime**
+  (monospace, Courier Prime with serifs): less readable than any
+  proportional font.
+- **IBM Plex Sans, IBM Plex Serif, Atkinson Hyperlegible Next**
+  (proportional): readable, but less relaxing than Literata.
+- **A proportional Olivetti font:** none found with a licence that
+  allows serving it. OT L22, from the Olivetti historical archive, is
+  sold with no licence stated, and comes from a typewriter; the other
+  revivals reproduce the logo, with personal-use or no-derivatives
+  licences.
+
+**How the combination was found.** A playground page, not kept in the
+repository like the header's, showed the built site in five devices
+(320 by 568 to 1920 by 1080) with controls for font, size, line height,
+the two spacings, letter spacing, column width and colours, and a
+switch applying the spacings of criterion 1.4.12. Every limit was shown
+live: contrast, line height, both readings of the paragraph space,
+characters per line counted on the rendered lines, horizontal scroll,
+overlaps, cut-off text, the footer's share of the screen.
+
 ## Questions to answer
 
-- **The font:** whether IBM VGA 8x16 stays, and if not, which font, and
-  how much of the old-terminal look is left.
-- **How much line height,** depending on the font, and whether the
-  space between paragraphs and list items changes with it.
-- **What to do with the colour:** softer values of amber and black,
-  amber kept only for lines and headings, or other colours.
 - **What the checks for criteria 1.4.8 and 1.4.12 measure.** For
   1.4.8, a test that measures line spacing and the space between
   paragraphs in the text column; the criterion also asks for lines no
@@ -163,9 +234,10 @@ spacing and colour, with the build green.
   a test that raises line height to 1.5 times the font size, the space
   after paragraphs to 2 times, letter spacing to 0.12 times and word
   spacing to 0.16 times, as a reader would, and checks that no text
-  overlaps or is cut off.
-- **How the result is judged** beyond the tests: the user's reading,
-  on the live site and on a phone, comparing complete combinations of
-  font, line spacing and colour (decided by the user on 2026-11-01, in
-  line with the choice being one decision). Images of the page with
-  each combination, side by side, can help before deciding.
+  overlaps or is cut off. The playground counted characters on the
+  rendered lines, the only count that holds for a proportional font;
+  the existing content layout test assumes characters 8px wide.
+- **How the result is judged** beyond the tests: complete combinations
+  were compared in the playground (decided by the user on 2026-11-01,
+  in line with the choice being one decision); what remains is the
+  user's reading on the live site and on a phone.
