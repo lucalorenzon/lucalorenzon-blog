@@ -30,6 +30,14 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+### Changed
+
+- Configured `www.lucalorenzon.com` as the site's domain, and redirects to
+  it from `lucalorenzon.com` and from `lucalorenzon.it`, with and without
+  `www`. The former address `lucalorenzon.github.io/lucalorenzon-blog/`
+  redirects there too. Done in the hosting and domain settings on
+  2026-11-01, live before this version.
+
 ## [0.4.0] - 2026-11-01
 
 ### Added

@@ -8,7 +8,8 @@ const live = Boolean(rawBaseUrl);
 const port = 4173;
 
 // A trailing slash is required so that relative navigation ('./') stays
-// inside a sub-path such as https://lucalorenzon.github.io/lucalorenzon-blog/.
+// inside a sub-path, should BASE_URL ever point to one. The site itself is
+// served from the root of https://www.lucalorenzon.com/ since 2026-11-01.
 const baseURL = live
   ? rawBaseUrl!.replace(/\/*$/, '/')
   : `http://127.0.0.1:${port}/`;

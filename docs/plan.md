@@ -14,10 +14,9 @@ live since 2026-10-26
 
 ## Now
 
-- [Choose the site's public address](wip/choose-site-address.md),
-  now that the site shows real content
-  ([the curriculum](done/2026-11-01_put-curriculum-on-home-page.md)),
-  so the domain is first indexed on it.
+- Nothing in progress: the next card is chosen by the user. The site is
+  served at `https://www.lucalorenzon.com/` since 2026-11-01
+  ([card](done/2026-11-01_choose-site-address.md)).
 
 ## Next
 

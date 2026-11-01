@@ -40,7 +40,7 @@ home page then stops showing the curriculum and becomes the list of
 contents, and the menu comes with that change. Planned on 2026-10-31,
 together with the order that comes first: the
 [curriculum on the home page](put-curriculum-on-home-page.md), then the
-[site's own domain](../wip/choose-site-address.md), then the articles.
+[site's own domain](../done/2026-11-01_choose-site-address.md), then the articles.
 
 The menu is not needed to move the domain: the curriculum alone gives
 the domain real content to be first indexed on.
