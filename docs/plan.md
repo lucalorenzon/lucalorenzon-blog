@@ -18,6 +18,9 @@ live since 2026-10-26
   instead of GitHub's, now that the site lives at
   `https://www.lucalorenzon.com/`
   ([card](done/2026-11-01_choose-site-address.md)).
+- [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
+  criterion by criterion, levels A, AA and AAA, before readability, so
+  it is judged against criteria.
 - [Improve the site's readability](backlog/improve-site-readability.md):
   font, line spacing and colours, which depend on one another.
 
@@ -35,8 +38,6 @@ live since 2026-10-26
 - [Give the screen reader container an Italian voice](backlog/give-the-screen-reader-container-an-italian-voice.md),
   probably superseded now that the site is in English: decided by the
   screen reader card in Next.
-- [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
-  criterion by criterion, level A and AA.
 - [Run the browser tests in more browsers](backlog/run-browser-tests-in-more-browsers.md),
   Firefox and WebKit besides Chromium.
 - [Adapt the footer and the articles to screen width](backlog/adapt-footer-and-articles-to-screen-width.md),
