@@ -6,3 +6,4 @@ license = "MIT"
 
 [dependencies]
 leptos = { version = "0.8.22", features = ["ssr"] }
+pulldown-cmark = { version = "0.13.6", default-features = false, features = ["html"] }

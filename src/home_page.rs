@@ -1,4 +1,8 @@
+use crate::markdown;
 use leptos::prelude::*;
+
+/// The curriculum, written in Markdown and converted to HTML at build time.
+const CURRICULUM: &str = include_str!("../content/curriculum.md");
 
 /// The ASCII-art logo (narrow version of the old site's `AsciiArtLogo`).
 const LOGO: &str = r#"    __        __   ______  __________
@@ -12,11 +16,11 @@ const LOGO: &str = r#"    __        __   ______  __________
 #[component]
 pub fn HomePage() -> impl IntoView {
     view! {
-        <html lang="it">
+        <html lang="en">
             <head>
                 <meta charset="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>"Luca Lorenzon - Home Page"</title>
+                <title>"Luca Lorenzon - Curriculum Vitae"</title>
                 <link rel="icon" href="favicon.ico" />
                 <link rel="stylesheet" href="style.css" />
             </head>
@@ -29,16 +33,14 @@ pub fn HomePage() -> impl IntoView {
                             aria-label="Lvk@73r"
                             class="not-shown md:art-logo-left"
                         >{LOGO}</div>
-                        <h1 class="title-below-line md:title-below-line-large xl:title-beside-logo">"Home Page"</h1>
+                        <h1 class="title-below-line md:title-below-line-large xl:title-beside-logo">"Curriculum Vitae"</h1>
                         <div
                             data-testid="menu-slot"
                             aria-hidden="true"
                             class="reserved-menu-slot"
                         ></div>
                     </header>
-                    <main class="content-centred">
-                        <p>"Sito in costruzione"</p>
-                    </main>
+                    <main class="long-text-column" inner_html=markdown::to_html(CURRICULUM)></main>
                     <footer class="footer-sticky-bottom">
                         <p>"© Luca Lorenzon 2026"</p>
                     </footer>
@@ -65,25 +67,28 @@ mod tests {
     }
 
     #[test]
-    fn declares_italian_language() {
-        assert!(render_home_page().contains("lang=\"it\""));
+    fn declares_english_language() {
+        assert!(render_home_page().contains("lang=\"en\""));
     }
 
     #[test]
     fn sets_tab_title() {
-        assert!(render_home_page().contains("<title>Luca Lorenzon - Home Page</title>"));
+        assert!(render_home_page().contains("<title>Luca Lorenzon - Curriculum Vitae</title>"));
     }
 
     #[test]
-    fn has_home_page_as_only_h1() {
+    fn has_curriculum_vitae_as_only_h1() {
         let html = render_home_page();
         assert_eq!(html.matches("<h1").count(), 1);
-        assert!(html.contains(">Home Page</h1>"));
+        assert!(html.contains(">Curriculum Vitae</h1>"));
     }
 
     #[test]
-    fn shows_under_construction_text_as_paragraph() {
-        assert!(render_home_page().contains(">Sito in costruzione</p>"));
+    fn shows_the_curriculum_in_main() {
+        let html = render_home_page();
+        let main = &html[html.find("<main").expect("main")..html.find("</main>").expect("end")];
+        assert!(main.contains("<h2>Summary</h2>"));
+        assert!(!main.contains("<h1"));
     }
 
     #[test]

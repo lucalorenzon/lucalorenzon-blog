@@ -26,10 +26,10 @@ test('home page shows header, body and footer, and loads stylesheet, font and fa
     const stylesheet = waitFor('/style.css');
     const font = waitFor('.woff');
     await page.goto('./');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Home Page', {
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Curriculum Vitae', {
       timeout: 5_000,
     });
-    await expect(page.getByText('Sito in costruzione')).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: 'Summary' })).toBeVisible();
     await expect(page.getByText('© Luca Lorenzon 2026')).toBeVisible();
     await expect(page.getByRole('img', { name: 'Lvk@73r' })).toBeVisible();
     expect((await stylesheet).status()).toBe(200);

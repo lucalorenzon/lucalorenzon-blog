@@ -77,10 +77,14 @@ for (const { name, width, height } of BANDS) {
 // axe finds rule violations; it does not notice a change in what a screen
 // reader is given, such as a logo that loses its name, a heading that changes
 // level or parts read in another order. So the accessibility tree is also
-// compared with the expected one. "/children: equal" on every container makes
-// the match strict: an extra, missing or reordered element fails, where the
-// default would accept extra ones. ("deep-equal" is not used: it would also
-// demand the ASCII art inside the wide logo.) How the page sounds (the voice,
+// compared with the expected one, in two parts. The banner and the footer are
+// compared strictly: "/children: equal" makes an extra, missing or reordered
+// element fail, where the default would accept extra ones. ("deep-equal" is
+// not used: it would also demand the ASCII art inside the wide logo.) The
+// content of main is the curriculum, whose text changes at every edit, so
+// listing the whole tree would force a change to this test each time; only
+// the structure of its headings is compared (see the test below): the
+// level-2 headings, in order, and no level-1 heading. How the page sounds (the voice,
 // how "Lvk@73r" is spelled out) is not checked here: see the card
 // docs/backlog/run-screen-reader-check-on-demand.md.
 //
@@ -93,10 +97,8 @@ const TREE_BY_LOGO = {
     - banner:
       - /children: equal
       - text: Lvk@73r
-      - heading "Home Page" [level=1]
-    - main:
-      - /children: equal
-      - paragraph: Sito in costruzione
+      - heading "Curriculum Vitae" [level=1]
+    - main
     - contentinfo:
       - /children: equal
       - paragraph: © Luca Lorenzon 2026
@@ -106,15 +108,25 @@ const TREE_BY_LOGO = {
     - banner:
       - /children: equal
       - img "Lvk@73r"
-      - heading "Home Page" [level=1]
-    - main:
-      - /children: equal
-      - paragraph: Sito in costruzione
+      - heading "Curriculum Vitae" [level=1]
+    - main
     - contentinfo:
       - /children: equal
       - paragraph: © Luca Lorenzon 2026
   `,
 };
+
+// The level-2 headings of the curriculum, in order. toHaveText with an array
+// of strings checks the count and the order of the matching elements.
+const CURRICULUM_SECTIONS = [
+  'Summary',
+  'Experience',
+  'Technical expertise and continuous learning',
+  'Core competencies',
+  'Education',
+  'Certifications and training',
+  'Languages',
+];
 
 const EXPECTED_TREE: Record<string, string> = {
   'iPhone 15': TREE_BY_LOGO.text,
@@ -130,6 +142,10 @@ for (const { name, width, height } of BANDS) {
       await page.goto('./');
       await page.evaluate(() => document.fonts.ready);
       await expect(page.locator('body')).toMatchAriaSnapshot(EXPECTED_TREE[name]);
+
+      const main = page.getByRole('main');
+      await expect(main.getByRole('heading', { level: 1 })).toHaveCount(0);
+      await expect(main.getByRole('heading', { level: 2 })).toHaveText(CURRICULUM_SECTIONS);
     };
 
     await retryWhenLive(check);

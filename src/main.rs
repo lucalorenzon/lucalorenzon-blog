@@ -1,4 +1,5 @@
 mod home_page;
+mod markdown;
 
 use std::{env, fs, io, path::PathBuf};
 

@@ -29,7 +29,7 @@ const VIEWPORTS = [
   { name: 'Full HD', width: 1920, height: 1080 },
 ];
 
-const HOME_TITLE = 'Home Page';
+const HOME_TITLE = 'Curriculum Vitae';
 const LONG_TITLES = [
   'Disaccoppiamento infrastrutturale nei microservizi',
   'Contestualizzazione dell’interoperabilità nei dati',

@@ -78,8 +78,9 @@ body {
   @apply border-t-0 pt-0 text-center text-[32px] leading-8 [grid-area:title];
 }
 
-@utility content-centred {
-  @apply grow flex items-center justify-center;
+/* Content: one block column of text, centred, at most 80 characters wide. */
+@utility long-text-column {
+  @apply grow w-full max-w-[80ch] mx-auto px-2;
 }
 
 @utility footer-sticky-bottom {
