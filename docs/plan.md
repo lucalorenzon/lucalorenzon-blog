@@ -18,7 +18,7 @@ live since 2026-10-26
   instead of GitHub's, now that the site lives at
   `https://www.lucalorenzon.com/`
   ([card](done/2026-11-01_choose-site-address.md)).
-- [Space out the lines of text](backlog/space-out-lines-of-text.md),
+- [Space out the lines of text](wip/space-out-lines-of-text.md),
   today as tall as the font, which makes the curriculum hard to read.
 - [Make the text colours easier to read](backlog/make-text-colours-easier-to-read.md),
   since amber on pure black passes the contrast check but does not

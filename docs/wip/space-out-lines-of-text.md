@@ -1,14 +1,14 @@
 # Space out the lines of text
 
 - **Opened:** 2026-11-01, by the user, reading the published site.
-- **Status:** open, in Now.
+- **Status:** being worked on since 2026-11-01.
 
 ## Why
 
 Reading the curriculum on the live site, the user found the text hard
 to read, first of all because the lines sit too close together. The
 colours are the other half of the same remark, in the card
-[make the text colours easier to read](make-text-colours-easier-to-read.md).
+[make the text colours easier to read](../backlog/make-text-colours-easier-to-read.md).
 
 What the stylesheet does today (`style/input.css`): the line height
 equals the font size, 16px on 16px, a ratio of 1.0, for the whole page
@@ -35,7 +35,7 @@ The build checks accessibility with axe, but no axe rule looks at this:
   not examined.
 
 The card
-[cover the WCAG criteria axe cannot check](cover-wcag-criteria-axe-cannot-check.md)
+[cover the WCAG criteria axe cannot check](../backlog/cover-wcag-criteria-axe-cannot-check.md)
 is limited to levels A and AA, so it would not have covered 1.4.8
 either.
 

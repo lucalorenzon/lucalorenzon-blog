@@ -7,7 +7,7 @@
 
 Reading the curriculum on the live site, the user found the text hard
 to read: besides the lines sitting too close together (card
-[space out the lines of text](space-out-lines-of-text.md)), amber on
+[space out the lines of text](../wip/space-out-lines-of-text.md)), amber on
 black does not help.
 
 What the stylesheet does today (`style/input.css`): amber `#FFB000` on
