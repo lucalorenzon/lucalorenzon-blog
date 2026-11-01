@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-10-31
+Last updated: 2026-11-01
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -14,14 +14,15 @@ live since 2026-10-26
 
 ## Now
 
-- [Put the curriculum on the home page](done/2026-11-01_put-curriculum-on-home-page.md),
-  the site's first real content.
+- [Choose the site's public address](backlog/choose-site-address.md),
+  now that the site shows real content
+  ([the curriculum](done/2026-11-01_put-curriculum-on-home-page.md)),
+  so the domain is first indexed on it.
 
 ## Next
 
-- [Choose the site's public address](backlog/choose-site-address.md),
-  right after the curriculum, so the domain is first indexed on a site
-  with real content.
+- [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
+  since its reference still describes the Italian page.
 - [Check the declared languages in the build](backlog/check-declared-languages-in-the-build.md),
   the part of the screen reader check that depends on the site and the
   accessibility tree does not cover.
@@ -30,7 +31,8 @@ live since 2026-10-26
 ## Later
 
 - [Give the screen reader container an Italian voice](backlog/give-the-screen-reader-container-an-italian-voice.md),
-  so the recording sounds as an Italian visitor would hear it.
+  probably superseded now that the site is in English: decided by the
+  screen reader card in Next.
 - [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
   criterion by criterion, level A and AA.
 - [Run the browser tests in more browsers](backlog/run-browser-tests-in-more-browsers.md),
@@ -48,4 +50,5 @@ live since 2026-10-26
   once copying the curriculum and the articles by hand stops scaling.
 - [Check the workflows with actionlint](backlog/lint-workflows-with-actionlint.md),
   in the pipeline rather than on one machine.
-- Articles and everything around them. Not planned yet, on purpose.
+- Articles and everything around them, including the look shared by
+  pages written in Markdown. Not planned yet, on purpose.

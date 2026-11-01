@@ -165,6 +165,9 @@ contributions, the person stays the author and fully accountable, while
 
 - [Leptos](https://github.com/leptos-rs/leptos) 0.8.22, used only to render
   pages to static HTML at build time (no server, no WebAssembly yet)
+- [pulldown-cmark](https://github.com/pulldown-cmark/pulldown-cmark) 0.13,
+  converting the content's Markdown to HTML at build time; the Markdown
+  holds no HTML (a unit test checks it)
 - [Tailwind CSS](https://tailwindcss.com/) v4, standalone command-line tool
   pinned by version and checksum in `scripts/build-site.sh`
 - Hosting on GitHub Pages, published by GitHub Actions only when a version
@@ -179,7 +182,8 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 
 | Path | Content |
 |---|---|
-| `src/` | The Leptos page component and the build program that writes `index.html` |
+| `src/` | The Leptos page component, the Markdown-to-HTML conversion (`markdown.rs`) and the build program that writes `index.html` |
+| `content/` | The site's text in Markdown: today the curriculum, a version written for the site and cleaned of personal and employer data |
 | `assets/` | Files copied as they are into the site: the favicon, and the font with its licence and attribution |
 | `style/input.css` | Tailwind entry point |
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |

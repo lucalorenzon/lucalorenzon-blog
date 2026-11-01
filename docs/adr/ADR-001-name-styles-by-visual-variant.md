@@ -97,6 +97,14 @@ query:
 `@utility` classes take width prefixes (`xl:title-beside-logo`) and are
 left out of the stylesheet when unused, like Tailwind's own classes.
 
+**Note, 2026-11-01: text rendered from Markdown.** HTML converted from
+Markdown carries no classes, so its elements cannot take named variants.
+The variant goes on the container instead, and holds rules for the
+elements inside it (`& h2 { @apply ...; }`); Tailwind 4.3.3 keeps them,
+with width prefixes too. First use: `long-text-column`, in the card
+[put the curriculum on the home page](../done/2026-11-01_put-curriculum-on-home-page.md).
+The rule of this decision still holds: the page carries only our names.
+
 ## References
 
 - Card: [name styles in the stylesheet](../done/2026-10-29_name-styles-in-the-stylesheet.md)
