@@ -2,6 +2,8 @@
 
 I'm a product engineer who works across implementation, architecture and collaboration. I've delivered complex solutions in e-commerce, enterprise integration and order fulfillment through hands-on work and cross-functional problem-solving. Continuous learner focused on software languages (Rust, TypeScript, Python, Java), security practices, infrastructure automation, Domain-Driven Design and socio-technical systems thinking.
 
+Full career history, clients and references: [LinkedIn profile](https://www.linkedin.com/in/lucalorenzon/).
+
 ## Experience
 
 ### Enterprise Architecture Manager

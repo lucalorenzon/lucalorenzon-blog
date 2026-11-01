@@ -62,8 +62,9 @@ inside the Markdown; the source is in the commit message instead).
 
 **Chosen:**
 
-- No email, phone number, address or LinkedIn profile. The TryHackMe
-  profile stays.
+- No email, phone number or address. The TryHackMe profile stays, and
+  so does the LinkedIn profile: for now it carries the references, with
+  the clients named, until the site can stand on its own.
 - The current employer and the clients are anonymized, and colleagues
   are not named.
 - The competence is kept apart from the employer's inventory of
