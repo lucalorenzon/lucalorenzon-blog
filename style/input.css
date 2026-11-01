@@ -86,9 +86,14 @@ body {
 @utility long-text-column {
   @apply grow w-full max-w-[80ch] mx-auto px-2;
 
-  /* Sections: an amber line above, generous space before. */
+  /* Sections: an amber line above, generous space before; the first has no
+     line, the header already has one. */
   & h2 {
     @apply mt-8 border-t border-amber pt-2 text-2xl leading-6;
+  }
+
+  & > h2:first-child {
+    @apply border-t-0 pt-0;
   }
 
   /* Roles: inverse video, as wide as the text. */

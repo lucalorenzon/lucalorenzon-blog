@@ -12,6 +12,7 @@ import { retryWhenLive, VIEWPORTS } from './support';
 //   4. role headings (h3) stand out from the page background
 //   5. at the end of the page nothing is hidden under the sticky footer
 //   6. consecutive headings, paragraphs and list items do not overlap
+//   7. the first section has no line above it (the header has its own); the others do
 
 const CHAR_WIDTH = 8;
 const MAX_CHARACTERS = 80;
@@ -23,6 +24,7 @@ type Snapshot = {
   h2Count: number;
   h2MinFontSize: number;
   pFontSize: number;
+  h2TopBorders: number[];
   h3Count: number;
   pageBackground: string;
   h3Backgrounds: string[];
@@ -75,6 +77,7 @@ async function snapshot(page: Page): Promise<Snapshot> {
       h2Count: h2s.length,
       h2MinFontSize: Math.min(...h2s.map((el) => parseFloat(getComputedStyle(el).fontSize))),
       pFontSize: p ? parseFloat(getComputedStyle(p).fontSize) : NaN,
+      h2TopBorders: h2s.map((el) => parseFloat(getComputedStyle(el).borderTopWidth)),
       h3Count: h3s.length,
       pageBackground: getComputedStyle(document.body).backgroundColor,
       h3Backgrounds: h3s.map((el) => getComputedStyle(el).backgroundColor),
@@ -104,6 +107,13 @@ function violations(s: Snapshot): string[] {
   rule(
     s.h2MinFontSize > s.pFontSize,
     `h2 must be larger than body text: smallest h2 ${s.h2MinFontSize}px, paragraph ${s.pFontSize}px`,
+  );
+  rule(
+    s.h2TopBorders[0] === 0,
+    `the first h2 must have no top border (the header has its own line), has ${s.h2TopBorders[0]}px`,
+  );
+  s.h2TopBorders.slice(1).forEach((w, i) =>
+    rule(w > 0, `h2 number ${i + 2} must have a top border, has ${w}px`),
   );
   rule(s.h3Count > 0, 'the content must have at least one h3');
   s.h3Backgrounds.forEach((bg, i) =>
