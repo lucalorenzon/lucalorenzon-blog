@@ -48,6 +48,8 @@ live since 2026-10-26
   page.
 - [Take the site's content from several repositories](backlog/take-content-from-several-repositories.md),
   once copying the curriculum and the articles by hand stops scaling.
+- [Refresh the stylesheet after a new version](backlog/refresh-stylesheet-after-a-new-version.md),
+  so a returning visitor does not keep the old look.
 - [Check the workflows with actionlint](backlog/lint-workflows-with-actionlint.md),
   in the pipeline rather than on one machine.
 - Articles and everything around them, including the look shared by
