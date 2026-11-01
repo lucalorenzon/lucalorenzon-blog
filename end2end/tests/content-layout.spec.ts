@@ -10,12 +10,13 @@ import { retryWhenLive, VIEWPORTS } from './support';
 //   2. no line wider than 80 characters of the font (8px each)
 //   3. section headings (h2) are larger than body text
 //   4. role headings (h3) stand out from the page background
-//   5. at the end of the page nothing is hidden under the sticky footer
+//   5. at the end of the page the content ends at least 32px above the sticky footer
 //   6. consecutive headings, paragraphs and list items do not overlap
 //   7. the first section has no line above it (the header has its own); the others do
 
 const CHAR_WIDTH = 8;
 const MAX_CHARACTERS = 80;
+const MIN_GAP_ABOVE_FOOTER = 32; // the space used before sections
 
 type Snapshot = {
   innerWidth: number;
@@ -120,8 +121,8 @@ function violations(s: Snapshot): string[] {
     rule(bg !== s.pageBackground, `h3 number ${i + 1} must differ from the page background (${s.pageBackground}), has ${bg}`),
   );
   rule(
-    s.lastBottom <= s.footerTop + 0.5,
-    `the end of the content (${s.lastBottom}) must be above the footer (${s.footerTop})`,
+    s.footerTop - s.lastBottom >= MIN_GAP_ABOVE_FOOTER - 0.5,
+    `the end of the content (${s.lastBottom}) must be at least ${MIN_GAP_ABOVE_FOOTER}px above the footer (${s.footerTop}), gap is ${s.footerTop - s.lastBottom}px`,
   );
   for (const o of s.overlaps) out.push(`${where} ${o}`);
   return out;

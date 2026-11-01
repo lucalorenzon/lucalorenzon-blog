@@ -80,11 +80,12 @@ body {
 
 /* Content: one block column of text, centred, at most 80 characters wide.
    The HTML inside is rendered from Markdown and carries no classes, so the
-   look of its elements is written here, nested. Temporary look until a
+   look of its elements is written here, nested. The column ends with 32px
+   of space above the footer. Temporary look until a
    design system arrives. All sizes and spacings are multiples of 8px, so
    the bitmap font stays sharp. */
 @utility long-text-column {
-  @apply grow w-full max-w-[80ch] mx-auto px-2;
+  @apply grow w-full max-w-[80ch] mx-auto px-2 pb-8;
 
   /* Sections: an amber line above, generous space before; the first has no
      line, the header already has one. */
