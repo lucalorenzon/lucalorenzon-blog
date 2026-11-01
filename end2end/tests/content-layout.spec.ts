@@ -7,21 +7,20 @@ import { retryWhenLive, VIEWPORTS } from './support';
 //
 // Rules on every viewport:
 //   1. no horizontal scroll
-//   2. no line wider than 80 characters of the font (8px each)
-//   3. section headings (h2) are larger than body text
-//   4. role headings (h3) stand out from the page background
-//   5. at the end of the page the content ends at least 32px above the sticky footer
-//   6. consecutive headings, paragraphs and list items do not overlap
-//   7. the first section has no line above it (the header has its own); the others do
+//   2. section headings (h2) are larger than body text
+//   3. role headings (h3) stand out from the page background
+//   4. at the end of the page the content ends at least 32px above the sticky footer
+//   5. consecutive headings, paragraphs and list items do not overlap
+//   6. the first section has no line above it (the header has its own); the others do
+//
+// The width of the lines (at most 80 characters, counted on the rendered
+// lines) is checked in readability.spec.ts.
 
-const CHAR_WIDTH = 8;
-const MAX_CHARACTERS = 80;
 const MIN_GAP_ABOVE_FOOTER = 32; // the space used before sections
 
 type Snapshot = {
   innerWidth: number;
   scrollWidth: number;
-  mainContentWidth: number;
   h2Count: number;
   h2MinFontSize: number;
   pFontSize: number;
@@ -43,11 +42,6 @@ async function snapshot(page: Page): Promise<Snapshot> {
 
   return page.evaluate(() => {
     const main = document.querySelector('main')!;
-    const mainStyle = getComputedStyle(main);
-    const contentWidth =
-      main.getBoundingClientRect().width -
-      parseFloat(mainStyle.paddingLeft) -
-      parseFloat(mainStyle.paddingRight);
 
     const h2s = Array.from(main.querySelectorAll('h2'));
     const h3s = Array.from(main.querySelectorAll('h3'));
@@ -74,7 +68,6 @@ async function snapshot(page: Page): Promise<Snapshot> {
     return {
       innerWidth: window.innerWidth,
       scrollWidth: document.documentElement.scrollWidth,
-      mainContentWidth: contentWidth,
       h2Count: h2s.length,
       h2MinFontSize: Math.min(...h2s.map((el) => parseFloat(getComputedStyle(el).fontSize))),
       pFontSize: p ? parseFloat(getComputedStyle(p).fontSize) : NaN,
@@ -100,10 +93,6 @@ function violations(s: Snapshot): string[] {
   };
 
   rule(s.scrollWidth <= s.innerWidth, `no horizontal scroll: scrollWidth ${s.scrollWidth} > innerWidth ${s.innerWidth}`);
-  rule(
-    s.mainContentWidth <= MAX_CHARACTERS * CHAR_WIDTH,
-    `content must be at most ${MAX_CHARACTERS} characters wide (${MAX_CHARACTERS * CHAR_WIDTH}px), is ${s.mainContentWidth}px`,
-  );
   rule(s.h2Count > 0, 'the content must have at least one h2');
   rule(
     s.h2MinFontSize > s.pFontSize,

@@ -32,6 +32,13 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ### Changed
 
+- The text is easier to read: it is set in the Literata font, served by the
+  site itself, with more space between lines (1.5 times the text size),
+  between paragraphs and between list items, and a narrower column, so
+  lines stay well under 80 characters. The amber is a little softer (`#DD9911`
+  instead of `#FFB000`). The header keeps its old-terminal look and font.
+  Browser tests now check the criteria of WCAG 1.4.8 (visual
+  presentation) and 1.4.12 (text spacing).
 - Configured `www.lucalorenzon.com` as the site's domain, and redirects to
   it from `lucalorenzon.com` and from `lucalorenzon.it`, with and without
   `www`. The former address `lucalorenzon.github.io/lucalorenzon-blog/`

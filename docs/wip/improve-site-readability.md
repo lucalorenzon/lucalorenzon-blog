@@ -222,21 +222,44 @@ live: contrast, line height, both readings of the paragraph space,
 characters per line counted on the rendered lines, horizontal scroll,
 overlaps, cut-off text, the footer's share of the screen.
 
+### What do the checks for criteria 1.4.8 and 1.4.12 measure?
+
+**A browser test, `end2end/tests/readability.spec.ts`, on the twelve
+screen sizes of the other layout tests** (written with the combination,
+in the same commit, 2026-11-02):
+
+- **1.4.8, visual presentation:** line height of every paragraph and
+  list item at least 1.5 times its font size; empty space between
+  consecutive paragraphs at least 1.5 times the line height (the
+  stricter of the two readings); no rendered line longer than 80
+  characters; no justified text.
+- **1.4.12, text spacing:** with the reader's spacings applied (line
+  height 1.5, letter spacing 0.12em, word spacing 0.16em, 2em after
+  paragraphs), no horizontal scroll, no overlap between blocks of the
+  text or between the parts of the header, no element cutting off its
+  content, and the text still ending 32px above the footer.
+
+- **Why characters are counted on the rendered lines:** with a
+  proportional font only the lines as the browser breaks them tell how
+  many characters they hold. The content layout test's old rule, "80
+  characters of 8px", assumed the pixel font and was removed from it.
+  The build test counts 70 characters on the longest line, the
+  playground 72: the two count slightly differently; the margin under 80
+  is at least 8 either way.
+- **Shown to catch the problem:** with the line height put back to
+  16px, the 1.4.8 test failed on all twelve sizes; with the column put
+  back to 80ch, it failed on the nine sizes from 659px wide, finding a
+  line of 94 characters.
+- **Not tested:** the other parts of 1.4.8, colours chosen by the reader
+  and text enlarged to 200% without scrolling sideways, which the
+  criterion lets a "mechanism" such as the browser provide. Where they
+  are checked is an open question, below.
+
 ## Questions to answer
 
-- **What the checks for criteria 1.4.8 and 1.4.12 measure.** For
-  1.4.8, a test that measures line spacing and the space between
-  paragraphs in the text column; the criterion also asks for lines no
-  wider than 80 characters, text not justified, colours the reader can
-  choose, and text that can be enlarged to 200% without scrolling
-  sideways to read a line, and it is met when "a mechanism is
-  available" for each, not only by the page as first shown. For 1.4.12,
-  a test that raises line height to 1.5 times the font size, the space
-  after paragraphs to 2 times, letter spacing to 0.12 times and word
-  spacing to 0.16 times, as a reader would, and checks that no text
-  overlaps or is cut off. The playground counted characters on the
-  rendered lines, the only count that holds for a proportional font;
-  the existing content layout test assumes characters 8px wide.
+- **The rest of criterion 1.4.8:** where colours chosen by the reader
+  and text enlarged to 200% are checked, in this card or in the card on
+  the WCAG criteria axe cannot check, which today leaves 1.4.8 out.
 - **How the result is judged** beyond the tests: complete combinations
   were compared in the playground (decided by the user on 2026-11-01,
   in line with the choice being one decision); what remains is the

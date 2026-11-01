@@ -11,7 +11,7 @@ test.beforeAll(() => {
   }
 });
 
-test('home page shows header, body and footer, and loads stylesheet, font and favicon', async ({
+test('home page shows header, body and footer, and loads stylesheet, fonts and favicon', async ({
   page,
 }) => {
   const check = async () => {
@@ -25,6 +25,7 @@ test('home page shows header, body and footer, and loads stylesheet, font and fa
     };
     const stylesheet = waitFor('/style.css');
     const font = waitFor('.woff');
+    const textFont = waitFor('.woff2');
     await page.goto('./');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Curriculum Vitae', {
       timeout: 5_000,
@@ -34,6 +35,7 @@ test('home page shows header, body and footer, and loads stylesheet, font and fa
     await expect(page.getByRole('img', { name: 'Lvk@73r' })).toBeVisible();
     expect((await stylesheet).status()).toBe(200);
     expect((await font).status()).toBe(200);
+    expect((await textFont).status()).toBe(200);
     const favicon = await page.request.get(new URL('favicon.ico', page.url()).href);
     expect(favicon.status()).toBe(200);
   };
