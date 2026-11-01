@@ -16,4 +16,4 @@ them somewhere on the site, but not on the home page.
 - Which page holds the photo and the story around it.
 - Which photo, and how it is published: an image in the repository needs
   a relative path under the current sub-path address
-  ([card](choose-site-address.md)).
+  ([card](../wip/choose-site-address.md)).

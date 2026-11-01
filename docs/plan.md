@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Choose the site's public address](backlog/choose-site-address.md),
+- [Choose the site's public address](wip/choose-site-address.md),
   now that the site shows real content
   ([the curriculum](done/2026-11-01_put-curriculum-on-home-page.md)),
   so the domain is first indexed on it.
