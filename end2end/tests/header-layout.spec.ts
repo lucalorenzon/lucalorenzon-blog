@@ -95,7 +95,7 @@ async function snapshot(page: Page): Promise<Snapshot> {
 
     const h1s = Array.from(document.querySelectorAll('h1'));
     const h1 = h1s[0];
-    const ascii = document.querySelector('[role="img"][aria-label="Lvk@73r"]');
+    const ascii = document.querySelector('[data-testid="ascii-logo"]');
     const textLogo = Array.from(document.querySelectorAll('body *')).find(
       (el) => el.children.length === 0 && el.textContent?.trim() === 'Lvk@73r',
     );

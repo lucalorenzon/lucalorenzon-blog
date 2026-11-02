@@ -45,6 +45,11 @@ pub fn PageFrame(
     children: Children,
 ) -> impl IntoView {
     let licence_page = format!("{address_prefix}licence.html");
+    let home_page = if address_prefix.is_empty() {
+        "./".to_owned()
+    } else {
+        address_prefix.clone()
+    };
     let icon = format!("{address_prefix}favicon.ico");
     let stylesheet = format!("{address_prefix}style.css");
     view! {
@@ -59,12 +64,18 @@ pub fn PageFrame(
             <body>
                 <div class="page-fills-screen">
                     <header class="header-two-rows xl:header-one-row">
-                        <div class="text-logo-large md:not-shown">"Lvk@73r"</div>
-                        <div
-                            role="img"
-                            aria-label="Lvk@73r"
-                            class="not-shown md:art-logo-left"
-                        >{LOGO}</div>
+                        <a
+                            href=home_page
+                            aria-label="Lvk@73r, home page"
+                            class="logo-link"
+                        >
+                            <div class="text-logo-large md:not-shown">"Lvk@73r"</div>
+                            <div
+                                data-testid="ascii-logo"
+                                aria-hidden="true"
+                                class="not-shown md:art-logo-left"
+                            >{LOGO}</div>
+                        </a>
                         <h1 class="title-below-line md:title-below-line-large xl:title-beside-logo">{heading}</h1>
                         <div
                             data-testid="menu-slot"

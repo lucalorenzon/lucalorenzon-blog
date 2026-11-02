@@ -33,7 +33,7 @@ test('home page shows header, body and footer, and loads stylesheet, fonts and f
     await expect(page.getByRole('heading', { level: 2, name: 'Summary' })).toBeVisible();
     await expect(page.getByText('© 2026 Luca Lorenzon')).toBeVisible();
     await expect(page.getByRole('link', { name: 'This CV may be copied, not changed' })).toBeVisible();
-    await expect(page.getByRole('img', { name: 'Lvk@73r' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Lvk@73r, home page' })).toHaveCount(1);
     expect((await stylesheet).status()).toBe(200);
     expect((await font).status()).toBe(200);
     expect((await textFont).status()).toBe(200);
@@ -55,3 +55,39 @@ test('the footer link of the home page leads to the licence page', async ({ page
 
   await retryWhenLive(check);
 });
+
+// The logo has two forms (text below 768px, ASCII art from 768px); the link is
+// the same, and only one form is shown at a time.
+for (const { name, width, height } of [
+  { name: 'iPhone 15', width: 393, height: 659 },
+  { name: 'Laptop', width: 1280, height: 720 },
+]) {
+  test(`the logo of the licence page leads home, by click and by keyboard, at ${width}x${height} (${name})`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height });
+
+    const check = async () => {
+      await page.goto('./licence.html');
+      const logo = page.getByRole('link', { name: 'Lvk@73r, home page' });
+      await expect(logo).toHaveCount(1);
+
+      // Keyboard: the logo is the first stop of the page and shows a focus ring.
+      await page.keyboard.press('Tab');
+      await expect(logo).toBeFocused();
+      await expect(logo.locator('> div:visible')).toHaveCount(1);
+      await expect(logo).toHaveCSS('outline-style', 'solid');
+      await page.keyboard.press('Enter');
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText('Curriculum Vitae', {
+        timeout: 5_000,
+      });
+
+      // Pointer.
+      await page.goto('./licence.html');
+      await logo.click();
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText('Curriculum Vitae');
+    };
+
+    await retryWhenLive(check);
+  });
+}

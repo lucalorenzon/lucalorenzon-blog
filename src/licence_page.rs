@@ -72,6 +72,11 @@ mod tests {
     }
 
     #[test]
+    fn logo_links_to_the_home_page_with_a_relative_address() {
+        assert!(render_licence_page().contains("<a href=\"./\" aria-label=\"Lvk@73r, home page\""));
+    }
+
+    #[test]
     fn links_favicon_with_relative_path() {
         assert!(render_licence_page().contains("<link rel=\"icon\" href=\"favicon.ico\""));
     }

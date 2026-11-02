@@ -100,15 +100,15 @@ for (const { name: pageName, address, onlyLocal } of PAGES) {
 // how "Lvk@73r" is spelled out) is not checked here: see the card
 // docs/backlog/run-screen-reader-check-on-demand.md.
 //
-// The wide logo is an image whose accessible name is "Lvk@73r" and whose text
-// content is the ASCII art, which is left out of the template on purpose: the
-// name is what the screen reader reads.
+// The logo, in both forms, is one link to the home page named "Lvk@73r, home
+// page"; the ASCII art is hidden from the tree, so the screen reader hears
+// the name, not the art.
 const treeByLogo = (heading: string, footerLink: string) => ({
   text: `
     - /children: equal
     - banner:
       - /children: equal
-      - text: Lvk@73r
+      - link "Lvk@73r, home page"
       - heading "${heading}" [level=1]
     - main
     - contentinfo:
@@ -121,7 +121,7 @@ const treeByLogo = (heading: string, footerLink: string) => ({
     - /children: equal
     - banner:
       - /children: equal
-      - img "Lvk@73r"
+      - link "Lvk@73r, home page"
       - heading "${heading}" [level=1]
     - main
     - contentinfo:

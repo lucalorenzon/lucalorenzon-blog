@@ -82,10 +82,14 @@ mod tests {
     }
 
     #[test]
-    fn logo_is_an_image_for_screen_readers() {
+    fn logo_is_one_link_to_the_home_page_with_one_name() {
         let html = render_home_page();
-        assert!(html.contains("role=\"img\""));
-        assert!(html.contains("aria-label=\"Lvk@73r\""));
+        assert!(
+            html.contains("<a href=\"./\" aria-label=\"Lvk@73r, home page\" class=\"logo-link\">")
+        );
+        // The name is the link's; the art is hidden, not read, and no nested image.
+        assert!(!html.contains("role=\"img\""));
+        assert!(html.contains("data-testid=\"ascii-logo\" aria-hidden=\"true\""));
     }
 
     /// Orca 51 presents a `<pre>` as a code block and does not speak its name

@@ -91,10 +91,19 @@ mod tests {
     }
 
     #[test]
+    fn logo_links_to_the_home_page_from_any_depth() {
+        assert!(default_page().contains("<a href=\"/\" aria-label=\"Lvk@73r, home page\""));
+        assert!(
+            render("https://host/blog/")
+                .contains("<a href=\"/blog/\" aria-label=\"Lvk@73r, home page\"")
+        );
+    }
+
+    #[test]
     fn has_the_same_header_and_footer_as_the_home_page() {
         let html = default_page();
         assert!(html.contains("data-testid=\"menu-slot\""));
-        assert!(html.contains("aria-label=\"Lvk@73r\""));
+        assert!(html.contains("aria-label=\"Lvk@73r, home page\""));
         assert!(html.contains("© 2026 Luca Lorenzon · "));
     }
 
