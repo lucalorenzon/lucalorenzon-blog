@@ -46,32 +46,43 @@ test.beforeAll(() => {
   }
 });
 
-for (const { name, width, height } of BANDS) {
-  test(`accessibility at ${width}x${height} (${name})`, async ({ page }) => {
-    await page.setViewportSize({ width, height });
+// The pages built from the shared frame. The "page not found" is opened as
+// its own file: only the host serves it for a missing address, so a live run
+// leaves it out (the live check in not-found.spec.ts covers it).
+const PAGES = [
+  { name: 'home page', address: './', onlyLocal: false },
+  { name: 'page not found', address: './404.html', onlyLocal: true },
+];
 
-    const check = async () => {
-      await page.goto('./');
-      await page.evaluate(() => document.fonts.ready);
+for (const { name: pageName, address, onlyLocal } of PAGES) {
+  for (const { name, width, height } of BANDS) {
+    test(`accessibility of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
+      test.skip(onlyLocal && live, 'checked locally only, see PAGES');
+      await page.setViewportSize({ width, height });
 
-      const results = await new AxeBuilder({ page }).withTags(TAGS).analyze();
+      const check = async () => {
+        await page.goto(address);
+        await page.evaluate(() => document.fonts.ready);
 
-      const report = results.violations
-        .map((v) => {
-          const targets = v.nodes.map((n) => `    ${n.target.join(' ')}`).join('\n');
-          return `- ${v.id} (${v.impact ?? 'no impact given'}): ${v.help}\n${targets}`;
-        })
-        .join('\n');
-      expect(results.violations, `accessibility violations:\n${report}`).toEqual([]);
+        const results = await new AxeBuilder({ page }).withTags(TAGS).analyze();
 
-      const passed = results.passes.map((r) => r.id);
-      for (const id of MUST_HAVE_RUN) {
-        expect(passed, `axe did not evaluate the rule ${id}`).toContain(id);
-      }
-    };
+        const report = results.violations
+          .map((v) => {
+            const targets = v.nodes.map((n) => `    ${n.target.join(' ')}`).join('\n');
+            return `- ${v.id} (${v.impact ?? 'no impact given'}): ${v.help}\n${targets}`;
+          })
+          .join('\n');
+        expect(results.violations, `accessibility violations:\n${report}`).toEqual([]);
 
-    await retryWhenLive(check);
-  });
+        const passed = results.passes.map((r) => r.id);
+        for (const id of MUST_HAVE_RUN) {
+          expect(passed, `axe did not evaluate the rule ${id}`).toContain(id);
+        }
+      };
+
+      await retryWhenLive(check);
+    });
+  }
 }
 
 // axe finds rule violations; it does not notice a change in what a screen

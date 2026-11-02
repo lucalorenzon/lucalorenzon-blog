@@ -29,6 +29,8 @@ if [[ ! -x "$TOOL" ]]; then
     mv "${TOOL}.tmp" "$TOOL"
 fi
 
+# The site's full address can be set with the SITE_ADDRESS environment
+# variable (https, with a host, ending with "/"); default: https://www.lucalorenzon.com/
 cargo run --release -- target/site
 "$TOOL" -i style/input.css -o target/site/style.css --minify
 cp -r assets/. target/site/
