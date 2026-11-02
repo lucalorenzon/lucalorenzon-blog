@@ -30,8 +30,9 @@ live since 2026-10-26
 - [Check performance in the build](backlog/check-performance-in-the-build.md),
   Lighthouse or similar, so a choice that makes the site slower or
   heavier does not go unnoticed.
-- [Add Google Analytics 4 and Google Tag Manager](backlog/add-google-analytics-and-tag-manager.md),
-  with the visitors' consent they bring.
+- [Observe the visitors in production](backlog/observe-visitors-in-production.md):
+  who reads the site, what they look for, where they interact; with
+  the consent and the cookie policy it brings.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page.
 - [Check the declared languages in the build](backlog/check-declared-languages-in-the-build.md),
