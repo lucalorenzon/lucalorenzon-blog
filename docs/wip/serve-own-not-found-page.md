@@ -60,9 +60,9 @@ Given by the user on 2026-11-02:
   Lorenzon". The earlier order had no reason of its own: the rule of
   2026-10-28 only asked that the author's name be there
   ([card](../done/2026-10-28_add-header-footer-and-favicon.md)).
-- **Header:** the same as the home page, with "Page not found" as its
-  main heading.
-- **Content:** a link to the home page.
+- **Header and footer:** the same as the home page, with "Page not
+  found" as the main heading; only the content differs.
+- **Content:** a link to the home page, "Go to the home page".
 - **Stylesheet and icon:** answered by the card
   [choose how pages write the addresses of their files](../done/2026-11-02_choose-how-pages-write-addresses.md)
   ([ADR-002](../adr/ADR-002-relative-paths-and-site-address-at-build.md)).
