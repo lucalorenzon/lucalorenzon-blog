@@ -59,6 +59,9 @@ live since 2026-10-26
   with the rules for long titles already agreed.
 - [Place the 1985 photo](backlog/place-1985-photo.md), not on the home
   page.
+- [Publish the curriculum in more languages](backlog/publish-curriculum-in-more-languages.md),
+  translated by the author, since its licence forbids others to share
+  translations.
 - [Take the site's content from several repositories](backlog/take-content-from-several-repositories.md),
   once copying the curriculum and the articles by hand stops scaling.
 - [Refresh the stylesheet after a new version](backlog/refresh-stylesheet-after-a-new-version.md),
