@@ -2,7 +2,9 @@
 
 - **Opened:** 2026-11-03, by the user, from the card
   [show the licences on the site](../done/2026-11-03_show-licences-on-the-site.md).
-- **Status:** noticed, not started. In Next.
+- **Status:** being worked on since 2026-11-03. Moved from Next to Now
+  by the user the same day, before the card
+  [add the two articles already on Medium](../backlog/add-the-two-medium-articles.md).
 
 ## Why
 
