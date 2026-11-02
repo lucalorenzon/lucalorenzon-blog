@@ -33,8 +33,11 @@ the check do not apply to.
   stays as it is: the fields are data, not HTML.
 - **Open Graph needs absolute addresses:** `og:url` and `og:image` take
   the full address, which today is `https://www.lucalorenzon.com/`
-  ([card](../done/2026-11-01_choose-site-address.md)). The two Medium
-  articles each have an image; the curriculum has none.
+  ([card](../done/2026-11-01_choose-site-address.md)). The build will
+  take it as a setting, introduced by the "page not found" card
+  ([ADR-002](../adr/ADR-002-relative-paths-and-site-address-at-build.md)):
+  the same value serves these tags. The two Medium articles each have
+  an image; the curriculum has none.
 - **The canonical link is already a question** in the card on the
   Medium articles: which copy, the site's or Medium's, search engines
   should treat as the original. The tag this card adds is where that

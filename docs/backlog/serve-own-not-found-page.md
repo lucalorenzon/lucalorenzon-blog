@@ -1,8 +1,9 @@
 # Serve the site's own "page not found"
 
 - **Opened:** 2026-11-01
-- **Status:** started on 2026-11-02, parked the same day: waits for
-  the card on how pages write the addresses of their files.
+- **Status:** started on 2026-11-02, parked the same day for the card
+  on how pages write the addresses of their files, which closed the
+  same day; ready to resume.
 
 ## Why
 
@@ -59,9 +60,13 @@ Given by the user on 2026-11-02, before the card was parked:
 - **Header:** the same as the home page, with "Page not found" as its
   main heading.
 - **Content:** a link to the home page.
-- **Stylesheet and icon:** how the page reaches them is the subject of
-  the card [choose how pages write the addresses of their files](../wip/choose-how-pages-write-addresses.md),
-  opened for it; this card waits for it.
+- **Stylesheet and icon:** answered by the card
+  [choose how pages write the addresses of their files](../done/2026-11-02_choose-how-pages-write-addresses.md)
+  ([ADR-002](../adr/ADR-002-relative-paths-and-site-address-at-build.md)).
+  The build takes the site's full address, by default
+  `https://www.lucalorenzon.com/`; this page writes its addresses from
+  its path part (`/` today), while every other page keeps relative
+  paths. This card introduces that setting.
 - **Check:** locally, the browser test opens the page directly; the
   local server (Python's `http.server`) answers a missing address with
   its own page, not with `404.html`. The real behaviour, status 404 at
