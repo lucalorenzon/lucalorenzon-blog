@@ -46,10 +46,10 @@ a base path written into every address by the build, or a single
   addresses written inside the pages: a reverse proxy that filters the
   HTML (`mod_proxy_html`, nginx `sub_filter`), since `ProxyPassReverse`
   and `proxy_redirect` rewrite headers only. Without it nothing opens.
-- **Option A, base path in every address** (today's ADR-002): every
+- **Base path in every address** (option D below, ADR-002): every
   address carries the prefix. Straightforward to read; a gateway with
   another prefix has to rewrite every address of every page.
-- **Option B, one `<base href>` element** (raised by the user): one
+- **One `<base href>` element** (option E below, raised by the user): one
   absolute address in each page's head, every other address relative;
   a gateway with another prefix rewrites one value per page, still with
   an HTML filter. It is commonly called an anti-pattern because it
@@ -71,10 +71,71 @@ a base path written into every address by the build, or a single
 - **The browser tests** serve `target/site` at the root of
   `127.0.0.1`; with a prefix, they open the site at that prefix.
 
+## Options compared
+
+Asked by the user on 2026-11-02: every way of writing addresses, with
+its benefits and drawbacks, and what static sites commonly do.
+
+**What other tools do.** Most static site generators write the prefix
+into every address at build: Jekyll (`baseurl`, the default on GitHub
+Pages), Hugo (`baseURL`), Astro (`base`), Docusaurus (`baseUrl`),
+Next.js (`basePath`), Gatsby (`pathPrefix`). Documentation generators
+(MkDocs, Sphinx) write paths relative to each page instead, and treat
+only the "page not found" apart: Sphinx has an extension,
+`sphinx-notfound-page`, that prefixes that page's addresses so it works
+at any depth; MkDocs loads that page's files from its `site_url`. The
+`<base>` element is usual in single-page applications (Angular,
+`--base-href`), rare in static sites: Eleventy's "HTML base" plugin
+applies the prefix at build time rather than relying on the element,
+and its documentation calls it a bit unreliable in edge cases.
+
+| | Option | Used by | Benefits | Drawbacks |
+|---|---|---|---|---|
+| A | Paths relative to the page (`style.css`, `../style.css`): the rule until today | MkDocs, Sphinx, Hugo with `relativeURLs` | No setting; works under any prefix with no new build and no rewriting in the gateway; opens from disk too | Breaks on the "page not found" served below the root; the build computes each page's depth |
+| B | A, plus a base path for the "page not found" only | MkDocs, Sphinx with its 404 extension | All of A's portability, and the "page not found" works | Two rules; the "page not found" depends on a build value; the gateway must serve that page |
+| C | Addresses from the domain's root (`/style.css`), no setting | Many small hand-written sites | The simplest; the "page not found" works | No prefix: behind a gateway under `/blog/` everything breaks |
+| D | A base path in every address (ADR-002) | Jekyll, Hugo, Astro, Docusaurus, Next.js, Gatsby: the most common | One rule; the "page not found" works; known to everyone | One build per prefix; a gateway with another prefix rewrites the whole HTML; a wrong value gives pages without their look |
+| E | One `<base>` element, every other address relative | Angular and single-page applications; rare in static sites | One value per page; a trivial rewrite for the gateway | Breaks `#...` links (footnotes, "skip to content"), changes the meaning of relative links in the Markdown, breaks `url(#...)` in inline SVG |
+| F | Full addresses with the domain (`https://www.lucalorenzon.com/style.css`) | Hugo's `absURL`, RSS feeds | No ambiguity | Tied to the domain; locally the pages point at the published site; another domain needs another build |
+| G | A self-contained "page not found", its style written inside it | Web servers' error pages | No path to know | The fonts, referred to by the stylesheet, still break below the root; a heavier page |
+
+Two things the comparison brought out:
+
+- **Only relative paths give the portability the user is after.** A
+  gateway can expose the site under any prefix without rewriting and
+  without a new build. A base path in every address (D) gives less,
+  not more: it fixes the prefix at build time. The only page with a
+  problem is the "page not found".
+- **A build value comes anyway.** The card
+  [add SEO and Open Graph tags to every page](../backlog/add-seo-and-open-graph-tags.md)
+  needs the site's full address (`og:url`, `og:image`, the canonical
+  link). MkDocs takes the "page not found"'s path from that same value.
+
+Sources: [Eleventy, HTML base plugin](https://11ty.dev/docs/plugins/html-base);
+[sphinx-notfound-page, configuration](https://sphinx-notfound-page.readthedocs.io/en/stable/configuration.html)
+and [FAQ](https://sphinx-notfound-page.readthedocs.io/en/stable/faq.html);
+[Read the Docs, 404 pages and MkDocs](https://docs.ReadTheDocs.io/en/stable/reference/404-not-found.html).
+
+## Answers so far
+
+- **Chosen: B,** by the user on 2026-11-02. Every page keeps paths
+  relative to itself; only the "page not found" writes its addresses
+  from a base path given to the build, default `/`. Why: it keeps the
+  site movable under any prefix with no new build and no rewriting in
+  the gateway, which is the portability the user wants, and confines
+  the base path to the one page relative paths cannot serve. The user
+  had first asked for one rule for all pages (ADR-002, option D); the
+  comparison showed that one rule gives less portability, and the user
+  chose portability over a single rule.
+- **Rejected:** C, which breaks behind a gateway under a prefix; D, one
+  build per prefix and a full HTML rewrite in a gateway with another
+  prefix; E, which breaks in-page links that articles will bring; F,
+  tied to the domain and to the published site even locally; G, whose
+  fonts still break below the root.
+
 ## Questions
 
-- How much the gateway under another prefix weighs, today a
-  hypothesis, against in-page links, which will come with the articles.
-- Whether the remedies option B needs are acceptable, and where they
-  live (build program, content rules, tests).
-- Whether ADR-002 stays, changes, or is replaced.
+- Where the "page not found"'s base path comes from: a value of its
+  own, or the path part of the site's full address that the SEO and
+  Open Graph card will need.
+- ADR-002 is to be replaced by a record of this choice.
