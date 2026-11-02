@@ -1,7 +1,8 @@
 # Serve the site's own "page not found"
 
 - **Opened:** 2026-11-01
-- **Status:** in progress since 2026-11-02, in Now.
+- **Status:** started on 2026-11-02, parked the same day: waits for
+  the card on how pages write the addresses of their files.
 
 ## Why
 
@@ -41,3 +42,29 @@ with a deployment from GitHub Actions too. The build writes only
 - **How it is checked.** Presumably in the browser test: a missing
   address answers 404 with the page's content, and the page passes the
   accessibility checks like the home page.
+
+## Answers so far
+
+Given by the user on 2026-11-02, before the card was parked:
+
+- **The proposal of "only 404" is dropped.** It came from a memory of
+  an application answering an AJAX call, where a short answer avoids
+  handing information to attackers; it does not apply to a static page
+  on GitHub Pages. The page gives the visitor the minimum to find their
+  way.
+- **Tab title:** "Page not found - Luca Lorenzon". Still open: the home
+  page puts the site's name first ("Luca Lorenzon - Curriculum
+  Vitae"); whether the two orders are meant to differ, and which one
+  articles will follow.
+- **Header:** the same as the home page, with "Page not found" as its
+  main heading.
+- **Content:** a link to the home page.
+- **Stylesheet and icon:** how the page reaches them is the subject of
+  the card [choose how pages write the addresses of their files](../wip/choose-how-pages-write-addresses.md),
+  opened for it; this card waits for it.
+- **Check:** locally, the browser test opens the page directly; the
+  local server (Python's `http.server`) answers a missing address with
+  its own page, not with `404.html`. The real behaviour, status 404 at
+  any address, is seen on the live site.
+- **Search engines:** the page goes on the block-list of the card
+  [add SEO and Open Graph tags to every page](add-seo-and-open-graph-tags.md).

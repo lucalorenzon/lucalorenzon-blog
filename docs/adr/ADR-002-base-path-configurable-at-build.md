@@ -1,8 +1,10 @@
 # ADR-002: Base path configurable at build, used by every page
 
 - **Date:** 2026-11-02
-- **Status:** Accepted
-- **Card:** [serve the site's own "page not found"](../wip/serve-own-not-found-page.md)
+- **Status:** Under review: questioned the same day, until the card
+  [choose how pages write the addresses of their files](../wip/choose-how-pages-write-addresses.md)
+  closes
+- **Card:** [serve the site's own "page not found"](../backlog/serve-own-not-found-page.md)
 - **Replaces:** the rule "relative paths only", decided by the agent on
   2026-10-28 in the card
   [add header, footer and favicon](../done/2026-10-28_add-header-footer-and-favicon.md)
@@ -92,7 +94,7 @@ under any base path.
 
 ## References
 
-- Card: [serve the site's own "page not found"](../wip/serve-own-not-found-page.md)
+- Card: [serve the site's own "page not found"](../backlog/serve-own-not-found-page.md)
 - Replaced rule: [add header, footer and favicon](../done/2026-10-28_add-header-footer-and-favicon.md),
   section "Which layout?"
 - Earlier attempt: story `EP-001-UC-001-S006` on branch `old_main`
