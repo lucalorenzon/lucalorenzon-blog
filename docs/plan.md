@@ -25,6 +25,9 @@ live since 2026-10-26
 
 ## Next
 
+- [State that the views are the author's own](backlog/state-that-views-are-the-authors-own.md),
+  as authors employed elsewhere usually do; where and in which words
+  is still open.
 - [Add site navigation](backlog/add-site-navigation.md), after the two
   articles already on Medium, when the home page becomes the list of
   contents.
