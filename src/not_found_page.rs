@@ -1,4 +1,4 @@
-use crate::page_frame::PageFrame;
+use crate::page_frame::{FooterLicence, PageFrame};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
@@ -15,6 +15,7 @@ pub fn NotFoundPage(site_path: String) -> impl IntoView {
             title="Page not found - Luca Lorenzon"
             heading="Page not found"
             address_prefix=site_path.clone()
+            footer_licence=FooterLicence::ReuseWithAttribution
         >
             <main class="long-text-column">
                 <p>
@@ -94,6 +95,17 @@ mod tests {
         let html = default_page();
         assert!(html.contains("data-testid=\"menu-slot\""));
         assert!(html.contains("aria-label=\"Lvk@73r\""));
-        assert!(html.contains("© Luca Lorenzon 2026"));
+        assert!(html.contains("© 2026 Luca Lorenzon · "));
+    }
+
+    #[test]
+    fn footer_says_reuse_with_attribution_and_links_to_the_licence_from_any_depth() {
+        let html = default_page();
+        let footer = &html[html.find("<footer").expect("footer")..];
+        assert!(footer.contains(">Reuse with attribution</a>"));
+        assert!(footer.contains("<a href=\"/licence.html\""));
+
+        let html = render("https://host/blog/");
+        assert!(html.contains("<a href=\"/blog/licence.html\""));
     }
 }

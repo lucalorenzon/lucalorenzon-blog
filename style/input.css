@@ -167,3 +167,10 @@ body {
 @utility footer-sticky-bottom {
   @apply sticky bottom-0 bg-black border-t border-amber px-2 text-left;
 }
+
+/* The licence link in the footer: underlined, so it is told apart from the
+   text around it by more than colour (WCAG 1.4.1). Same amber as the text,
+   which already reaches the 7:1 contrast. */
+@utility footer-link {
+  @apply underline;
+}

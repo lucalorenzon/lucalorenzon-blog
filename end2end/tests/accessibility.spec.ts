@@ -112,7 +112,9 @@ const TREE_BY_LOGO = {
     - main
     - contentinfo:
       - /children: equal
-      - paragraph: © Luca Lorenzon 2026
+      - paragraph:
+        - text: © 2026 Luca Lorenzon ·
+        - link "This CV may be copied, not changed"
   `,
   art: `
     - /children: equal
@@ -123,7 +125,9 @@ const TREE_BY_LOGO = {
     - main
     - contentinfo:
       - /children: equal
-      - paragraph: © Luca Lorenzon 2026
+      - paragraph:
+        - text: © 2026 Luca Lorenzon ·
+        - link "This CV may be copied, not changed"
   `,
 };
 

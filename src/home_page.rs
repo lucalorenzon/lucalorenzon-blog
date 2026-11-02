@@ -1,5 +1,5 @@
 use crate::markdown;
-use crate::page_frame::PageFrame;
+use crate::page_frame::{FooterLicence, PageFrame};
 use leptos::prelude::*;
 
 /// The curriculum, written in Markdown and converted to HTML at build time.
@@ -9,7 +9,12 @@ const CURRICULUM: &str = include_str!("../content/curriculum.md");
 #[component]
 pub fn HomePage() -> impl IntoView {
     view! {
-        <PageFrame title="Curriculum Vitae - Luca Lorenzon" heading="Curriculum Vitae" address_prefix="">
+        <PageFrame
+            title="Curriculum Vitae - Luca Lorenzon"
+            heading="Curriculum Vitae"
+            address_prefix=""
+            footer_licence=FooterLicence::CurriculumCopyNotChange
+        >
             <main class="long-text-column" inner_html=markdown::to_html(CURRICULUM)></main>
         </PageFrame>
     }
@@ -60,7 +65,15 @@ mod tests {
     fn shows_copyright_in_footer() {
         let html = render_home_page();
         let footer = &html[html.find("<footer").expect("footer")..];
-        assert!(footer.contains("© Luca Lorenzon 2026"));
+        assert!(footer.contains("© 2026 Luca Lorenzon · "));
+    }
+
+    #[test]
+    fn footer_says_the_cv_may_be_copied_and_links_to_the_licence() {
+        let html = render_home_page();
+        let footer = &html[html.find("<footer").expect("footer")..];
+        assert!(footer.contains(">This CV may be copied, not changed</a>"));
+        assert!(footer.contains("<a href=\"licence.html\""));
     }
 
     #[test]

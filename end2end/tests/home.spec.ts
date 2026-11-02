@@ -31,7 +31,8 @@ test('home page shows header, body and footer, and loads stylesheet, fonts and f
       timeout: 5_000,
     });
     await expect(page.getByRole('heading', { level: 2, name: 'Summary' })).toBeVisible();
-    await expect(page.getByText('© Luca Lorenzon 2026')).toBeVisible();
+    await expect(page.getByText('© 2026 Luca Lorenzon')).toBeVisible();
+    await expect(page.getByRole('link', { name: 'This CV may be copied, not changed' })).toBeVisible();
     await expect(page.getByRole('img', { name: 'Lvk@73r' })).toBeVisible();
     expect((await stylesheet).status()).toBe(200);
     expect((await font).status()).toBe(200);

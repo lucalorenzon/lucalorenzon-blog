@@ -8,6 +8,25 @@ pub const LOGO: &str = r#"    __        __   ______  __________
 /_____/___/_/\_|\ \__,_/  /_//____/_/
                  \____/"#;
 
+/// The licence phrase a page shows in its footer, as the link to the licence
+/// page. Each page chooses its own; the frame renders it.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum FooterLicence {
+    /// Everything but the curriculum: reuse is allowed, citing the author.
+    ReuseWithAttribution,
+    /// The curriculum, shown on the home page: copying yes, changing no.
+    CurriculumCopyNotChange,
+}
+
+impl FooterLicence {
+    fn phrase(self) -> &'static str {
+        match self {
+            Self::ReuseWithAttribution => "Reuse with attribution",
+            Self::CurriculumCopyNotChange => "This CV may be copied, not changed",
+        }
+    }
+}
+
 /// The frame every page shares: the `<html>` element with its `<head>`, the
 /// header (logo, title, reserved menu slot) and the footer. The page supplies
 /// its tab title, its `<h1>` and its `<main>` element.
@@ -15,14 +34,17 @@ pub const LOGO: &str = r#"    __        __   ______  __________
 /// `address_prefix` is put in front of the addresses of the stylesheet and of
 /// the icon: `""` for the pages that write addresses relative to themselves
 /// (the rule of ADR-002), the path of the site's address, such as `"/"`, for
-/// the "page not found", which the host serves at any depth.
+/// the "page not found", which the host serves at any depth. The footer's
+/// link to the licence page follows the same rule.
 #[component]
 pub fn PageFrame(
     title: &'static str,
     heading: &'static str,
     #[prop(into)] address_prefix: String,
+    footer_licence: FooterLicence,
     children: Children,
 ) -> impl IntoView {
+    let licence_page = format!("{address_prefix}licence.html");
     let icon = format!("{address_prefix}favicon.ico");
     let stylesheet = format!("{address_prefix}style.css");
     view! {
@@ -52,7 +74,10 @@ pub fn PageFrame(
                     </header>
                     {children()}
                     <footer class="footer-sticky-bottom">
-                        <p>"© Luca Lorenzon 2026"</p>
+                        <p>
+                            "© 2026 Luca Lorenzon · "
+                            <a href=licence_page class="footer-link">{footer_licence.phrase()}</a>
+                        </p>
                     </footer>
                 </div>
             </body>
