@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { retryWhenLive, VIEWPORTS } from './support';
+import { retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
 
 // Enforces the visual presentation of the text. It checks what the reader
 // sees (rendered sizes, positions, lines), never how the page is built.
@@ -44,8 +44,8 @@ type LongestLine = { characters: number; text: string };
 
 // ---- Measuring (runs in the browser) -------------------------------------
 
-async function gotoReady(page: Page) {
-  await page.goto('./');
+async function gotoReady(page: Page, address: string) {
+  await page.goto(address);
   await page.evaluate(() => document.fonts.ready);
 }
 
@@ -212,18 +212,21 @@ async function spacingProblems(page: Page): Promise<string[]> {
 
 // ---- Tests ---------------------------------------------------------------
 
+for (const { name: pageName, address, hasConsecutiveParagraphs } of TEXT_PAGES) {
 for (const { name, width, height } of VIEWPORTS) {
-  test(`visual presentation (WCAG 1.4.8) at ${width}x${height} (${name})`, async ({ page }) => {
+  test(`visual presentation (WCAG 1.4.8) of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
 
     await retryWhenLive(async () => {
-      await gotoReady(page);
+      await gotoReady(page, address);
 
       const tooSmall = await lineHeightsTooSmall(page);
       expect(tooSmall, `line height must be at least ${MIN_LINE_HEIGHT_RATIO} times the font size:\n${tooSmall.join('\n')}`).toEqual([]);
 
       const pairs = await paragraphGaps(page);
-      expect(pairs.length, 'the content must have at least two consecutive paragraphs').toBeGreaterThan(0);
+      if (hasConsecutiveParagraphs) {
+        expect(pairs.length, 'the content must have at least two consecutive paragraphs').toBeGreaterThan(0);
+      }
       const tight = pairs.filter((p) => !(p.gap >= MIN_PARAGRAPH_GAP_RATIO * p.lineHeight - 0.5));
       expect(
         tight,
@@ -242,13 +245,14 @@ for (const { name, width, height } of VIEWPORTS) {
     });
   });
 
-  test(`text spacing (WCAG 1.4.12) at ${width}x${height} (${name})`, async ({ page }) => {
+  test(`text spacing (WCAG 1.4.12) of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
 
     await retryWhenLive(async () => {
-      await gotoReady(page);
+      await gotoReady(page, address);
       const found = await spacingProblems(page);
       expect(found, `with the reader's text spacing:\n${found.join('\n')}`).toEqual([]);
     });
   });
+}
 }

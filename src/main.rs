@@ -1,4 +1,5 @@
 mod home_page;
+mod licence_page;
 mod markdown;
 mod not_found_page;
 mod page_frame;
@@ -24,6 +25,10 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     fs::create_dir_all(&out_dir)?;
     fs::write(out_dir.join("index.html"), home_page::render_home_page())?;
+    fs::write(
+        out_dir.join("licence.html"),
+        licence_page::render_licence_page(),
+    )?;
     fs::write(
         out_dir.join("404.html"),
         not_found_page::render_not_found_page(&address),

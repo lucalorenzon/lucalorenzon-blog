@@ -29,3 +29,12 @@ export const VIEWPORTS = [
   { name: 'Laptop', width: 1280, height: 720 },
   { name: 'Full HD', width: 1920, height: 1080 },
 ];
+
+// The pages whose text (the `main` element) the content tests check. The
+// home page shows the curriculum, with roles (h3) and several consecutive
+// paragraphs; the licence page has neither, so those two checks apply only
+// where the page has some.
+export const TEXT_PAGES = [
+  { name: 'home page', address: './', hasRoles: true, hasConsecutiveParagraphs: true },
+  { name: 'licence page', address: './licence.html', hasRoles: false, hasConsecutiveParagraphs: false },
+];

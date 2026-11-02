@@ -1,7 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
-import { retryWhenLive, VIEWPORTS } from './support';
+import { retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
 
-// Enforces that the content (the curriculum in <main>) is readable on every
+// Enforces that the content (the text in <main>: the curriculum, the licence) is readable on every
 // device. It checks what the reader sees (sizes, positions, colours), never
 // how the page is built.
 //
@@ -85,7 +85,7 @@ async function snapshot(page: Page): Promise<Snapshot> {
 // ---- Rules (run in Node) -------------------------------------------------
 
 // Returns one message per broken rule; empty means the content is as agreed.
-function violations(s: Snapshot): string[] {
+function violations(s: Snapshot, hasRoles: boolean): string[] {
   const where = `[${s.innerWidth}px]`;
   const out: string[] = [];
   const rule = (ok: boolean, message: string) => {
@@ -105,7 +105,7 @@ function violations(s: Snapshot): string[] {
   s.h2TopBorders.slice(1).forEach((w, i) =>
     rule(w > 0, `h2 number ${i + 2} must have a top border, has ${w}px`),
   );
-  rule(s.h3Count > 0, 'the content must have at least one h3');
+  if (hasRoles) rule(s.h3Count > 0, 'the content must have at least one h3');
   s.h3Backgrounds.forEach((bg, i) =>
     rule(bg !== s.pageBackground, `h3 number ${i + 1} must differ from the page background (${s.pageBackground}), has ${bg}`),
   );
@@ -119,15 +119,17 @@ function violations(s: Snapshot): string[] {
 
 // ---- Tests ---------------------------------------------------------------
 
+for (const { name: pageName, address, hasRoles } of TEXT_PAGES) {
 for (const { name, width, height } of VIEWPORTS) {
-  test(`content layout at ${width}x${height} (${name})`, async ({ page }) => {
+  test(`content layout of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
 
     await retryWhenLive(async () => {
-      await page.goto('./');
+      await page.goto(address);
       await page.evaluate(() => document.fonts.ready);
-      const found = violations(await snapshot(page));
+      const found = violations(await snapshot(page), hasRoles);
       expect(found.length, `content rules broken:\n${found.join('\n')}`).toBe(0);
     });
   });
+}
 }

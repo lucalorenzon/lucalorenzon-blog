@@ -51,6 +51,7 @@ test.beforeAll(() => {
 // leaves it out (the live check in not-found.spec.ts covers it).
 const PAGES = [
   { name: 'home page', address: './', onlyLocal: false },
+  { name: 'licence page', address: './licence.html', onlyLocal: false },
   { name: 'page not found', address: './404.html', onlyLocal: true },
 ];
 
@@ -102,67 +103,91 @@ for (const { name: pageName, address, onlyLocal } of PAGES) {
 // The wide logo is an image whose accessible name is "Lvk@73r" and whose text
 // content is the ASCII art, which is left out of the template on purpose: the
 // name is what the screen reader reads.
-const TREE_BY_LOGO = {
+const treeByLogo = (heading: string, footerLink: string) => ({
   text: `
     - /children: equal
     - banner:
       - /children: equal
       - text: Lvk@73r
-      - heading "Curriculum Vitae" [level=1]
+      - heading "${heading}" [level=1]
     - main
     - contentinfo:
       - /children: equal
       - paragraph:
         - text: © 2026 Luca Lorenzon ·
-        - link "This CV may be copied, not changed"
+        - link "${footerLink}"
   `,
   art: `
     - /children: equal
     - banner:
       - /children: equal
       - img "Lvk@73r"
-      - heading "Curriculum Vitae" [level=1]
+      - heading "${heading}" [level=1]
     - main
     - contentinfo:
       - /children: equal
       - paragraph:
         - text: © 2026 Luca Lorenzon ·
-        - link "This CV may be copied, not changed"
+        - link "${footerLink}"
   `,
-};
+});
 
-// The level-2 headings of the curriculum, in order. toHaveText with an array
-// of strings checks the count and the order of the matching elements.
-const CURRICULUM_SECTIONS = [
-  'Summary',
-  'Experience',
-  'Technical expertise and continuous learning',
-  'Core competencies',
-  'Education',
-  'Certifications and training',
-  'Languages',
+// The level-2 headings of each page's text, in order. toHaveText with an
+// array of strings checks the count and the order of the matching elements.
+const TREE_PAGES = [
+  {
+    name: 'home page',
+    address: './',
+    trees: treeByLogo('Curriculum Vitae', 'This CV may be copied, not changed'),
+    sections: [
+      'Summary',
+      'Experience',
+      'Technical expertise and continuous learning',
+      'Core competencies',
+      'Education',
+      'Certifications and training',
+      'Languages',
+    ],
+  },
+  {
+    name: 'licence page',
+    address: './licence.html',
+    trees: treeByLogo('Licence', 'Reuse with attribution'),
+    sections: [
+      'In short',
+      'Articles',
+      'Code samples',
+      'Curriculum',
+      'Material by others',
+      "The site's code",
+    ],
+  },
 ];
 
-const EXPECTED_TREE: Record<string, string> = {
-  'iPhone 15': TREE_BY_LOGO.text,
-  'iPad Mini': TREE_BY_LOGO.art,
-  Laptop: TREE_BY_LOGO.art,
+const LOGO_BY_BAND: Record<string, 'text' | 'art'> = {
+  'iPhone 15': 'text',
+  'iPad Mini': 'art',
+  Laptop: 'art',
 };
 
-for (const { name, width, height } of BANDS) {
-  test(`accessibility tree at ${width}x${height} (${name})`, async ({ page }) => {
-    await page.setViewportSize({ width, height });
+for (const { name: pageName, address, trees, sections } of TREE_PAGES) {
+  for (const { name, width, height } of BANDS) {
+    test(`accessibility tree of the ${pageName} at ${width}x${height} (${name})`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height });
 
-    const check = async () => {
-      await page.goto('./');
-      await page.evaluate(() => document.fonts.ready);
-      await expect(page.locator('body')).toMatchAriaSnapshot(EXPECTED_TREE[name]);
+      const check = async () => {
+        await page.goto(address);
+        await page.evaluate(() => document.fonts.ready);
+        await expect(page.locator('body')).toMatchAriaSnapshot(trees[LOGO_BY_BAND[name]]);
 
-      const main = page.getByRole('main');
-      await expect(main.getByRole('heading', { level: 1 })).toHaveCount(0);
-      await expect(main.getByRole('heading', { level: 2 })).toHaveText(CURRICULUM_SECTIONS);
-    };
+        const main = page.getByRole('main');
+        await expect(main.getByRole('heading', { level: 1 })).toHaveCount(0);
+        await expect(main.getByRole('heading', { level: 2 })).toHaveText(sections);
+      };
 
-    await retryWhenLive(check);
-  });
+      await retryWhenLive(check);
+    });
+  }
 }

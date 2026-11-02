@@ -32,10 +32,14 @@ mod tests {
     /// The author writes no raw HTML inside Markdown.
     #[test]
     fn curriculum_contains_no_raw_html() {
-        let source = include_str!("../content/curriculum.md");
-        let raw: Vec<Event> = Parser::new(source)
-            .filter(|e| matches!(e, Event::Html(_) | Event::InlineHtml(_)))
-            .collect();
-        assert!(raw.is_empty(), "raw HTML found: {raw:?}");
+        for source in [
+            include_str!("../content/curriculum.md"),
+            include_str!("../content/licence.md"),
+        ] {
+            let raw: Vec<Event> = Parser::new(source)
+                .filter(|e| matches!(e, Event::Html(_) | Event::InlineHtml(_)))
+                .collect();
+            assert!(raw.is_empty(), "raw HTML found: {raw:?}");
+        }
     }
 }

@@ -43,3 +43,15 @@ test('home page shows header, body and footer, and loads stylesheet, fonts and f
 
   await retryWhenLive(check);
 });
+
+test('the footer link of the home page leads to the licence page', async ({ page }) => {
+  const check = async () => {
+    await page.goto('./');
+    await page.getByRole('link', { name: 'This CV may be copied, not changed' }).click();
+    await expect(page).toHaveTitle('Licence - Luca Lorenzon', { timeout: 5_000 });
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Licence');
+    await expect(page.getByRole('heading', { level: 2, name: 'In short' })).toBeVisible();
+  };
+
+  await retryWhenLive(check);
+});
