@@ -43,7 +43,7 @@ the check do not apply to.
   should treat as the original. The tag this card adds is where that
   answer ends up.
 - **A first candidate for the block-list:** the site's own "page not
-  found" ([card](serve-own-not-found-page.md)), which should not be
+  found" ([card](../wip/serve-own-not-found-page.md)), which should not be
   indexed nor previewed.
 - **Lighthouse has an SEO category,** with basic checks (title,
   description, status code, links, `robots`). The card

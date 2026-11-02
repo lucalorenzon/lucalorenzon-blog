@@ -6,7 +6,7 @@
 ## Why
 
 While answering the card
-[serve the site's own "page not found"](../backlog/serve-own-not-found-page.md),
+[serve the site's own "page not found"](../wip/serve-own-not-found-page.md),
 the discussion moved to a question that is not about that page: how
 every page of the site writes the addresses of its stylesheet, its icon
 and the other pages. The user parked the "page not found" card and
@@ -167,5 +167,5 @@ in the git history.
 ## Results
 
 No code was written: the answer feeds the card
-[serve the site's own "page not found"](../backlog/serve-own-not-found-page.md),
+[serve the site's own "page not found"](../wip/serve-own-not-found-page.md),
 which introduces the setting.

@@ -1,9 +1,9 @@
 # Serve the site's own "page not found"
 
 - **Opened:** 2026-11-01
-- **Status:** started on 2026-11-02, parked the same day for the card
-  on how pages write the addresses of their files, which closed the
-  same day; ready to resume.
+- **Status:** in progress since 2026-11-02; parked the same day for
+  the card on how pages write the addresses of their files, and resumed
+  once it closed.
 
 ## Why
 
@@ -72,4 +72,4 @@ Given by the user on 2026-11-02, before the card was parked:
   its own page, not with `404.html`. The real behaviour, status 404 at
   any address, is seen on the live site.
 - **Search engines:** the page goes on the block-list of the card
-  [add SEO and Open Graph tags to every page](add-seo-and-open-graph-tags.md).
+  [add SEO and Open Graph tags to every page](../backlog/add-seo-and-open-graph-tags.md).

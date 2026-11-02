@@ -20,7 +20,7 @@ then lived in a sub-folder of GitHub Pages
 Two needs put it to the test:
 
 - **The site's own "page not found"**
-  ([card](../backlog/serve-own-not-found-page.md)). The host serves it
+  ([card](../wip/serve-own-not-found-page.md)). The host serves it
   for any address that does not exist, at any depth: at `/a/b/c`, a
   relative `style.css` becomes `/a/b/style.css`, which does not exist,
   and the page loses its look and its icon.
@@ -113,7 +113,7 @@ in the [card](../done/2026-11-02_choose-how-pages-write-addresses.md).
 ## References
 
 - Card: [choose how pages write the addresses of their files](../done/2026-11-02_choose-how-pages-write-addresses.md)
-- First use: [serve the site's own "page not found"](../backlog/serve-own-not-found-page.md)
+- First use: [serve the site's own "page not found"](../wip/serve-own-not-found-page.md)
 - Earlier rule: [add header, footer and favicon](../done/2026-10-28_add-header-footer-and-favicon.md)
 - [sphinx-notfound-page, configuration](https://sphinx-notfound-page.readthedocs.io/en/stable/configuration.html);
   [Read the Docs, 404 pages and MkDocs](https://docs.ReadTheDocs.io/en/stable/reference/404-not-found.html)

@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Serve the site's own "page not found"](backlog/serve-own-not-found-page.md),
+- [Serve the site's own "page not found"](wip/serve-own-not-found-page.md),
   instead of GitHub's, now that the site lives at
   `https://www.lucalorenzon.com/`
   ([card](done/2026-11-01_choose-site-address.md)); how it reaches
