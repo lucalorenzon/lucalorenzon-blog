@@ -18,9 +18,8 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Choose the licence of the articles](wip/choose-articles-licence.md),
-  before the two articles below, as its card asks.
 - [Show the licences on the site](backlog/show-licences-on-the-site.md),
+  chosen on 2026-11-02 ([card](done/2026-11-02_choose-articles-licence.md)):
   one sentence on every page and a note on the curriculum, so the
   articles below arrive with their licence in sight.
 - [Add the two articles already on Medium](backlog/add-the-two-medium-articles.md),

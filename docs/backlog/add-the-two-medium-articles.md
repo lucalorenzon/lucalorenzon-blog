@@ -54,11 +54,14 @@ after them, when the home page becomes the list of contents.
 - **The repository is public:** what the author publishes about past
   work must hold no employer internals; the articles describe the
   platform, but are to be read once more with that in mind.
-- **The articles' licence:** the card
-  [choose the licence of the articles](../wip/choose-articles-licence.md), in
-  Later, said it was to be decided before the first article; without it
-  the articles would be under the repository's MIT licence. The user
-  moved it to Now on 2026-11-02, before this card.
+- **The articles' licence:** decided on 2026-11-02
+  ([card](../done/2026-11-02_choose-articles-licence.md)): the text
+  and the author's own images under CC BY 4.0, the code samples under
+  MIT-0, unless otherwise noted; images by others keep their own terms
+  and name their source, so each image is to be checked. Showing it on
+  the pages is the card
+  [show the licences on the site](show-licences-on-the-site.md),
+  before this one.
 
 ## Questions
 

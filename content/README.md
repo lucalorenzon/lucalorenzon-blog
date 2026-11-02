@@ -21,4 +21,4 @@ above; the licences accept a link in place of a copy.
 Until 2026-11-02 everything in this repository was under the MIT
 licence: copies taken before then keep it.
 
-Why these licences: [the card that chose them](../docs/wip/choose-articles-licence.md).
+Why these licences: [the card that chose them](../docs/done/2026-11-02_choose-articles-licence.md).
