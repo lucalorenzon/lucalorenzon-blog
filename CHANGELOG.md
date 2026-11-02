@@ -30,6 +30,23 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-11-03
+
+### Added
+
+- A licence page, `licence.html`, in plain words: the articles' text may be
+  reused, also for profit, citing the author (CC BY 4.0); their code
+  samples freely, with no need to cite (MIT-0); the curriculum may be
+  copied and passed on, not changed (CC BY-ND 4.0); material by others
+  keeps its own terms.
+
+### Changed
+
+- The footer names the licence of the page and links to the licence page:
+  "© 2026 Luca Lorenzon · Reuse with attribution", and on the home page,
+  which shows the curriculum, "© 2026 Luca Lorenzon · This CV may be
+  copied, not changed".
+
 ## [0.6.0] - 2026-11-02
 
 ### Added
