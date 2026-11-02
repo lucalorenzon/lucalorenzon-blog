@@ -1,52 +1,17 @@
 use crate::markdown;
+use crate::page_frame::PageFrame;
 use leptos::prelude::*;
 
 /// The curriculum, written in Markdown and converted to HTML at build time.
 const CURRICULUM: &str = include_str!("../content/curriculum.md");
 
-/// The ASCII-art logo (narrow version of the old site's `AsciiArtLogo`).
-const LOGO: &str = r#"    __        __   ______  __________
-   / / _   __/ /__/ ____ \/__  /__  /_____
-  / / | | / / //_/ / __ `/  / / /_ </ ___/
- / /__| |/ / ,< / / /_/ /  / /___/ / /
-/_____/___/_/\_|\ \__,_/  /_//____/_/
-                 \____/"#;
-
 /// The whole home page document, `<html>` element included.
 #[component]
 pub fn HomePage() -> impl IntoView {
     view! {
-        <html lang="en">
-            <head>
-                <meta charset="utf-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>"Curriculum Vitae - Luca Lorenzon"</title>
-                <link rel="icon" href="favicon.ico" />
-                <link rel="stylesheet" href="style.css" />
-            </head>
-            <body>
-                <div class="page-fills-screen">
-                    <header class="header-two-rows xl:header-one-row">
-                        <div class="text-logo-large md:not-shown">"Lvk@73r"</div>
-                        <div
-                            role="img"
-                            aria-label="Lvk@73r"
-                            class="not-shown md:art-logo-left"
-                        >{LOGO}</div>
-                        <h1 class="title-below-line md:title-below-line-large xl:title-beside-logo">"Curriculum Vitae"</h1>
-                        <div
-                            data-testid="menu-slot"
-                            aria-hidden="true"
-                            class="reserved-menu-slot"
-                        ></div>
-                    </header>
-                    <main class="long-text-column" inner_html=markdown::to_html(CURRICULUM)></main>
-                    <footer class="footer-sticky-bottom">
-                        <p>"© Luca Lorenzon 2026"</p>
-                    </footer>
-                </div>
-            </body>
-        </html>
+        <PageFrame title="Curriculum Vitae - Luca Lorenzon" heading="Curriculum Vitae" address_prefix="">
+            <main class="long-text-column" inner_html=markdown::to_html(CURRICULUM)></main>
+        </PageFrame>
     }
 }
 
@@ -121,7 +86,7 @@ mod tests {
     #[test]
     fn logo_contains_the_ascii_art() {
         let html = render_home_page();
-        let escaped = super::LOGO.replace('<', "&lt;");
+        let escaped = crate::page_frame::LOGO.replace('<', "&lt;");
         assert!(html.contains(&escaped), "ASCII art not found in HTML");
     }
 
