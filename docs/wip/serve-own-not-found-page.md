@@ -46,17 +46,20 @@ with a deployment from GitHub Actions too. The build writes only
 
 ## Answers so far
 
-Given by the user on 2026-11-02, before the card was parked:
+Given by the user on 2026-11-02:
 
 - **The proposal of "only 404" is dropped.** It came from a memory of
   an application answering an AJAX call, where a short answer avoids
   handing information to attackers; it does not apply to a static page
   on GitHub Pages. The page gives the visitor the minimum to find their
   way.
-- **Tab title:** "Page not found - Luca Lorenzon". Still open: the home
-  page puts the site's name first ("Luca Lorenzon - Curriculum
-  Vitae"); whether the two orders are meant to differ, and which one
-  articles will follow.
+- **Tab title:** "Page not found - Luca Lorenzon". Every page follows
+  the same order, the page's name first and the site's name after, so
+  the page is told apart where only the start of the title shows (many
+  open tabs, bookmarks); the home page becomes "Curriculum Vitae - Luca
+  Lorenzon". The earlier order had no reason of its own: the rule of
+  2026-10-28 only asked that the author's name be there
+  ([card](../done/2026-10-28_add-header-footer-and-favicon.md)).
 - **Header:** the same as the home page, with "Page not found" as its
   main heading.
 - **Content:** a link to the home page.
