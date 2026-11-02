@@ -20,6 +20,9 @@ live since 2026-10-26
   each one, whether it is done now, next or later.
 - [Choose the licence of the articles](wip/choose-articles-licence.md),
   before the two articles below, as its card asks.
+- [Show the licences on the site](backlog/show-licences-on-the-site.md),
+  one sentence on every page and a note on the curriculum, so the
+  articles below arrive with their licence in sight.
 - [Add the two articles already on Medium](backlog/add-the-two-medium-articles.md),
   copied under `content/` for now: the site's first articles.
 
