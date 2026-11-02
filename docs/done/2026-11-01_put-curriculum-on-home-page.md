@@ -13,7 +13,7 @@ is that content.
 
 The curriculum is a page of its own, not an article (decided by the user
 on 2026-10-31), so the choice of the articles' licence
-([card](../backlog/choose-articles-licence.md)) still comes before the
+([card](../wip/choose-articles-licence.md)) still comes before the
 first article. The site stays one page, with no internal links, until
 the navigation arrives ([card](../backlog/add-site-navigation.md)).
 

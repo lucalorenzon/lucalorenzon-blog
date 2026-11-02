@@ -98,7 +98,7 @@ the full round.
 - **Licence of the content.** The whole repository is under MIT, so
   future articles would be too. The user keeps MIT for now and will
   consider Creative Commons later: card
-  [choose the licence of the articles](../backlog/choose-articles-licence.md).
+  [choose the licence of the articles](../wip/choose-articles-licence.md).
 - **The 1985 photo.** Where to place it is to be decided, not on the home
   page: card [place the 1985 photo](../backlog/place-1985-photo.md).
 - **The year in the footer.** The site is generated at publication, so

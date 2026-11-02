@@ -55,7 +55,7 @@ after them, when the home page becomes the list of contents.
   work must hold no employer internals; the articles describe the
   platform, but are to be read once more with that in mind.
 - **The articles' licence:** the card
-  [choose the licence of the articles](choose-articles-licence.md), in
+  [choose the licence of the articles](../wip/choose-articles-licence.md), in
   Later, said it was to be decided before the first article; without it
   the articles would be under the repository's MIT licence. The user
   moved it to Now on 2026-11-02, before this card.
