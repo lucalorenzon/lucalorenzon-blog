@@ -32,6 +32,9 @@ live since 2026-10-26
 - [Add site navigation](backlog/add-site-navigation.md), after the two
   articles already on Medium, when the home page becomes the list of
   contents.
+- [Add SEO and Open Graph tags to every page](backlog/add-seo-and-open-graph-tags.md),
+  from fields each article declares, checked in the build, with a
+  block-list of pages left out.
 - [Use the space beside the text on wide screens](backlog/use-space-beside-text-on-wide-screens.md),
   left empty by the narrower column of version 0.5.0.
 - [Check performance in the build](backlog/check-performance-in-the-build.md),
