@@ -30,6 +30,24 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-11-02
+
+### Added
+
+- The site's own "page not found": an address that does not exist, at any
+  depth, shows a page with the site's header and footer, the heading
+  "Page not found" and a link to the home page, instead of GitHub's own
+  page. The build takes the site's full address (`SITE_ADDRESS`, by
+  default `https://www.lucalorenzon.com/`); only this page uses it, every
+  other page keeps relative paths, so the site can later be served under
+  a prefix without being rebuilt
+  ([ADR-002](docs/adr/ADR-002-relative-paths-and-site-address-at-build.md)).
+
+### Changed
+
+- The home page's tab title puts the page's name first: "Curriculum Vitae
+  - Luca Lorenzon". Every page follows that order.
+
 ## [0.5.0] - 2026-11-02
 
 ### Changed
