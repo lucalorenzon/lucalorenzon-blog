@@ -1,7 +1,7 @@
 # Serve the site's own "page not found"
 
 - **Opened:** 2026-11-01
-- **Status:** open, in Now.
+- **Status:** in progress since 2026-11-02, in Now.
 
 ## Why
 
