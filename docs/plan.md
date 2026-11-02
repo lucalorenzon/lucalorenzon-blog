@@ -14,12 +14,6 @@ live since 2026-10-26
 
 ## Now
 
-- [Serve the site's own "page not found"](wip/serve-own-not-found-page.md),
-  instead of GitHub's, now that the site lives at
-  `https://www.lucalorenzon.com/`
-  ([card](done/2026-11-01_choose-site-address.md)); how it reaches
-  its files is settled
-  ([card](done/2026-11-02_choose-how-pages-write-addresses.md)).
 - [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
