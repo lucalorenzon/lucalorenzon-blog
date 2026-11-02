@@ -268,3 +268,12 @@ in the same commit, 2026-11-02):
   weighs. That is a decision on the layout of the page, not on font,
   spacing or colour, so it went to a card of its own:
   [use the space beside the text on wide screens](../backlog/use-space-beside-text-on-wide-screens.md).
+- **The user's reading on a phone,** the same day: the font reads well.
+  The whole looks a little dim, and the role headings in inverse video
+  (black on amber) may read a little worse. The user will look again
+  the next morning before saying whether anything needs revisiting.
+  Two things to keep in view then: `#DD9911` is darker than the former
+  amber, so a phone on automatic brightness can make the page look dull
+  although the contrast stays at 8.64:1; and the role headings are in
+  regular Literata, black on a narrow amber block, one of the places
+  where the change of font shows most.
