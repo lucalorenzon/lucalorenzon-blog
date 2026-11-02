@@ -56,8 +56,9 @@ after them, when the home page becomes the list of contents.
   platform, but are to be read once more with that in mind.
 - **The articles' licence:** the card
   [choose the licence of the articles](choose-articles-licence.md), in
-  Later, says it is to be decided before the first article. Until then
-  the articles would be under the repository's MIT licence.
+  Later, said it was to be decided before the first article; without it
+  the articles would be under the repository's MIT licence. The user
+  moved it to Now on 2026-11-02, before this card.
 
 ## Questions
 
@@ -68,6 +69,5 @@ after them, when the home page becomes the list of contents.
 - The look of code blocks, blockquotes and images, within the
   readability rules already in force.
 - Which address is canonical, the site's or Medium's.
-- Whether the licence is decided first, as its card says.
 - How thin the first slice can be: one article first, the shorter one,
   then the other.

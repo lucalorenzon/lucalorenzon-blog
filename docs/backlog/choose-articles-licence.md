@@ -2,7 +2,9 @@
 
 - **Opened:** 2026-10-28, from the light pass of `residuality`
   ([card](../done/2026-10-28_challenge-skeleton-with-residuality.md)).
-- **Status:** noticed, not started. To decide before the first article.
+- **Status:** noticed, not started. To decide before the first article;
+  in Now since 2026-11-02, before the card
+  [add the two articles already on Medium](add-the-two-medium-articles.md).
 
 ## Why
 

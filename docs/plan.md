@@ -22,6 +22,8 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
+- [Choose the licence of the articles](backlog/choose-articles-licence.md),
+  before the two articles below, as its card asks.
 - [Add the two articles already on Medium](backlog/add-the-two-medium-articles.md),
   copied under `content/` for now: the site's first articles.
 
@@ -54,8 +56,6 @@ live since 2026-10-26
   Firefox and WebKit besides Chromium.
 - [Adapt the footer and the articles to screen width](backlog/adapt-footer-and-articles-to-screen-width.md),
   with the rules for long titles already agreed.
-- [Choose the licence of the articles](backlog/choose-articles-licence.md),
-  before the first article.
 - [Place the 1985 photo](backlog/place-1985-photo.md), not on the home
   page.
 - [Take the site's content from several repositories](backlog/take-content-from-several-repositories.md),
