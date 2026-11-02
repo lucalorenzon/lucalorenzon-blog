@@ -46,6 +46,8 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
   "© 2026 Luca Lorenzon · Reuse with attribution", and on the home page,
   which shows the curriculum, "© 2026 Luca Lorenzon · This CV may be
   copied, not changed".
+- The logo in the header is a link to the home page, so every page leads
+  back to it; a screen reader announces it as "Lvk@73r, home page".
 
 ## [0.6.0] - 2026-11-02
 
