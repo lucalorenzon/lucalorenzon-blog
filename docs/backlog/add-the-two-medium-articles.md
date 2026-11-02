@@ -60,7 +60,7 @@ after them, when the home page becomes the list of contents.
   MIT-0, unless otherwise noted; images by others keep their own terms
   and name their source, so each image is to be checked. Showing it on
   the pages is the card
-  [show the licences on the site](show-licences-on-the-site.md),
+  [show the licences on the site](../wip/show-licences-on-the-site.md),
   before this one.
 
 ## Questions

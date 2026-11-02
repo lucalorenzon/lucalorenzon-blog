@@ -2,8 +2,8 @@
 
 - **Opened:** 2026-11-02, by the user, from the card
   [choose the licence of the articles](../done/2026-11-02_choose-articles-licence.md).
-- **Status:** noticed, not started. In Now, before the card
-  [add the two articles already on Medium](add-the-two-medium-articles.md),
+- **Status:** being worked on since 2026-11-02. Before the card
+  [add the two articles already on Medium](../backlog/add-the-two-medium-articles.md),
   so the first articles arrive with their licence in sight.
 
 ## Why
