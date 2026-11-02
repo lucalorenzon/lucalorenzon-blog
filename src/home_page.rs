@@ -20,7 +20,7 @@ pub fn HomePage() -> impl IntoView {
             <head>
                 <meta charset="utf-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>"Luca Lorenzon - Curriculum Vitae"</title>
+                <title>"Curriculum Vitae - Luca Lorenzon"</title>
                 <link rel="icon" href="favicon.ico" />
                 <link rel="stylesheet" href="style.css" />
             </head>
@@ -73,7 +73,7 @@ mod tests {
 
     #[test]
     fn sets_tab_title() {
-        assert!(render_home_page().contains("<title>Luca Lorenzon - Curriculum Vitae</title>"));
+        assert!(render_home_page().contains("<title>Curriculum Vitae - Luca Lorenzon</title>"));
     }
 
     #[test]
