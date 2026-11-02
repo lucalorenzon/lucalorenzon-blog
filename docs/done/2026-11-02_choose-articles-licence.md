@@ -107,7 +107,7 @@ the curriculum is the "otherwise noted".
 
 Showing the licences on the pages, which a reader of the site needs
 since they do not see the repository, became a card of its own:
-[show the licences on the site](../wip/show-licences-on-the-site.md).
+[show the licences on the site](2026-11-03_show-licences-on-the-site.md).
 This card closes with the decisions and the repository's files.
 
 ## Sources

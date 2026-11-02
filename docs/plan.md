@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -18,12 +18,10 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Show the licences on the site](wip/show-licences-on-the-site.md),
-  chosen on 2026-11-02 ([card](done/2026-11-02_choose-articles-licence.md)):
-  one sentence on every page and a note on the curriculum, so the
-  articles below arrive with their licence in sight.
 - [Add the two articles already on Medium](backlog/add-the-two-medium-articles.md),
-  copied under `content/` for now: the site's first articles.
+  copied under `content/` for now: the site's first articles, now that
+  their licence is shown on the site
+  ([card](done/2026-11-03_show-licences-on-the-site.md)).
 
 ## Next
 

@@ -58,10 +58,11 @@ after them, when the home page becomes the list of contents.
   ([card](../done/2026-11-02_choose-articles-licence.md)): the text
   and the author's own images under CC BY 4.0, the code samples under
   MIT-0, unless otherwise noted; images by others keep their own terms
-  and name their source, so each image is to be checked. Showing it on
-  the pages is the card
-  [show the licences on the site](../wip/show-licences-on-the-site.md),
-  before this one.
+  and name their source, so each image is to be checked. Shown on the
+  site since version 0.7.0
+  ([card](../done/2026-11-03_show-licences-on-the-site.md)): an
+  article's page gets the footer "Reuse with attribution", which links
+  to `licence.html`.
 
 ## Questions
 
