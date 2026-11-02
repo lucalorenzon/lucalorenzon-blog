@@ -27,6 +27,11 @@ npm run typecheck                # checks the browser test's types
 npx playwright test              # opens the built site in a browser
 ```
 
+The build takes the site's full address from `SITE_ADDRESS`, by default
+`https://www.lucalorenzon.com/`. Every page refers to its files by
+relative paths; only `404.html` uses the address's path part, so it works
+at any depth. Why: `docs/adr/ADR-002-relative-paths-and-site-address-at-build.md`.
+
 Every push to `main` and every pull request runs the same checks on
 GitHub (workflow `.github/workflows/build.yml`). Nothing is published by
 a push: the site goes live only when a version is published.

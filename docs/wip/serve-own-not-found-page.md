@@ -76,3 +76,15 @@ Given by the user on 2026-11-02:
   any address, is seen on the live site.
 - **Search engines:** the page goes on the block-list of the card
   [add SEO and Open Graph tags to every page](../backlog/add-seo-and-open-graph-tags.md).
+
+## Results so far
+
+Implemented on 2026-11-02 in three commits: the home page's tab title
+(`f29338d`), a page frame shared by every page (`f58071f`, the home
+page's HTML unchanged byte for byte), and the setting with `404.html`
+(`1da48fc`). The build checks the site's address and stops on an
+invalid one; unit tests cover both pages and the address; the browser
+test opens `404.html` locally, follows its link home and runs the
+accessibility checks on it. The check of a missing deep address on the
+live site (status 404, the page with its look) runs only after the next
+publication: the card closes once it passes.
