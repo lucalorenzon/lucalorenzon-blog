@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-03, by the user, splitting the card on adding the
   two articles already on Medium; in Now.
-- **Status:** noticed, not started.
+- **Status:** in progress since 2026-11-03.
 
 ## Why
 
@@ -13,7 +13,7 @@ hybris"
 (https://medium.com/@luca.lorenzon/how-generate-hybris-pk-values-without-hybris-e6b4d6c5ea05)
 as a Markdown file under `content/`, checked by the unit test that
 forbids HTML in the content until the
-[pages card](add-article-pages.md) makes it visible.
+[pages card](../backlog/add-article-pages.md) makes it visible.
 
 ## Known from the start
 
@@ -51,7 +51,7 @@ forbids HTML in the content until the
   they lead, not "here"; both addresses are three years old and are
   checked before they are kept.
 - **The note in a quote** keeps the Markdown blockquote; its look
-  belongs to the [look card](design-look-of-articles.md).
+  belongs to the [look card](../backlog/design-look-of-articles.md).
 - **The repository is public:** the text is read once more for employer
   internals before it is committed.
 

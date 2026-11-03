@@ -18,7 +18,7 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Bring the article on hybris PK values into the site's Markdown](backlog/add-generate-pk-article-markdown.md),
+- [Bring the article on hybris PK values into the site's Markdown](wip/add-generate-pk-article-markdown.md),
   the text from Medium under `content/articles/`, as was done for
   "After Save Event"
   ([card](done/2026-11-03_add-after-save-event-markdown.md)): the
