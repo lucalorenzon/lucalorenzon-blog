@@ -62,7 +62,7 @@ after them, when the home page becomes the list of contents.
   site since version 0.7.0
   ([card](../done/2026-11-03_show-licences-on-the-site.md)): an
   article's page gets the footer "Reuse with attribution", which links
-  to `licence.html`.
+  to `about.html`, and from there to `licence.html`.
 
 ## Questions
 

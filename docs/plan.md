@@ -18,13 +18,12 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [State that the views are the author's own](wip/state-that-views-are-the-authors-own.md),
-  before the two articles below, which describe a platform the author
-  worked on for past employers.
 - [Add the two articles already on Medium](backlog/add-the-two-medium-articles.md),
   copied under `content/` for now: the site's first articles, now that
   their licence is shown on the site
-  ([card](done/2026-11-03_show-licences-on-the-site.md)).
+  ([card](done/2026-11-03_show-licences-on-the-site.md)) and the about
+  page states that the views are the author's own
+  ([card](done/2026-11-03_state-that-views-are-the-authors-own.md)).
 
 ## Next
 
