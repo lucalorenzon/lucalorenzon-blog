@@ -7,7 +7,7 @@
 ## Why
 
 Same reason and same split as the card
-[bring "After Save Event" into the site's Markdown](../wip/add-after-save-event-markdown.md).
+[bring "After Save Event" into the site's Markdown](../done/2026-11-03_add-after-save-event-markdown.md).
 This card writes the text of "How generate hybris PK values without
 hybris"
 (https://medium.com/@luca.lorenzon/how-generate-hybris-pk-values-without-hybris-e6b4d6c5ea05)
@@ -55,8 +55,12 @@ forbids HTML in the content until the
 - **The repository is public:** the text is read once more for employer
   internals before it is committed.
 
+- **Where the file lives:** `content/articles/`, decided for the other
+  article; named after the title.
+
 ## Questions
 
-- Where the file lives, as for the other article.
-- The licence of the code quoted from the platform, as for the other
-  article: here only a signature and a described outline.
+- The licence of the code quoted from the platform: "After Save Event"
+  closes with a sentence saying that it belongs to SAP and MIT-0 covers
+  only the author's code. Here only a signature and a described outline
+  are quoted; whether the same sentence is wanted.
