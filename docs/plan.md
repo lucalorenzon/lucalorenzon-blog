@@ -18,7 +18,7 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Add the two articles already on Medium](backlog/add-the-two-medium-articles.md),
+- [Add the two articles already on Medium](wip/add-the-two-medium-articles.md),
   copied under `content/` for now: the site's first articles, now that
   their licence is shown on the site
   ([card](done/2026-11-03_show-licences-on-the-site.md)) and the about

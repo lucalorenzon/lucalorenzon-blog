@@ -6,7 +6,7 @@
 ## Why
 
 Articles are about to arrive
-([card](add-the-two-medium-articles.md)), and an article is worth
+([card](../wip/add-the-two-medium-articles.md)), and an article is worth
 something only if it can be found and shared. The user wants each
 article to carry its own search-engine fields and Open Graph fields,
 turned into the matching tags in the page's head, so that search

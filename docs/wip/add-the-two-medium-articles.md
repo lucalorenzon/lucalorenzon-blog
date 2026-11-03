@@ -1,7 +1,7 @@
 # Add the two articles already on Medium
 
 - **Opened:** 2026-11-02, by the user; in Now.
-- **Status:** noticed, not started.
+- **Status:** in progress since 2026-11-03.
 
 ## Why
 
@@ -14,7 +14,7 @@ and today it has none. Two are already published on Medium:
   https://medium.com/@luca.lorenzon/how-generate-hybris-pk-values-without-hybris-e6b4d6c5ea05
 
 They are the first articles to bring onto the site. The card
-[add site navigation](add-site-navigation.md) was planned to come right
+[add site navigation](../backlog/add-site-navigation.md) was planned to come right
 after them, when the home page becomes the list of contents.
 
 ## Known from the start
@@ -28,7 +28,7 @@ after them, when the home page becomes the list of contents.
   on Medium is not known.
 - **Where they go, for now:** copied by hand under `content/`, as the
   curriculum was. Taking content from other repositories stays in the
-  card [take the site's content from several repositories](take-content-from-several-repositories.md).
+  card [take the site's content from several repositories](../backlog/take-content-from-several-repositories.md).
 - **The Markdown holds HTML:** "After Save Event" links to the other
   article with a bare `<a>` with no address. A unit test forbids HTML in
   the content; it becomes a Markdown link to the other article on the
@@ -75,3 +75,53 @@ after them, when the home page becomes the list of contents.
 - Which address is canonical, the site's or Medium's.
 - How thin the first slice can be: one article first, the shorter one,
   then the other.
+
+## Answers so far
+
+Gathered on 2026-11-03, article by article.
+
+### Both articles
+
+- **The source is the text published on Medium, not the notes.** The
+  notes turned out to hold more than was published: the author did not
+  remember it, the articles being three years old. Everything said
+  above about the notes (line counts, number of code blocks, the bare
+  `<a>`) is therefore to be checked again on the published text.
+- **Explaining the platform's behaviour is the point of the articles.**
+  What belongs to the vendor is the form of its code and of its
+  drawings, not the behaviour of the product. Configuration keys, their
+  default values, the fields of a class and the interfaces a developer
+  implements are usage information and can be quoted. Method bodies
+  taken from the decompiled platform would not be: the published
+  "After Save Event" has none.
+
+### "After Save Event"
+
+The author pasted the Medium text into the session; the formatting
+(headings, code blocks, lists, links, images) did not survive the paste
+and is to be rebuilt from the notes, which share the structure.
+
+- **Code:** what remains is the configuration in `advanced.properties`,
+  the fields of `AfterSaveEvent`, the `AfterSaveListener` interface, the
+  author's snippets on the type code, three lines of `core-spring.xml`
+  and an empty outline of `notifyCommit`. All of it is usage
+  information or the author's own.
+- **The comments in the configuration** are most likely the author's:
+  their typos are the author's, copied from the notes. Still open: the
+  author may check them on an old backup; if that is not possible, they
+  are reworded.
+- **The transaction diagram** comes from the vendor's documentation and
+  is on Medium. It is replaced by a table written by the author
+  (sequence of operations → event generated). Chosen because the image,
+  being complex, needed a text description anyway, and that description
+  is the table: one element instead of two, all of it the author's and
+  under CC BY 4.0. Rejected: keeping the vendor's diagram with its
+  source and a description, which keeps the look of the Medium version
+  but requires checking the vendor's terms of use.
+- **Still open:** whether typos and slips are corrected, for example
+  `core.aftersave.intervals`, twice in the text, where the key listed
+  above it is `core.aftersave.interval`.
+
+### "How generate hybris PK values without hybris"
+
+Not looked at yet on the published text.
