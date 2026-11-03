@@ -30,6 +30,22 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-11-03
+
+### Added
+
+- An about page, `about.html`: who the author is and what the site is
+  for, with a link to the curriculum; a statement that the views on the
+  site are the author's own, not those of their employers, current or
+  past; and a summary of the reuse terms, with a link to the licence
+  page.
+
+### Changed
+
+- The footer's link ("Reuse with attribution", or "This CV may be
+  copied, not changed" on the home page) now opens the about page, which
+  leads on to the licence page.
+
 ## [0.7.0] - 2026-11-03
 
 ### Added
