@@ -19,3 +19,8 @@ empirical test with fresh stressors.
 - The site as it will be by then: at least the header, footer and
   favicon of the card
   [give the page a header, a footer and a favicon](../done/2026-10-28_add-header-footer-and-favicon.md).
+- An observation of the user, on 2026-11-03, when the articles from
+  Medium were planned: there is no "article" with fields of its own;
+  each article is a Markdown file and a Leptos page. Whether the domain
+  is to be abstracted and the code made modular is expected to come out
+  of this round.

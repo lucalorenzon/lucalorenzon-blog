@@ -6,7 +6,7 @@
 ## Why
 
 Articles are about to arrive
-([card](../wip/add-the-two-medium-articles.md)), and an article is worth
+([card](add-article-pages.md)), and an article is worth
 something only if it can be found and shared. The user wants each
 article to carry its own search-engine fields and Open Graph fields,
 turned into the matching tags in the page's head, so that search
@@ -36,12 +36,20 @@ the check do not apply to.
   ([card](../done/2026-11-01_choose-site-address.md)). The build will
   take it as a setting, introduced by the "page not found" card
   ([ADR-002](../adr/ADR-002-relative-paths-and-site-address-at-build.md)):
-  the same value serves these tags. The two Medium articles each have
-  an image; the curriculum has none.
-- **The canonical link is already a question** in the card on the
-  Medium articles: which copy, the site's or Medium's, search engines
-  should treat as the original. The tag this card adds is where that
-  answer ends up.
+  the same value serves these tags. The two Medium articles had an image
+  each, but both come from the vendor's documentation and become tables
+  on the site (decided on 2026-11-03), so no page has an image of its
+  own for the preview yet.
+- **The canonical link belongs to this card,** decided by the user on
+  2026-11-03, when the card on the Medium articles was split: the
+  site's copy of each article is the original, so its page declares
+  itself canonical. Until this card is done, search engines see the
+  articles both on the site and on Medium, where each declares itself
+  the original, and are likely to treat Medium as the original.
+- **Medium has its side to do, by the author:** each story on Medium
+  has a canonical link setting (in its advanced settings), to point at
+  the site's address of the same article. Without it two copies claim
+  to be the original.
 - **A first candidate for the block-list:** the site's own "page not
   found" ([card](../done/2026-11-02_serve-own-not-found-page.md)), which should not be
   indexed nor previewed.

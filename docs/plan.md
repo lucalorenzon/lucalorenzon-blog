@@ -18,18 +18,22 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Add the two articles already on Medium](wip/add-the-two-medium-articles.md),
-  copied under `content/` for now: the site's first articles, now that
-  their licence is shown on the site
-  ([card](done/2026-11-03_show-licences-on-the-site.md)) and the about
-  page states that the views are the author's own
-  ([card](done/2026-11-03_state-that-views-are-the-authors-own.md)).
+- [Bring "After Save Event" into the site's Markdown](backlog/add-after-save-event-markdown.md),
+  the text from Medium under `content/`, typos corrected and the
+  vendor's diagram replaced by a table: the first of the two articles
+  already on Medium, which were one card until 2026-11-03.
+- [Bring the article on hybris PK values into the site's Markdown](backlog/add-generate-pk-article-markdown.md),
+  the same for the second article.
+- [Give each article a page of its own](backlog/add-article-pages.md):
+  its address, how it is reached without the navigation, the simplest
+  page; this is when the articles become visible.
 
 ## Next
 
-- [Add site navigation](backlog/add-site-navigation.md), after the two
-  articles already on Medium, when the home page becomes the list of
-  contents.
+- [Give the articles' code, quotes and tables a look](backlog/design-look-of-articles.md),
+  shown with the default style until then.
+- [Add site navigation](backlog/add-site-navigation.md), after the article
+  pages, when the home page becomes the list of contents.
 - [Add SEO and Open Graph tags to every page](backlog/add-seo-and-open-graph-tags.md),
   from fields each article declares, checked in the build, with a
   block-list of pages left out.
