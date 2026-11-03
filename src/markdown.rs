@@ -37,6 +37,7 @@ mod tests {
             include_str!("../content/licence.md"),
             include_str!("../content/about.md"),
             include_str!("../content/articles/after-save-event.md"),
+            include_str!("../content/articles/how-to-generate-hybris-pk-values-without-hybris.md"),
         ] {
             let raw: Vec<Event> = Parser::new(source)
                 .filter(|e| matches!(e, Event::Html(_) | Event::InlineHtml(_)))
