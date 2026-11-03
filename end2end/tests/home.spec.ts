@@ -56,7 +56,7 @@ test('the footer link of the home page leads to the about page', async ({ page }
   await retryWhenLive(check);
 });
 
-test('from the about page, the text links lead to the licence page and to the home page', async ({
+test('from the about page, the text links lead to the licence page and to the curriculum', async ({
   page,
 }) => {
   const check = async () => {
@@ -66,7 +66,7 @@ test('from the about page, the text links lead to the licence page and to the ho
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Licence');
 
     await page.goto('./about.html');
-    await page.getByRole('main').getByRole('link', { name: 'home page' }).click();
+    await page.getByRole('main').getByRole('link', { name: 'my curriculum' }).click();
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Curriculum Vitae', {
       timeout: 5_000,
     });
