@@ -69,11 +69,11 @@ mod tests {
     }
 
     #[test]
-    fn footer_says_the_cv_may_be_copied_and_links_to_the_licence() {
+    fn footer_says_the_cv_may_be_copied_and_links_to_the_about_page() {
         let html = render_home_page();
         let footer = &html[html.find("<footer").expect("footer")..];
         assert!(footer.contains(">This CV may be copied, not changed</a>"));
-        assert!(footer.contains("<a href=\"licence.html\""));
+        assert!(footer.contains("<a href=\"about.html\""));
     }
 
     #[test]

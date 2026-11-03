@@ -63,12 +63,12 @@ mod tests {
     }
 
     #[test]
-    fn footer_says_reuse_with_attribution_and_links_to_this_page() {
+    fn footer_says_reuse_with_attribution_and_links_to_the_about_page() {
         let html = render_licence_page();
         let footer = &html[html.find("<footer").expect("footer")..];
         assert!(footer.contains("© 2026 Luca Lorenzon · "));
         assert!(footer.contains(">Reuse with attribution</a>"));
-        assert!(footer.contains("<a href=\"licence.html\""));
+        assert!(footer.contains("<a href=\"about.html\""));
     }
 
     #[test]

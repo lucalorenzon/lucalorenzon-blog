@@ -52,6 +52,7 @@ test.beforeAll(() => {
 const PAGES = [
   { name: 'home page', address: './', onlyLocal: false },
   { name: 'licence page', address: './licence.html', onlyLocal: false },
+  { name: 'about page', address: './about.html', onlyLocal: false },
   { name: 'page not found', address: './404.html', onlyLocal: true },
 ];
 
@@ -148,6 +149,12 @@ const TREE_PAGES = [
       'Certifications and training',
       'Languages',
     ],
+  },
+  {
+    name: 'about page',
+    address: './about.html',
+    trees: treeByLogo('About', 'Reuse with attribution'),
+    sections: ['My views', 'Reusing what you read'],
   },
   {
     name: 'licence page',

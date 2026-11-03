@@ -33,8 +33,10 @@ export const VIEWPORTS = [
 // The pages whose text (the `main` element) the content tests check. The
 // home page shows the curriculum, with roles (h3) and several consecutive
 // paragraphs; the licence page has neither, so those two checks apply only
-// where the page has some.
+// where the page has some. The about page opens with a paragraph, so its
+// first section is not the first element and has a line above it.
 export const TEXT_PAGES = [
-  { name: 'home page', address: './', hasRoles: true, hasConsecutiveParagraphs: true },
-  { name: 'licence page', address: './licence.html', hasRoles: false, hasConsecutiveParagraphs: false },
+  { name: 'home page', address: './', hasRoles: true, hasConsecutiveParagraphs: true, startsWithSection: true },
+  { name: 'licence page', address: './licence.html', hasRoles: false, hasConsecutiveParagraphs: false, startsWithSection: true },
+  { name: 'about page', address: './about.html', hasRoles: false, hasConsecutiveParagraphs: false, startsWithSection: false },
 ];

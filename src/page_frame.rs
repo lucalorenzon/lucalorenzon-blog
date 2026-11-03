@@ -8,7 +8,7 @@ pub const LOGO: &str = r#"    __        __   ______  __________
 /_____/___/_/\_|\ \__,_/  /_//____/_/
                  \____/"#;
 
-/// The licence phrase a page shows in its footer, as the link to the licence
+/// The licence phrase a page shows in its footer, as the link to the about
 /// page. Each page chooses its own; the frame renders it.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum FooterLicence {
@@ -35,7 +35,7 @@ impl FooterLicence {
 /// the icon: `""` for the pages that write addresses relative to themselves
 /// (the rule of ADR-002), the path of the site's address, such as `"/"`, for
 /// the "page not found", which the host serves at any depth. The footer's
-/// link to the licence page follows the same rule.
+/// link to the about page follows the same rule.
 #[component]
 pub fn PageFrame(
     title: &'static str,
@@ -44,7 +44,7 @@ pub fn PageFrame(
     footer_licence: FooterLicence,
     children: Children,
 ) -> impl IntoView {
-    let licence_page = format!("{address_prefix}licence.html");
+    let about_page = format!("{address_prefix}about.html");
     let home_page = if address_prefix.is_empty() {
         "./".to_owned()
     } else {
@@ -87,7 +87,7 @@ pub fn PageFrame(
                     <footer class="footer-sticky-bottom">
                         <p>
                             "© 2026 Luca Lorenzon · "
-                            <a href=licence_page class="footer-link">{footer_licence.phrase()}</a>
+                            <a href=about_page class="footer-link">{footer_licence.phrase()}</a>
                         </p>
                     </footer>
                 </div>

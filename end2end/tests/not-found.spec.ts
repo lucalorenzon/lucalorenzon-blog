@@ -29,13 +29,13 @@ test('the "page not found" page has its title, heading and stylesheet, and leads
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Curriculum Vitae');
 });
 
-test('the footer link of the "page not found" leads to the licence page', async ({ page }) => {
+test('the footer link of the "page not found" leads to the about page', async ({ page }) => {
   test.skip(live, 'live: checked through a missing address, see below');
 
   await page.goto('./404.html');
   await page.getByRole('link', { name: 'Reuse with attribution' }).click();
-  await expect(page).toHaveTitle('Licence - Luca Lorenzon');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Licence');
+  await expect(page).toHaveTitle('About - Luca Lorenzon');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('About');
 });
 
 test('a missing address, however deep, is answered with the "page not found" and its stylesheet', async ({
@@ -55,8 +55,8 @@ test('a missing address, however deep, is answered with the "page not found" and
 
     // The footer link is written from the site's path, so it works from here.
     await page.getByRole('link', { name: 'Reuse with attribution' }).click();
-    await expect(page).toHaveTitle('Licence - Luca Lorenzon', { timeout: 5_000 });
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Licence');
+    await expect(page).toHaveTitle('About - Luca Lorenzon', { timeout: 5_000 });
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('About');
   };
 
   await retryWhenLive(check);

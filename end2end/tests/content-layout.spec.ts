@@ -11,7 +11,7 @@ import { retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
 //   3. role headings (h3) stand out from the page background
 //   4. at the end of the page the content ends at least 32px above the sticky footer
 //   5. consecutive headings, paragraphs and list items do not overlap
-//   6. the first section has no line above it (the header has its own); the others do
+//   6. the first section has no line above it when it opens the page (the header has its own); the others do
 //
 // The width of the lines (at most 80 characters, counted on the rendered
 // lines) is checked in readability.spec.ts.
@@ -85,7 +85,7 @@ async function snapshot(page: Page): Promise<Snapshot> {
 // ---- Rules (run in Node) -------------------------------------------------
 
 // Returns one message per broken rule; empty means the content is as agreed.
-function violations(s: Snapshot, hasRoles: boolean): string[] {
+function violations(s: Snapshot, hasRoles: boolean, startsWithSection: boolean): string[] {
   const where = `[${s.innerWidth}px]`;
   const out: string[] = [];
   const rule = (ok: boolean, message: string) => {
@@ -99,8 +99,8 @@ function violations(s: Snapshot, hasRoles: boolean): string[] {
     `h2 must be larger than body text: smallest h2 ${s.h2MinFontSize}px, paragraph ${s.pFontSize}px`,
   );
   rule(
-    s.h2TopBorders[0] === 0,
-    `the first h2 must have no top border (the header has its own line), has ${s.h2TopBorders[0]}px`,
+    startsWithSection ? s.h2TopBorders[0] === 0 : s.h2TopBorders[0] > 0,
+    `the first h2 must have a top border exactly when it opens the page (the header has its own line), has ${s.h2TopBorders[0]}px`,
   );
   s.h2TopBorders.slice(1).forEach((w, i) =>
     rule(w > 0, `h2 number ${i + 2} must have a top border, has ${w}px`),
@@ -119,7 +119,7 @@ function violations(s: Snapshot, hasRoles: boolean): string[] {
 
 // ---- Tests ---------------------------------------------------------------
 
-for (const { name: pageName, address, hasRoles } of TEXT_PAGES) {
+for (const { name: pageName, address, hasRoles, startsWithSection } of TEXT_PAGES) {
 for (const { name, width, height } of VIEWPORTS) {
   test(`content layout of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
@@ -127,7 +127,7 @@ for (const { name, width, height } of VIEWPORTS) {
     await retryWhenLive(async () => {
       await page.goto(address);
       await page.evaluate(() => document.fonts.ready);
-      const found = violations(await snapshot(page), hasRoles);
+      const found = violations(await snapshot(page), hasRoles, startsWithSection);
       expect(found.length, `content rules broken:\n${found.join('\n')}`).toBe(0);
     });
   });

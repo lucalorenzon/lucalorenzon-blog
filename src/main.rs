@@ -1,3 +1,4 @@
+mod about_page;
 mod home_page;
 mod licence_page;
 mod markdown;
@@ -25,6 +26,7 @@ fn build() -> Result<(), Box<dyn Error>> {
 
     fs::create_dir_all(&out_dir)?;
     fs::write(out_dir.join("index.html"), home_page::render_home_page())?;
+    fs::write(out_dir.join("about.html"), about_page::render_about_page())?;
     fs::write(
         out_dir.join("licence.html"),
         licence_page::render_licence_page(),

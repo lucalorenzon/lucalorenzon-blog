@@ -108,13 +108,13 @@ mod tests {
     }
 
     #[test]
-    fn footer_says_reuse_with_attribution_and_links_to_the_licence_from_any_depth() {
+    fn footer_says_reuse_with_attribution_and_links_to_the_about_page_from_any_depth() {
         let html = default_page();
         let footer = &html[html.find("<footer").expect("footer")..];
         assert!(footer.contains(">Reuse with attribution</a>"));
-        assert!(footer.contains("<a href=\"/licence.html\""));
+        assert!(footer.contains("<a href=\"/about.html\""));
 
         let html = render("https://host/blog/");
-        assert!(html.contains("<a href=\"/blog/licence.html\""));
+        assert!(html.contains("<a href=\"/blog/about.html\""));
     }
 }
