@@ -7,7 +7,7 @@
 ## Why
 
 The texts of the two articles from Medium are prepared in their own
-cards ([After Save Event](add-after-save-event-markdown.md),
+cards ([After Save Event](../wip/add-after-save-event-markdown.md),
 [hybris PK values](add-generate-pk-article-markdown.md)); this card
 makes them visible: it decides the address of each article and how it
 is reached, then writes the pages in the simplest way. Their look

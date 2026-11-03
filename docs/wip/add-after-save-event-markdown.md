@@ -2,15 +2,15 @@
 
 - **Opened:** 2026-11-03, by the user, splitting the card on adding the
   two articles already on Medium; in Now.
-- **Status:** noticed, not started.
+- **Status:** in progress since 2026-11-03.
 
 ## Why
 
 The site is meant to showcase the author's experience through articles,
 and its first two are already on Medium. Bringing them over was one
 card, split on 2026-11-03 into one card per article's text, one for
-the pages ([card](add-article-pages.md)) and one for their look
-([card](design-look-of-articles.md)).
+the pages ([card](../backlog/add-article-pages.md)) and one for their look
+([card](../backlog/design-look-of-articles.md)).
 
 This card writes the text of "After Save Event"
 (https://medium.com/@luca.lorenzon/after-save-event-905e7b9c2ff1) as a
@@ -60,7 +60,7 @@ HTML in the content, which lists each file by name.
 - **The link to the other article** becomes a Markdown link: the
   unit test forbids HTML.
 - **The note in a quote** at the top keeps the Markdown blockquote; its
-  look belongs to the [look card](design-look-of-articles.md).
+  look belongs to the [look card](../backlog/design-look-of-articles.md).
 - **The repository is public:** the text is read once more for employer
   internals before it is committed.
 

@@ -7,7 +7,7 @@
 ## Why
 
 Same reason and same split as the card
-[bring "After Save Event" into the site's Markdown](add-after-save-event-markdown.md).
+[bring "After Save Event" into the site's Markdown](../wip/add-after-save-event-markdown.md).
 This card writes the text of "How generate hybris PK values without
 hybris"
 (https://medium.com/@luca.lorenzon/how-generate-hybris-pk-values-without-hybris-e6b4d6c5ea05)

@@ -18,7 +18,7 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Bring "After Save Event" into the site's Markdown](backlog/add-after-save-event-markdown.md),
+- [Bring "After Save Event" into the site's Markdown](wip/add-after-save-event-markdown.md),
   the text from Medium under `content/`, typos corrected and the
   vendor's diagram replaced by a table: the first of the two articles
   already on Medium, which were one card until 2026-11-03.
