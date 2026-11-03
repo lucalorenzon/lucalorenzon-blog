@@ -8,7 +8,7 @@
 
 The articles from Medium bring three kinds of content the site has no
 look for: code blocks, notes in quotes and tables. Until this card is
-done, the [article pages](add-article-pages.md) show them with the
+done, the [article pages](../wip/add-article-pages.md) show them with the
 default style.
 
 ## Known from the start

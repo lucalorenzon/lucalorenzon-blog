@@ -18,7 +18,7 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Give each article a page of its own](backlog/add-article-pages.md):
+- [Give each article a page of its own](wip/add-article-pages.md):
   its address, how it is reached without the navigation, the simplest
   page; this is when the two articles from Medium become visible, their
   text being ready under `content/articles/`
