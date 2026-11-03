@@ -8,7 +8,7 @@
 
 The texts of the two articles from Medium are prepared in their own
 cards ([After Save Event](../done/2026-11-03_add-after-save-event-markdown.md),
-[hybris PK values](../wip/add-generate-pk-article-markdown.md)); this card
+[hybris PK values](../done/2026-11-03_add-generate-pk-article-markdown.md)); this card
 makes them visible: it decides the address of each article and how it
 is reached, then writes the pages in the simplest way. Their look
 (code, quotes, tables) is the [look card](design-look-of-articles.md);
