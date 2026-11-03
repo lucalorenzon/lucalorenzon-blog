@@ -36,6 +36,7 @@ mod tests {
             include_str!("../content/curriculum.md"),
             include_str!("../content/licence.md"),
             include_str!("../content/about.md"),
+            include_str!("../content/articles/after-save-event.md"),
         ] {
             let raw: Vec<Event> = Parser::new(source)
                 .filter(|e| matches!(e, Event::Html(_) | Event::InlineHtml(_)))

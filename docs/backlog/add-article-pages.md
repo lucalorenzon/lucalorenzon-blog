@@ -32,6 +32,10 @@ original, is the card
 - **No navigation yet:** the card
   [add site navigation](add-site-navigation.md) comes later, when the
   home page becomes the list of contents.
+- **A link to fix:** "After Save Event" links to the article on hybris
+  PK values on Medium, decided by the user on 2026-11-03 while the
+  other article had no address on the site. Once it has one, this card
+  points the link at it, so a reader is not sent off the site.
 - **Long lines of code:** some lines go well beyond 80 characters. The
   readability test does not count characters in code, but its checks on
   horizontal scroll and cut-off text apply to the whole page, also

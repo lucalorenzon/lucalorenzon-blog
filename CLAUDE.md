@@ -183,7 +183,7 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | Path | Content |
 |---|---|
 | `src/` | The page frame shared by every page (`page_frame.rs`), the home page, the about page, the licence page and the "page not found", the site's address (`site_address.rs`), the Markdown-to-HTML conversion (`markdown.rs`) and the build program that writes `index.html`, `about.html`, `licence.html` and `404.html` |
-| `content/` | The site's text in Markdown: today the curriculum, a version written for the site and cleaned of personal and employer data, and the text of the about and licence pages (`about.md`, `licence.md`); its licences, different from the code's, in `README.md` and `LICENSE-MIT-0` |
+| `content/` | The site's text in Markdown: today the curriculum, a version written for the site and cleaned of personal and employer data, the text of the about and licence pages (`about.md`, `licence.md`), and the articles in `articles/`, not yet shown on the site; its licences, different from the code's, in `README.md` and `LICENSE-MIT-0` |
 | `assets/` | Files copied as they are into the site: the favicon, and the fonts with their licences and attribution |
 | `style/input.css` | Tailwind entry point |
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
