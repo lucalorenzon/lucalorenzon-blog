@@ -77,5 +77,7 @@ live since 2026-10-26
   from shields.io, after the performance check.
 - [Measure the CO2 of a page view](backlog/measure-co2-of-a-page-view.md),
   an estimate from the bytes transferred.
+- [Let readers adjust font and spacing](backlog/let-readers-adjust-font-and-spacing.md),
+  as on a Kindle.
 - Further articles and everything around them, beyond the first two in
   Now. Not planned yet, on purpose.
