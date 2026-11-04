@@ -1,7 +1,7 @@
 # Let the Markdown ask for components for wide code and tables
 
 - **Opened:** 2026-11-04, by the user, while giving the articles a page
-  of their own ([card](../wip/add-article-pages.md)); in Now.
+  of their own ([card](../done/2026-11-04_add-article-pages.md)); in Now.
 - **Status:** noticed, not started.
 
 ## Why

@@ -18,19 +18,16 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Give each article a page of its own](wip/add-article-pages.md):
-  its address and the simplest page, text ready under
-  `content/articles/`
-  ([After Save Event](done/2026-11-03_add-after-save-event-markdown.md),
-  [hybris PK values](done/2026-11-03_add-generate-pk-article-markdown.md)).
-  No version is published from here until the navigation is done.
 - [Let the Markdown ask for components for wide code and tables](backlog/annotate-markdown-for-wide-content.md),
-  so the article pages pass the readability checks again.
+  so the article pages, built but not published
+  ([card](done/2026-11-04_add-article-pages.md)), pass the readability
+  checks again. No version is published until the navigation is done.
+- [Give the articles' code, quotes and tables a look](backlog/design-look-of-articles.md):
+  text size, code in a visible box, headings of articles, as the user
+  asked on reading the pages.
 
 ## Next
 
-- [Give the articles' code, quotes and tables a look](backlog/design-look-of-articles.md),
-  font, colours and quotes, shown with the default style until then.
 - [Add site navigation](backlog/add-site-navigation.md), once the
   article pages are accessible and in as good a state as the
   curriculum; then a version is published, the articles with it.
