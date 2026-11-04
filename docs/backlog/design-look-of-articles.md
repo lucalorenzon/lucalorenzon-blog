@@ -20,6 +20,14 @@ this card comes before the [navigation](add-site-navigation.md).
 - **Code blocks:** Java, XML, Groovy, SQL and properties. Undecided:
   font and colours. What long lines do on a phone belongs to the card
   on wide content.
+- **Since 2026-11-04 code blocks are a component** (card on wide
+  content, slice 1): they scroll sideways and show a "wrap" toggle
+  when a line does not fit. Two things for this card. The toggle's
+  threshold counts each character as half an em, the width of IBM VGA
+  8x16 (`src/markdown.rs`, `style/input.css`): a new code font means a
+  new factor. And when the reader widens the letter spacing, code can
+  scroll with the toggle hidden, out of reach of a keyboard-only user
+  on Safari: accepted for now, alternatives to look for here.
 - **Quotes:** both articles open a note or a warning with a blockquote.
 - **Tables:** "After Save Event" has one (the transaction cases), the
   article on hybris PK values two (the bits of a key and the

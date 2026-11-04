@@ -2,6 +2,10 @@
    would also pick up words from the documentation as classes. */
 @import "tailwindcss" source(none);
 @source "../src/**/*.rs";
+/* The class names the build generates for code blocks (numbers read from the
+   articles), listed by the build. Scanning the generated HTML instead would
+   turn words of the prose ("table", "block"...) into stray utilities. */
+@source "../target/generated/code-classes.txt";
 
 @font-face {
   font-family: "IBM VGA 8x16";
@@ -138,8 +142,10 @@ body {
   }
 
   /* Roles: inverse video, as wide as the text. */
+  /* A long word in a heading (a class name in an article) must break rather
+     than push the page sideways. */
   & h3 {
-    @apply mt-6 w-fit bg-amber px-2 text-black;
+    @apply mt-6 w-fit bg-amber px-2 text-black wrap-anywhere;
   }
 
   /* "Main work" and similar: underlined. */
@@ -180,4 +186,67 @@ body {
    own look. Visible focus ring (WCAG 2.4.7). */
 @utility logo-link {
   @apply block justify-self-start [grid-area:logo] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber;
+}
+
+/* Code blocks (Markdown code rendered by src/markdown.rs). The block is a
+   container named "code": the build gives it @max-[Wem]/code:wrap-shown, W
+   being its longest line in characters times 0.5 (the advance of the code
+   font, 8px at 16px), so the "wrap" toggle shows only when a line does not
+   fit. em, not ch: Chromium does not evaluate ch again in a container query
+   when the web font arrives, so on a first visit the toggle was wrong. By
+   default lines are kept and the scroller scrolls sideways; with the toggle
+   checked they wrap. */
+@utility code-block {
+  @apply font-mono mt-9;
+  container: code / inline-size;
+
+  &:has(input:checked) .code-text {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* The toggle is inside the scroller: outside it, the scroller would be a
+   scrollable region with no focusable content (axe) and browsers disagree
+   on giving it a tab stop. Sticky, so it stays in view while scrolling. */
+@utility code-scroller {
+  @apply overflow-x-auto;
+}
+
+@utility code-wrap-toggle {
+  @apply hidden w-max font-sans sticky start-0;
+
+  & input {
+    accent-color: var(--color-amber);
+    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber;
+  }
+}
+
+/* Shows the toggle. Used only behind @max-[Wem]/code: (see above). */
+@utility wrap-shown {
+  & .code-wrap-toggle {
+    display: block;
+  }
+}
+
+/* pre gets its own monospace font from the browser; it must inherit the
+   block's, or the thresholds and the indents would not match the code font. */
+@utility code-text {
+  @apply m-0;
+  font: inherit;
+
+  & code {
+    font: inherit;
+  }
+}
+
+@utility code-line {
+  @apply block;
+}
+
+/* A line indented N columns: the first segment keeps the spaces of the text
+   as they are, a wrapped continuation starts at N + 4 columns. */
+@utility code-line-indent-* {
+  padding-inline-start: calc((--value(integer) + 4) * 1ch);
+  text-indent: calc((--value(integer) + 4) * -1ch);
 }

@@ -35,10 +35,13 @@ export const VIEWPORTS = [
 // paragraphs; the licence page has neither, so those two checks apply only
 // where the page has some. The about page opens with a paragraph, so its
 // first section is not the first element and has a line above it.
-// The article pages stay out of these checks until the card
-// docs/backlog/annotate-markdown-for-wide-content.md is done (wide code and tables).
+// The After Save Event article has no roles (h3), several consecutive
+// paragraphs and opens with a paragraph. The hybris PK article stays out
+// until the card docs/wip/annotate-markdown-for-wide-content.md handles its
+// 6-column table (code blocks are done).
 export const TEXT_PAGES = [
   { name: 'home page', address: './', hasRoles: true, hasConsecutiveParagraphs: true, startsWithSection: true },
   { name: 'licence page', address: './licence.html', hasRoles: false, hasConsecutiveParagraphs: false, startsWithSection: true },
   { name: 'about page', address: './about.html', hasRoles: false, hasConsecutiveParagraphs: false, startsWithSection: false },
+  { name: 'After Save Event page', address: './articles/after-save-event.html', hasRoles: false, hasConsecutiveParagraphs: true, startsWithSection: false },
 ];

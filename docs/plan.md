@@ -21,7 +21,9 @@ live since 2026-10-26
 - [Let the Markdown ask for components for wide code and tables](wip/annotate-markdown-for-wide-content.md),
   so the article pages, built but not published
   ([card](done/2026-11-04_add-article-pages.md)), pass the readability
-  checks again. No version is published until the navigation is done.
+  checks again. Code is done, "After Save Event" is back in the checks;
+  tables and the hybris PK article remain. No version is published
+  until the navigation is done.
 - [Give the articles' code, quotes and tables a look](backlog/design-look-of-articles.md):
   text size, code in a visible box, headings of articles, as the user
   asked on reading the pages.

@@ -105,6 +105,26 @@ with width prefixes too. First use: `long-text-column`, in the card
 [put the curriculum on the home page](../done/2026-11-01_put-curriculum-on-home-page.md).
 The rule of this decision still holds: the page carries only our names.
 
+**Note, 2026-11-04: one threshold per code block, an exception.** A
+code block shows its "wrap" toggle only when its longest line does not
+fit its box: a container query whose threshold is that line's length,
+different for every block and known only when the build reads the
+article. It cannot be a named threshold (point 4), nor one of our
+named styles with a value: Tailwind 4.3.3 does not substitute a value
+inside a container query's condition, and drops such a style without
+an error. **Chosen, by the user:** the block carries Tailwind's own
+container prefix with our style behind it,
+`code-block @max-[66em]/code:wrap-shown`, read "show the toggle when
+the box named `code` is narrower than 66 em". It follows point 2 (a
+variant switched on with a prefix); it departs from point 1 and point
+4 for this prefix only. The build lists the classes it generates in
+`target/generated/code-classes.txt`, which the stylesheet scans
+(`@source`), because Tailwind cannot find numbers read from the
+articles in the source code. Rejected: the Rust build writing CSS
+rules itself, which keeps our names but splits the presentation
+between the stylesheet and the code. Card:
+[Markdown annotations for wide content](../wip/annotate-markdown-for-wide-content.md).
+
 ## References
 
 - Card: [name styles in the stylesheet](../done/2026-10-29_name-styles-in-the-stylesheet.md)

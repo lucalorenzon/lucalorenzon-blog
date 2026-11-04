@@ -186,7 +186,14 @@ async function spacingProblems(page: Page): Promise<string[]> {
         const rect = el.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) continue;
         const style = getComputedStyle(el);
-        const clipsX = style.overflowX !== 'visible';
+        // Code scrolls sideways on purpose: line breaks are meaningful in
+        // code (WCAG technique G224), and the "wrap" toggle offers to wrap the
+        // lines when they do not fit. Only horizontal scrolling of the code
+        // scroller is allowed here. With the reader's letter spacing applied
+        // here the lines are wider than the toggle's threshold (computed
+        // without it), so the code scrolls although the toggle may be hidden:
+        // nothing is lost, the code is still reachable by scrolling.
+        const clipsX = style.overflowX !== 'visible' && !el.matches('.code-scroller');
         const clipsY = style.overflowY !== 'visible';
         if ((clipsX && el.scrollWidth > el.clientWidth + 1) || (clipsY && el.scrollHeight > el.clientHeight + 1)) {
           out.push(

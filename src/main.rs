@@ -45,6 +45,27 @@ fn build() -> Result<(), Box<dyn Error>> {
         out_dir.join("404.html"),
         not_found_page::render_not_found_page(&address),
     )?;
+    write_code_classes()?;
+    Ok(())
+}
+
+/// Where the build lists the class names of the code components, for Tailwind (style/input.css).
+/// Outside the published site on purpose.
+const CODE_CLASSES_FILE: &str = "target/generated/code-classes.txt";
+
+/// Tailwind must not scan the generated HTML: words of the articles ("table", "block"...) would
+/// become unrelated utilities. It scans this exact list instead.
+fn write_code_classes() -> Result<(), Box<dyn Error>> {
+    let path = PathBuf::from(CODE_CLASSES_FILE);
+    if let Some(folder) = path.parent() {
+        fs::create_dir_all(folder)?;
+    }
+    let mut list = markdown::take_generated_classes()
+        .into_iter()
+        .collect::<Vec<_>>()
+        .join("\n");
+    list.push('\n');
+    fs::write(path, list)?;
     Ok(())
 }
 
