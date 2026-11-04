@@ -174,6 +174,11 @@ body {
   & a {
     @apply underline;
   }
+
+  /* Same colour as the code blocks, so code reads as code in a sentence too. */
+  & :not(pre) > code {
+    @apply text-code-text;
+  }
 }
 
 @utility footer-sticky-bottom {

@@ -105,9 +105,15 @@ backgrounds with off-white code.
 Left open by this slice: code inside a sentence (`advanced.properties`)
 stays amber with no background, so it no longer matches the blocks.
 
+## Slice 2: code inside a sentence (2026-11-04)
+
+**Chosen, by the user: off-white too,** the same `#e6e6e6` as the
+blocks, with no background, so code reads as code wherever it is.
+Contrast on the page's black: 16.8:1. Rejected: amber as before, which
+matched the prose and no longer matched the blocks.
+
 ## Questions
 
-- Code inside a sentence: off-white like the blocks, or amber as now.
 - The look of each kind, within the readability rules.
 - The text size, and whether it changes for the curriculum too.
 - How the article styles are kept apart from the curriculum's, which
