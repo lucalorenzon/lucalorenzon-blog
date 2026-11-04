@@ -47,7 +47,7 @@ on `main` without going live; but until the navigation is done no
 version is published, other changes included. The order in the plan
 became: these pages, the
 [card on Markdown annotations for wide content](../wip/annotate-markdown-for-wide-content.md),
-the [look card](../backlog/design-look-of-articles.md), the
+the [look card](../wip/design-look-of-articles.md), the
 navigation, then a version.
 
 ### Where the title lives
@@ -85,7 +85,7 @@ sections out of place, and the code in need of a visible box; and set
 a direction for the headings of articles, different from the
 curriculum's. All of it is the look of the articles: **chosen, by the
 user: close this card with the pages as they are and move the
-observations to the [look card](../backlog/design-look-of-articles.md).**
+observations to the [look card](../wip/design-look-of-articles.md).**
 
 ## Results
 

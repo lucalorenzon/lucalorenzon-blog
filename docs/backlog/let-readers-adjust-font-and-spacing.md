@@ -33,4 +33,4 @@ it, and the threshold can follow.
 - Which settings: size, line spacing, letter spacing, font.
 - Where the control lives, and whether the choice is remembered.
 - How it fits the site's look, which the
-  [look card](design-look-of-articles.md) is still deciding.
+  [look card](../wip/design-look-of-articles.md) is still deciding.

@@ -24,7 +24,7 @@ live since 2026-10-26
   checks again. Code is done, "After Save Event" is back in the checks;
   tables and the hybris PK article remain. No version is published
   until the navigation is done.
-- [Give the articles' code, quotes and tables a look](backlog/design-look-of-articles.md):
+- [Give the articles' code, quotes and tables a look](wip/design-look-of-articles.md):
   text size, code in a visible box, headings of articles, as the user
   asked on reading the pages.
 

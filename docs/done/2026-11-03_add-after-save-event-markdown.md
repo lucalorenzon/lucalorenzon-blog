@@ -12,7 +12,7 @@ The site is meant to showcase the author's experience through articles,
 and its first two are already on Medium. Bringing them over was one
 card, split on 2026-11-03 into one card per article's text, one for
 the pages ([card](../backlog/add-article-pages.md)) and one for their
-look ([card](../backlog/design-look-of-articles.md)). This card wrote
+look ([card](../wip/design-look-of-articles.md)). This card wrote
 the text of "After Save Event"
 (https://medium.com/@luca.lorenzon/after-save-event-905e7b9c2ff1) as
 Markdown. The user chose to prepare the text before the pages,

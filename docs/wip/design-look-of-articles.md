@@ -4,7 +4,7 @@
   two articles already on Medium; in Next. Narrowed on 2026-11-04,
   when what wide code and tables do on a phone moved to the card
   [let the Markdown ask for components for wide code and tables](../wip/annotate-markdown-for-wide-content.md).
-- **Status:** noticed, not started.
+- **Status:** in progress since 2026-11-04.
 
 ## Why
 
@@ -13,7 +13,7 @@ look for: code blocks, notes in quotes and tables. Until this card is
 done, the [article pages](../done/2026-11-04_add-article-pages.md) show them with the
 default style. The user wants the article pages accessible and in as
 good a state as the curriculum before the navigation links to them, so
-this card comes before the [navigation](add-site-navigation.md).
+this card comes before the [navigation](../backlog/add-site-navigation.md).
 
 ## Known from the start
 

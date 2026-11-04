@@ -40,7 +40,7 @@ What each component does is part of this card. Ideas from the user:
 
 - **It replaces part of the look card:** what wide code and tables do
   on a phone moved here from the card
-  [give the articles' code, quotes and tables a look](../backlog/design-look-of-articles.md),
+  [give the articles' code, quotes and tables a look](design-look-of-articles.md),
   which keeps font, colours and quotes.
 - **The readability test may change:** if a component lets code or a
   table scroll inside its box, the rule that counts that as cut-off
@@ -172,7 +172,7 @@ Two changes came with the code:
   The code font's characters are exactly half an em wide, so the
   result is the same and still follows enlarged text. The cost: the
   factor 0.5 belongs to the font IBM VGA 8x16; if the
-  [look card](../backlog/design-look-of-articles.md) changes the code
+  [look card](design-look-of-articles.md) changes the code
   font, the factor changes too, and the browser tests notice it.
 - **ADR-001 has an exception:** the threshold cannot be one of our
   named styles, because Tailwind does not accept a value inside a
@@ -211,7 +211,7 @@ threshold computed without it: the code may scroll while the toggle
 stays hidden. Pointer and touch users still scroll it; a keyboard-only
 user on Safari cannot. **Accepted, by the user,** as a narrow case;
 alternatives belong to the
-[look card](../backlog/design-look-of-articles.md). Rejected: a
+[look card](design-look-of-articles.md). Rejected: a
 threshold 24% higher, which would show a toggle that does nothing in a
 band of widths, against "only where needed". The readability test's
 exception is therefore wider than planned: the code's scrolling box
