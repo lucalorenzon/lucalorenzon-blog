@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-03
+Last updated: 2026-11-04
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -19,18 +19,21 @@ live since 2026-10-26
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
 - [Give each article a page of its own](wip/add-article-pages.md):
-  its address, how it is reached without the navigation, the simplest
-  page; this is when the two articles from Medium become visible, their
-  text being ready under `content/articles/`
+  its address and the simplest page, text ready under
+  `content/articles/`
   ([After Save Event](done/2026-11-03_add-after-save-event-markdown.md),
   [hybris PK values](done/2026-11-03_add-generate-pk-article-markdown.md)).
+  No version is published from here until the navigation is done.
+- [Let the Markdown ask for components for wide code and tables](backlog/annotate-markdown-for-wide-content.md),
+  so the article pages pass the readability checks again.
 
 ## Next
 
 - [Give the articles' code, quotes and tables a look](backlog/design-look-of-articles.md),
-  shown with the default style until then.
-- [Add site navigation](backlog/add-site-navigation.md), after the article
-  pages, when the home page becomes the list of contents.
+  font, colours and quotes, shown with the default style until then.
+- [Add site navigation](backlog/add-site-navigation.md), once the
+  article pages are accessible and in as good a state as the
+  curriculum; then a version is published, the articles with it.
 - [Add SEO and Open Graph tags to every page](backlog/add-seo-and-open-graph-tags.md),
   from fields each article declares, checked in the build, with a
   block-list of pages left out.
