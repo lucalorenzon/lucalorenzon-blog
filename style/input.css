@@ -56,6 +56,12 @@
   --font-mono: "IBM VGA 8x16", monospace;
   --color-amber: #dd9911;
   --color-black: #000000;
+  /* Code blocks: off-white text on a near-black surface, not pure white,
+     which smears on a dark background for readers with astigmatism.
+     Contrast 13.9:1 for the code; the amber "wrap" label on the surface is
+     7.16:1, just above the AAA 7:1 the site checks. */
+  --color-code-surface: #1a1a1a;
+  --color-code-text: #e6e6e6;
 }
 
 html,
@@ -195,9 +201,12 @@ body {
    fit. em, not ch: Chromium does not evaluate ch again in a container query
    when the web font arrives, so on a first visit the toggle was wrong. By
    default lines are kept and the scroller scrolls sideways; with the toggle
-   checked they wrap. */
+   checked they wrap. The box (amber border, padding, dark surface) is on
+   the block itself: container queries measure its content box, which is
+   what the scroller fills, so the toggle still shows exactly when a line
+   overflows. */
 @utility code-block {
-  @apply font-mono mt-9;
+  @apply font-mono mt-9 p-2 border border-amber bg-code-surface;
   container: code / inline-size;
 
   &:has(input:checked) .code-text {
@@ -214,7 +223,7 @@ body {
 }
 
 @utility code-wrap-toggle {
-  @apply hidden w-max font-sans sticky start-0;
+  @apply hidden w-max font-sans sticky start-0 text-amber;
 
   & input {
     accent-color: var(--color-amber);
@@ -232,7 +241,7 @@ body {
 /* pre gets its own monospace font from the browser; it must inherit the
    block's, or the thresholds and the indents would not match the code font. */
 @utility code-text {
-  @apply m-0;
+  @apply m-0 text-code-text;
   font: inherit;
 
   & code {

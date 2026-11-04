@@ -67,8 +67,47 @@ following; the card was closed and these moved here.
   things to highlight differ. The curriculum keeps its headings and
   its section lines.
 
+## Slice 1: a box for code (2026-11-04)
+
+Seeing the first slice of the card on wide content at work, the user
+found code blocks "indistinguishable from the rest of the text": amber
+code on the page's black, with no edge. The box this card already
+named as the minimum for code came first, in a slice of its own. A
+side effect: with a visible right edge, a line cut by the box reads as
+continuing, which the scrolling code needed (Nielsen Norman Group:
+content out of view is often missed).
+
+**Chosen, by the user: off-white code (`#e6e6e6`) on a dark grey
+(`#1a1a1a`), in a 1-pixel amber frame with an 8-pixel inner margin.**
+The user compared, on the real page at iPhone SE width, the frame
+alone on black and three backgrounds with the amber code, then four
+backgrounds with off-white code.
+
+- **Amber code on a lighter background** was the first idea. The site
+  checks enhanced contrast (WCAG 1.4.6, at least 7:1), and the amber
+  allows little: 7.16:1 on `#1a1a1a`, 7.58:1 on the amber `#1a1306`,
+  6.55:1 on `#222222`, which fails. Grey and amber backgrounds of the
+  same lightness were compared too, since the user's first two
+  favourites differed in lightness more than in hue. Rejected: the
+  background could barely leave black, and the margin over 7:1 would
+  be thin for the font and size changes this card may still make.
+- **Off-white code** sets code apart at a glance, as in a terminal,
+  with a contrast of 13.9:1 that leaves room for those changes, and a
+  neutral base for syntax colours if they ever come. Off-white rather
+  than pure white, which smears on a dark background for readers with
+  astigmatism. The cost: the site gets a second text colour besides
+  amber. The frame and the "wrap" toggle stay amber; the toggle's
+  label, amber on `#1a1a1a`, keeps 7.16:1.
+- **Rejected: the lighter backgrounds** `#2a2a2a` and `#33260c` with
+  off-white code, which stand out more; the user chose the darker
+  grey.
+
+Left open by this slice: code inside a sentence (`advanced.properties`)
+stays amber with no background, so it no longer matches the blocks.
+
 ## Questions
 
+- Code inside a sentence: off-white like the blocks, or amber as now.
 - The look of each kind, within the readability rules.
 - The text size, and whether it changes for the curriculum too.
 - How the article styles are kept apart from the curriculum's, which
