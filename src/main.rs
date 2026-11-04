@@ -1,4 +1,5 @@
 mod about_page;
+mod article_page;
 mod home_page;
 mod licence_page;
 mod markdown;
@@ -27,6 +28,15 @@ fn build() -> Result<(), Box<dyn Error>> {
     fs::create_dir_all(&out_dir)?;
     fs::write(out_dir.join("index.html"), home_page::render_home_page())?;
     fs::write(out_dir.join("about.html"), about_page::render_about_page())?;
+    fs::create_dir_all(out_dir.join("articles"))?;
+    fs::write(
+        out_dir.join("articles/after-save-event.html"),
+        article_page::render_after_save_event_page(),
+    )?;
+    fs::write(
+        out_dir.join("articles/how-to-generate-hybris-pk-values-without-hybris.html"),
+        article_page::render_hybris_pk_page(),
+    )?;
     fs::write(
         out_dir.join("licence.html"),
         licence_page::render_licence_page(),

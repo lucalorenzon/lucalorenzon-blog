@@ -48,11 +48,15 @@ test.beforeAll(() => {
 
 // The pages built from the shared frame. The "page not found" is opened as
 // its own file: only the host serves it for a missing address, so a live run
-// leaves it out (the live check in not-found.spec.ts covers it).
+// leaves it out (the live check in not-found.spec.ts covers it). The article
+// pages are not published until the site navigation exists, so a live run
+// leaves them out too.
 const PAGES = [
   { name: 'home page', address: './', onlyLocal: false },
   { name: 'licence page', address: './licence.html', onlyLocal: false },
   { name: 'about page', address: './about.html', onlyLocal: false },
+  { name: 'After Save Event article page', address: './articles/after-save-event.html', onlyLocal: true },
+  { name: 'hybris PK article page', address: './articles/how-to-generate-hybris-pk-values-without-hybris.html', onlyLocal: true },
   { name: 'page not found', address: './404.html', onlyLocal: true },
 ];
 

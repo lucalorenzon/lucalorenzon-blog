@@ -1,5 +1,3 @@
-# How to generate hybris PK values without hybris
-
 The logic of the PK is a bit complex. More than one implementation of
 the PK exists: a legacy one, based on UUIDs, and another based on a
 counter, which is the one I'm going to explain.

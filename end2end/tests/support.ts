@@ -35,6 +35,8 @@ export const VIEWPORTS = [
 // paragraphs; the licence page has neither, so those two checks apply only
 // where the page has some. The about page opens with a paragraph, so its
 // first section is not the first element and has a line above it.
+// The article pages stay out of these checks until the card
+// docs/backlog/annotate-markdown-for-wide-content.md is done (wide code and tables).
 export const TEXT_PAGES = [
   { name: 'home page', address: './', hasRoles: true, hasConsecutiveParagraphs: true, startsWithSection: true },
   { name: 'licence page', address: './licence.html', hasRoles: false, hasConsecutiveParagraphs: false, startsWithSection: true },

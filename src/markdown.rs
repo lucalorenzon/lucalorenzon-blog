@@ -1,9 +1,9 @@
-use pulldown_cmark::{Parser, html};
+use pulldown_cmark::{Options, Parser, html};
 
-/// Converts CommonMark text to an HTML fragment (no extensions enabled).
+/// Converts CommonMark text to an HTML fragment. Only one extension is enabled: tables.
 pub fn to_html(markdown: &str) -> String {
     let mut out = String::new();
-    html::push_html(&mut out, Parser::new(markdown));
+    html::push_html(&mut out, Parser::new_ext(markdown, Options::ENABLE_TABLES));
     out
 }
 
@@ -22,6 +22,14 @@ mod tests {
     #[test]
     fn backslash_line_break_becomes_br() {
         assert!(to_html("a\\\nb").contains("a<br />\nb"));
+    }
+
+    #[test]
+    fn table_becomes_table_with_header_and_data_cells() {
+        let html = to_html("| a | b |\n|---|---|\n| c | d |\n");
+        assert!(html.contains("<table>"));
+        assert!(html.contains("<th>a</th>"));
+        assert!(html.contains("<td>d</td>"));
     }
 
     #[test]
