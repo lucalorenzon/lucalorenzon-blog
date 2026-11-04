@@ -25,8 +25,8 @@ live since 2026-10-26
   tables and the hybris PK article remain. No version is published
   until the navigation is done.
 - [Give the articles' code, quotes and tables a look](wip/design-look-of-articles.md):
-  text size, code in a visible box, headings of articles, as the user
-  asked on reading the pages.
+  code has its box and colours; text size, headings of articles,
+  quotes and tables remain, as the user asked on reading the pages.
 
 ## Next
 
@@ -79,5 +79,10 @@ live since 2026-10-26
   an estimate from the bytes transferred.
 - [Let readers adjust font and spacing](backlog/let-readers-adjust-font-and-spacing.md),
   as on a Kindle.
+- [Break wrapped code lines by grammar](backlog/break-wrapped-code-by-grammar.md),
+  rather than wherever the width runs out.
+- [Add syntax colours to code](backlog/add-syntax-colours-to-code.md),
+  within the contrast the site checks; it may share a tool with the
+  grammar breaks.
 - Further articles and everything around them, beyond the first two in
   Now. Not planned yet, on purpose.

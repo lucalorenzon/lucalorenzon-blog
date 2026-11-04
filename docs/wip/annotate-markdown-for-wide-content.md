@@ -140,7 +140,11 @@ the middle of a word. But grammar is computed for one width, and at 35
 characters even grammar needs the indent fallback.
 **Chosen, by the user: grammar with indent as fallback, in two slices:**
 indent now, the grammar break points in a later slice, for the
-languages of the articles. Rejected: a formatter running in the
+languages of the articles. Once the box and colours of code were in
+place, the user judged code good enough for now and moved the grammar
+slice to a card of its own, in Later:
+[break wrapped code lines by grammar](../backlog/break-wrapped-code-by-grammar.md).
+Rejected: a formatter running in the
 browser, which needs a script and a formatter per language, and adds
 weight to the page, a worry of the user's.
 
@@ -232,6 +236,5 @@ page sideways under the reader's spacing.
 
 - Tables: the form of their annotation, since Markdown has no place
   for it, and what the component does on a phone and on a wide screen.
-- The grammar break points for code, a slice of their own.
 - The hybris PK article back in the readability and content-layout
   checks, which ends this card.
