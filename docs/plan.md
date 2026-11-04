@@ -18,7 +18,7 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Let the Markdown ask for components for wide code and tables](backlog/annotate-markdown-for-wide-content.md),
+- [Let the Markdown ask for components for wide code and tables](wip/annotate-markdown-for-wide-content.md),
   so the article pages, built but not published
   ([card](done/2026-11-04_add-article-pages.md)), pass the readability
   checks again. No version is published until the navigation is done.

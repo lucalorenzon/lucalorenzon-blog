@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-04, by the user, while giving the articles a page
   of their own ([card](../done/2026-11-04_add-article-pages.md)); in Now.
-- **Status:** noticed, not started.
+- **Status:** in progress since 2026-11-04.
 
 ## Why
 
@@ -40,7 +40,7 @@ What each component does is part of this card. Ideas from the user:
 
 - **It replaces part of the look card:** what wide code and tables do
   on a phone moved here from the card
-  [give the articles' code, quotes and tables a look](design-look-of-articles.md),
+  [give the articles' code, quotes and tables a look](../backlog/design-look-of-articles.md),
   which keeps font, colours and quotes.
 - **The readability test may change:** if a component lets code or a
   table scroll inside its box, the rule that counts that as cut-off
@@ -59,7 +59,7 @@ What each component does is part of this card. Ideas from the user:
 - **Before the navigation:** the user wants the article pages
   accessible and in as good a state as the curriculum, automatic
   checks and the user's own validation, before the
-  [navigation](add-site-navigation.md) links to them.
+  [navigation](../backlog/add-site-navigation.md) links to them.
 
 ## Questions
 

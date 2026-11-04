@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-03, by the user, splitting the card on adding the
   two articles already on Medium; in Next. Narrowed on 2026-11-04,
   when what wide code and tables do on a phone moved to the card
-  [let the Markdown ask for components for wide code and tables](annotate-markdown-for-wide-content.md).
+  [let the Markdown ask for components for wide code and tables](../wip/annotate-markdown-for-wide-content.md).
 - **Status:** noticed, not started.
 
 ## Why

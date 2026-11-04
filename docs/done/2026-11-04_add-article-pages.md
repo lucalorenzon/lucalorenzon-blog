@@ -46,7 +46,7 @@ pages. Publishing happens only on a version tag, so the pages can be
 on `main` without going live; but until the navigation is done no
 version is published, other changes included. The order in the plan
 became: these pages, the
-[card on Markdown annotations for wide content](../backlog/annotate-markdown-for-wide-content.md),
+[card on Markdown annotations for wide content](../wip/annotate-markdown-for-wide-content.md),
 the [look card](../backlog/design-look-of-articles.md), the
 navigation, then a version.
 
@@ -71,7 +71,7 @@ would pass. On Medium both code and tables scroll sideways on a phone.
 The user saw in it a need that was bound to come, telling the
 presentation layer how to show a piece of text without putting HTML
 in the Markdown, and opened the
-[card on Markdown annotations for wide content](../backlog/annotate-markdown-for-wide-content.md),
+[card on Markdown annotations for wide content](../wip/annotate-markdown-for-wide-content.md),
 which takes the question from the look card. **Chosen, by the user:
 the article pages stay out of the readability and content-layout
 checks until that card is done;** they are in the local accessibility
