@@ -1,20 +1,29 @@
-# Add site navigation
+# Add a menu for the site
 
-- **Opened:** 2026-10-29, raised by the user while the card
+- **Opened:** 2026-10-29, raised by the user as the card on site
+  navigation, while the card
   [adapt the header to screen width](../done/2026-10-29_adapt-header-to-screen-width.md)
-  was being discussed.
-- **Status:** started on 2026-11-06, in Now.
+  was being discussed. Split by the user on 2026-11-06: the list of
+  articles on the home page went to a card of its own,
+  [list the articles on the home page](list-articles-on-home-page.md).
+  In Next.
+- **Status:** noticed, not started.
 
 ## Why
 
-The site has a single page today. As articles and other pages arrive,
-the reader needs an easy way to move around the site: a tool that offers
-the actions available to them. The user wants this card to state the
-need, not a form for it.
+As articles and other pages arrive, the reader needs an easy way to
+move around the site: a tool that offers the actions available to
+them. The user wants this card to state the need, not a form for it.
 
 The header already leaves room for it: on every width it holds the
 site's identity on the left and keeps space for this tool on the right
 ([card](../done/2026-10-29_adapt-header-to-screen-width.md)).
+
+On 2026-11-06 the user chose to publish the articles first with what
+the site already has: the logo leading to the home page, the list of
+articles there, the footer's link to the about page
+([card](list-articles-on-home-page.md)). This card brings the visible
+tool, and the actions beyond finding and reading the articles.
 
 ## Entries the user has in mind
 
@@ -35,15 +44,8 @@ unavailable, so it does not mislead.
 
 ## When to pick this up
 
-After the two articles already published on Medium are on the site. The
-home page then stops showing the curriculum and becomes the list of
-contents, and the menu comes with that change. Planned on 2026-10-31,
-together with the order that comes first: the
-[curriculum on the home page](../done/2026-11-01_put-curriculum-on-home-page.md), then the
-[site's own domain](../done/2026-11-01_choose-site-address.md), then the articles.
-
-The menu is not needed to move the domain: the curriculum alone gives
-the domain real content to be first indexed on.
+After the [list of articles on the home page](list-articles-on-home-page.md)
+is done and its version published.
 
 ## Questions
 

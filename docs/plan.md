@@ -14,11 +14,9 @@ live since 2026-10-26
 
 ## Now
 
-- [Add site navigation](wip/add-site-navigation.md): the article
-  pages are now accessible and in as good a state as the curriculum,
-  validated by the user on 2026-11-06
-  ([card](done/2026-11-06_design-look-of-articles.md)); then a version
-  is published, the articles with it.
+- [List the articles on the home page](backlog/list-articles-on-home-page.md),
+  the curriculum on a page of its own, so a reader finds the articles;
+  then a version is published, the articles with it.
 
 ## Next
 
@@ -29,6 +27,9 @@ live since 2026-10-26
 - [Review the logo](backlog/review-the-logo.md): on the light page the
   logo drawn in characters is hard to read; the user leans towards the
   written logo everywhere.
+- [Add a menu for the site](backlog/add-site-menu.md), in the room the
+  header keeps on the right: search, categories, subscribing,
+  settings, after the list of articles is published.
 - [Add SEO and Open Graph tags to every page](backlog/add-seo-and-open-graph-tags.md),
   from fields each article declares, checked in the build, with a
   block-list of pages left out.

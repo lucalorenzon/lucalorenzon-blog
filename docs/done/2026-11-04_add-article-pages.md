@@ -4,7 +4,7 @@
   two articles already on Medium; in Now.
 - **Status:** done on 2026-11-04. The pages are built, not linked from
   any other page and not published: no version is published until the
-  [navigation](../wip/add-site-navigation.md) exists.
+  [navigation](../backlog/list-articles-on-home-page.md) exists.
 
 ## Why
 

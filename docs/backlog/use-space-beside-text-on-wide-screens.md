@@ -25,8 +25,8 @@ size right: what weighs is the empty space, not small text.
   kinds: summary, experience, competencies, education, training,
   languages.
 - **The home page will change:** the card
-  [add site navigation](../wip/add-site-navigation.md) expects it to become
-  the list of contents once articles arrive, and the navigation itself
+  [list the articles on the home page](list-articles-on-home-page.md)
+  makes it the list of articles, and the [menu](add-site-menu.md)
   will need room. A layout for wide screens should not have to be
   redone then.
 - **A related card exists:**
