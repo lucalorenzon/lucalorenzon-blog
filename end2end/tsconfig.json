@@ -12,5 +12,8 @@
     "strict": true,
     "noEmit": true
   },
+  // tools/ holds plain JavaScript scripts run by hand (they generate source
+  // files, they are not tests), so they are left out of the type check on
+  // purpose.
   "include": ["playwright.config.ts", "tests/**/*.ts"]
 }

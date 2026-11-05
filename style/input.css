@@ -2,8 +2,8 @@
    would also pick up words from the documentation as classes. */
 @import "tailwindcss" source(none);
 @source "../src/**/*.rs";
-/* The class names the build generates for code blocks (numbers read from the
-   articles), listed by the build. Scanning the generated HTML instead would
+/* The class names the build generates for code blocks and tables (numbers read
+   from the articles), listed by the build. Scanning the generated HTML instead would
    turn words of the prose ("table", "block"...) into stray utilities. */
 @source "../target/generated/code-classes.txt";
 
@@ -257,9 +257,10 @@ body {
      plus a line between columns and none at the outer sides. Odd body rows sit
      on the code surface colour, even rows on the page background, so the eye
      can follow a row without boxes. The stripe is the code surface colour, so
-     the ink and the accent code in a cell keep their contrast. It sits in the flow like a paragraph (2.25em above). */
+     the ink and the accent code in a cell keep their contrast. The space above
+     (2.25em, like a paragraph) belongs to its wrapper, table-with-viewer. */
   & table {
-    @apply mt-[2.25em] w-full border-collapse border-y border-accent-line;
+    @apply w-full border-collapse border-y border-accent-line;
   }
 
   & th,
@@ -419,4 +420,228 @@ body {
 @utility code-line-indent-* {
   padding-inline-start: calc((--value(integer) + 4) * 1ch);
   text-indent: calc((--value(integer) + 4) * -1ch);
+}
+
+/* Tables (Markdown tables rendered by src/markdown.rs). The wrapper holds two
+   forms of the same data and shows one: the table, or the record viewer when
+   the wrapper is too narrow for readable columns. It is a container named
+   "table": the build gives it @max-[Tem]/table:viewer-shown, T being the width
+   below which the columns are no longer readable (src/table_widths.rs). em
+   there is the wrapper's own font size, the text's, so T holds at any text
+   size. The viewer's rules are not nested under the wrapper's, and :where keeps
+   the default weaker than viewer-shown. */
+@utility table-with-viewer {
+  container: table / inline-size;
+  margin-top: 2.25em;
+
+  & :where(.record-viewer) {
+    display: none;
+  }
+}
+
+/* Used only behind @max-[Tem]/table: (see above). Hidden with display none, so
+   the hidden form is also out of the accessibility tree. */
+@utility viewer-shown {
+  & > table {
+    display: none;
+  }
+
+  & > .record-viewer {
+    display: block;
+  }
+}
+
+/* The record viewer: the column names stay still on the left, a box on the
+   right shows one record at a time. Three CSS mechanisms, no script (the
+   markup is explained in src/markdown.rs):
+   1. Stacks: the values of one field sit in one grid cell, invisible, so the
+      row is as tall as the tallest value of all records.
+   2. The box: scrolls and snaps one pane at a time, each pane repeating the
+      stacks so its rows are as tall as the label column's.
+   3. The record number: a strip "1 / n" ... "n / n" above the box, moved by
+      the box's scroll position in steps, so the number switches halfway
+      between two records, where the snap decides, and never slides.
+   The label column is as wide as the longest header (bold) plus the cell's
+   padding, given by the build in tenths of em (viewer-label-width-N), and never
+   wider than 45% of the wrapper (45cqi: the container named table). The
+   property is registered as a length so the min() is resolved once, on the
+   viewer, and every descendant gets the same pixels instead of resolving a
+   percentage against its own, different, base. */
+@property --label-w {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@utility viewer-label-width-* {
+  --label-w: min(calc(--value(integer) * 0.1em), 45cqi);
+}
+
+/* Number of records, for the record number strip. */
+@utility viewer-record-count-* {
+  --record-count: --value(integer);
+}
+
+@utility record-viewer {
+  /* Lets the number strip see the box's scroll timeline. */
+  timeline-scope: --records;
+  @apply border border-accent-line;
+}
+
+/* Rows of the label column: the label, then the stack with the width of the box. */
+@utility viewer-rows {
+  position: relative;
+}
+
+@utility viewer-row {
+  display: grid;
+  grid-template-columns: var(--label-w) minmax(0, 1fr);
+
+  & + .viewer-row {
+    @apply border-t border-code-surface;
+  }
+}
+
+/* Same padding as a table cell. A long word may be hyphenated (pages have
+   lang="en") or, failing that, broken. */
+@utility viewer-label {
+  @apply py-[0.375em] px-[0.5em] font-bold;
+  hyphens: auto;
+  overflow-wrap: break-word;
+}
+
+/* Mechanism 1. Every child sits in the same grid cell, invisible. */
+@utility viewer-stack {
+  display: grid;
+
+  & > * {
+    grid-area: 1 / 1;
+    visibility: hidden;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    @apply py-[0.375em] px-[0.5em];
+  }
+
+  /* In a pane, the value of that pane's record. */
+  & > .viewer-current {
+    visibility: visible;
+  }
+
+  /* The label copies keep the label's own wrapping, which the rule above
+     would override: a label that wraps must make the row exactly as tall here
+     as in the label column. */
+  & > .viewer-label-copy {
+    overflow-wrap: break-word;
+  }
+}
+
+/* Mechanism 2. The box lies over the value column (the 1px is the accent line)
+   and scrolls the panes. */
+@utility viewer-box {
+  position: absolute;
+  inset: 0 0 0 calc(var(--label-w) - 1px);
+  @apply border-l border-accent-line;
+  /* The box adds nothing to the outer height: the label column decides it. */
+  container-type: size;
+  /* Vertical only, never sideways; one gesture is one whole record. At the
+     first and last record the page takes over (overscroll-behavior stays
+     default). */
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  /* No scrollbar, so the panes are as wide as the cells they match. */
+  scrollbar-width: none;
+  scroll-timeline: --records y;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Chromium does not attach the box's scroll timeline (the record number
+     above it) to a box inside a size container until the box's style changes
+     once more: the number stayed on "1 / n". This one-millisecond animation
+     of a property nothing reads is that change (checked in Chromium: without
+     it the number does not move). */
+  animation: refresh-scroll-timeline 1ms;
+
+  /* The box takes focus, so arrows and Page keys move one record. */
+  &:focus-visible {
+    @apply outline-2 -outline-offset-2 outline-accent-line;
+  }
+}
+
+@utility viewer-pane {
+  @apply relative h-full;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+
+  /* In a pane the row is only the value column. */
+  & > .viewer-row {
+    display: block;
+  }
+}
+
+/* The label copy in a pane has the label column's width. */
+@utility viewer-label-copy {
+  width: var(--label-w);
+}
+
+/* Mechanism 3. Where scroll-driven animations do not exist (Firefox), the
+   number sits in each pane instead (the badge). */
+@utility viewer-count {
+  display: none;
+
+  @supports (animation-timeline: scroll()) {
+    @apply block py-[0.25em] px-[0.5em] bg-code-surface border-b border-accent-line;
+  }
+}
+
+@utility viewer-badge {
+  display: none;
+
+  @supports not (animation-timeline: scroll()) {
+    @apply block absolute top-0 right-0 px-[0.4em] text-[0.8em] bg-code-surface;
+  }
+}
+
+/* A window one line high over the strip of numbers, one line each. */
+@utility viewer-count-window {
+  @apply h-[1.5em] overflow-hidden;
+}
+
+/* The strip jumps (steps) between its n numbers, driven by the box's scroll
+   position instead of time. The animation runs over the box's scroll range
+   widened by half a record on each side, so that the jumps fall halfway
+   between two records (at q = j / n of the widened range). With one record
+   the declarations are invalid, and the strip stays on "1 / 1". */
+@utility viewer-count-strip {
+  & > * {
+    @apply block h-[1.5em];
+  }
+
+  @supports (animation-timeline: scroll()) {
+    animation: record-number 1s steps(var(--record-count), jump-none) both;
+    animation-timeline: --records;
+    animation-range: calc(-50% / (var(--record-count) - 1))
+      calc(100% + 50% / (var(--record-count) - 1));
+  }
+}
+
+@keyframes record-number {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(calc(-100% * (var(--record-count) - 1) / var(--record-count)));
+  }
+}
+
+@keyframes refresh-scroll-timeline {
+  from {
+    --timeline-refresh: 0;
+  }
+
+  to {
+    --timeline-refresh: 1;
+  }
 }

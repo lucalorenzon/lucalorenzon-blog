@@ -1,4 +1,6 @@
 import { test } from '@playwright/test';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { relative, resolve } from 'node:path';
 
 export const live = Boolean(process.env.BASE_URL?.trim());
 
@@ -43,3 +45,25 @@ export const TEXT_PAGES = [
   { name: 'about page', address: './about.html', hasRoles: false, hasConsecutiveParagraphs: false },
   { name: 'After Save Event page', address: './articles/after-save-event.html', hasRoles: false, hasConsecutiveParagraphs: true },
 ];
+
+// The built site, and its pages, found by walking the folder: a new page is
+// covered by the tests that use these without being listed. A live run has no
+// folder to walk, so the lists are empty and those tests skip.
+export const SITE = resolve(__dirname, '../../target/site');
+
+export function pagesOf(folder: string): string[] {
+  if (!existsSync(folder)) return [];
+  return readdirSync(folder, { withFileTypes: true }).flatMap((entry) => {
+    const path = resolve(folder, entry.name);
+    if (entry.isDirectory()) return pagesOf(path);
+    return entry.name.endsWith('.html') ? [path] : [];
+  });
+}
+
+export const ADDRESSES = pagesOf(SITE).map((path) => './' + relative(SITE, path));
+
+// The pages that have at least one table (every Markdown table is rendered
+// inside a wrapper holding the table and its record viewer).
+export const TABLE_ADDRESSES = ADDRESSES.filter((address) =>
+  readFileSync(resolve(SITE, address), 'utf8').includes('table-with-viewer'),
+);

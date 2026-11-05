@@ -1,7 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { existsSync, readdirSync } from 'node:fs';
-import { relative, resolve } from 'node:path';
-import { VIEWPORTS, live } from './support';
+import { ADDRESSES, VIEWPORTS, live } from './support';
 
 // A table cell whose text has no whitespace is a single value, not running
 // text, so it stays on one line. Browsers treat an en dash as a place to
@@ -19,19 +17,7 @@ import { VIEWPORTS, live } from './support';
 // than articles.
 // It checks what the reader sees, never how the page is built.
 
-const SITE = resolve(__dirname, '../../target/site');
-
-function pagesOf(folder: string): string[] {
-  if (!existsSync(folder)) return [];
-  return readdirSync(folder, { withFileTypes: true }).flatMap((entry) => {
-    const path = resolve(folder, entry.name);
-    if (entry.isDirectory()) return pagesOf(path);
-    return entry.name.endsWith('.html') ? [path] : [];
-  });
-}
-
 const PHONES = VIEWPORTS.filter(({ width }) => width < 768);
-const ADDRESSES = pagesOf(SITE).map((path) => './' + relative(SITE, path));
 
 test.beforeAll(() => {
   if (!live && ADDRESSES.length === 0) {

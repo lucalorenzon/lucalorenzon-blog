@@ -193,8 +193,17 @@ async function spacingProblems(page: Page): Promise<string[]> {
         // here the lines are wider than the toggle's threshold (computed
         // without it), so the code scrolls although the toggle may be hidden:
         // nothing is lost, the code is still reachable by scrolling.
+        //
+        // Two elements of the record viewer (a table too narrow for its
+        // columns, see tables.spec.ts) clip vertically on purpose. The box
+        // shows one record at a time by design: the other records are
+        // reachable by gesture or keyboard, the number row says how many
+        // there are, and screen readers get every record as a group. The
+        // number row is a one-line window over a strip of numbers, only one
+        // of which is meant to show. Clipping sideways stays forbidden for
+        // both.
         const clipsX = style.overflowX !== 'visible' && !el.matches('.code-scroller');
-        const clipsY = style.overflowY !== 'visible';
+        const clipsY = style.overflowY !== 'visible' && !el.matches('.viewer-box, .viewer-count-window');
         if ((clipsX && el.scrollWidth > el.clientWidth + 1) || (clipsY && el.scrollHeight > el.clientHeight + 1)) {
           out.push(
             `${label(el)} cuts off its content (scroll ${el.scrollWidth}x${el.scrollHeight}, box ${el.clientWidth}x${el.clientHeight})`,

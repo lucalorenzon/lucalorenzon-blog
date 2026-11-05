@@ -2,10 +2,12 @@ mod about_page;
 mod article_page;
 mod home_page;
 mod licence_page;
+mod literata_widths;
 mod markdown;
 mod not_found_page;
 mod page_frame;
 mod site_address;
+mod table_widths;
 
 use site_address::SiteAddress;
 use std::{env, error::Error, fs, path::PathBuf, process::ExitCode};
@@ -49,7 +51,8 @@ fn build() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-/// Where the build lists the class names of the code components, for Tailwind (style/input.css).
+/// Where the build lists the class names of the code and table components, for Tailwind
+/// (style/input.css).
 /// Outside the published site on purpose.
 const CODE_CLASSES_FILE: &str = "target/generated/code-classes.txt";
 

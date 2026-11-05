@@ -1,11 +1,12 @@
+use crate::table_widths::{self, Cells};
 use pulldown_cmark::{CodeBlockKind, Event, Options, Parser, Tag, TagEnd, html};
 use std::cell::RefCell;
 use std::collections::BTreeSet;
 
 thread_local! {
-    /// Class names written by the code components rendered so far on this thread. Tailwind cannot
-    /// find them by scanning the sources (the numbers come from the articles), so the build writes
-    /// them to a file that the stylesheet adds as a source.
+    /// Class names written by the code and table components rendered so far on this thread.
+    /// Tailwind cannot find them by scanning the sources (the numbers come from the articles), so
+    /// the build writes them to a file that the stylesheet adds as a source.
     static GENERATED_CLASSES: RefCell<BTreeSet<String>> = const { RefCell::new(BTreeSet::new()) };
 }
 
@@ -16,6 +17,7 @@ pub fn take_generated_classes() -> BTreeSet<String> {
 
 /// Converts CommonMark text to an HTML fragment. Only one extension is enabled: tables.
 /// Every code block (fenced or indented) becomes the code component: see `code_component`.
+/// Every table becomes the table component, the table and its record viewer: see `table_component`.
 ///
 /// The closing note of a text is recognised too. If the last thematic break (`---`) of the
 /// document is followed, up to the end, only by paragraphs, the break is dropped and those
@@ -28,9 +30,20 @@ pub fn take_generated_classes() -> BTreeSet<String> {
 pub fn to_html(markdown: &str) -> String {
     let mut events: Vec<Event> = Vec::new();
     let mut open_block: Option<(Option<String>, String)> = None;
-    let mut cell_start: Option<usize> = None;
+    let mut open_table: Option<Vec<Event>> = None;
+    let mut table_count = 0;
     for event in Parser::new_ext(markdown, Options::ENABLE_TABLES) {
+        if let Some(table) = open_table.as_mut() {
+            let closes = matches!(event, Event::End(TagEnd::Table));
+            table.push(event);
+            if closes && let Some(table) = open_table.take() {
+                table_count += 1;
+                events.push(Event::Html(table_component(&table, table_count).into()));
+            }
+            continue;
+        }
         match event {
+            Event::Start(Tag::Table(_)) => open_table = Some(vec![event]),
             Event::Start(Tag::CodeBlock(kind)) => {
                 let language = match kind {
                     CodeBlockKind::Fenced(info) => info.split_whitespace().next().map(String::from),
@@ -49,19 +62,6 @@ pub fn to_html(markdown: &str) -> String {
                         code_component(language.as_deref(), &code).into(),
                     ));
                 }
-            }
-            Event::Start(Tag::TableCell) => {
-                events.push(Event::Start(Tag::TableCell));
-                cell_start = Some(events.len());
-            }
-            Event::End(TagEnd::TableCell) => {
-                if let Some(start) = cell_start.take()
-                    && is_single_value(&events[start..])
-                {
-                    events.insert(start, Event::InlineHtml(ONE_LINE_OPEN.into()));
-                    events.push(Event::InlineHtml("</span>".into()));
-                }
-                events.push(Event::End(TagEnd::TableCell));
             }
             other => events.push(other),
         }
@@ -97,6 +97,159 @@ fn is_single_value(cell: &[Event]) -> bool {
         }
     }
     has_text
+}
+
+/// Renders the events of a table with the single-value cells kept on one line (style `one-line`).
+fn table_html(table: &[Event]) -> String {
+    let mut events: Vec<Event> = Vec::new();
+    let mut cell_start: Option<usize> = None;
+    for event in table {
+        match event {
+            Event::Start(Tag::TableCell) => {
+                events.push(event.clone());
+                cell_start = Some(events.len());
+            }
+            Event::End(TagEnd::TableCell) => {
+                if let Some(start) = cell_start.take()
+                    && is_single_value(&events[start..])
+                {
+                    events.insert(start, Event::InlineHtml(ONE_LINE_OPEN.into()));
+                    events.push(Event::InlineHtml("</span>".into()));
+                }
+                events.push(event.clone());
+            }
+            other => events.push(other.clone()),
+        }
+    }
+    let mut out = String::new();
+    html::push_html(&mut out, events.into_iter());
+    out
+}
+
+/// The content of a cell as HTML. `keep_on_one_line` wraps a single value in `one-line`, as in
+/// the table; the viewer's labels do not (they wrap and hyphenate in their column).
+fn cell_html(cell: &[Event], keep_on_one_line: bool) -> String {
+    let mut events: Vec<Event> = cell.to_vec();
+    if keep_on_one_line && is_single_value(cell) {
+        events.insert(0, Event::InlineHtml(ONE_LINE_OPEN.into()));
+        events.push(Event::InlineHtml("</span>".into()));
+    }
+    let mut out = String::new();
+    html::push_html(&mut out, events.into_iter());
+    out
+}
+
+/// A table as a component. Two forms of the same data sit in one wrapper, and exactly one is
+/// displayed: the table, and a "record viewer" for a wrapper too narrow to give each column a
+/// readable width (see `table_widths.rs` for the rule; a table never scrolls sideways). The
+/// wrapper is a container named `table`, and carries Tailwind's container prefix with our style
+/// `viewer-shown` behind it, the threshold T in em in the brackets, as for code (the class is
+/// built in `table_component`): the viewer is shown below width T. The threshold is a number
+/// read from the article, which Tailwind cannot substitute inside a named style (ADR-001, note
+/// of 2026-11-04), so the prefix is Tailwind's own, and the build lists the class for Tailwind.
+/// The form that is not shown is `display: none`, which also keeps it out of the accessibility
+/// tree. A table with no row has nothing for a viewer to show and keeps only the table.
+fn table_component(table: &[Event], index: usize) -> String {
+    let cells = Cells::from_events(table);
+    let table_form = table_html(table);
+    if cells.columns() == 0 || cells.rows.is_empty() {
+        return format!("<div class=\"table-with-viewer\">{table_form}</div>\n");
+    }
+    let estimate = table_widths::estimate(&cells);
+    let threshold_class = format!(
+        "@max-[{}em]/table:viewer-shown",
+        format_em(estimate.threshold_thousandths)
+    );
+    let label_class = format!("viewer-label-width-{}", estimate.label_tenths);
+    let count_class = format!("viewer-record-count-{}", cells.rows.len());
+    let viewer = record_viewer(&cells, index, &label_class, &count_class);
+    GENERATED_CLASSES.with(|all| {
+        all.borrow_mut()
+            .extend([threshold_class.clone(), label_class, count_class]);
+    });
+    format!("<div class=\"table-with-viewer {threshold_class}\">{table_form}{viewer}</div>\n")
+}
+
+/// The record viewer: a table turned a quarter: the column names stay still on the left, and a
+/// box on the right shows one record at a time, scrolling down to the next one. No script.
+///
+/// How it works, in three mechanisms (the styles are in `style/input.css`):
+/// 1. The values of a field (one per record) sit in the same grid cell, invisible, so the row is
+///    as tall as the tallest value of all records. The same stacks are repeated inside every
+///    pane, so the rows of the box have exactly the height of the label column's rows.
+/// 2. The box scrolls and snaps one pane at a time; a pane shows its own record's values.
+/// 3. The number "k / n" sits above the box, still: a strip of the numbers moved by the box's
+///    scroll position. Browsers without scroll-driven animations show the number in each pane.
+///
+/// For a screen reader the label column is the field names, and the box is a region with a group
+/// a record; every invisible copy is `aria-hidden`. An empty value shows an em dash.
+fn record_viewer(cells: &Cells, index: usize, label_class: &str, count_class: &str) -> String {
+    let records = cells.rows.len();
+    let value = |row: usize, column: usize| -> String {
+        let html = cells.rows[row]
+            .get(column)
+            .map(|cell| cell_html(cell, true))
+            .unwrap_or_default();
+        if html.is_empty() {
+            "&mdash;".into()
+        } else {
+            html
+        }
+    };
+    let stack_of = |column: usize, current: Option<usize>| -> String {
+        let mut stack = String::new();
+        for row in 0..records {
+            match current {
+                Some(shown) if shown == row => stack.push_str(&format!(
+                    "<span class=\"viewer-current\">{}</span>",
+                    value(row, column)
+                )),
+                _ => stack.push_str(&format!(
+                    "<span aria-hidden=\"true\">{}</span>",
+                    value(row, column)
+                )),
+            }
+        }
+        stack
+    };
+    let labels: Vec<String> = cells
+        .header
+        .iter()
+        .map(|cell| cell_html(cell, false))
+        .collect();
+
+    let mut out = format!("<section class=\"record-viewer {label_class} {count_class}\">");
+    out.push_str(
+        "<div class=\"viewer-count\"><div class=\"viewer-count-window\"><div class=\"viewer-count-strip\" aria-hidden=\"true\">",
+    );
+    for record in 1..=records {
+        out.push_str(&format!("<span>{record} / {records}</span>"));
+    }
+    out.push_str("</div></div></div><div class=\"viewer-rows\">");
+    for (column, label) in labels.iter().enumerate() {
+        out.push_str(&format!(
+            "<div class=\"viewer-row\"><b class=\"viewer-label\">{label}</b><div class=\"viewer-stack\" aria-hidden=\"true\">{}</div></div>",
+            stack_of(column, None)
+        ));
+    }
+    out.push_str(&format!(
+        "<div class=\"viewer-box\" tabindex=\"0\" role=\"region\" aria-label=\"Records of table {index}, one at a time\">"
+    ));
+    for record in 0..records {
+        let number = record + 1;
+        out.push_str(&format!(
+            "<div class=\"viewer-pane\" role=\"group\" aria-label=\"Record {number} of {records}\"><span class=\"viewer-badge\" aria-hidden=\"true\">{number} / {records}</span>"
+        ));
+        for (column, label) in labels.iter().enumerate() {
+            out.push_str(&format!(
+                "<div class=\"viewer-row\"><div class=\"viewer-stack\"><b class=\"viewer-label viewer-label-copy\" aria-hidden=\"true\">{label}</b>{}</div></div>",
+                stack_of(column, Some(record))
+            ));
+        }
+        out.push_str("</div>");
+    }
+    out.push_str("</div></div></section>");
+    out
 }
 
 /// Applies the closing note rule of `to_html` to the events of a whole document.
@@ -143,7 +296,11 @@ const CODE_ADVANCE_DENOMINATOR: usize = 2048;
 /// Width in `em` of `n` characters of the code font, rounded up to 3 decimals (so the toggle may
 /// show a hair early, never late) and written without trailing zeros ("3.613", "2.4").
 fn code_width_em(n: usize) -> String {
-    let thousandths = (n * CODE_ADVANCE_NUMERATOR * 1000).div_ceil(CODE_ADVANCE_DENOMINATOR);
+    format_em((n * CODE_ADVANCE_NUMERATOR * 1000).div_ceil(CODE_ADVANCE_DENOMINATOR) as u64)
+}
+
+/// Writes thousandths of em as a number of em without trailing zeros: 3613 is "3.613", 2400 "2.4".
+fn format_em(thousandths: u64) -> String {
     let whole = thousandths / 1000;
     let fraction = format!("{:03}", thousandths % 1000);
     let fraction = fraction.trim_end_matches('0');
@@ -258,6 +415,11 @@ mod tests {
         assert!(html.contains("<td>g h</td>"));
     }
 
+    /// The table form of a rendered table, without its record viewer.
+    fn table_form(html: &str) -> &str {
+        &html[..html.find("</table>").unwrap()]
+    }
+
     fn cell_html(cell: &str) -> String {
         to_html(&format!("| two words |\n|---|\n| {cell} |\n"))
     }
@@ -292,7 +454,7 @@ mod tests {
     fn empty_cell_is_left_alone() {
         let html = to_html("| two words | also two |\n|---|---|\n| | x |\n");
         assert!(html.contains("<td></td>"));
-        assert_eq!(html.matches("one-line").count(), 1);
+        assert_eq!(table_form(&html).matches("one-line").count(), 1);
     }
 
     #[test]
@@ -447,6 +609,138 @@ mod tests {
         let html = to_html(&format!("```xml\n{block}```\n"));
         assert_eq!(code_text(&html), block);
         assert!(!code_text(&html).contains("wrap"));
+    }
+
+    /// Two columns of "a" (bold a 0.578em, regular 0.539em): threshold 3.212em, label 1.7em
+    /// (src/table_widths.rs works the numbers out).
+    const SMALL_TABLE: &str = "| a | a |\n|---|---|\n| a | a |\n";
+
+    #[test]
+    fn table_has_both_forms_in_one_wrapper() {
+        let html = to_html(SMALL_TABLE);
+        assert!(html.starts_with(
+            "<div class=\"table-with-viewer @max-[3.212em]/table:viewer-shown\"><table>"
+        ));
+        assert!(html.contains(
+            "</table>\n<section class=\"record-viewer viewer-label-width-17 viewer-record-count-1\">"
+        ));
+        assert!(html.trim_end().ends_with("</section></div>"));
+        assert_eq!(html.matches("<table>").count(), 1);
+    }
+
+    #[test]
+    fn viewer_has_one_labelled_group_a_record() {
+        let html = to_html("| h | k |\n|---|---|\n| a a | b |\n| c c | d |\n| e e | f |\n");
+        for number in 1..=3 {
+            assert!(html.contains(&format!(
+                "role=\"group\" aria-label=\"Record {number} of 3\""
+            )));
+        }
+        assert_eq!(html.matches("role=\"group\"").count(), 3);
+        assert!(html.contains("<span>1 / 3</span><span>2 / 3</span><span>3 / 3</span>"));
+        assert!(html.contains("viewer-record-count-3"));
+        // The first record's value is the visible one of its pane, the others are hidden copies.
+        assert!(html.contains(
+            "<b class=\"viewer-label viewer-label-copy\" aria-hidden=\"true\">h</b><span class=\"viewer-current\">a a</span><span aria-hidden=\"true\">c c</span><span aria-hidden=\"true\">e e</span>"
+        ));
+    }
+
+    #[test]
+    fn viewer_box_can_be_focused_and_is_named_by_table() {
+        let html = to_html(&format!("{SMALL_TABLE}\ntext\n\n{SMALL_TABLE}"));
+        assert!(html.contains(
+            "tabindex=\"0\" role=\"region\" aria-label=\"Records of table 1, one at a time\""
+        ));
+        assert!(html.contains("aria-label=\"Records of table 2, one at a time\""));
+    }
+
+    #[test]
+    fn the_label_column_names_each_field_once_for_screen_readers() {
+        let html = to_html("| h | k |\n|---|---|\n| a a | b |\n");
+        assert!(html.contains("<b class=\"viewer-label\">h</b><div class=\"viewer-stack\" aria-hidden=\"true\"><span aria-hidden=\"true\">a a</span></div>"));
+        assert!(html.contains("<b class=\"viewer-label\">k</b>"));
+    }
+
+    #[test]
+    fn empty_value_shows_an_em_dash_in_the_viewer() {
+        let html = to_html("| h | k |\n|---|---|\n| | b |\n");
+        assert!(html.contains("<span aria-hidden=\"true\">&mdash;</span>"));
+        assert!(html.contains("<span class=\"viewer-current\">&mdash;</span>"));
+        // The table keeps its empty cell.
+        assert!(html.contains("<td></td>"));
+    }
+
+    #[test]
+    fn viewer_escapes_labels_and_values() {
+        let html = to_html("| a\\<b & \"c\" | k |\n|---|---|\n| \\<i\\> x | y |\n");
+        let viewer = &html[html.find("<section").unwrap()..];
+        assert!(viewer.contains("a&lt;b &amp; \"c\""));
+        assert!(viewer.contains("&lt;i&gt; x"));
+        assert!(!viewer.contains("<i>"));
+    }
+
+    #[test]
+    fn single_values_stay_on_one_line_in_both_forms_but_not_labels() {
+        let html = to_html("| Description | other words |\n|---|---|\n| 63–44 | two words |\n");
+        assert!(html.contains("<td><span class=\"one-line\">63–44</span></td>"));
+        let viewer = &html[html.find("<section").unwrap()..];
+        // Once in the label column's stack and once in the pane: two copies.
+        assert_eq!(
+            viewer
+                .matches("<span class=\"one-line\">63–44</span>")
+                .count(),
+            2
+        );
+        // The label is a single word but wraps in its column.
+        assert!(viewer.contains("<b class=\"viewer-label\">Description</b>"));
+        assert!(!viewer.contains("one-line\">Description"));
+    }
+
+    #[test]
+    fn inline_code_is_kept_in_the_viewer_values() {
+        let html = to_html("| h |\n|---|\n| see `pk_` and **bold** |\n");
+        let viewer = &html[html.find("<section").unwrap()..];
+        assert!(viewer.contains("see <code>pk_</code> and <strong>bold</strong>"));
+    }
+
+    #[test]
+    fn table_without_rows_has_no_viewer_and_no_threshold() {
+        let html = to_html("| a | b |\n|---|---|\n");
+        assert!(html.contains("<table>"));
+        assert!(html.starts_with("<div class=\"table-with-viewer\">"));
+        assert!(!html.contains("record-viewer"));
+        assert!(!html.contains("viewer-shown"));
+    }
+
+    #[test]
+    fn row_with_missing_cells_is_filled_with_dashes() {
+        let html = to_html("| a | b |\n|---|---|\n| x |\n");
+        assert!(html.contains("<span class=\"viewer-current\">&mdash;</span>"));
+    }
+
+    #[test]
+    fn table_next_to_other_blocks_keeps_its_place() {
+        let html = to_html("before\n\n| a |\n|---|\n| b |\n\nafter\n");
+        let table = html.find("table-with-viewer").unwrap();
+        assert!(html.find("<p>before</p>").unwrap() < table);
+        assert!(table < html.find("<p>after</p>").unwrap());
+    }
+
+    #[test]
+    fn table_classes_are_listed_with_the_code_ones_exactly() {
+        take_generated_classes();
+        to_html(&format!("{SMALL_TABLE}\n```\nab\n```\n"));
+        let classes: Vec<String> = take_generated_classes().into_iter().collect();
+        assert_eq!(
+            classes,
+            [
+                "@max-[1.205em]/code:wrap-shown",
+                "@max-[3.212em]/table:viewer-shown",
+                "code-line-indent-0",
+                "viewer-label-width-17",
+                "viewer-record-count-1",
+            ]
+        );
     }
 
     #[test]

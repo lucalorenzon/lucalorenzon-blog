@@ -182,14 +182,14 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 
 | Path | Content |
 |---|---|
-| `src/` | The page frame shared by every page (`page_frame.rs`), the home page, the about page, the licence page, the article pages (`article_page.rs`) and the "page not found", the site's address (`site_address.rs`), the Markdown-to-HTML conversion with the code block component (`markdown.rs`) and the build program that writes `index.html`, `about.html`, `licence.html`, `404.html`, the articles in `articles/` and, outside the site, the list of generated classes for Tailwind (`target/generated/code-classes.txt`) |
+| `src/` | The page frame shared by every page (`page_frame.rs`), the home page, the about page, the licence page, the article pages (`article_page.rs`) and the "page not found", the site's address (`site_address.rs`), the Markdown-to-HTML conversion with the code block component and the table's two forms, table and record viewer (`markdown.rs`), the widths that decide when a table becomes a record viewer (`table_widths.rs`, from Literata's character widths in `literata_widths.rs`, generated) and the build program that writes `index.html`, `about.html`, `licence.html`, `404.html`, the articles in `articles/` and, outside the site, the list of generated classes for Tailwind (`target/generated/code-classes.txt`) |
 | `content/` | The site's text in Markdown: today the curriculum, a version written for the site and cleaned of personal and employer data, the text of the about and licence pages (`about.md`, `licence.md`), and the articles in `articles/`, built into pages but not yet published; its licences, different from the code's, in `README.md` and `LICENSE-MIT-0` |
 | `assets/` | Files copied as they are into the site: the favicon, and the fonts with their licences and attribution |
 | `style/input.css` | Tailwind entry point |
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
 | `scripts/playwright-version.sh` | Prints the Playwright version locked in `end2end/`, which picks the test container image in both workflows |
 | `scripts/screen-reader/` | The on-demand screen reader check: Orca 51 and Firefox ESR in a Docker container (`Dockerfile`, `entrypoint.sh`), the host program `check.py`, its unit tests and a log sample (`test_check.py`, `fixtures/`) |
-| `end2end/` | Playwright end-to-end test |
+| `end2end/` | Playwright end-to-end test; in `end2end/tools/`, the script that measures Literata's character widths in Chromium and writes `src/literata_widths.rs` |
 | `.zed/settings.json` | Editor settings for this project: CSS files are checked by Tailwind's CSS server, not the generic one, which does not know Tailwind 4's syntax |
 | `.github/workflows/build.yml` | Check, build and test the site on every push and pull request; on `main`, keep the tested site in the `snapshot` Release; never publishes |
 | `.github/workflows/deploy.yml` | On a version tag: check the tag, take the snapshot of that commit or rebuild it, publish, create the version's Release, test the live site |
