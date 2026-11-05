@@ -309,6 +309,25 @@ scrollbar is hidden, so the panes are as wide as the cells they match.
 A first row shows "1 / 5", the only sign without script that the box
 pages.
 
+**The record number, chosen by the user after trying it on the phone:
+one row above the box, still and opaque, whose number changes at once.**
+The first version put the number in each record's pane: it showed
+through while the box moved, and once made opaque and sticky, the next
+record's number was seen arriving from below. Now the number sits
+outside the box, as the labels do; a strip of the five numbers moves
+behind a one-line window, driven by the box's scroll position
+(`scroll-timeline`, `animation-timeline`), in steps (`step-end`), so
+it switches halfway between two records, where the snap decides, and
+never slides. Checked in Chromium and WebKit at 320 and 393 pixels,
+text at its size and doubled: the right number at every record and
+halfway, alignment within half a pixel. Firefox does not run
+scroll-driven animations by default, as far as known: there the page
+falls back (`@supports`) to the number inside each pane, checked by
+forcing the fallback in Chromium; Firefox itself was not tried. One
+axe run in Chromium reported a contrast violation on one element while
+the box stood exactly on a switch point; a run at rest reported none;
+to be checked again on the real component.
+
 What was observed:
 
 - **Alignment:** labels and values within half a pixel, every record,
