@@ -25,10 +25,10 @@ live since 2026-10-26
   tables and the hybris PK article remain. No version is published
   until the navigation is done.
 - [Give the articles' code, quotes and tables a look](wip/design-look-of-articles.md),
-  now following [ADR-003](adr/ADR-003-readability-first-amber-as-accent.md),
-  readability first with amber as an accent: colours, text size and
-  code font on every page, then the articles' headings, quotes and
-  tables, then the light background.
+  following [ADR-003](adr/ADR-003-readability-first-amber-as-accent.md),
+  readability first with amber as an accent: colours, text size, code
+  in Hack, headings and quotes are done; tables, then the light
+  background, remain.
 
 ## Next
 
