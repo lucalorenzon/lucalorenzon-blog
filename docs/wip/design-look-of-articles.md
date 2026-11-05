@@ -150,7 +150,7 @@ Slices left, one decision each, in this order:
    updated. Joined with slice 2 when done.
 4. Headings of the articles, with no line above the sections. Done for
    the curriculum too.
-5. Quotes, with an amber bar on the left.
+5. Quotes, with an amber bar on the left. Done.
 6. Tables, with thin lines.
 7. The light background, shown when the reader's browser prefers light
    pages, with darker shades of amber.
@@ -243,6 +243,16 @@ of rules serves both. The content-layout test checked the line above
 sections and the inverse video; it now checks that section titles and
 sub-titles differ in colour from the text, the same intent, with the
 contrast still checked by axe.
+
+## Quotes (2026-11-05)
+
+**Chosen, by the user: a 4-pixel amber bar on the left, the text
+indented 1em from it, in the same off-white as the rest, with no
+background and no italic;** the quote starts on the column's edge and
+sits in the flow like a paragraph. The user judged it simple enough to
+go without a new trial, having seen it in the trials of the direction.
+The agent checked it at iPhone SE width on both articles, the hybris PK
+quote holding a list among its paragraphs.
 
 ## Questions
 

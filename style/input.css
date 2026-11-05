@@ -204,6 +204,21 @@ body {
     @apply mt-[0.75em];
   }
 
+  /* Quotes (notes and warnings): a 4px amber bar on the left (ADR-003: amber
+     is an accent), the text 1em from it in the same off-white, no box and no
+     italic, so a note stands apart from the text without a background. The
+     browser's side margins are removed: the quote starts on the column's left
+     edge. It sits in the flow like a paragraph (2.25em above); its first
+     child has no top margin, so the text starts level with the top of the
+     bar; paragraphs and lists inside keep their usual spacing. */
+  & blockquote {
+    @apply mt-[2.25em] mb-0 mx-0 border-l-4 border-amber pl-[1em];
+  }
+
+  & blockquote > :first-child {
+    @apply mt-0;
+  }
+
   & a {
     @apply underline;
   }
