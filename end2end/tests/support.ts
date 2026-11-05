@@ -36,14 +36,15 @@ export const VIEWPORTS = [
 // home page shows the curriculum, with roles (h3) and several consecutive
 // paragraphs; the licence page has neither, so those two checks apply only
 // where the page has some. The After Save Event article has no roles (h3)
-// and several consecutive paragraphs. The hybris PK article stays out
-// until the card docs/wip/annotate-markdown-for-wide-content.md handles its
-// 6-column table (code blocks are done).
+// and several consecutive paragraphs. The hybris PK article has no roles
+// (h3) and several consecutive paragraphs; its wide table becomes a record
+// viewer below a readable width.
 export const TEXT_PAGES = [
   { name: 'home page', address: './', hasRoles: true, hasConsecutiveParagraphs: true },
   { name: 'licence page', address: './licence.html', hasRoles: false, hasConsecutiveParagraphs: false },
   { name: 'about page', address: './about.html', hasRoles: false, hasConsecutiveParagraphs: false },
   { name: 'After Save Event page', address: './articles/after-save-event.html', hasRoles: false, hasConsecutiveParagraphs: true },
+  { name: 'hybris PK page', address: './articles/how-to-generate-hybris-pk-values-without-hybris.html', hasRoles: false, hasConsecutiveParagraphs: true },
 ];
 
 // The built site, and its pages, found by walking the folder: a new page is

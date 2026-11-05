@@ -44,14 +44,10 @@ for (const { name: articleName, address } of ARTICLES) {
         }
       }
 
-      // The hybris PK article has a 6-column table that still makes the page
-      // scroll on a phone (a later card), so the page is checked on the other.
-      if (articleName !== 'hybris PK') {
-        expect(
-          await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth),
-          'the page does not scroll sideways',
-        ).toBe(false);
-      }
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth),
+        'the page does not scroll sideways',
+      ).toBe(false);
     });
   }
 
