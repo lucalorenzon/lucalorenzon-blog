@@ -147,7 +147,7 @@ Slices left, one decision each, in this order:
    frames and code inside a sentence; the title in Literata.
 2. Text size, with spacing that follows it, on every page.
 3. Code in Hack, served by the site, with the toggle's threshold
-   updated.
+   updated. Joined with slice 2 when done.
 4. Headings of the articles, with no line above the sections.
 5. Quotes, with an amber bar on the left.
 6. Tables, with thin lines.
@@ -178,10 +178,41 @@ nothing with the default settings:
   as the agreed layout already allowed, measuring its distance from the
   logo on the title's column.
 
+## Text size and code font (2026-11-05)
+
+Slices 2 and 3 of the list above, joined in one commit by the user.
+
+**Chosen, by the user: text at 18 pixels on a phone and 20 from 768
+pixels up, the footer at 16 and 18, code in Hack at 85% of the text.**
+The user compared, side by side in the browser, 16, 17/18, 18/20 and
+19/21 pixels; preferred 19/21 but feared it set the text too far from
+code and footer, still at 16 pixels. Shown 18/20 and 19/21 again with
+code at 85% and the footer at 90% of the text, the user chose 18/20:
+at 19/21 the footer took two lines on an iPhone SE. Spacing now
+follows the text, in em, at the same ratios as before.
+
+- **Why one commit.** With the text at 20 pixels and code still in the
+  narrow pixel font at 16, a line of "After Save Event" held 82
+  characters, over the 80 the readability check allows. The code's
+  size had been chosen together with the text's, so the two slices
+  could not stand apart. Rejected: code inside sentences at the text's
+  size in the pixel font for one commit, blurred at 18 and 20 pixels.
+- **Hack, not Meslo LG.** Meslo LG's licence turned out unclear, and
+  DejaVu Sans Mono's web file weighs 140 KB; Hack, derived from DejaVu,
+  has a 23 KB web subset with every character of the site's code
+  ([ADR-003](../adr/ADR-003-readability-first-amber-as-accent.md),
+  corrected the same day).
+- **The "wrap" toggle** now counts each character as 1233/2048 em,
+  Hack's advance width, rounded up so the toggle may show a hair early,
+  never late.
+- **A long name in code inside a sentence may break** where it does
+  not fit, as headings already may: under the reader's own text
+  spacing, `AfterSaveEventPublisherThread` overflowed the 320-pixel
+  screen. Decided by the agent, as nothing changes with the default
+  settings.
+
 ## Questions
 
-- The text size: the trials used 18 pixels on a phone and 20 on a
-  laptop.
 - Whether the curriculum keeps its section lines and its roles in
   inverse video, as decided on 2026-11-04, or follows the new
   direction.

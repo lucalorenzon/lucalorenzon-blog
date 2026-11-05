@@ -16,7 +16,7 @@ pub fn AboutPage() -> impl IntoView {
             address_prefix=""
             footer_licence=FooterLicence::ReuseWithAttribution
         >
-            <main class="long-text-column" inner_html=markdown::to_html(ABOUT)></main>
+            <main class="long-text-column md:long-text-large" inner_html=markdown::to_html(ABOUT)></main>
         </PageFrame>
     }
 }

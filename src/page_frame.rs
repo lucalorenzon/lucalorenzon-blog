@@ -84,7 +84,7 @@ pub fn PageFrame(
                         ></div>
                     </header>
                     {children()}
-                    <footer class="footer-sticky-bottom">
+                    <footer class="footer-sticky-bottom md:footer-text-large">
                         <p>
                             "© 2026 Luca Lorenzon · "
                             <a href=about_page class="footer-link">{footer_licence.phrase()}</a>

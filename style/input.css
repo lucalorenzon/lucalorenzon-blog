@@ -48,12 +48,23 @@
   font-display: swap;
 }
 
+/* Hack is the font of the code, next to the text. font-display swap, like
+   Literata: code must be readable at once, in a fallback monospace font. */
+@font-face {
+  font-family: "Hack";
+  src: url("fonts/hack/hack-regular-subset.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 @theme {
   --breakpoint-*: initial;
   --breakpoint-md: 48rem; /* 768px */
   --breakpoint-xl: 80rem; /* 1280px */
   --font-sans: "Literata", serif;
   --font-mono: "IBM VGA 8x16", monospace;
+  --font-code: "Hack", monospace;
   --color-amber: #dd9911;
   --color-black: #000000;
   /* Off-white, not pure white, which smears on a dark background for readers
@@ -139,16 +150,29 @@ body {
    of space above the footer. Temporary look until a
    design system arrives. The text is in Literata, a proportional font, so
    sizes need not be multiples of 8px: that rule, which keeps the bitmap
-   font sharp, applies to the header only. Line height is 1.5; paragraphs
-   and lists are 36px apart (1.5 times the line height, WCAG 1.4.8), list
-   items 12px. */
+   font sharp, applies to the header only.
+
+   The text is 18px; long-text-large (switched on with md:) makes it 20px.
+   Spacing follows the text size, so it is in em of the column's font:
+   line height 1.5; paragraphs and lists 2.25em apart (1.5 times the line
+   height, WCAG 1.4.8); list items 0.75em; section titles 1.5em, line height
+   1.25, 2em of space before them (written as 2em / 1.5 because em there is
+   the title's own, larger, size); roles 1.5em; "main work" titles 1em; list
+   indent 1.5em. Only the side padding, the bottom padding and the h2
+   padding stay in px: they do not depend on the text. The size is also in
+   the custom property --long-text-size, for what sits in the column with a
+   font of its own (the code block, which has its own font and size: see code-block) and
+   still must be spaced by the text's size. */
 @utility long-text-column {
   @apply grow w-full max-w-[60ch] mx-auto px-2 pb-8 text-off-white;
+  --long-text-size: 18px;
+  font-size: var(--long-text-size);
 
   /* Sections: an amber line above, generous space before; the first has no
      line, the header already has one. */
   & h2 {
-    @apply mt-8 border-t border-amber pt-2 text-2xl leading-6;
+    @apply border-t border-amber pt-2 text-[1.5em] leading-[1.25];
+    margin-top: calc(2em / 1.5);
   }
 
   & > h2:first-child {
@@ -159,24 +183,24 @@ body {
   /* A long word in a heading (a class name in an article) must break rather
      than push the page sideways. */
   & h3 {
-    @apply mt-6 w-fit bg-amber px-2 text-black wrap-anywhere;
+    @apply mt-[1.5em] w-fit bg-amber px-2 text-black wrap-anywhere;
   }
 
   /* "Main work" and similar: underlined. */
   & h4 {
-    @apply mt-4 underline;
+    @apply mt-[1em] underline;
   }
 
   & p {
-    @apply mt-9;
+    @apply mt-[2.25em];
   }
 
   & ul {
-    @apply mt-9 list-[square] pl-6;
+    @apply mt-[2.25em] list-[square] pl-[1.5em];
   }
 
   & li {
-    @apply mt-3;
+    @apply mt-[0.75em];
   }
 
   & a {
@@ -184,14 +208,26 @@ body {
   }
 
   /* Code in a sentence stays amber, so it stands out from the off-white text
-     around it; code blocks keep the off-white text. */
+     around it; code blocks keep the off-white text. Hack, at 85% of the
+     text. A long identifier must break rather than push the page sideways
+     (Hack is wider than the pixel font was at the same line length). */
   & :not(pre) > code {
-    @apply text-amber;
+    @apply font-code text-amber text-[0.85em] wrap-anywhere;
   }
+}
+
+/* The text column from md: 20px instead of 18px (the em spacing follows). */
+@utility long-text-large {
+  --long-text-size: 20px;
 }
 
 @utility footer-sticky-bottom {
   @apply sticky bottom-0 bg-black border-t border-amber px-2 text-left text-off-white;
+}
+
+/* Footer text from md: 18px instead of 16px, in proportion to the column. */
+@utility footer-text-large {
+  @apply text-[18px];
 }
 
 /* The licence link in the footer: underlined, so it is told apart from the
@@ -210,8 +246,10 @@ body {
 
 /* Code blocks (Markdown code rendered by src/markdown.rs). The block is a
    container named "code": the build gives it @max-[Wem]/code:wrap-shown, W
-   being its longest line in characters times 0.5 (the advance of the code
-   font, 8px at 16px), so the "wrap" toggle shows only when a line does not
+   being its longest line in characters times 1233/2048 (Hack's advance, from
+   its hmtx table), rounded up to 3 decimals. em in a container query is the
+   block's own font size (85% of the text), so the factor holds at any text
+   size. The "wrap" toggle shows only when a line does not
    fit. em, not ch: Chromium does not evaluate ch again in a container query
    when the web font arrives, so on a first visit the toggle was wrong. By
    default lines are kept and the scroller scrolls sideways; with the toggle
@@ -220,7 +258,10 @@ body {
    what the scroller fills, so the toggle still shows exactly when a line
    overflows. */
 @utility code-block {
-  @apply font-mono mt-9 p-2 border border-amber bg-code-surface;
+  @apply font-code text-[0.85em] p-2 border border-amber bg-code-surface;
+  /* The block is 85% of the text, but it is spaced by the text around it:
+     2.25 times the column's size. */
+  margin-top: calc(var(--long-text-size) * 2.25);
   container: code / inline-size;
 
   &:has(input:checked) .code-text {
@@ -253,7 +294,8 @@ body {
 }
 
 /* pre gets its own monospace font from the browser; it must inherit the
-   block's, or the thresholds and the indents would not match the code font. */
+   block's, or the thresholds and the indents would not match the code font.
+   The indents are in ch, the width of "0" in that font: Hack's, 0.602em. */
 @utility code-text {
   @apply m-0 text-off-white;
   font: inherit;

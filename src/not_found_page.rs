@@ -17,7 +17,7 @@ pub fn NotFoundPage(site_path: String) -> impl IntoView {
             address_prefix=site_path.clone()
             footer_licence=FooterLicence::ReuseWithAttribution
         >
-            <main class="long-text-column">
+            <main class="long-text-column md:long-text-large">
                 <p>
                     <a href=site_path>"Go to the home page"</a>
                 </p>

@@ -48,12 +48,22 @@ pub fn to_html(markdown: &str) -> String {
     out
 }
 
-/// Half of `n`, written as a decimal number ("19", "18.5").
-fn half(n: usize) -> String {
-    if n.is_multiple_of(2) {
-        (n / 2).to_string()
+/// Advance width of every character of Hack, the code font, as a fraction of the font size:
+/// 1233 / 2048 em (from the font's `hmtx` table, `unitsPerEm` 2048).
+const CODE_ADVANCE_NUMERATOR: usize = 1233;
+const CODE_ADVANCE_DENOMINATOR: usize = 2048;
+
+/// Width in `em` of `n` characters of the code font, rounded up to 3 decimals (so the toggle may
+/// show a hair early, never late) and written without trailing zeros ("3.613", "2.4").
+fn code_width_em(n: usize) -> String {
+    let thousandths = (n * CODE_ADVANCE_NUMERATOR * 1000).div_ceil(CODE_ADVANCE_DENOMINATOR);
+    let whole = thousandths / 1000;
+    let fraction = format!("{:03}", thousandths % 1000);
+    let fraction = fraction.trim_end_matches('0');
+    if fraction.is_empty() {
+        whole.to_string()
     } else {
-        format!("{}.5", n / 2)
+        format!("{whole}.{fraction}")
     }
 }
 
@@ -91,8 +101,8 @@ fn indent_and_width(line: &str) -> (usize, usize) {
 
 /// A code block as a component: the code keeps its lines and scrolls sideways inside its box;
 /// a "wrap" toggle appears only when the longest line does not fit the box (the container query
-/// `@max-[Wem]/code`, with W the longest line in characters times 0.5, the code font's advance:
-/// `em` and not `ch`, because Chromium does not evaluate `ch` again in a container query when
+/// `@max-[Wem]/code`, with W the width of the longest line, see `code_width_em`; `em` there is the code block's own
+/// font size, so it holds at any text size. `em` and not `ch`, because Chromium does not evaluate `ch` again in a container query when
 /// the web font arrives, so on a first visit the toggle could be wrong). Each line is a block of
 /// its own carrying its indent, so a wrapped line continues 4 columns deeper than it starts. The
 /// line break stays inside each line element, so the text of the code element is the block
@@ -114,7 +124,7 @@ fn code_component(language: Option<&str>, code: &str) -> String {
     }
     let mut block_class = String::from("code-block");
     if longest > 0 {
-        let threshold_class = format!("@max-[{}em]/code:wrap-shown", half(longest));
+        let threshold_class = format!("@max-[{}em]/code:wrap-shown", code_width_em(longest));
         block_class.push(' ');
         block_class.push_str(&threshold_class);
         classes.push(threshold_class);
@@ -205,7 +215,7 @@ mod tests {
     #[test]
     fn fenced_code_becomes_the_component_with_its_language() {
         let html = to_html("```java\nint a;\n```\n");
-        assert!(html.contains("<div class=\"code-block @max-[3em]/code:wrap-shown\">"));
+        assert!(html.contains("<div class=\"code-block @max-[3.613em]/code:wrap-shown\">"));
         assert!(html.contains("<div class=\"code-scroller\"><label class=\"code-wrap-toggle\">"));
         assert!(html.contains("<input type=\"checkbox\" aria-label=\"Wrap long lines of code\"> wrap</label><pre class=\"code-text\"><code class=\"language-java\">"));
         assert!(html.contains("<span class=\"code-line code-line-indent-0\">int a;\n</span>"));
@@ -215,14 +225,14 @@ mod tests {
     fn indented_code_is_a_component_without_language() {
         let html = to_html("text\n\n    x = 1\n");
         assert!(html.contains("<code><span"));
-        assert!(html.contains("<div class=\"code-block @max-[2.5em]/code:wrap-shown\">"));
+        assert!(html.contains("<div class=\"code-block @max-[3.011em]/code:wrap-shown\">"));
     }
 
     #[test]
     fn longest_line_is_counted_in_characters_not_bytes() {
         // "è" is two bytes, one character; the longest line is the second.
         let html = to_html("```\nèèè\nèèèè\n```\n");
-        assert!(html.contains("@max-[2em]/code:wrap-shown"));
+        assert!(html.contains("@max-[2.409em]/code:wrap-shown"));
     }
 
     #[test]
@@ -257,8 +267,8 @@ mod tests {
         assert_eq!(
             classes,
             [
-                "@max-[2.5em]/code:wrap-shown",
-                "@max-[1em]/code:wrap-shown",
+                "@max-[3.011em]/code:wrap-shown",
+                "@max-[1.205em]/code:wrap-shown",
                 "code-line-indent-0",
                 "code-line-indent-2"
             ]

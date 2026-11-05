@@ -15,7 +15,7 @@ pub fn HomePage() -> impl IntoView {
             address_prefix=""
             footer_licence=FooterLicence::CurriculumCopyNotChange
         >
-            <main class="long-text-column" inner_html=markdown::to_html(CURRICULUM)></main>
+            <main class="long-text-column md:long-text-large" inner_html=markdown::to_html(CURRICULUM)></main>
         </PageFrame>
     }
 }
