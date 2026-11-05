@@ -27,8 +27,8 @@ live since 2026-10-26
 - [Give the articles' code, quotes and tables a look](wip/design-look-of-articles.md),
   following [ADR-003](adr/ADR-003-readability-first-amber-as-accent.md),
   readability first with amber as an accent: colours, text size, code
-  in Hack, headings, quotes and tables are done; the light background
-  remains.
+  in Hack, headings, quotes and tables are done; the light background,
+  then the licence note at the end of an article, remain.
 
 ## Next
 

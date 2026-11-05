@@ -154,6 +154,14 @@ Slices left, one decision each, in this order:
 6. Tables, with thin lines. Done, with stripes on alternate rows.
 7. The light background, shown when the reader's browser prefers light
    pages, with darker shades of amber.
+8. The licence note at the end of an article, added by the user on
+   2026-11-05 after the tables: its text smaller, being a note,
+   perhaps the footer's size; some space between the article's end and
+   the line above the note, today none; the line itself is off-white,
+   unlike the site's other lines. Today the note is in the article's
+   Markdown, a thematic break (`---`) and a plain paragraph, which the
+   stylesheet does not style: Tailwind's reset gives the line the text's
+   colour and no margin.
 
 ## Colours on black (2026-11-05)
 
@@ -292,3 +300,5 @@ columns, stays with the card on wide content.
   report "light".
 - The light shades of amber, computed in ADR-003, seen on the page.
 - The two colours of the table stripes on the light background.
+- How the page knows the licence note is a note (slice 8): in the
+  Markdown it is only a paragraph after a thematic break.
