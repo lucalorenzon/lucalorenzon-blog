@@ -56,14 +56,17 @@
   --font-mono: "IBM VGA 8x16", monospace;
   --color-amber: #dd9911;
   --color-black: #000000;
-  /* Code blocks: off-white text on a near-black surface, not pure white,
-     which smears on a dark background for readers with astigmatism.
-     Contrast 13.9:1 for the code; the amber "wrap" label on the surface is
-     7.16:1, just above the AAA 7:1 the site checks. */
+  /* Off-white, not pure white, which smears on a dark background for readers
+     with astigmatism. It is the colour of the running text, the footer text
+     and the code blocks. Contrasts (WCAG formula): off-white on black
+     16.83:1; amber on black 8.64:1; amber on the code surface 7.16:1, just
+     above the AAA 7:1 the site checks (the amber "wrap" label sits there). */
+  --color-off-white: #e6e6e6;
   --color-code-surface: #1a1a1a;
-  --color-code-text: #e6e6e6;
 }
 
+/* Amber is the page's base colour: the header (logo and title) takes it from
+   here. The text column and the footer set the off-white themselves. */
 html,
 body {
   background-color: #000000;
@@ -91,12 +94,14 @@ body {
   @apply font-mono grid items-center grid-cols-[1fr_auto] [grid-template-areas:'logo_menu''title_title'];
 }
 
-/* Header: one row from xl. Outer columns are at least as wide as their
-   content plus 8px padding plus the 24px gap to the title, so the title is
-   centred while there is room and shifted just enough otherwise.
-   368 = 8 + 336 (42 characters of 8px) + 24; 88 = 56 + 8 + 24. */
+/* Header: one row from xl. The outer columns are as wide as their content
+   (the logo, the menu slot with its margin) and share the rest equally, so
+   the title is centred while there is room and shifted just enough
+   otherwise. The column gap keeps the title 24px away from both. The columns
+   follow the real width of their content, so they also grow with the
+   reader's own text spacing instead of letting the title run into the logo. */
 @utility header-one-row {
-  @apply font-mono grid items-center border-b border-amber grid-cols-[minmax(368px,1fr)_minmax(0,max-content)_minmax(88px,1fr)] [grid-template-areas:'logo_title_menu'];
+  @apply font-mono grid items-center gap-x-6 border-b border-amber grid-cols-[minmax(max-content,1fr)_minmax(0,max-content)_minmax(max-content,1fr)] [grid-template-areas:'logo_title_menu'];
 }
 
 @utility text-logo-large {
@@ -111,17 +116,20 @@ body {
   @apply mr-2 h-6 w-14 justify-self-end [grid-area:menu];
 }
 
-/* Title under the header line: the line is its top border, edge to edge. */
+/* Title under the header line: the line is its top border, edge to edge.
+   The title is in Literata bold, not the pixel font of the header (font-sans
+   overrides the font-mono of the header container), so it has the line
+   height of a proportional font that may wrap on two lines. */
 @utility title-below-line {
-  @apply border-t border-amber pt-6 text-center text-2xl leading-6 [grid-area:title];
+  @apply border-t border-amber pt-6 text-center text-2xl font-sans font-bold leading-[1.5] [grid-area:title];
 }
 
 @utility title-below-line-large {
-  @apply border-t border-amber pt-6 text-center text-[32px] leading-8 [grid-area:title];
+  @apply border-t border-amber pt-6 text-center text-[32px] font-sans font-bold leading-[1.5] [grid-area:title];
 }
 
 @utility title-beside-logo {
-  @apply border-t-0 pt-0 text-center text-[32px] leading-8 [grid-area:title];
+  @apply border-t-0 pt-0 text-center text-[32px] font-sans font-bold leading-[1.5] [grid-area:title];
 }
 
 /* Content: one block column of text, centred, at most 60 characters wide
@@ -135,7 +143,7 @@ body {
    and lists are 36px apart (1.5 times the line height, WCAG 1.4.8), list
    items 12px. */
 @utility long-text-column {
-  @apply grow w-full max-w-[60ch] mx-auto px-2 pb-8;
+  @apply grow w-full max-w-[60ch] mx-auto px-2 pb-8 text-off-white;
 
   /* Sections: an amber line above, generous space before; the first has no
      line, the header already has one. */
@@ -175,19 +183,20 @@ body {
     @apply underline;
   }
 
-  /* Same colour as the code blocks, so code reads as code in a sentence too. */
+  /* Code in a sentence stays amber, so it stands out from the off-white text
+     around it; code blocks keep the off-white text. */
   & :not(pre) > code {
-    @apply text-code-text;
+    @apply text-amber;
   }
 }
 
 @utility footer-sticky-bottom {
-  @apply sticky bottom-0 bg-black border-t border-amber px-2 text-left;
+  @apply sticky bottom-0 bg-black border-t border-amber px-2 text-left text-off-white;
 }
 
 /* The licence link in the footer: underlined, so it is told apart from the
-   text around it by more than colour (WCAG 1.4.1). Same amber as the text,
-   which already reaches the 7:1 contrast. */
+   text around it by more than colour (WCAG 1.4.1). Same off-white as the
+   text, which reaches the 7:1 contrast. */
 @utility footer-link {
   @apply underline;
 }
@@ -246,7 +255,7 @@ body {
 /* pre gets its own monospace font from the browser; it must inherit the
    block's, or the thresholds and the indents would not match the code font. */
 @utility code-text {
-  @apply m-0 text-code-text;
+  @apply m-0 text-off-white;
   font: inherit;
 
   & code {

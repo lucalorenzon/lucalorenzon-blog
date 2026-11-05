@@ -153,6 +153,30 @@ Slices left, one decision each, in this order:
 7. The light background, shown when the reader's browser prefers light
    pages, with darker shades of amber.
 
+## Colours on black (2026-11-05)
+
+The first of the slices left. Text and footer off-white (`#e6e6e6`,
+16.83:1 on black); amber (8.64:1) for the logo, the page title, the
+lines, the code frames, the curriculum's roles and code inside a
+sentence; the page title in bold Literata, still amber. The user saw
+the result on the curriculum and both articles, at iPhone SE and
+laptop width, before the commit.
+
+Three technical adjustments, decided by the agent as they change
+nothing with the default settings:
+
+- **Title line height 1.5,** so the title still starts 24 pixels under
+  the header line: Literata's letters take more room above them than
+  the pixel font's.
+- **On wide screens the logo's column follows the logo's real width,**
+  with a 24-pixel gap, instead of a fixed 368 pixels. Under the
+  reader's own text spacing (WCAG 1.4.12) the logo drawn in characters
+  grows, and the bold Literata title, a little wider than the pixel
+  one, touched it.
+- **The header test accepts a title on two lines** in the header row,
+  as the agreed layout already allowed, measuring its distance from the
+  logo on the title's column.
+
 ## Questions
 
 - The text size: the trials used 18 pixels on a phone and 20 on a

@@ -201,7 +201,12 @@ function violations(s: Snapshot, title: string, centred: boolean): string[] {
   const centre = (s.h1Text.l + s.h1Text.r) / 2;
   const isCentred = near(centre, w / 2, 2);
   if (wide) {
-    const logoGap = logo ? s.h1Text.l - logo.box.r : NaN;
+    // The title is in a proportional font and, on two lines, centred inside
+    // its column: the text starts further right than the column, which keeps
+    // the 24px from the logo. So a wrapped title is measured on the h1 box;
+    // a one-line title on its text.
+    const twoLines = s.h1Text.b - s.h1Text.t > 1.5 * s.h1LineHeight;
+    const logoGap = logo ? (twoLines ? s.h1Box.l : s.h1Text.l) - logo.box.r : NaN;
     const menuGap = menu ? menu.box.l - s.h1Text.r : NaN;
     rule(logoGap >= MIN_GAP - 0.5, `title must be at least ${MIN_GAP}px from the logo, is ${fmt(logoGap)}px`);
     rule(menuGap >= MIN_GAP - 0.5, `title must be at least ${MIN_GAP}px from the menu slot, is ${fmt(menuGap)}px`);
