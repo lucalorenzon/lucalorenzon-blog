@@ -30,6 +30,37 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+### Added
+
+- Two articles, each on a page of its own under `articles/`: "After
+  Save Event" and "How to generate hybris PK values without hybris".
+- Code blocks in a box: off-white code in the Hack font, served by the
+  site itself, on a dark grey, in a thin amber frame. A line too long
+  for the box scrolls sideways, and a "wrap" toggle appears only where
+  a block needs it.
+- Tables with thin amber lines and striped rows. A table too wide for
+  the screen becomes a record viewer: the header names in a column that
+  stays still, one record at a time beside them, moved with a vertical
+  gesture. Tables never scroll sideways.
+- Quotes with an amber bar on the left.
+- The licence note at the end of an article is set apart: smaller text
+  under a thin amber line.
+- A light page, paper white with a burnt-orange accent, when the
+  browser prefers light pages.
+
+### Changed
+
+- Readability first, amber as an accent, on every page
+  ([ADR-003](docs/adr/ADR-003-readability-first-amber-as-accent.md)):
+  the text and the footer are off-white; amber stays for the logo, the
+  page title, the lines, the frames, the headings and code inside a
+  sentence; the page title is in bold Literata.
+- Bigger text: 18 pixels on a phone and 20 from 768 pixels up; the
+  footer at 16 and 18.
+- Headings on every page, the curriculum included: section titles in
+  bold amber, a little larger; sub-sections and the curriculum's roles
+  in bold italic amber; no line above the sections, no inverse video.
+
 ## [0.8.0] - 2026-11-03
 
 ### Added
