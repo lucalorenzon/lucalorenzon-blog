@@ -168,22 +168,23 @@ body {
   --long-text-size: 18px;
   font-size: var(--long-text-size);
 
-  /* Sections: an amber line above, generous space before; the first has no
-     line, the header already has one. */
+  /* Sections: amber, bold and larger than the text, no line above (ADR-003:
+     amber is an accent). The top margin is 2em of the text, written relative
+     to the heading's own 1.4em size. */
   & h2 {
-    @apply border-t border-amber pt-2 text-[1.5em] leading-[1.25];
-    margin-top: calc(2em / 1.5);
+    @apply text-amber text-[1.4em] leading-[1.3] font-bold;
+    margin-top: calc(2em / 1.4);
   }
 
-  & > h2:first-child {
-    @apply border-t-0 pt-0;
-  }
-
-  /* Roles: inverse video, as wide as the text. */
-  /* A long word in a heading (a class name in an article) must break rather
-     than push the page sideways. */
+  /* Sub-sections (roles in the curriculum, sections in an article): amber,
+     bold italic, a little larger than the text. Amber and size keep them apart
+     from the sections without lines or inverse video. The top margin is 1.5em
+     of the text, relative to the heading's 1.1em size. A long word in a
+     heading (a class name in an article) must break rather than push the page
+     sideways. */
   & h3 {
-    @apply mt-[1.5em] w-fit bg-amber px-2 text-black wrap-anywhere;
+    @apply text-amber text-[1.1em] leading-[1.4] font-bold italic wrap-anywhere;
+    margin-top: calc(1.5em / 1.1);
   }
 
   /* "Main work" and similar: underlined. */

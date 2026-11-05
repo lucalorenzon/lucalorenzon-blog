@@ -148,7 +148,8 @@ Slices left, one decision each, in this order:
 2. Text size, with spacing that follows it, on every page.
 3. Code in Hack, served by the site, with the toggle's threshold
    updated. Joined with slice 2 when done.
-4. Headings of the articles, with no line above the sections.
+4. Headings of the articles, with no line above the sections. Done for
+   the curriculum too.
 5. Quotes, with an amber bar on the left.
 6. Tables, with thin lines.
 7. The light background, shown when the reader's browser prefers light
@@ -211,11 +212,40 @@ follows the text, in em, at the same ratios as before.
   screen. Decided by the agent, as nothing changes with the default
   settings.
 
+## Headings (2026-11-05)
+
+**Chosen, by the user: section titles (`h2`) in bold amber, a little
+larger (1.4 times the text); sub-sections and the curriculum's roles
+(`h3`) in bold italic amber, a little smaller (1.1 times); no line
+above the sections, no inverse video; the same on every page,
+curriculum included.** The underlined sub-headings (`h4`, "Main work")
+stay as they were. Amber on black: 8.64:1.
+
+The user first asked to try the curriculum too, reversing for a trial
+the choice of 2026-11-04 that it keep its lines and inverse video, and
+compared on the real pages at phone width:
+
+- **Today's headings.** Rejected: the line and the inverse video were
+  the BBS look; in the articles a sub-section weighed more than its
+  section.
+- **Bold headings in off-white, no lines.** Rejected: in the
+  curriculum a section and a role, both bold off-white and close in
+  size, hardly stood apart.
+- **Section titles in amber, roles in bold off-white.** Chosen first;
+  the user then asked for the sub-titles in amber too, a little smaller
+  and in italic.
+- **Sub-titles in regular italic.** Rejected: the role weighed little,
+  and looked like the italic line below it (company and dates).
+
+As the curriculum takes the same headings, the article styles need not
+be kept apart from the curriculum's, as this card had planned: one set
+of rules serves both. The content-layout test checked the line above
+sections and the inverse video; it now checks that section titles and
+sub-titles differ in colour from the text, the same intent, with the
+contrast still checked by axe.
+
 ## Questions
 
-- Whether the curriculum keeps its section lines and its roles in
-  inverse video, as decided on 2026-11-04, or follows the new
-  direction.
 - Which background a reader with no preference gets: browsers then
   report "light".
 - The light shades of amber, computed in ADR-003, seen on the page.

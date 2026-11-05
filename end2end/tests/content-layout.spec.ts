@@ -8,10 +8,12 @@ import { retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
 // Rules on every viewport:
 //   1. no horizontal scroll
 //   2. section headings (h2) are larger than body text
-//   3. role headings (h3) stand out from the page background
+//   3. role headings (h3) stand out from the body text by colour (amber, no inverse video)
 //   4. at the end of the page the content ends at least 32px above the sticky footer
 //   5. consecutive headings, paragraphs and list items do not overlap
-//   6. the first section has no line above it when it opens the page (the header has its own); the others do
+//   6. section headings (h2) stand out from the body text by colour (amber); no line above them
+//      (rules 3 and 6 used to check the amber line above h2 and the inverse video of h3: the
+//      headings were changed to amber text, the intent "sections and roles stay apart from the text" holds)
 //
 // The width of the lines (at most 80 characters, counted on the rendered
 // lines) is checked in readability.spec.ts.
@@ -24,10 +26,10 @@ type Snapshot = {
   h2Count: number;
   h2MinFontSize: number;
   pFontSize: number;
-  h2TopBorders: number[];
+  pColor: string;
+  h2Colors: string[];
   h3Count: number;
-  pageBackground: string;
-  h3Backgrounds: string[];
+  h3Colors: string[];
   lastBottom: number;
   footerTop: number;
   overlaps: string[];
@@ -71,10 +73,10 @@ async function snapshot(page: Page): Promise<Snapshot> {
       h2Count: h2s.length,
       h2MinFontSize: Math.min(...h2s.map((el) => parseFloat(getComputedStyle(el).fontSize))),
       pFontSize: p ? parseFloat(getComputedStyle(p).fontSize) : NaN,
-      h2TopBorders: h2s.map((el) => parseFloat(getComputedStyle(el).borderTopWidth)),
+      pColor: p ? getComputedStyle(p).color : '',
+      h2Colors: h2s.map((el) => getComputedStyle(el).color),
       h3Count: h3s.length,
-      pageBackground: getComputedStyle(document.body).backgroundColor,
-      h3Backgrounds: h3s.map((el) => getComputedStyle(el).backgroundColor),
+      h3Colors: h3s.map((el) => getComputedStyle(el).color),
       lastBottom,
       footerTop: footer.getBoundingClientRect().top,
       overlaps,
@@ -85,7 +87,7 @@ async function snapshot(page: Page): Promise<Snapshot> {
 // ---- Rules (run in Node) -------------------------------------------------
 
 // Returns one message per broken rule; empty means the content is as agreed.
-function violations(s: Snapshot, hasRoles: boolean, startsWithSection: boolean): string[] {
+function violations(s: Snapshot, hasRoles: boolean): string[] {
   const where = `[${s.innerWidth}px]`;
   const out: string[] = [];
   const rule = (ok: boolean, message: string) => {
@@ -98,16 +100,12 @@ function violations(s: Snapshot, hasRoles: boolean, startsWithSection: boolean):
     s.h2MinFontSize > s.pFontSize,
     `h2 must be larger than body text: smallest h2 ${s.h2MinFontSize}px, paragraph ${s.pFontSize}px`,
   );
-  rule(
-    startsWithSection ? s.h2TopBorders[0] === 0 : s.h2TopBorders[0] > 0,
-    `the first h2 must have a top border exactly when it opens the page (the header has its own line), has ${s.h2TopBorders[0]}px`,
-  );
-  s.h2TopBorders.slice(1).forEach((w, i) =>
-    rule(w > 0, `h2 number ${i + 2} must have a top border, has ${w}px`),
+  s.h2Colors.forEach((c, i) =>
+    rule(c !== s.pColor, `h2 number ${i + 1} must differ in colour from the body text (${s.pColor}), has ${c}`),
   );
   if (hasRoles) rule(s.h3Count > 0, 'the content must have at least one h3');
-  s.h3Backgrounds.forEach((bg, i) =>
-    rule(bg !== s.pageBackground, `h3 number ${i + 1} must differ from the page background (${s.pageBackground}), has ${bg}`),
+  s.h3Colors.forEach((c, i) =>
+    rule(c !== s.pColor, `h3 number ${i + 1} must differ in colour from the body text (${s.pColor}), has ${c}`),
   );
   rule(
     s.footerTop - s.lastBottom >= MIN_GAP_ABOVE_FOOTER - 0.5,
@@ -119,7 +117,7 @@ function violations(s: Snapshot, hasRoles: boolean, startsWithSection: boolean):
 
 // ---- Tests ---------------------------------------------------------------
 
-for (const { name: pageName, address, hasRoles, startsWithSection } of TEXT_PAGES) {
+for (const { name: pageName, address, hasRoles } of TEXT_PAGES) {
 for (const { name, width, height } of VIEWPORTS) {
   test(`content layout of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
@@ -127,7 +125,7 @@ for (const { name, width, height } of VIEWPORTS) {
     await retryWhenLive(async () => {
       await page.goto(address);
       await page.evaluate(() => document.fonts.ready);
-      const found = violations(await snapshot(page), hasRoles, startsWithSection);
+      const found = violations(await snapshot(page), hasRoles);
       expect(found.length, `content rules broken:\n${found.join('\n')}`).toBe(0);
     });
   });
