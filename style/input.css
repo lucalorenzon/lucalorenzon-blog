@@ -219,6 +219,35 @@ body {
     @apply mt-0;
   }
 
+  /* Tables: amber hairlines only, kept thin so amber stays an accent
+     (ADR-003): one on top, one under the header cells and one at the bottom,
+     plus a line between columns and none at the outer sides. Odd body rows sit
+     on the code surface colour, even rows on the page background, so the eye
+     can follow a row without boxes. The stripe is never lighter than the code
+     surface, so the off-white text and the amber code in a cell keep their
+     contrast. It sits in the flow like a paragraph (2.25em above). */
+  & table {
+    @apply mt-[2.25em] w-full border-collapse border-y border-amber;
+  }
+
+  & th,
+  & td {
+    @apply py-[0.375em] px-[0.5em] text-left align-top;
+  }
+
+  & th {
+    @apply font-bold border-b border-amber;
+  }
+
+  & th + th,
+  & td + td {
+    @apply border-l border-amber;
+  }
+
+  & tbody tr:nth-child(odd) {
+    @apply bg-code-surface;
+  }
+
   & a {
     @apply underline;
   }

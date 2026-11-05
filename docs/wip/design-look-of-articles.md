@@ -151,7 +151,7 @@ Slices left, one decision each, in this order:
 4. Headings of the articles, with no line above the sections. Done for
    the curriculum too.
 5. Quotes, with an amber bar on the left. Done.
-6. Tables, with thin lines.
+6. Tables, with thin lines. Done, with stripes on alternate rows.
 7. The light background, shown when the reader's browser prefers light
    pages, with darker shades of amber.
 
@@ -254,8 +254,41 @@ go without a new trial, having seen it in the trials of the direction.
 The agent checked it at iPhone SE width on both articles, the hybris PK
 quote holding a list among its paragraphs.
 
+## Tables (2026-11-05)
+
+**Chosen, by the user: thin amber lines above the table, under the
+header and at the bottom, and between the columns, with no line on
+the outer sides; rows in stripes, the page's black alternating with
+the dark grey of the code blocks (`#1a1a1a`); the header in bold.**
+The table fills the column's width, its cells have a margin of half a
+line, and it sits in the flow like a paragraph. The stripes came from
+the user, before the trials; with them, lines between the rows are no
+longer needed. The user compared, on the real pages of both articles
+at iPhone SE and laptop width, served locally:
+
+- **A full grid,** a line around every cell. Not chosen.
+- **A single line under the header,** the stripes alone parting the
+  rows. Not chosen.
+- **Three lines,** above, under the header and at the bottom, as in
+  the tables of books and papers. The user asked for it with the lines
+  between the columns, which became the choice.
+- **Lines between the columns thinner or dimmer:** half a pixel of
+  amber, or amber at 50% (`#6e4c08`, 2.7:1 on black) or 40%
+  (`#583d07`, 2.09:1). Rejected by the user: no added value, and half a
+  pixel shows thinner only on high-density screens; on others the
+  browser rounds it to one pixel or drops it.
+
+**Why the stripes are not lighter.** The `numberseries` table holds
+code inside a sentence, in amber, which keeps 7.16:1 on `#1a1a1a` but
+falls to 6.55:1 on `#222222`, under the 7:1 the site checks. The text,
+off-white, keeps 13.94:1 on the lighter stripe.
+
+What a table too wide for a phone does, as `numberseries` with its six
+columns, stays with the card on wide content.
+
 ## Questions
 
 - Which background a reader with no preference gets: browsers then
   report "light".
 - The light shades of amber, computed in ADR-003, seen on the page.
+- The two colours of the table stripes on the light background.
