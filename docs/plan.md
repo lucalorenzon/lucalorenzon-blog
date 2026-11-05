@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-04
+Last updated: 2026-11-05
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -24,9 +24,11 @@ live since 2026-10-26
   checks again. Code is done, "After Save Event" is back in the checks;
   tables and the hybris PK article remain. No version is published
   until the navigation is done.
-- [Give the articles' code, quotes and tables a look](wip/design-look-of-articles.md):
-  code has its box and colours; text size, headings of articles,
-  quotes and tables remain, as the user asked on reading the pages.
+- [Give the articles' code, quotes and tables a look](wip/design-look-of-articles.md),
+  now following [ADR-003](adr/ADR-003-readability-first-amber-as-accent.md),
+  readability first with amber as an accent: colours, text size and
+  code font on every page, then the articles' headings, quotes and
+  tables, then the light background.
 
 ## Next
 
@@ -78,7 +80,7 @@ live since 2026-10-26
 - [Measure the CO2 of a page view](backlog/measure-co2-of-a-page-view.md),
   an estimate from the bytes transferred.
 - [Let readers adjust font and spacing](backlog/let-readers-adjust-font-and-spacing.md),
-  as on a Kindle.
+  as on a Kindle, and choose the background on the site itself.
 - [Break wrapped code lines by grammar](backlog/break-wrapped-code-by-grammar.md),
   rather than wherever the width runs out.
 - [Add syntax colours to code](backlog/add-syntax-colours-to-code.md),

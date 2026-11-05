@@ -112,9 +112,54 @@ blocks, with no background, so code reads as code wherever it is.
 Contrast on the page's black: 16.8:1. Rejected: amber as before, which
 matched the prose and no longer matched the blocks.
 
+## A new direction for the whole site (2026-11-05)
+
+Asked whether the bigger text was for the articles only, the user
+answered: for the curriculum too. They then questioned the BBS look
+itself: a desire for identity had made them underrate readability,
+and a page in the style of a Kindle might suit the articles better
+than a 1980s BBS. After comparing trials on the real article page, the
+user set the direction recorded in
+[ADR-003](../adr/ADR-003-readability-first-amber-as-accent.md):
+readability first, identity in the content; amber as an accent; the
+logo in the pixel font, text and title in Literata, code in Meslo LG;
+a light or a dark background chosen by the reader.
+
+What it changes in this card:
+
+- **The text size changes on every page,** the curriculum included.
+- **The headings asked on 2026-11-04 in a BBS style** are kept only
+  where they help the reading. The trials showed section titles in
+  bold Literata, larger, with no line above them, and sub-titles in
+  bold: no inverse video.
+- **Code inside a sentence turns amber** (slice 2 had made it
+  off-white), so it still differs from the text, now off-white too.
+- **Code blocks move to Meslo LG,** which settles the font this card
+  had left undecided, and changes the factor of the "wrap" toggle's
+  threshold.
+- **The card now carries the site-wide slices** that came out of it,
+  not only the articles' look.
+
+Slices left, one decision each, in this order:
+
+1. Colours on black: off-white text; amber for logo, title, lines,
+   frames and code inside a sentence; the title in Literata.
+2. Text size, with spacing that follows it, on every page.
+3. Code in Meslo LG, served by the site, with the toggle's threshold
+   updated.
+4. Headings of the articles, with no line above the sections.
+5. Quotes, with an amber bar on the left.
+6. Tables, with thin lines.
+7. The light background, shown when the reader's browser prefers light
+   pages, with darker shades of amber.
+
 ## Questions
 
-- The look of each kind, within the readability rules.
-- The text size, and whether it changes for the curriculum too.
-- How the article styles are kept apart from the curriculum's, which
-  share the `long-text-column` rules today.
+- The text size: the trials used 18 pixels on a phone and 20 on a
+  laptop.
+- Whether the curriculum keeps its section lines and its roles in
+  inverse video, as decided on 2026-11-04, or follows the new
+  direction.
+- Which background a reader with no preference gets: browsers then
+  report "light".
+- The light shades of amber, computed in ADR-003, seen on the page.

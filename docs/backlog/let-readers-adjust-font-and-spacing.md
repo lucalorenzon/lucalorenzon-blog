@@ -28,9 +28,15 @@ it, and the threshold can follow.
   half an em (`src/markdown.rs`, `style/input.css`); a font or spacing
   setting must keep it right.
 
+- **A light and a dark background** come with
+  [ADR-003](../adr/ADR-003-readability-first-amber-as-accent.md): at
+  first the site follows the preference set in the reader's browser,
+  with no script. A control on the site to choose between them belongs
+  here.
+
 ## Questions
 
-- Which settings: size, line spacing, letter spacing, font.
+- Which settings: size, line spacing, letter spacing, font, background.
 - Where the control lives, and whether the choice is remembered.
-- How it fits the site's look, which the
-  [look card](../wip/design-look-of-articles.md) is still deciding.
+- How it fits the site's look, set by ADR-003 and built by the
+  [look card](../wip/design-look-of-articles.md).
