@@ -1,8 +1,12 @@
 # Let the Markdown ask for components for wide code and tables
 
 - **Opened:** 2026-11-04, by the user, while giving the articles a page
-  of their own ([card](../done/2026-11-04_add-article-pages.md)); in Now.
-- **Status:** in progress since 2026-11-04.
+  of their own ([card](2026-11-04_add-article-pages.md)); in Now.
+- **Status:** done on 2026-11-05. Wide code scrolls sideways with a
+  "wrap" toggle; a wide table becomes a record viewer below a readable
+  width; both article pages are back in the readability and
+  content-layout checks, passing. No annotation is written in the
+  Markdown: the build measures what it needs.
 
 ## Why
 
@@ -12,54 +16,24 @@ sideways on a phone; the author remembers trying, without success, to
 solve it at the time. On this site the readability test forbids both
 a page that scrolls sideways and a box that scrolls inside itself
 (counted as cut-off text), so the article pages were left out of the
-readability and content-layout checks until this card is done.
+readability and content-layout checks until this card was done.
 
-The user sees a need that was bound to come: telling the presentation
+The user saw a need that was bound to come: telling the presentation
 layer how to show a piece of text, where Markdown alone is no longer
 enough. Without putting HTML into the Markdown: that would mix
 presentation with text, and split the presentation logic between the
-layer meant for it and each article.
+layer meant for it and each article. The starting idea, the user's:
+annotations in the Markdown, such as
+`[//]: <> (markdown_code_responsive#start)`, naming a component of the
+presentation layer; for code, scrolling sideways or a full-screen
+window; for tables, splitting by columns or a full-screen window. The
+slices below say where each idea ended.
 
-## Proposal
-
-From the user: annotations in the Markdown name a custom component of
-the presentation layer, which reads them to configure the component
-and show the text. For example, components such as
-`markdown_code_responsive` or `table_layout_responsive`, with the text
-wrapped in markers like
-`[//]: <> (markdown_code_responsive#start)` … `(markdown_code_responsive#end)`.
-
-What each component does is part of this card. Ideas from the user:
-
-- **Code:** accept scrolling sideways; or a button opening the code in
-  a full-screen window, perhaps along the longer side of the screen.
-- **Tables:** split the table by columns, repeating key columns, which
-  the annotation names; or a full-screen window; or other solutions.
-
-## Known from the start
-
-- **It replaces part of the look card:** what wide code and tables do
-  on a phone moved here from the card
-  [give the articles' code, quotes and tables a look](design-look-of-articles.md),
-  which keeps font, colours and quotes.
-- **The readability test may change:** if a component lets code or a
-  table scroll inside its box, the rule that counts that as cut-off
-  text is to be revised, with the reason.
-- **The annotation's form is to be checked:** pulldown-cmark reads
-  `[//]: <> (...)` as a link reference definition, which it consumes
-  without leaving an event where it stands, so the presentation layer
-  may not see it in the flow of the text. For code there is a native
-  place for such data: the info string of a fenced block, after the
-  language (```` ```rust responsive ````). Tables have no such place.
-- **No HTML in the content** stays: the unit test that forbids it
-  applies to the annotations too.
-- **When the articles go back into the checks:** this card ends with
-  the article pages back in the readability and content-layout checks,
-  passing.
-- **Before the navigation:** the user wants the article pages
-  accessible and in as good a state as the curriculum, automatic
-  checks and the user's own validation, before the
-  [navigation](../backlog/add-site-navigation.md) links to them.
+What wide code and tables do on a phone moved here from the card
+[give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md),
+which kept font, colours and quotes. The user wanted the article pages
+accessible and in as good a state as the curriculum before the
+[navigation](../backlog/add-site-navigation.md) links to them.
 
 ## Slice 1: wide code (2026-11-04)
 
@@ -176,7 +150,7 @@ Two changes came with the code:
   The code font's characters are exactly half an em wide, so the
   result is the same and still follows enlarged text. The cost: the
   factor 0.5 belongs to the font IBM VGA 8x16; if the
-  [look card](design-look-of-articles.md) changes the code
+  [look card](../wip/design-look-of-articles.md) changes the code
   font, the factor changes too, and the browser tests notice it.
 - **ADR-001 has an exception:** the threshold cannot be one of our
   named styles, because Tailwind does not accept a value inside a
@@ -215,7 +189,7 @@ threshold computed without it: the code may scroll while the toggle
 stays hidden. Pointer and touch users still scroll it; a keyboard-only
 user on Safari cannot. **Accepted, by the user,** as a narrow case;
 alternatives belong to the
-[look card](design-look-of-articles.md). Rejected: a
+[look card](../wip/design-look-of-articles.md). Rejected: a
 threshold 24% higher, which would show a toggle that does nothing in a
 band of widths, against "only where needed". The readability test's
 exception is therefore wider than planned: the code's scrolling box
@@ -427,9 +401,8 @@ what lets the browser give each row its height without a script,
 since the height depends on the screen width. The copies are hidden
 from screen readers and compress well; they grow with the square of
 the records. **Accepted, by the user,** after reading the code, as the
-price of no script. A long table, such as the header that stays in
-view imagined under "Questions left", would reopen the choice of a
-Leptos island.
+price of no script. A long table would reopen the choice of a Leptos
+island: [handle long tables](../backlog/handle-long-tables.md).
 
 ### The label column
 
@@ -524,18 +497,46 @@ staying a table, the viewer in landscape. Not tried: Firefox, which
 should show the number inside each record instead, and a real mouse
 wheel in Chromium.
 
-## Questions left
+## Slice 3: the hybris PK article back in the checks (2026-11-05)
 
-- Tables: what a wide table does on a wide screen, where the space
-  beside the text column stays empty; the card
-  [use the space beside the text on wide screens](../backlog/use-space-beside-text-on-wide-screens.md)
-  may answer it.
-- What an island of Leptos weighs, shared part and component part:
-  spike B, no longer needed by tables. **Chosen, by the user:** done
-  with the first island the site needs, in a card of its own,
+The article joined the readability and content-layout checks, and the
+code block test now checks its page width too. Everything passed but
+one case.
+
+**A known limit, accepted by the user as for code:** with the
+reader's text spacing (WCAG 1.4.12), the hybris table in table form
+is 770 pixels wide in a 704-pixel column at 768 and 810 pixels, and
+the page scrolls sideways by up to 34 pixels. The build measures words
+without that spacing, which makes them about 25% wider, so just above
+the threshold the table cannot shrink below its unbreakable values
+(varchar(255), currentValue). Above about 880 pixels the overflow
+falls in the empty space beside the column. No content is lost, which
+is what 1.4.12 asks. The text spacing test measures the page with the
+tables in table form taken out; everything else, the record viewer
+included, must fit. Rejected: counting the spacing in the threshold,
+which would make the hybris table a record viewer at every width,
+since the column never exceeds 35.2 em; letting single-value cells
+break as a last resort, which CSS cannot ask for directly and which
+risked bringing back "63–44" split in two.
+
+Not reproduced: the spike's observation that the page was a few
+pixels too wide at 320 pixels with doubled text. The check that
+doubled the page's base size showed no change in the text at all,
+because the stylesheet sets text sizes in pixels; that went to the
+[WCAG card](../backlog/cover-wcag-criteria-axe-cannot-check.md) as a
+question on 1.4.4.
+
+## Left to other cards
+
+- What a wide table does on a wide screen, where the space beside the
+  text column stays empty:
+  [use the space beside the text on wide screens](../backlog/use-space-beside-text-on-wide-screens.md).
+- What a Leptos island weighs, shared part and component part, no
+  longer needed by tables; **chosen, by the user:** measured with the
+  first island the site needs,
   [measure what a Leptos island weighs](../backlog/measure-weight-of-a-leptos-island.md).
-- A header that stays in view while a long table scrolls with the
-  page: an idea of the user's; the agent proposed a card of its own,
-  since no table in the articles has more than five rows. Not decided.
-- The hybris PK article back in the readability and content-layout
-  checks, which ends this card.
+- A header that stays in view while a long table scrolls, and the
+  record viewer's copies on a long table; **chosen, by the user:** a
+  card in Later, [handle long tables](../backlog/handle-long-tables.md).
+- Wrapped code broken by grammar rather than by width:
+  [break wrapped code lines by grammar](../backlog/break-wrapped-code-by-grammar.md).

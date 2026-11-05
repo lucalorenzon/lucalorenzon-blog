@@ -1,7 +1,7 @@
 # Let readers adjust font and spacing
 
 - **Opened:** 2026-11-04, by the user, while giving wide code a "wrap"
-  toggle ([card](../wip/annotate-markdown-for-wide-content.md)); in
+  toggle ([card](../done/2026-11-05_annotate-markdown-for-wide-content.md)); in
   Later.
 - **Status:** noticed, not started.
 

@@ -1,7 +1,7 @@
 # Break wrapped code lines by grammar
 
 - **Opened:** 2026-11-04, by the user, as the second slice of the card
-  on [wide content](../wip/annotate-markdown-for-wide-content.md),
+  on [wide content](../done/2026-11-05_annotate-markdown-for-wide-content.md),
   moved here when the user judged the code good enough for now; in
   Later.
 - **Status:** noticed, not started.

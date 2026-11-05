@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-05, by the user, while choosing what a wide table
   does on a phone, in the card
-  [let the Markdown ask for components for wide code and tables](../wip/annotate-markdown-for-wide-content.md);
+  [let the Markdown ask for components for wide code and tables](../done/2026-11-05_annotate-markdown-for-wide-content.md);
   in Later.
 - **Status:** noticed, not started. To be picked up with the first
   island the site needs.

@@ -18,13 +18,6 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Let the Markdown ask for components for wide code and tables](wip/annotate-markdown-for-wide-content.md),
-  so the article pages, built but not published
-  ([card](done/2026-11-04_add-article-pages.md)), pass the readability
-  checks again. Code and tables are done (a wide table becomes a
-  record viewer on narrow screens), "After Save Event" is back in the
-  checks; the hybris PK article remains. No version is published
-  until the navigation is done.
 - [Give the articles' code, quotes and tables a look](wip/design-look-of-articles.md),
   following [ADR-003](adr/ADR-003-readability-first-amber-as-accent.md),
   readability first with amber as an accent: colours, text size, code
@@ -93,6 +86,9 @@ live since 2026-10-26
 - [Add syntax colours to code](backlog/add-syntax-colours-to-code.md),
   within the contrast the site checks; it may share a tool with the
   grammar breaks.
+- [Handle long tables](backlog/handle-long-tables.md): a header that
+  stays in view, and the record viewer's copies, which grow with the
+  square of the records; with the first article that has a long table.
 - [Measure what a Leptos island weighs](backlog/measure-weight-of-a-leptos-island.md),
   the shared part and the component's, with the first island the site
   needs.

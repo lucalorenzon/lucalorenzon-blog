@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-05, by the user, reviewing the browser test of
   the rule "a table cell with no space never wraps", in the card
-  [let the Markdown ask for components for wide code and tables](../wip/annotate-markdown-for-wide-content.md);
+  [let the Markdown ask for components for wide code and tables](../done/2026-11-05_annotate-markdown-for-wide-content.md);
   in Next.
 - **Status:** noticed, not started.
 

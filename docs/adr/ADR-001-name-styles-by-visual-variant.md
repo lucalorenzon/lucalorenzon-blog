@@ -123,7 +123,7 @@ variant switched on with a prefix); it departs from point 1 and point
 articles in the source code. Rejected: the Rust build writing CSS
 rules itself, which keeps our names but splits the presentation
 between the stylesheet and the code. Card:
-[Markdown annotations for wide content](../wip/annotate-markdown-for-wide-content.md).
+[Markdown annotations for wide content](../done/2026-11-05_annotate-markdown-for-wide-content.md).
 
 **Note, 2026-11-05: the same exception for tables.** A table shows as
 a record viewer when its box is narrower than the width its columns
