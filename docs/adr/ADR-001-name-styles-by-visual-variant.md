@@ -125,6 +125,16 @@ rules itself, which keeps our names but splits the presentation
 between the stylesheet and the code. Card:
 [Markdown annotations for wide content](../wip/annotate-markdown-for-wide-content.md).
 
+**Note, 2026-11-05: the same exception for tables.** A table shows as
+a record viewer when its box is narrower than the width its columns
+need to stay readable, again a number known only when the build reads
+the article. The box is a container named `table` and carries
+`table-with-viewer @max-[34.777em]/table:viewer-shown`, written the
+same way and listed in the same file. Values that do not sit in a
+container query's condition stay named styles with a number, as
+`code-line-indent-*` does: `viewer-label-width-72` (the label column,
+in tenths of an em) and `viewer-record-count-5`. Card: the same.
+
 ## References
 
 - Card: [name styles in the stylesheet](../done/2026-10-29_name-styles-in-the-stylesheet.md)

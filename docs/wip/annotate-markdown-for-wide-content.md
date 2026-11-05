@@ -383,7 +383,10 @@ on one line; the table becomes a record viewer when the text column is
 narrower than the sum of these needs plus the cells' padding. Columns
 of short values (YES, PRI) ask only for their own width; columns of
 running text ask for at least M. **M is 18 characters,** in
-Literata's average character width. Rejected: switching only when the
+Literata's average character width; once measured by the build, M
+became 17 and header cells ask only for their longest word (see
+[M, measured by the build](#m-measured-by-the-build) and
+[Headers](#headers)). Rejected: switching only when the
 table overflows, simpler and exact, but late: just above it the hybris
 table has six columns with a word a line. The agent proposed both;
 the user chose. Why this rule needs no imitation of how the browser
@@ -410,6 +413,116 @@ computers. With the no-wrap rule the two-column tables fit at 320
 pixels, "63–44" on one line. The margin between M and 18.6 is small;
 the browser tests must hold the hybris table as a table at 768 pixels
 and as a record viewer just below.
+
+### The copies of each value
+
+The prototype of spike A was not kept in the repository; the agent
+had it rebuilt from this card, so the user could read its code. The
+user asked whether the same value is written several times. It is:
+each value appears once in the table and, in the record viewer, once
+in the label column's invisible stack and once in every record's
+stack, two times plus the number of records (seven for the hybris
+table: about 3,000 characters of text instead of 430). The stacks are
+what lets the browser give each row its height without a script,
+since the height depends on the screen width. The copies are hidden
+from screen readers and compress well; they grow with the square of
+the records. **Accepted, by the user,** after reading the code, as the
+price of no script. A long table, such as the header that stays in
+view imagined under "Questions left", would reopen the choice of a
+Leptos island.
+
+### The label column
+
+**Chosen, by the user: as wide as the longest label, at most 45% of
+the viewer;** a label wider than that wraps with the language's
+hyphenation. The build measures the labels in bold, adds the padding
+and 0.1 em of margin, and rounds up to a tenth of an em.
+
+The road to it:
+
+- **A fixed width** in the rebuilt prototype (7rem) broke
+  "Description" inside the word, with no hyphen, at normal text size.
+- **A cap of 40%,** proposed by the agent without measuring: on an
+  iPhone SE the viewer is 288 pixels wide, so 40% left about 97
+  pixels for a word needing 110. The user chose 45%: 129.6 pixels,
+  enough for "Description" with its padding.
+- **The 0.1 em margin,** added by the agent: Chromium at a pixel ratio
+  of 1 rounds each glyph to whole pixels, and "Description" broke by
+  one pixel.
+
+### M, measured by the build
+
+To turn M into a width the build needs Literata's average character
+width. The agent first defined it as the mean of the 26 lowercase
+letters (0.555 em): the hybris table then needed 36.68 em and became
+a record viewer even at 1920 pixels, while the card asks for a table
+from 768 pixels, where the column holds 35.2 em. Running text is
+narrower, because of spaces and frequent narrow letters: English
+letter frequencies with a space every 4.7 letters give 0.476 em,
+close to the hybris article's own text (0.475). With that average and
+M = 18 the hybris table needs 35.25 em, one pixel too many at 768,
+within the build's own estimate error.
+
+**Chosen, by the user: the average of English text, and M = 17:** the
+hybris table needs 34.777 em, about 8 pixels of margin at 768, and M
+stays just under the 18.6 characters judged acceptable. Rejected:
+M = 18, with the hybris table a record viewer on tablets held upright.
+The average is computed by the build from the widths and the
+frequency table, not written as a number, so it follows the font.
+
+### Headers
+
+**Chosen, by the user: a header cell asks only for its longest word.**
+With the rule as it was, the "After Save Event" table became a record
+viewer on an iPhone SE, eight records of two short fields: its header
+"Event generated" counted as running text, so a column of values such
+as CREATE asked for M. Headers are short bold labels that read well
+on two lines. With this rule that table needs 15.357 em and fits at
+320 pixels (16.89 em). Rejected: the rule as it was.
+
+### Built on 2026-11-05
+
+Every table is written in two forms in one box, a container named
+`table`: the table as before and the record viewer of spike A; the
+form not shown is hidden with `display: none`, so screen readers get
+one. Rejected: one structure restyled both ways, since the viewer's
+stacks are not a table. The threshold is a container query, as for
+code (`@max-[34.777em]/table:viewer-shown`, an exception recorded in
+[ADR-001](../adr/ADR-001-name-styles-by-visual-variant.md), note of
+2026-11-05); the label width is a named style with a number,
+`viewer-label-width-72` (7.2 em).
+
+Where the widths come from: no font library was available on the
+machine, and none was added. A script in `end2end/tools/` loads the
+font files in Chromium, with the Playwright the tests already use,
+measures each character alone (kerning ignored) and writes
+`src/literata_widths.rs`. Rejected: reading the font files at each
+build, which needs a library to decompress woff2.
+
+The site's tables: the PK bits table needs 12.83 em and the "After
+Save Event" table 15.357 em, so both stay tables at every tested
+width; the hybris table needs 34.777 em, a record viewer up to 767
+pixels and a table from 768.
+
+The readability rule now lets the viewer's box, and the one-line
+window of its record number, hide content vertically: the box shows
+one record by design, the others are reached by gesture or keyboard,
+the number says how many there are, and screen readers get each
+record as a group. Sideways cutting stays forbidden. New browser tests
+check, on every built page with tables and at every tested width, one
+form shown, labels and values aligned within half a pixel, the right
+record number, the keyboard moving one record, and the hybris table
+switching between 767 and 768 pixels.
+
+One workaround: Chromium did not attach the record number's scroll
+timeline inside a container query until the box's style changed once,
+so the number stayed on "1 / n"; a 1 ms animation on the box makes it
+attach. **The user tried the built article page on a phone,**
+published as a private page on claude.ai, and found everything
+working: the number, the gesture, the labels, the two-column table
+staying a table, the viewer in landscape. Not tried: Firefox, which
+should show the number inside each record instead, and a real mouse
+wheel in Chromium.
 
 ## Questions left
 

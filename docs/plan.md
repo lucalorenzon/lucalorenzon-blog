@@ -21,8 +21,9 @@ live since 2026-10-26
 - [Let the Markdown ask for components for wide code and tables](wip/annotate-markdown-for-wide-content.md),
   so the article pages, built but not published
   ([card](done/2026-11-04_add-article-pages.md)), pass the readability
-  checks again. Code is done, "After Save Event" is back in the checks;
-  tables and the hybris PK article remain. No version is published
+  checks again. Code and tables are done (a wide table becomes a
+  record viewer on narrow screens), "After Save Event" is back in the
+  checks; the hybris PK article remains. No version is published
   until the navigation is done.
 - [Give the articles' code, quotes and tables a look](wip/design-look-of-articles.md),
   following [ADR-003](adr/ADR-003-readability-first-amber-as-accent.md),
