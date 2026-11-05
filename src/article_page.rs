@@ -95,9 +95,18 @@ mod tests {
         }
 
         #[test]
+        fn ends_the_text_with_the_licence_note_as_a_footer_in_main() {
+            let html = page();
+            let main = &html[html.find("<main").expect("main")..html.find("</main>").expect("end")];
+            assert!(main.contains("<footer>\n<p>"));
+            assert!(!html.contains("<hr"));
+        }
+
+        #[test]
         fn footer_says_reuse_with_attribution_and_links_to_the_about_page() {
             let html = page();
-            let footer = &html[html.find("<footer").expect("footer")..];
+            let footer = &html[html.find("</main>").expect("end")..];
+            let footer = &footer[footer.find("<footer").expect("footer")..];
             assert!(footer.contains(">Reuse with attribution</a>"));
             assert!(footer.contains("<a href=\"../about.html\""));
         }
@@ -170,9 +179,18 @@ mod tests {
         }
 
         #[test]
+        fn ends_the_text_with_the_licence_note_as_a_footer_in_main() {
+            let html = page();
+            let main = &html[html.find("<main").expect("main")..html.find("</main>").expect("end")];
+            assert!(main.contains("<footer>\n<p>"));
+            assert!(!html.contains("<hr"));
+        }
+
+        #[test]
         fn footer_says_reuse_with_attribution_and_links_to_the_about_page() {
             let html = page();
-            let footer = &html[html.find("<footer").expect("footer")..];
+            let footer = &html[html.find("</main>").expect("end")..];
+            let footer = &footer[footer.find("<footer").expect("footer")..];
             assert!(footer.contains(">Reuse with attribution</a>"));
             assert!(footer.contains("<a href=\"../about.html\""));
         }

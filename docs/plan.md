@@ -27,8 +27,9 @@ live since 2026-10-26
 - [Give the articles' code, quotes and tables a look](wip/design-look-of-articles.md),
   following [ADR-003](adr/ADR-003-readability-first-amber-as-accent.md),
   readability first with amber as an accent: colours, text size, code
-  in Hack, headings, quotes, tables and the light background are done;
-  the licence note at the end of an article remains.
+  in Hack, headings, quotes, tables, the light background and the
+  licence note are done; it closes once the user validates the article
+  pages in the browser.
 - [Review the logo](backlog/review-the-logo.md): on the light page the
   logo drawn in characters is hard to read; the user leans towards the
   written logo everywhere.

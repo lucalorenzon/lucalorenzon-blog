@@ -52,7 +52,7 @@ async function snapshot(page: Page): Promise<Snapshot> {
     // The last element in main that takes room: its bottom must clear the footer.
     const all = Array.from(main.querySelectorAll('*')).filter((el) => el.getBoundingClientRect().height > 0);
     const lastBottom = Math.max(...all.map((el) => el.getBoundingClientRect().bottom));
-    const footer = document.querySelector('footer')!;
+    const footer = document.querySelector('footer:not(main footer)')!;
 
     // Cheap overlap check: each block element against the next one in reading order.
     const blocks = Array.from(main.querySelectorAll('h2, h3, h4, p, li'));

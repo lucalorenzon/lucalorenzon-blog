@@ -280,6 +280,25 @@ body {
     @apply bg-code-surface;
   }
 
+  /* The closing note (the licence line at the end of an article): set apart
+     by space and one amber line (ADR-003: lines are the accent), and smaller
+     than the page footer's text. The space above is in the column's size, not
+     in em, because the note's own em is smaller. Its width is 60ch of its own
+     font: the column is 60ch of the text's size (WCAG 1.4.8: at most 80
+     characters a line), so the smaller note at the full column width would
+     hold 25% more characters per line. Its first paragraph has no top
+     margin; further ones keep the usual spacing. */
+  & > footer {
+    margin-top: calc(var(--long-text-size) * 3.5);
+    max-width: 60ch;
+    font-size: calc(var(--long-text-size) - 4px);
+    @apply border-t border-accent-line pt-[1em];
+  }
+
+  & > footer > :first-child {
+    @apply mt-0;
+  }
+
   & a {
     @apply underline;
   }

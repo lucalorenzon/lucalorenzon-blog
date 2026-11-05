@@ -16,6 +16,15 @@ pub fn take_generated_classes() -> BTreeSet<String> {
 
 /// Converts CommonMark text to an HTML fragment. Only one extension is enabled: tables.
 /// Every code block (fenced or indented) becomes the code component: see `code_component`.
+///
+/// The closing note of a text is recognised too. If the last thematic break (`---`) of the
+/// document is followed, up to the end, only by paragraphs, the break is dropped and those
+/// paragraphs are wrapped in `<footer>`: the licence note at the end of an article. The
+/// Markdown's own structure is the signal, as for code blocks, so the page knows it is a note and
+/// the stylesheet does not have to guess from its position. `<footer>` because the note holds
+/// data about the content, such as its licence. A break in the middle of the text, one followed
+/// by anything else than paragraphs (a heading, list, code block, quote, table) and one at the
+/// very end stay `<hr />`.
 pub fn to_html(markdown: &str) -> String {
     let mut events: Vec<Event> = Vec::new();
     let mut open_block: Option<(Option<String>, String)> = None;
@@ -43,9 +52,46 @@ pub fn to_html(markdown: &str) -> String {
             other => events.push(other),
         }
     }
+    wrap_closing_note(&mut events);
     let mut out = String::new();
     html::push_html(&mut out, events.into_iter());
     out
+}
+
+/// Applies the closing note rule of `to_html` to the events of a whole document.
+fn wrap_closing_note(events: &mut Vec<Event>) {
+    let mut depth = 0;
+    let mut last_break = None;
+    for (index, event) in events.iter().enumerate() {
+        match event {
+            Event::Start(_) => depth += 1,
+            Event::End(_) => depth -= 1,
+            Event::Rule if depth == 0 => last_break = Some(index),
+            _ => {}
+        }
+    }
+    let Some(break_index) = last_break else {
+        return;
+    };
+    let mut depth = 0;
+    let mut paragraphs = 0;
+    for event in &events[break_index + 1..] {
+        match event {
+            Event::Start(Tag::Paragraph) if depth == 0 => {
+                paragraphs += 1;
+                depth += 1;
+            }
+            _ if depth == 0 => return,
+            Event::Start(_) => depth += 1,
+            Event::End(_) => depth -= 1,
+            _ => {}
+        }
+    }
+    if paragraphs == 0 {
+        return;
+    }
+    events.push(Event::Html("</footer>\n".into()));
+    events[break_index] = Event::Html("<footer>".into());
 }
 
 /// Advance width of every character of Hack, the code font, as a fraction of the font size:
@@ -169,6 +215,65 @@ mod tests {
         assert!(html.contains("<table>"));
         assert!(html.contains("<th>a</th>"));
         assert!(html.contains("<td>d</td>"));
+    }
+
+    #[test]
+    fn closing_note_becomes_a_footer_without_the_break() {
+        let html = to_html("A\n\n---\n\nThe licence.\n");
+        assert!(html.contains("<footer>\n<p>The licence.</p>\n</footer>"));
+        assert!(!html.contains("<hr"));
+        assert!(html.contains("<p>A</p>"));
+    }
+
+    #[test]
+    fn all_paragraphs_after_the_break_are_in_the_footer() {
+        let html = to_html("A\n\n---\n\nOne.\n\nTwo.\n");
+        let footer = &html[html.find("<footer>").unwrap()..];
+        assert!(footer.contains("<p>One.</p>\n<p>Two.</p>\n</footer>"));
+        assert_eq!(html.matches("<footer>").count(), 1);
+    }
+
+    #[test]
+    fn break_in_the_middle_stays_a_rule() {
+        let html = to_html("A\n\n---\n\nB.\n\n## H\n\nC.\n");
+        assert!(html.contains("<hr />"));
+        assert!(!html.contains("<footer"));
+    }
+
+    #[test]
+    fn break_followed_by_a_heading_stays_a_rule() {
+        let html = to_html("A\n\n---\n\n## H\n");
+        assert!(html.contains("<hr />"));
+        assert!(!html.contains("<footer"));
+    }
+
+    #[test]
+    fn break_followed_by_other_blocks_stays_a_rule() {
+        for tail in ["- a\n", "> q\n", "```\nx\n```\n", "| a |\n|---|\n| b |\n"] {
+            let html = to_html(&format!("A\n\n---\n\nN.\n\n{tail}"));
+            assert!(html.contains("<hr />"), "{tail}");
+            assert!(!html.contains("<footer"), "{tail}");
+        }
+    }
+
+    #[test]
+    fn break_at_the_very_end_stays_a_rule() {
+        let html = to_html("A\n\n---\n");
+        assert!(html.contains("<hr />"));
+        assert!(!html.contains("<footer"));
+    }
+
+    #[test]
+    fn text_without_a_break_has_no_footer() {
+        assert!(!to_html("A\n\nB\n").contains("<footer"));
+    }
+
+    #[test]
+    fn inline_code_and_links_survive_in_the_closing_note() {
+        let html = to_html("A\n\n---\n\nSee `x` and [site](https://example.org).\n");
+        assert!(html.contains(
+            "<footer>\n<p>See <code>x</code> and <a href=\"https://example.org\">site</a>.</p>\n</footer>"
+        ));
     }
 
     #[test]

@@ -205,7 +205,7 @@ async function spacingProblems(page: Page): Promise<string[]> {
       // The end of the content clears the sticky footer.
       const taking = Array.from(main.querySelectorAll('*')).filter((el) => el.getBoundingClientRect().height > 0);
       const lastBottom = Math.max(...taking.map((el) => el.getBoundingClientRect().bottom));
-      const footerTop = document.querySelector('footer')!.getBoundingClientRect().top;
+      const footerTop = document.querySelector('footer:not(main footer)')!.getBoundingClientRect().top;
       if (footerTop - lastBottom < minGap - 0.5) {
         out.push(
           `the end of the content (${lastBottom}) must be at least ${minGap}px above the footer (${footerTop}), gap is ${footerTop - lastBottom}px`,

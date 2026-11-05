@@ -161,7 +161,7 @@ Slices left, one decision each, in this order:
    unlike the site's other lines. Today the note is in the article's
    Markdown, a thematic break (`---`) and a plain paragraph, which the
    stylesheet does not style: Tailwind's reset gives the line the text's
-   colour and no margin.
+   colour and no margin. Done.
 
 ## Colours on black (2026-11-05)
 
@@ -361,7 +361,47 @@ Also left open: the two backgrounds now have accents of slightly different
 hue. Turning the dark page's amber towards red too would be a decision
 of its own.
 
-## Questions
+## The licence note (2026-11-05)
 
-- How the page knows the licence note is a note (slice 8): in the
-  Markdown it is only a paragraph after a thematic break.
+**How the page knows it is a note. Chosen, by the user: the Markdown
+conversion recognises it.** When an article ends with a thematic break
+followed only by paragraphs, the break is dropped and the paragraphs
+are wrapped in an element of their own, which the stylesheet styles.
+It is the reasoning chosen for code blocks: the Markdown's own
+structure is the signal, and the article holds no annotation and no
+HTML. A break in the middle of the text, or one followed by anything
+but paragraphs, stays a line as before. Rejected: the stylesheet alone,
+styling whatever follows a thematic break, one rule and no code, but
+the page would guess the meaning from the position, and a break used
+one day in the middle of an article would turn the rest into a note.
+
+**Decided by the agent, as it changes nothing a reader sees:** the
+element is a `<footer>`, the element HTML meant for data about a
+content such as its licence; the line is its top border, not a
+separate `<hr>`.
+
+**The look. Chosen, by the user: the note at 14 pixels on a phone and
+16 from 768 pixels up, 4 pixels under the text and 2 under the page
+footer; 3.5 lines of the text's size above it; a thin amber line on
+top, as the site's other lines, and the note one line under it.** The
+user compared, on both articles and both backgrounds at iPhone SE
+width:
+
+- **The footer's size** (16 and 18 pixels), with the space of a
+  paragraph above the line, then with more space. Not chosen.
+- **Smaller than the footer, with more space.** Chosen.
+
+**The note is as wide as 60 characters of its own font, not of the
+text's.** At the column's full width, from 768 pixels up, a line of
+the smaller note held 85 characters, over the 80 the readability check
+allows (WCAG 1.4.8). **Chosen, by the user: narrow the note** with the
+column's own rule, 60ch, counted in the note's font; it ends a fifth
+short of the text's right edge. Rejected: a larger note from 768
+pixels up, about 17 pixels, which fills the width but departs from the
+size chosen in the trial and nearly matches the page footer. Leaving
+the note out of the check was not proposed: it is a block of text to
+read, which the rule is there for.
+
+The browser tests looked for the page footer as the first `<footer>`
+of the page; with the note now a `<footer>` too, they look for the one
+outside the text column.
