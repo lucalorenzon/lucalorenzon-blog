@@ -232,9 +232,115 @@ change was needed for the page to pass: a long word in a role heading
 (`AfterSaveEventPublisherThread`) may now break, rather than push the
 page sideways under the reader's spacing.
 
+## Slice 2: wide tables (2026-11-05)
+
+### How a table asks for the component
+
+**Chosen, by the user: it does not ask.** As for code, whether a table
+is too wide is something the build can measure, so no annotation is
+written in the Markdown, and the question of where a table could carry
+one is closed. Two differences from code, raised by the agent, remain
+for the slice's design: table text is in a proportional font
+(Literata), so the build can only estimate widths, with a margin the
+browser tests must confirm; and a table becomes unreadable well before
+it overflows (six columns on a phone give one word a line), so the
+threshold is a minimum readable column width, not only the point where
+a word no longer fits.
+
+### What a wide table does on a phone
+
+**Chosen, by the user: a record viewer.** Two columns: the first holds
+the header names, one a line, and stays still; the second shows one
+record at a time, and one vertical gesture over it moves to the next
+record as a whole. Every field is as tall as its tallest value across
+all records, so labels and values stay aligned and the box never
+changes height. **No sideways scrolling in tables, ever** (the user's
+rule; code keeps its sideways scrolling). A gesture over the first
+column scrolls the page.
+
+The road to it:
+
+- **Ideas found by the user on other sites:** a table that overflows
+  is "pivoted". The agent named the two forms the word covers: the
+  transposed table, records as columns scrolling sideways, and one
+  block of "name: value" pairs a record, which never scrolls. The user
+  wanted a third: transposed, but one record at a time, scrolling
+  vertically.
+- **Each field at the height it has in the shown record**, rejected by
+  the user for the tallest-value rule: with the labels outside the
+  scrolling box, keeping them aligned needs a script measuring the
+  record on screen, and either the box keeps the tallest record's
+  height, leaving empty space under shorter ones, or the text under
+  the table jumps at every gesture.
+- **A script is acceptable** to the user: Leptos was chosen to allow
+  one, and this would be the site's first island, others are wished
+  for. Without one is better, hence spike A; what an island weighs is
+  spike B.
+
+Noted by the agent and not settled: the record box takes the vertical
+gesture from the page over about two thirds of a phone's width, so a
+reader scrolling the article with a thumb in the middle may page
+through records instead.
+
+### Spike A: the record viewer without script
+
+**Question:** can the record viewer above be built with HTML and CSS
+only? Timeboxed to one hour; done in about sixteen minutes by a
+Sonnet sub-agent, on a throwaway copy of the hybris PK article page
+with its six-column table replaced, measured with Playwright in
+Chromium and WebKit at 320, 360, 393, 412, 659 and 768 pixels, with
+the text at its size and doubled.
+
+**Answer: yes, with the swipe judged by the user on a real phone; the
+mouse wheel in Chromium is the open limit.**
+
+How it works: all the values of a field sit in the same grid cell,
+invisible and stacked, so the row takes the tallest one's height by
+itself; the labels sit in the same rows. A scrolling box over the
+second column holds one pane a record, each with the same invisible
+stacks, so its rows get the same heights; the box snaps one pane at a
+time (`scroll-snap-type: y mandatory`, `scroll-snap-stop: always`) and
+lets the page take over at the first and last record. Three changes
+were needed: the box does not count in the outer row heights
+(`container-type: size`), the label column has a fixed width with a
+copy of each label invisible in the panes (a label wrapped under
+doubled text otherwise misaligned the rows by 38 pixels), and the
+scrollbar is hidden, so the panes are as wide as the cells they match.
+A first row shows "1 / 5", the only sign without script that the box
+pages.
+
+What was observed:
+
+- **Alignment:** labels and values within half a pixel, every record,
+  width and text size, both browsers.
+- **Gesture over the labels:** the page scrolls, the box does not.
+- **Keyboard:** the box takes focus; arrows and page keys move one
+  record and snap, both browsers.
+- **axe:** no violations. Screen readers get one group a record
+  ("Record 2 of 5") with name and value pairs; the invisible copies
+  stay hidden. The data is no longer exposed as a table.
+- **Mouse wheel:** WebKit moves one record a wheel step. Chromium
+  snaps back to the same record with steps under half the box's
+  height (about 160 to 200 pixels), so one notch of a real mouse may
+  not move it; simulated steps, a real mouse was not tried.
+- **Finger:** not reproducible in the automated browsers. The user
+  tried the page on a phone, published as a private page on
+  claude.ai, and found it works.
+- **Doubled text at 320 pixels:** the label column is 128 pixels wide,
+  "Description" breaks inside the word, and the box is taller than
+  the screen.
+- **Unrelated:** at 320 pixels with doubled text the hybris PK page is
+  a few pixels too wide even without the table; to be found when the
+  article goes back into the checks.
+
 ## Questions left
 
-- Tables: the form of their annotation, since Markdown has no place
-  for it, and what the component does on a phone and on a wide screen.
+- Tables: the threshold below which a table becomes a record viewer,
+  measured at build, and what a wide table does on a wide screen.
+- What an island of Leptos weighs, shared part and component part:
+  spike B.
+- A header that stays in view while a long table scrolls with the
+  page: an idea of the user's; the agent proposed a card of its own,
+  since no table in the articles has more than five rows. Not decided.
 - The hybris PK article back in the readability and content-layout
   checks, which ends this card.
