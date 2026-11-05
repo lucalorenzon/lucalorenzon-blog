@@ -364,10 +364,49 @@ What was observed:
   a few pixels too wide even without the table; to be found when the
   article goes back into the checks.
 
+### When a table becomes a record viewer
+
+**Chosen, by the user: when its columns no longer get a readable
+width.** Each column needs the larger of its longest word (its whole
+cell, for cells with no space) and the smaller of M and its content
+on one line; the table becomes a record viewer when the text column is
+narrower than the sum of these needs plus the cells' padding. Columns
+of short values (YES, PRI) ask only for their own width; columns of
+running text ask for at least M. **M is 18 characters,** in
+Literata's average character width. Rejected: switching only when the
+table overflows, simpler and exact, but late: just above it the hybris
+table has six columns with a word a line. The agent proposed both;
+the user chose. Why this rule needs no imitation of how the browser
+shares the width among columns: it uses only widths of words and of
+lines, which the build measures well.
+
+How M was chosen: by eye, not on paper. A Sonnet sub-agent rendered
+the hybris table, with the no-wrap rule, beside the record viewer at
+eight widths from 320 to 768 pixels. The text column has a maximum
+width, so the choice came down to two cases:
+
+- **Below 768 pixels** the column is at most 584 pixels wide, text at
+  18 pixels; the table needs at least 589 (its no-wrap cells
+  "varchar(255)", "currentValue" and the header "Description"), so it
+  overflows at every such width, by 5 pixels at 659. The record viewer
+  is forced there, whatever M; at 659 the user preferred it anyway.
+- **From 768 pixels up** the column is 704 pixels at any screen width,
+  text at 20 pixels, so the table always looks the same: "Description"
+  gets about 18.6 characters a line and up to five lines a cell. The
+  user judged it "slightly at the limit, but acceptable".
+
+Hence M just under 18.6: the hybris table stays a table on tablets and
+computers. With the no-wrap rule the two-column tables fit at 320
+pixels, "63–44" on one line. The margin between M and 18.6 is small;
+the browser tests must hold the hybris table as a table at 768 pixels
+and as a record viewer just below.
+
 ## Questions left
 
-- Tables: the threshold below which a table becomes a record viewer,
-  measured at build, and what a wide table does on a wide screen.
+- Tables: what a wide table does on a wide screen, where the space
+  beside the text column stays empty; the card
+  [use the space beside the text on wide screens](../backlog/use-space-beside-text-on-wide-screens.md)
+  may answer it.
 - What an island of Leptos weighs, shared part and component part:
   spike B, no longer needed by tables. **Chosen, by the user:** done
   with the first island the site needs, in a card of its own,
