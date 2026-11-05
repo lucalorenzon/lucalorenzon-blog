@@ -39,4 +39,4 @@ it, and the threshold can follow.
 - Which settings: size, line spacing, letter spacing, font, background.
 - Where the control lives, and whether the choice is remembered.
 - How it fits the site's look, set by ADR-003 and built by the
-  [look card](../wip/design-look-of-articles.md).
+  [look card](../done/2026-11-06_design-look-of-articles.md).

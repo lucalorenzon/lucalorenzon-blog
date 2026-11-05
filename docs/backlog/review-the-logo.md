@@ -1,7 +1,7 @@
 # Review the logo
 
 - **Opened:** 2026-11-05, by the user, building the light background in
-  the card [give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md);
+  the card [give the articles' code, quotes and tables a look](../done/2026-11-06_design-look-of-articles.md);
   in Now.
 - **Status:** noticed, not started.
 

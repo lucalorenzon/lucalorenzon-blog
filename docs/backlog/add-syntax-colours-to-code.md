@@ -1,7 +1,7 @@
 # Add syntax colours to code
 
 - **Opened:** 2026-11-04, by the user, after giving code blocks their
-  box ([look card](../wip/design-look-of-articles.md)); in Later.
+  box ([look card](../done/2026-11-06_design-look-of-articles.md)); in Later.
 - **Status:** noticed, not started.
 
 ## Why

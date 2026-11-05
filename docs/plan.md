@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-05
+Last updated: 2026-11-06
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -18,21 +18,17 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Give the articles' code, quotes and tables a look](wip/design-look-of-articles.md),
-  following [ADR-003](adr/ADR-003-readability-first-amber-as-accent.md),
-  readability first with amber as an accent: colours, text size, code
-  in Hack, headings, quotes, tables, the light background and the
-  licence note are done; it closes once the user validates the article
-  pages in the browser.
 - [Review the logo](backlog/review-the-logo.md): on the light page the
   logo drawn in characters is hard to read; the user leans towards the
   written logo everywhere.
 
 ## Next
 
-- [Add site navigation](backlog/add-site-navigation.md), once the
-  article pages are accessible and in as good a state as the
-  curriculum; then a version is published, the articles with it.
+- [Add site navigation](backlog/add-site-navigation.md): the article
+  pages are now accessible and in as good a state as the curriculum,
+  validated by the user on 2026-11-06
+  ([card](done/2026-11-06_design-look-of-articles.md)); then a version
+  is published, the articles with it.
 - [Add SEO and Open Graph tags to every page](backlog/add-seo-and-open-graph-tags.md),
   from fields each article declares, checked in the build, with a
   block-list of pages left out.

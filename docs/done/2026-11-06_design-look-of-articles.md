@@ -3,53 +3,34 @@
 - **Opened:** 2026-11-03, by the user, splitting the card on adding the
   two articles already on Medium; in Next. Narrowed on 2026-11-04,
   when what wide code and tables do on a phone moved to the card
-  [let the Markdown ask for components for wide code and tables](../done/2026-11-05_annotate-markdown-for-wide-content.md).
-- **Status:** in progress since 2026-11-04.
+  [let the Markdown ask for components for wide code and tables](2026-11-05_annotate-markdown-for-wide-content.md).
+- **Status:** done on 2026-11-06. The article pages pass the
+  automatic checks, as the curriculum does, and the user validated
+  them in the browser. The look became the whole site's: readability
+  first, amber as an accent
+  ([ADR-003](../adr/ADR-003-readability-first-amber-as-accent.md)).
 
 ## Why
 
 The articles from Medium bring three kinds of content the site has no
-look for: code blocks, notes in quotes and tables. Until this card is
-done, the [article pages](../done/2026-11-04_add-article-pages.md) show them with the
-default style. The user wants the article pages accessible and in as
+look for: code blocks, notes in quotes and tables. Until this card was
+done, the [article pages](2026-11-04_add-article-pages.md) show them with the
+default style. The user wanted the article pages accessible and in as
 good a state as the curriculum before the navigation links to them, so
-this card comes before the [navigation](../backlog/add-site-navigation.md).
-
-## Known from the start
-
-- **Code blocks:** Java, XML, Groovy, SQL and properties. Undecided:
-  font and colours. What long lines do on a phone belongs to the card
-  on wide content.
-- **Since 2026-11-04 code blocks are a component** (card on wide
-  content, slice 1): they scroll sideways and show a "wrap" toggle
-  when a line does not fit. Two things for this card. The toggle's
-  threshold counts each character as half an em, the width of IBM VGA
-  8x16 (`src/markdown.rs`, `style/input.css`): a new code font means a
-  new factor. And when the reader widens the letter spacing, code can
-  scroll with the toggle hidden, out of reach of a keyboard-only user
-  on Safari: accepted for now, alternatives to look for here.
-- **Quotes:** both articles open a note or a warning with a blockquote.
-- **Tables:** "After Save Event" has one (the transaction cases), the
-  article on hybris PK values two (the bits of a key and the
-  `numberseries` table). Their look is here; what a table too wide for
-  the screen does belongs to the card on wide content.
-- **Rules already in force:** the readability rules and their test
-  ([card](../done/2026-11-02_improve-site-readability.md)), and the
-  contrast the WCAG criteria ask for.
-- **"Done" means** the automatic checks pass on the article pages, as
-  they do on the curriculum, and the user validates the pages in the
-  browser.
+this card came before the [navigation](../backlog/add-site-navigation.md).
+"Done" meant the automatic checks passing on the article pages, as on
+the curriculum, and the user's validation in the browser.
 
 ## From the user's first reading of the article pages
 
 On 2026-11-04 the user read the two article pages, built with the
 default style, before closing the card that gave them a page
-([card](../done/2026-11-04_add-article-pages.md)), and asked for the
+([card](2026-11-04_add-article-pages.md)), and asked for the
 following; the card was closed and these moved here.
 
 - **The text is too small,** Literata included, "on all the text". On
   2026-11-02 the user had judged the size right
-  ([card](../done/2026-11-02_improve-site-readability.md), results);
+  ([card](2026-11-02_improve-site-readability.md), results);
   long technical articles changed that reading. Open: whether the size
   changes for the articles only or for the curriculum too.
 - **Code in a box with a visible border,** as on Medium: a styled
@@ -141,27 +122,8 @@ What it changes in this card:
 - **The card now carries the site-wide slices** that came out of it,
   not only the articles' look.
 
-Slices left, one decision each, in this order:
-
-1. Colours on black: off-white text; amber for logo, title, lines,
-   frames and code inside a sentence; the title in Literata.
-2. Text size, with spacing that follows it, on every page.
-3. Code in Hack, served by the site, with the toggle's threshold
-   updated. Joined with slice 2 when done.
-4. Headings of the articles, with no line above the sections. Done for
-   the curriculum too.
-5. Quotes, with an amber bar on the left. Done.
-6. Tables, with thin lines. Done, with stripes on alternate rows.
-7. The light background, shown when the reader's browser prefers light
-   pages, with darker shades of amber. Done, the shades redder.
-8. The licence note at the end of an article, added by the user on
-   2026-11-05 after the tables: its text smaller, being a note,
-   perhaps the footer's size; some space between the article's end and
-   the line above the note, today none; the line itself is off-white,
-   unlike the site's other lines. Today the note is in the article's
-   Markdown, a thematic break (`---`) and a plain paragraph, which the
-   stylesheet does not style: Tailwind's reset gives the line the text's
-   colour and no margin. Done.
+The slices that followed, one decision each, are below. The licence
+note at the end of an article was added by the user after the tables.
 
 ## Colours on black (2026-11-05)
 
@@ -405,3 +367,28 @@ read, which the rule is there for.
 The browser tests looked for the page footer as the first `<footer>`
 of the page; with the note now a `<footer>` too, they look for the one
 outside the text column.
+
+## Results (2026-11-06)
+
+**Validated by the user** in the browser, on both article pages served
+locally, after the card on
+[wide code and tables](2026-11-05_annotate-markdown-for-wide-content.md)
+gave tables their record viewer: "everything is fine". The browser's
+accessibility check (Firefox's inspector, by its wording) warned that
+the record viewer's box takes focus without being a control. **Kept,
+by the user:** without the Tab stop Safari gives keyboard users no way
+to the other records and axe reports a scrollable region out of
+reach; a control role, such as a list of options, would tell screen
+readers something false. The reason is written next to the code
+(`src/markdown.rs`).
+
+## Left open
+
+- The drawn logo is hard to read on the light page:
+  [review the logo](../backlog/review-the-logo.md).
+- When the reader widens the letter spacing, code can scroll with the
+  "wrap" toggle hidden, out of reach of a keyboard-only user on Safari;
+  accepted on 2026-11-04 in the card on wide content, and no
+  alternative was looked for here.
+- The two backgrounds have accents of slightly different hue; turning
+  the dark page's amber towards red too would be a decision of its own.

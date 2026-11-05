@@ -6,7 +6,7 @@
   Completed on 2026-11-05, when the light background was built: the
   default for readers with no preference, and the light shades of amber
   (see Consequences and Technical notes)
-- **Card:** [give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md)
+- **Card:** [give the articles' code, quotes and tables a look](../done/2026-11-06_design-look-of-articles.md)
 
 ## Context
 
@@ -118,7 +118,7 @@ small file.
   `#a9600d` for logo, title and headings, `#6f3f09` for code inside a
   sentence, on a code surface of `#ebe7df` and a text of `#1c1a17`.
   Contrasts and the trials:
-  [card](../wip/design-look-of-articles.md), "The light background".
+  [card](../done/2026-11-06_design-look-of-articles.md), "The light background".
 - **Hack** (version 3.003, npm package `hack-font` 3.3.0): MIT License
   for the Hack project, public domain for DejaVu's work, Bitstream Vera
   License for Bitstream's; the web subset made by the Hack project,
@@ -139,7 +139,7 @@ small file.
 
 ## References
 
-- Card: [give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md)
+- Card: [give the articles' code, quotes and tables a look](../done/2026-11-06_design-look-of-articles.md)
 - Earlier choices: [header, footer and favicon](../done/2026-10-28_add-header-footer-and-favicon.md),
   [site readability](../done/2026-11-02_improve-site-readability.md)
 - Related ADRs: [ADR-001](ADR-001-name-styles-by-visual-variant.md)
