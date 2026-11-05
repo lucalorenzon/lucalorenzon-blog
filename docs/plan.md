@@ -56,6 +56,8 @@ live since 2026-10-26
   the part of the screen reader check that depends on the site and the
   accessibility tree does not cover.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
+- [Make the browser tests check behaviour, not articles](backlog/make-browser-tests-check-behaviour.md),
+  so a new article does not mean editing the tests' lists of pages.
 
 ## Later
 
