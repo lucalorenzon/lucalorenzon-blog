@@ -247,6 +247,18 @@ it overflows (six columns on a phone give one word a line), so the
 threshold is a minimum readable column width, not only the point where
 a word no longer fits.
 
+**A cell with no space never wraps, chosen by the user,** rather than an
+optional annotation giving each column a minimum number of characters,
+which the user proposed after noticing that in the PK bits table, at
+320 pixels, "63–44" breaks after the en dash (a break point for
+browsers) in a first column 59 pixels wide, while the second column
+has room to spare. The agent noted that the annotation would undo the
+choice above and bring back the question of where a table could carry
+it, and that the build can tell a single value from text by itself: a
+cell with no space is one value. The annotation stays an idea, for
+the day a real table shows the rule wrong; where to write it would be
+decided then.
+
 ### What a wide table does on a phone
 
 **Chosen, by the user: a record viewer.** Two columns: the first holds
