@@ -14,6 +14,14 @@ live since 2026-10-26
 
 ## Now
 
+- [Add site navigation](backlog/add-site-navigation.md): the article
+  pages are now accessible and in as good a state as the curriculum,
+  validated by the user on 2026-11-06
+  ([card](done/2026-11-06_design-look-of-articles.md)); then a version
+  is published, the articles with it.
+
+## Next
+
 - [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
@@ -21,14 +29,6 @@ live since 2026-10-26
 - [Review the logo](backlog/review-the-logo.md): on the light page the
   logo drawn in characters is hard to read; the user leans towards the
   written logo everywhere.
-
-## Next
-
-- [Add site navigation](backlog/add-site-navigation.md): the article
-  pages are now accessible and in as good a state as the curriculum,
-  validated by the user on 2026-11-06
-  ([card](done/2026-11-06_design-look-of-articles.md)); then a version
-  is published, the articles with it.
 - [Add SEO and Open Graph tags to every page](backlog/add-seo-and-open-graph-tags.md),
   from fields each article declares, checked in the build, with a
   block-list of pages left out.
@@ -88,5 +88,5 @@ live since 2026-10-26
 - [Measure what a Leptos island weighs](backlog/measure-weight-of-a-leptos-island.md),
   the shared part and the component's, with the first island the site
   needs.
-- Further articles and everything around them, beyond the first two in
-  Now. Not planned yet, on purpose.
+- Further articles and everything around them, beyond the first two,
+  now on the site. Not planned yet, on purpose.
