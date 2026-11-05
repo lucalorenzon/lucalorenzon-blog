@@ -232,6 +232,12 @@ fn record_viewer(cells: &Cells, index: usize, label_class: &str, count_class: &s
             stack_of(column, None)
         ));
     }
+    // The box scrolls, so it is a Tab stop: without one, Safari gives keyboard users no way to
+    // the other records, and axe reports a scrollable region out of the keyboard's reach. Role
+    // "region" and a name are the usual pattern for content that scrolls on its own. Firefox's
+    // accessibility inspector warns that a focusable element should be a control; known and
+    // accepted by the user, since a control role (a list of options) would tell screen readers
+    // something false.
     out.push_str(&format!(
         "<div class=\"viewer-box\" tabindex=\"0\" role=\"region\" aria-label=\"Records of table {index}, one at a time\">"
     ));
