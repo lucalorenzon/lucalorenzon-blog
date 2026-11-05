@@ -95,3 +95,11 @@ spacing and colour chosen there, and the criterion counts them met when
 - When: the page today has no links, forms or keyboard targets, so
   several criteria have nothing to apply to yet. For each criterion,
   whether it is done now, comes next, or goes to Later.
+- 1.4.4 (resize text): noticed on 2026-11-05, closing the
+  [wide content card](../done/2026-11-05_annotate-markdown-for-wide-content.md).
+  The stylesheet sets the text sizes in pixels (16px on the page, 18px
+  and 20px in the text column), so a reader who raises the text size in
+  the browser's settings, rather than zooming, may see no change.
+  Not checked yet: zoom still enlarges everything. A check that doubled
+  the page's base size showed no change in the text, which is what
+  pointed to it.
