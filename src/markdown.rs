@@ -35,7 +35,9 @@ pub fn to_html(markdown: &str) -> String {
             }
             Event::End(TagEnd::CodeBlock) => {
                 if let Some((language, code)) = open_block.take() {
-                    events.push(Event::Html(code_component(language.as_deref(), &code).into()));
+                    events.push(Event::Html(
+                        code_component(language.as_deref(), &code).into(),
+                    ));
                 }
             }
             other => events.push(other),
@@ -48,7 +50,11 @@ pub fn to_html(markdown: &str) -> String {
 
 /// Half of `n`, written as a decimal number ("19", "18.5").
 fn half(n: usize) -> String {
-    if n % 2 == 0 { (n / 2).to_string() } else { format!("{}.5", n / 2) }
+    if n.is_multiple_of(2) {
+        (n / 2).to_string()
+    } else {
+        format!("{}.5", n / 2)
+    }
 }
 
 /// Escapes the characters that mean something in HTML text and in a quoted attribute.
@@ -74,7 +80,11 @@ fn indent_and_width(line: &str) -> (usize, usize) {
         if indent.is_none() && !matches!(c, ' ' | '\t') {
             indent = Some(column);
         }
-        column = if c == '\t' { (column / 4 + 1) * 4 } else { column + 1 };
+        column = if c == '\t' {
+            (column / 4 + 1) * 4
+        } else {
+            column + 1
+        };
     }
     (indent.unwrap_or(column), column)
 }
@@ -127,8 +137,8 @@ fn code_component(language: Option<&str>, code: &str) -> String {
 
 #[cfg(test)]
 mod tests {
+    use super::take_generated_classes;
     use super::to_html;
-    use super::{take_generated_classes};
     use pulldown_cmark::{Event, Parser};
 
     #[test]
@@ -186,7 +196,10 @@ mod tests {
             rest = &rest[rest.find('>').unwrap() + 1..];
         }
         text.push_str(rest);
-        text.replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", "\"").replace("&amp;", "&")
+        text.replace("&lt;", "<")
+            .replace("&gt;", ">")
+            .replace("&quot;", "\"")
+            .replace("&amp;", "&")
     }
 
     #[test]
@@ -243,13 +256,18 @@ mod tests {
         let classes: Vec<String> = take_generated_classes().into_iter().collect();
         assert_eq!(
             classes,
-            ["@max-[2.5em]/code:wrap-shown", "@max-[1em]/code:wrap-shown", "code-line-indent-0", "code-line-indent-2"]
-                .map(String::from)
-                .iter()
-                .cloned()
-                .collect::<std::collections::BTreeSet<_>>()
-                .into_iter()
-                .collect::<Vec<_>>()
+            [
+                "@max-[2.5em]/code:wrap-shown",
+                "@max-[1em]/code:wrap-shown",
+                "code-line-indent-0",
+                "code-line-indent-2"
+            ]
+            .map(String::from)
+            .iter()
+            .cloned()
+            .collect::<std::collections::BTreeSet<_>>()
+            .into_iter()
+            .collect::<Vec<_>>()
         );
         assert!(take_generated_classes().is_empty());
     }
