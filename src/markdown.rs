@@ -28,6 +28,7 @@ pub fn take_generated_classes() -> BTreeSet<String> {
 pub fn to_html(markdown: &str) -> String {
     let mut events: Vec<Event> = Vec::new();
     let mut open_block: Option<(Option<String>, String)> = None;
+    let mut cell_start: Option<usize> = None;
     for event in Parser::new_ext(markdown, Options::ENABLE_TABLES) {
         match event {
             Event::Start(Tag::CodeBlock(kind)) => {
@@ -49,6 +50,19 @@ pub fn to_html(markdown: &str) -> String {
                     ));
                 }
             }
+            Event::Start(Tag::TableCell) => {
+                events.push(Event::Start(Tag::TableCell));
+                cell_start = Some(events.len());
+            }
+            Event::End(TagEnd::TableCell) => {
+                if let Some(start) = cell_start.take()
+                    && is_single_value(&events[start..])
+                {
+                    events.insert(start, Event::InlineHtml(ONE_LINE_OPEN.into()));
+                    events.push(Event::InlineHtml("</span>".into()));
+                }
+                events.push(Event::End(TagEnd::TableCell));
+            }
             other => events.push(other),
         }
     }
@@ -56,6 +70,33 @@ pub fn to_html(markdown: &str) -> String {
     let mut out = String::new();
     html::push_html(&mut out, events.into_iter());
     out
+}
+
+/// Opening tag of the wrapper that keeps a table cell's value on one line (style `one-line`).
+/// The literal class name is here because Tailwind finds the styles it must write by scanning
+/// the sources.
+const ONE_LINE_OPEN: &str = "<span class=\"one-line\">";
+
+/// Whether the events inside a table cell are a single value: some text, and no whitespace in it.
+/// A cell like that is not running text, so the page keeps it on one line: browsers treat an en
+/// dash as a place to break, and a range such as "63–44" would otherwise be split across two
+/// lines in a narrow column while its neighbour has room to spare. A cell with whitespace wraps
+/// as usual, and an empty cell has nothing to keep.
+fn is_single_value(cell: &[Event]) -> bool {
+    let mut has_text = false;
+    for event in cell {
+        match event {
+            Event::Text(text) | Event::Code(text) => {
+                if text.chars().any(char::is_whitespace) {
+                    return false;
+                }
+                has_text |= !text.is_empty();
+            }
+            Event::SoftBreak | Event::HardBreak => return false,
+            _ => {}
+        }
+    }
+    has_text
 }
 
 /// Applies the closing note rule of `to_html` to the events of a whole document.
@@ -211,10 +252,54 @@ mod tests {
 
     #[test]
     fn table_becomes_table_with_header_and_data_cells() {
-        let html = to_html("| a | b |\n|---|---|\n| c | d |\n");
+        let html = to_html("| a b | c d |\n|---|---|\n| e f | g h |\n");
         assert!(html.contains("<table>"));
-        assert!(html.contains("<th>a</th>"));
-        assert!(html.contains("<td>d</td>"));
+        assert!(html.contains("<th>a b</th>"));
+        assert!(html.contains("<td>g h</td>"));
+    }
+
+    fn cell_html(cell: &str) -> String {
+        to_html(&format!("| two words |\n|---|\n| {cell} |\n"))
+    }
+
+    #[test]
+    fn data_cell_with_no_space_stays_on_one_line() {
+        assert!(cell_html("63–44").contains("<td><span class=\"one-line\">63–44</span></td>"));
+    }
+
+    #[test]
+    fn header_cell_with_no_space_stays_on_one_line() {
+        let html = to_html("| 63–44 |\n|---|\n| a b |\n");
+        assert!(html.contains("<th><span class=\"one-line\">63–44</span></th>"));
+    }
+
+    #[test]
+    fn cell_with_a_space_wraps_as_usual() {
+        let html = cell_html("two words");
+        assert!(html.contains("<td>two words</td>"));
+        assert!(!html.contains("one-line</span>\">two"));
+    }
+
+    #[test]
+    fn cell_of_only_inline_code_stays_on_one_line() {
+        assert!(
+            cell_html("`pk_`")
+                .contains("<td><span class=\"one-line\"><code>pk_</code></span></td>")
+        );
+    }
+
+    #[test]
+    fn empty_cell_is_left_alone() {
+        let html = to_html("| two words | also two |\n|---|---|\n| | x |\n");
+        assert!(html.contains("<td></td>"));
+        assert_eq!(html.matches("one-line").count(), 1);
+    }
+
+    #[test]
+    fn cell_of_text_and_code_with_a_space_wraps_as_usual() {
+        let html = cell_html("see `x`");
+        assert!(html.contains("<td>see <code>x</code></td>"));
+        assert!(!html.contains("one-line"));
     }
 
     #[test]

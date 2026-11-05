@@ -340,6 +340,15 @@ body {
   @apply block justify-self-start [grid-area:logo] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-line;
 }
 
+/* A table cell holding a single value (no space in it), wrapped by the build
+   in src/markdown.rs. Not running text, so it stays on one line: an en dash
+   is a break point for browsers, and "63–44" was split in a narrow column
+   while its neighbour had room to spare. The cell's minimum width becomes the
+   whole value, so the table gives the column that width. */
+@utility one-line {
+  @apply whitespace-nowrap;
+}
+
 /* Code blocks (Markdown code rendered by src/markdown.rs). The block is a
    container named "code": the build gives it @max-[Wem]/code:wrap-shown, W
    being its longest line in characters times 1233/2048 (Hack's advance, from

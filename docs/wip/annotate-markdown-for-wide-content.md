@@ -259,6 +259,16 @@ cell with no space is one value. The annotation stays an idea, for
 the day a real table shows the rule wrong; where to write it would be
 decided then.
 
+Built on 2026-11-05: the conversion wraps the content of such a cell
+(header, data, or only inline code) in the style `one-line`, which
+keeps it on one line; "63–44" stays whole at 320 pixels. The browser
+test was first written for the PK bits table and its values; the user
+found it wired to one article, so it became a general rule: on every
+page of the built site, at phone widths, every cell whose visible text
+has no space is on one line. The same weakness in the older tests went
+to a card of its own,
+[make the browser tests check behaviour, not articles](../backlog/make-browser-tests-check-behaviour.md).
+
 ### What a wide table does on a phone
 
 **Chosen, by the user: a record viewer.** Two columns: the first holds
