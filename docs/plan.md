@@ -90,5 +90,8 @@ live since 2026-10-26
 - [Add syntax colours to code](backlog/add-syntax-colours-to-code.md),
   within the contrast the site checks; it may share a tool with the
   grammar breaks.
+- [Measure what a Leptos island weighs](backlog/measure-weight-of-a-leptos-island.md),
+  the shared part and the component's, with the first island the site
+  needs.
 - Further articles and everything around them, beyond the first two in
   Now. Not planned yet, on purpose.

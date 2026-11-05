@@ -357,7 +357,9 @@ What was observed:
 - Tables: the threshold below which a table becomes a record viewer,
   measured at build, and what a wide table does on a wide screen.
 - What an island of Leptos weighs, shared part and component part:
-  spike B.
+  spike B, no longer needed by tables. **Chosen, by the user:** done
+  with the first island the site needs, in a card of its own,
+  [measure what a Leptos island weighs](../backlog/measure-weight-of-a-leptos-island.md).
 - A header that stays in view while a long table scrolls with the
   page: an idea of the user's; the agent proposed a card of its own,
   since no table in the articles has more than five rows. Not decided.
