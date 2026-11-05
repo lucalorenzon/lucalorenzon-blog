@@ -1,7 +1,8 @@
 # ADR-003: Readability first, amber as an accent, light or dark background
 
 - **Date:** 2026-11-05
-- **Status:** Accepted
+- **Status:** Accepted. Corrected on 2026-11-05, the same day: code is in
+  Hack, not Meslo LG, whose licence turned out unclear (see Alternatives)
 - **Card:** [give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md)
 
 ## Context
@@ -39,7 +40,7 @@ communicating. The look has one job, letting that content be read.
    - the logo keeps the pixel font, IBM VGA 8x16, the one sign of 1985
      left in the frame;
    - text and page title are in Literata;
-   - code is in Meslo LG, a monospaced font made for screens.
+   - code is in Hack, a monospaced font made for screens.
 4. **The reader chooses a light or a dark background.** First through the
    preference the reader already set in their browser or system, with no
    script; a control on the site belongs to the card on
@@ -51,8 +52,10 @@ page in light and in dark, and an amber accent with Literata everywhere.
 A neutral page read best but lost every link to the author's story; an
 amber accent turned out to sit well on both backgrounds. Literata
 everywhere, logo included, was too generic, so the logo kept its pixel
-font. Meslo LG replaced the pixel font for code, which reads small and
-cramped next to Literata.
+font. A monospaced font made for screens replaced the pixel font for
+code, which reads small and cramped next to Literata: Meslo LG in the
+trials, then Hack, its close relative, with a clear licence and a
+small file.
 
 ## Consequences
 
@@ -69,7 +72,7 @@ cramped next to Literata.
 - A browser where the reader set no preference reports "light", so many
   readers will see the light page. Which one is the default is decided
   when the light background is built.
-- One more font file to serve, Meslo LG, on top of Literata's.
+- One more font file to serve, Hack's, on top of Literata's: 23 KB.
 - Code inside a sentence and the text no longer differ in colour on the
   dark page unless code stays amber: hence the amber for it.
 - Parts of earlier choices are superseded: the amber text and the pixel
@@ -88,6 +91,8 @@ cramped next to Literata.
 | Literata everywhere, logo included | Too generic; the logo drawn in characters needs a monospaced font and would be lost |
 | Times New Roman and Courier New, not served by the site | Not on every device (missing on Android and most Linux systems, where the browser substitutes another font); Times New Roman was made for narrow newspaper columns, with thin strokes that thin out on a screen; Courier New is among the thinnest monospaced fonts and reads poorly on screen |
 | The system's own monospaced font for code | Different on every device, and the "wrap" toggle of code blocks depends on the width of the letters, which changes from font to font |
+| Meslo LG for code, the font of the trials | Its files carry only the copyright of Apple, Bitstream and Tavmjong Bah, with no licence; its author writes it is a modified Apple Menlo that he cannot make open source. Serving it from a public site would redistribute Apple's work without a written permission |
+| DejaVu Sans Mono for code, the ancestor of Menlo and Meslo | Looks the same and has a clear licence, but the web file at hand (Fontsource, latin) weighs 140 KB, more than Literata's four files together (84 KB); Hack, derived from it, offers a web subset of 23 KB |
 | The pixel font for code | Reads smaller and more cramped than Literata at the same size; nobody chose it for code, it came with the BBS look |
 | One background, chosen by the author | The user wants the reader to choose |
 
@@ -101,12 +106,17 @@ cramped next to Literata.
   site checks), `#714e09` 7.2:1 for code inside a sentence (normal text,
   7:1). The light shades are confirmed when the light background is
   built.
-- **Meslo LG** is under the Apache 2.0 licence. The plain version is
-  served, not the "Nerd Font" one used for the trial, which carries
-  thousands of icons.
+- **Hack** (version 3.003, npm package `hack-font` 3.3.0): MIT License
+  for the Hack project, public domain for DejaVu's work, Bitstream Vera
+  License for Bitstream's; the web subset made by the Hack project,
+  used as distributed (`assets/fonts/hack/README.md`). The trials had
+  used the "Nerd Font" build of Meslo LG installed on the author's
+  computer; the first version of this record called Meslo LG's licence
+  Apache 2.0, as the Nerd Fonts project presents it, without checking
+  the author's own statement.
 - **The "wrap" toggle of code blocks** counts each character as half an
   em, the width of IBM VGA 8x16 (`src/markdown.rs`, `style/input.css`);
-  with Meslo LG the factor changes.
+  with Hack it becomes 1233/2048 em, Hack's advance width.
 - **Weight:** Literata's four files are 84.4 KiB, downloaded once and
   then kept by the browser; the text shows at once in a fallback font
   while they arrive.

@@ -122,7 +122,8 @@ than a 1980s BBS. After comparing trials on the real article page, the
 user set the direction recorded in
 [ADR-003](../adr/ADR-003-readability-first-amber-as-accent.md):
 readability first, identity in the content; amber as an accent; the
-logo in the pixel font, text and title in Literata, code in Meslo LG;
+logo in the pixel font, text and title in Literata, code in Hack (first
+Meslo LG, until its licence turned out unclear);
 a light or a dark background chosen by the reader.
 
 What it changes in this card:
@@ -134,7 +135,7 @@ What it changes in this card:
   bold: no inverse video.
 - **Code inside a sentence turns amber** (slice 2 had made it
   off-white), so it still differs from the text, now off-white too.
-- **Code blocks move to Meslo LG,** which settles the font this card
+- **Code blocks move to Hack,** which settles the font this card
   had left undecided, and changes the factor of the "wrap" toggle's
   threshold.
 - **The card now carries the site-wide slices** that came out of it,
@@ -145,7 +146,7 @@ Slices left, one decision each, in this order:
 1. Colours on black: off-white text; amber for logo, title, lines,
    frames and code inside a sentence; the title in Literata.
 2. Text size, with spacing that follows it, on every page.
-3. Code in Meslo LG, served by the site, with the toggle's threshold
+3. Code in Hack, served by the site, with the toggle's threshold
    updated.
 4. Headings of the articles, with no line above the sections.
 5. Quotes, with an amber bar on the left.
