@@ -38,6 +38,9 @@ const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'wcag2aaa'
 // all and an empty list of violations would mean nothing.
 const MUST_HAVE_RUN = ['color-contrast', 'color-contrast-enhanced'];
 
+// The contrast rules, the only ones the drawn logo is exempt from (see below).
+const CONTRAST_RULES = MUST_HAVE_RUN;
+
 test.beforeAll(() => {
   if (!live && !existsSync(resolve(__dirname, '../../target/site/index.html'))) {
     throw new Error(
@@ -72,13 +75,45 @@ for (const { name: pageName, address, onlyLocal } of PAGES) {
 
         const results = await new AxeBuilder({ page }).withTags(TAGS).analyze();
 
-        const report = results.violations
+        // WCAG 1.4.3 and 1.4.6 exempt text that is part of a logo or brand
+        // name from contrast. The drawn logo (aria-hidden, 16px from md) takes
+        // the accent-heading shade, which on the light page reaches 4.61:1,
+        // enough for large text only; axe cannot know it is a logo. So its
+        // nodes are dropped from the two contrast rules, and from those rules
+        // only: every other rule still looks at it, and the contrast rules
+        // still look at everything else, the 32px text logo below md included
+        // (AxeBuilder.exclude() would drop all rules). A node is the logo when
+        // its element, found again in the page by axe's selector, is inside
+        // the element marked data-testid="ascii-logo"; a violation goes only
+        // when no other node remains.
+        const violations = [];
+        for (const v of results.violations) {
+          if (!CONTRAST_RULES.includes(v.id)) {
+            violations.push(v);
+            continue;
+          }
+          const kept = [];
+          for (const n of v.nodes) {
+            const isLogo =
+              n.target.length === 1 &&
+              typeof n.target[0] === 'string' &&
+              (await page.evaluate(
+                (selector) =>
+                  document.querySelector(selector)?.closest('[data-testid="ascii-logo"]') != null,
+                n.target[0],
+              ));
+            if (!isLogo) kept.push(n);
+          }
+          if (kept.length > 0) violations.push({ ...v, nodes: kept });
+        }
+
+        const report = violations
           .map((v) => {
             const targets = v.nodes.map((n) => `    ${n.target.join(' ')}`).join('\n');
             return `- ${v.id} (${v.impact ?? 'no impact given'}): ${v.help}\n${targets}`;
           })
           .join('\n');
-        expect(results.violations, `accessibility violations:\n${report}`).toEqual([]);
+        expect(violations, `accessibility violations:\n${report}`).toEqual([]);
 
         const passed = results.passes.map((r) => r.id);
         for (const id of MUST_HAVE_RUN) {

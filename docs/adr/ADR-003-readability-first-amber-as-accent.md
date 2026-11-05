@@ -2,7 +2,10 @@
 
 - **Date:** 2026-11-05
 - **Status:** Accepted. Corrected on 2026-11-05, the same day: code is in
-  Hack, not Meslo LG, whose licence turned out unclear (see Alternatives)
+  Hack, not Meslo LG, whose licence turned out unclear (see Alternatives).
+  Completed on 2026-11-05, when the light background was built: the
+  default for readers with no preference, and the light shades of amber
+  (see Consequences and Technical notes)
 - **Card:** [give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md)
 
 ## Context
@@ -70,8 +73,9 @@ small file.
   the site checks. On the paper-white background the amber of today
   falls short, so darker shades of it are needed (see Technical notes).
 - A browser where the reader set no preference reports "light", so many
-  readers will see the light page. Which one is the default is decided
-  when the light background is built.
+  readers will see the light page. A stylesheet cannot tell the two
+  apart; when the light background was built the user chose to follow
+  the preference at once, so most readers see the light page.
 - One more font file to serve, Hack's, on top of Literata's: 23 KB.
 - Code inside a sentence and the text no longer differ in colour on the
   dark page unless code stays amber: hence the amber for it.
@@ -106,6 +110,15 @@ small file.
   site checks), `#714e09` 7.2:1 for code inside a sentence (normal text,
   7:1). The light shades are confirmed when the light background is
   built.
+- **The light shades as built** differ from those above. Those held
+  only on the paper-white: on the code surface code inside a sentence
+  fell under 7:1. Darkened enough, the amber read brown, and the user
+  chose a redder hue, 32° on the colour wheel against the 40° of
+  `#dd9911`, with the same saturation: `#c06d0f` for lines and frames,
+  `#a9600d` for logo, title and headings, `#6f3f09` for code inside a
+  sentence, on a code surface of `#ebe7df` and a text of `#1c1a17`.
+  Contrasts and the trials:
+  [card](../wip/design-look-of-articles.md), "The light background".
 - **Hack** (version 3.003, npm package `hack-font` 3.3.0): MIT License
   for the Hack project, public domain for DejaVu's work, Bitstream Vera
   License for Bitstream's; the web subset made by the Hack project,

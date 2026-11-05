@@ -20,7 +20,12 @@ export default defineConfig({
   retries: 0,
   reporter: process.env.CI ? [['list'], ['github']] : 'list',
   use: { baseURL },
-  projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+  // The whole suite runs twice: the site shows a dark or a light page
+  // depending on the browser's colour scheme preference.
+  projects: [
+    { name: 'chromium-dark', use: { ...devices['Desktop Chrome'], colorScheme: 'dark' } },
+    { name: 'chromium-light', use: { ...devices['Desktop Chrome'], colorScheme: 'light' } },
+  ],
   webServer: live
     ? undefined
     : {

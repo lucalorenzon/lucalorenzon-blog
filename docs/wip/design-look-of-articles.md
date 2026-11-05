@@ -153,7 +153,7 @@ Slices left, one decision each, in this order:
 5. Quotes, with an amber bar on the left. Done.
 6. Tables, with thin lines. Done, with stripes on alternate rows.
 7. The light background, shown when the reader's browser prefers light
-   pages, with darker shades of amber.
+   pages, with darker shades of amber. Done, the shades redder.
 8. The licence note at the end of an article, added by the user on
    2026-11-05 after the tables: its text smaller, being a note,
    perhaps the footer's size; some space between the article's end and
@@ -294,11 +294,74 @@ off-white, keeps 13.94:1 on the lighter stripe.
 What a table too wide for a phone does, as `numberseries` with its six
 columns, stays with the card on wide content.
 
+## The light background (2026-11-05)
+
+**Which readers get it.** A stylesheet cannot tell a browser with no
+preference from one that prefers light pages: both report "light". So
+following the reader's preference means most readers see the light
+page. **Chosen, by the user: follow the preference now.** Rejected:
+keep the dark page for everyone until the site has a control of its
+own ([card](../backlog/let-readers-adjust-font-and-spacing.md)), which
+would postpone the light page to that card.
+
+**Chosen, by the user: a paper-white page (`#fbfaf7`) with near-black
+text (`#1c1a17`, 16.63:1), code blocks and odd table rows on a beige
+grey (`#ebe7df`), and an amber turned towards red,** a burnt orange in
+three shades, one per role:
+
+| Role | Shade | Contrast |
+|---|---|---|
+| Lines and frames, focus outlines | `#c06d0f` | 3.7:1 on the page, 3.13:1 on the code surface (3:1 asked of graphics) |
+| Logo, page title, headings: large text only | `#a9600d` | 4.61:1 on the page (4.5:1 asked of large text) |
+| Code inside a sentence, the "wrap" label | `#6f3f09` | 8.42:1 on the page, 7.12:1 on the code surface |
+
+The dark page keeps the amber of today, `#dd9911`, for every role.
+
+The user compared, on the curriculum and both articles at iPhone SE
+and laptop width, served locally next to the dark page of today:
+
+- **The shades computed in ADR-003, of today's hue.** They held only on
+  the paper-white: on any code surface code inside a sentence fell
+  under 7:1 (`#714e09`, 6.49:1 on `#f1eee8`), so the trials used shades
+  a little darker, computed for each surface. Darkened that much, code
+  inside a sentence read brown rather than amber. The user asked for a
+  darker amber with a touch of red.
+- **Two redder hues,** 32° and 24° on the colour wheel against today's
+  40°, with the same saturation, each with its three shades computed
+  for the same contrasts. 32°, a burnt orange, chosen; 24° read as
+  terracotta, with code inside a sentence brick red.
+- **Two code surfaces,** `#f1eee8`, quieter, and `#ebe7df`, which stands
+  apart from the page about as much as the dark page's grey stands
+  apart from black. The second chosen.
+
+**The drawn logo is left out of the contrast check.** From 768 pixels
+up the logo is drawn in 16-pixel characters, normal text for the
+contrast rules, which ask 7:1; in the heading shade it reaches 4.61:1
+on the light page. WCAG 1.4.3 and 1.4.6 exempt text that is part of a
+logo from contrast, and the drawn logo is already hidden from screen
+readers, but axe cannot know it is a logo. **Chosen, by the user: the
+accessibility test drops the contrast findings on the drawn logo
+only;** every other rule still checks it, and the 32-pixel logo of
+narrower screens is still checked for contrast. Rejected: the drawn
+logo in the shade of code inside a sentence (`#6f3f09`, 8.42:1), which
+passes with no change to the test but sets the logo darker and browner
+than the title beside it.
+
+Decided by the agent, as it changes nothing a reader sees: the
+browser tests run twice, once on each background. Before, they ran
+only as a browser with no preference, so the light page alone would
+have been checked; run on both, the whole suite takes about 13
+seconds, so running it twice costs little and covers both.
+
+Left open: on the light page the drawn logo, though within the rules,
+is hard to read. The user left it as it is in this slice and moved it
+to a card of its own.
+
+Also left open: the two backgrounds now have accents of slightly different
+hue. Turning the dark page's amber towards red too would be a decision
+of its own.
+
 ## Questions
 
-- Which background a reader with no preference gets: browsers then
-  report "light".
-- The light shades of amber, computed in ADR-003, seen on the page.
-- The two colours of the table stripes on the light background.
 - How the page knows the licence note is a note (slice 8): in the
   Markdown it is only a paragraph after a thematic break.

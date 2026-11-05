@@ -65,23 +65,56 @@
   --font-sans: "Literata", serif;
   --font-mono: "IBM VGA 8x16", monospace;
   --font-code: "Hack", monospace;
-  --color-amber: #dd9911;
-  --color-black: #000000;
-  /* Off-white, not pure white, which smears on a dark background for readers
-     with astigmatism. It is the colour of the running text, the footer text
-     and the code blocks. Contrasts (WCAG formula): off-white on black
-     16.83:1; amber on black 8.64:1; amber on the code surface 7.16:1, just
-     above the AAA 7:1 the site checks (the amber "wrap" label sits there). */
-  --color-off-white: #e6e6e6;
-  --color-code-surface: #1a1a1a;
+  /* Colours by role, dark page first: it is the default, and the light
+     values below replace it when the browser prefers light pages. Each accent
+     has its own role because the light page needs a different shade for each.
+     Contrasts (WCAG formula):
+     - Dark: ink on page 16.83:1; accent on page 8.64:1; accent on the code
+       surface 7.16:1; ink on the code surface 13.94:1. The ink is off-white,
+       not pure white, which smears on a dark background for readers with
+       astigmatism.
+     - Light: ink on page 16.63:1, on the code surface 14.08:1; accent-line on
+       page 3.7:1, on the code surface 3.13:1 (3:1 is what graphics and focus
+       indicators need); accent-heading on page 4.61:1, used only for large
+       text (4.5:1 is the AAA level for it) and never on the code surface (3.9:1
+       there); accent-code on page 8.42:1, on the code surface 7.12:1, above
+       the AAA 7:1 the site checks (the "wrap" label sits on the code surface).
+     The light amber shades are a redder hue (32 degrees) than the dark amber
+     (40 degrees), chosen by the user; same saturation. */
+  --color-page: #000000; /* page and footer background */
+  --color-ink: #e6e6e6; /* running text, footer text, code block text */
+  --color-code-surface: #1a1a1a; /* code blocks and odd table rows */
+  --color-accent-line: #dd9911; /* every line and frame, focus outlines */
+  --color-accent-heading: #dd9911; /* large text only: logo, titles, h2, h3 */
+  --color-accent-code: #dd9911; /* normal-size text: inline code, wrap label */
 }
 
-/* Amber is the page's base colour: the header (logo and title) takes it from
-   here. The text column and the footer set the off-white themselves. */
+/* The light page, for readers whose browser prefers light pages (which is
+   also what a browser with no preference reports). Unlayered and after the
+   theme, so it wins over the theme's dark values. color-scheme makes the
+   checkbox and the scrollbars follow. */
+:root {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --color-page: #fbfaf7;
+    --color-ink: #1c1a17;
+    --color-code-surface: #ebe7df;
+    --color-accent-line: #c06d0f;
+    --color-accent-heading: #a9600d;
+    --color-accent-code: #6f3f09;
+  }
+}
+
+/* The heading accent is the page's base colour: the header (logo and title)
+   takes it from here. The text column and the footer set the ink themselves. */
 html,
 body {
-  background-color: #000000;
-  color: #dd9911;
+  background-color: var(--color-page);
+  color: var(--color-accent-heading);
   font-family: "Literata", serif;
   font-size: 16px;
   line-height: 1.5;
@@ -112,7 +145,7 @@ body {
    follow the real width of their content, so they also grow with the
    reader's own text spacing instead of letting the title run into the logo. */
 @utility header-one-row {
-  @apply font-mono grid items-center gap-x-6 border-b border-amber grid-cols-[minmax(max-content,1fr)_minmax(0,max-content)_minmax(max-content,1fr)] [grid-template-areas:'logo_title_menu'];
+  @apply font-mono grid items-center gap-x-6 border-b border-accent-line grid-cols-[minmax(max-content,1fr)_minmax(0,max-content)_minmax(max-content,1fr)] [grid-template-areas:'logo_title_menu'];
 }
 
 @utility text-logo-large {
@@ -132,11 +165,11 @@ body {
    overrides the font-mono of the header container), so it has the line
    height of a proportional font that may wrap on two lines. */
 @utility title-below-line {
-  @apply border-t border-amber pt-6 text-center text-2xl font-sans font-bold leading-[1.5] [grid-area:title];
+  @apply border-t border-accent-line pt-6 text-center text-2xl font-sans font-bold leading-[1.5] [grid-area:title];
 }
 
 @utility title-below-line-large {
-  @apply border-t border-amber pt-6 text-center text-[32px] font-sans font-bold leading-[1.5] [grid-area:title];
+  @apply border-t border-accent-line pt-6 text-center text-[32px] font-sans font-bold leading-[1.5] [grid-area:title];
 }
 
 @utility title-beside-logo {
@@ -164,26 +197,26 @@ body {
    font of its own (the code block, which has its own font and size: see code-block) and
    still must be spaced by the text's size. */
 @utility long-text-column {
-  @apply grow w-full max-w-[60ch] mx-auto px-2 pb-8 text-off-white;
+  @apply grow w-full max-w-[60ch] mx-auto px-2 pb-8 text-ink;
   --long-text-size: 18px;
   font-size: var(--long-text-size);
 
-  /* Sections: amber, bold and larger than the text, no line above (ADR-003:
-     amber is an accent). The top margin is 2em of the text, written relative
+  /* Sections: heading accent, bold and larger than the text, no line above
+     (ADR-003: amber is an accent). The top margin is 2em of the text, written relative
      to the heading's own 1.4em size. */
   & h2 {
-    @apply text-amber text-[1.4em] leading-[1.3] font-bold;
+    @apply text-accent-heading text-[1.4em] leading-[1.3] font-bold;
     margin-top: calc(2em / 1.4);
   }
 
-  /* Sub-sections (roles in the curriculum, sections in an article): amber,
-     bold italic, a little larger than the text. Amber and size keep them apart
+  /* Sub-sections (roles in the curriculum, sections in an article): heading
+     accent, bold italic, a little larger than the text. Colour and size keep them apart
      from the sections without lines or inverse video. The top margin is 1.5em
      of the text, relative to the heading's 1.1em size. A long word in a
      heading (a class name in an article) must break rather than push the page
      sideways. */
   & h3 {
-    @apply text-amber text-[1.1em] leading-[1.4] font-bold italic wrap-anywhere;
+    @apply text-accent-heading text-[1.1em] leading-[1.4] font-bold italic wrap-anywhere;
     margin-top: calc(1.5em / 1.1);
   }
 
@@ -204,30 +237,29 @@ body {
     @apply mt-[0.75em];
   }
 
-  /* Quotes (notes and warnings): a 4px amber bar on the left (ADR-003: amber
-     is an accent), the text 1em from it in the same off-white, no box and no
+  /* Quotes (notes and warnings): a 4px accent bar on the left (ADR-003: amber
+     is an accent), the text 1em from it in the same ink, no box and no
      italic, so a note stands apart from the text without a background. The
      browser's side margins are removed: the quote starts on the column's left
      edge. It sits in the flow like a paragraph (2.25em above); its first
      child has no top margin, so the text starts level with the top of the
      bar; paragraphs and lists inside keep their usual spacing. */
   & blockquote {
-    @apply mt-[2.25em] mb-0 mx-0 border-l-4 border-amber pl-[1em];
+    @apply mt-[2.25em] mb-0 mx-0 border-l-4 border-accent-line pl-[1em];
   }
 
   & blockquote > :first-child {
     @apply mt-0;
   }
 
-  /* Tables: amber hairlines only, kept thin so amber stays an accent
+  /* Tables: accent hairlines only, kept thin so amber stays an accent
      (ADR-003): one on top, one under the header cells and one at the bottom,
      plus a line between columns and none at the outer sides. Odd body rows sit
      on the code surface colour, even rows on the page background, so the eye
-     can follow a row without boxes. The stripe is never lighter than the code
-     surface, so the off-white text and the amber code in a cell keep their
-     contrast. It sits in the flow like a paragraph (2.25em above). */
+     can follow a row without boxes. The stripe is the code surface colour, so
+     the ink and the accent code in a cell keep their contrast. It sits in the flow like a paragraph (2.25em above). */
   & table {
-    @apply mt-[2.25em] w-full border-collapse border-y border-amber;
+    @apply mt-[2.25em] w-full border-collapse border-y border-accent-line;
   }
 
   & th,
@@ -236,12 +268,12 @@ body {
   }
 
   & th {
-    @apply font-bold border-b border-amber;
+    @apply font-bold border-b border-accent-line;
   }
 
   & th + th,
   & td + td {
-    @apply border-l border-amber;
+    @apply border-l border-accent-line;
   }
 
   & tbody tr:nth-child(odd) {
@@ -252,12 +284,12 @@ body {
     @apply underline;
   }
 
-  /* Code in a sentence stays amber, so it stands out from the off-white text
-     around it; code blocks keep the off-white text. Hack, at 85% of the
+  /* Code in a sentence takes the code accent, so it stands out from the ink
+     around it; code blocks keep the ink. Hack, at 85% of the
      text. A long identifier must break rather than push the page sideways
      (Hack is wider than the pixel font was at the same line length). */
   & :not(pre) > code {
-    @apply font-code text-amber text-[0.85em] wrap-anywhere;
+    @apply font-code text-accent-code text-[0.85em] wrap-anywhere;
   }
 }
 
@@ -267,7 +299,7 @@ body {
 }
 
 @utility footer-sticky-bottom {
-  @apply sticky bottom-0 bg-black border-t border-amber px-2 text-left text-off-white;
+  @apply sticky bottom-0 bg-page border-t border-accent-line px-2 text-left text-ink;
 }
 
 /* Footer text from md: 18px instead of 16px, in proportion to the column. */
@@ -276,7 +308,7 @@ body {
 }
 
 /* The licence link in the footer: underlined, so it is told apart from the
-   text around it by more than colour (WCAG 1.4.1). Same off-white as the
+   text around it by more than colour (WCAG 1.4.1). Same ink as the
    text, which reaches the 7:1 contrast. */
 @utility footer-link {
   @apply underline;
@@ -286,7 +318,7 @@ body {
    logo was; it is as wide as the logo shown, and the logo inside keeps its
    own look. Visible focus ring (WCAG 2.4.7). */
 @utility logo-link {
-  @apply block justify-self-start [grid-area:logo] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber;
+  @apply block justify-self-start [grid-area:logo] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-line;
 }
 
 /* Code blocks (Markdown code rendered by src/markdown.rs). The block is a
@@ -298,12 +330,12 @@ body {
    fit. em, not ch: Chromium does not evaluate ch again in a container query
    when the web font arrives, so on a first visit the toggle was wrong. By
    default lines are kept and the scroller scrolls sideways; with the toggle
-   checked they wrap. The box (amber border, padding, dark surface) is on
+   checked they wrap. The box (accent border, padding, code surface) is on
    the block itself: container queries measure its content box, which is
    what the scroller fills, so the toggle still shows exactly when a line
    overflows. */
 @utility code-block {
-  @apply font-code text-[0.85em] p-2 border border-amber bg-code-surface;
+  @apply font-code text-[0.85em] p-2 border border-accent-line bg-code-surface;
   /* The block is 85% of the text, but it is spaced by the text around it:
      2.25 times the column's size. */
   margin-top: calc(var(--long-text-size) * 2.25);
@@ -323,11 +355,11 @@ body {
 }
 
 @utility code-wrap-toggle {
-  @apply hidden w-max font-sans sticky start-0 text-amber;
+  @apply hidden w-max font-sans sticky start-0 text-accent-code;
 
   & input {
-    accent-color: var(--color-amber);
-    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber;
+    accent-color: var(--color-accent-line);
+    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-line;
   }
 }
 
@@ -342,7 +374,7 @@ body {
    block's, or the thresholds and the indents would not match the code font.
    The indents are in ch, the width of "0" in that font: Hack's, 0.602em. */
 @utility code-text {
-  @apply m-0 text-off-white;
+  @apply m-0 text-ink;
   font: inherit;
 
   & code {
