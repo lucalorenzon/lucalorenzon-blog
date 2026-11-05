@@ -105,7 +105,7 @@ the live site.
 Seeing the page on a local server, the user found the licence page a
 dead end, and asked for the logo to lead to the home page. The user
 chose to do it in this card, before publishing, rather than in the card
-[add site navigation](../backlog/add-site-navigation.md): this card
+[add site navigation](../wip/add-site-navigation.md): this card
 created the dead end. Both forms of the logo are one link; a screen
 reader announces it as "Lvk@73r, home page" (the agent's wording), and
 the ASCII art is hidden from it. Keyboard focus is visible, and the

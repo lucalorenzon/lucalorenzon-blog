@@ -17,7 +17,7 @@ this for the first version and asked for the header to adapt to screen
 size in a card of its own.
 
 A navigation menu will come later
-([card](../backlog/add-site-navigation.md)) and will need room in the
+([card](../wip/add-site-navigation.md)) and will need room in the
 header too, so the layout must leave space for it without being reworked.
 
 ## What the header shows at each width

@@ -3,7 +3,7 @@
 - **Opened:** 2026-10-29, raised by the user while the card
   [adapt the header to screen width](../done/2026-10-29_adapt-header-to-screen-width.md)
   was being discussed.
-- **Status:** noticed, not started.
+- **Status:** started on 2026-11-06, in Now.
 
 ## Why
 
@@ -39,7 +39,7 @@ After the two articles already published on Medium are on the site. The
 home page then stops showing the curriculum and becomes the list of
 contents, and the menu comes with that change. Planned on 2026-10-31,
 together with the order that comes first: the
-[curriculum on the home page](put-curriculum-on-home-page.md), then the
+[curriculum on the home page](../done/2026-11-01_put-curriculum-on-home-page.md), then the
 [site's own domain](../done/2026-11-01_choose-site-address.md), then the articles.
 
 The menu is not needed to move the domain: the curriculum alone gives

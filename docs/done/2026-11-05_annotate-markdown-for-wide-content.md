@@ -33,7 +33,7 @@ What wide code and tables do on a phone moved here from the card
 [give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md),
 which kept font, colours and quotes. The user wanted the article pages
 accessible and in as good a state as the curriculum before the
-[navigation](../backlog/add-site-navigation.md) links to them.
+[navigation](../wip/add-site-navigation.md) links to them.
 
 ## Slice 1: wide code (2026-11-04)
 

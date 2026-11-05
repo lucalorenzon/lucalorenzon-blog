@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Add site navigation](backlog/add-site-navigation.md): the article
+- [Add site navigation](wip/add-site-navigation.md): the article
   pages are now accessible and in as good a state as the curriculum,
   validated by the user on 2026-11-06
   ([card](done/2026-11-06_design-look-of-articles.md)); then a version
