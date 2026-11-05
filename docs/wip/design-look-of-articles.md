@@ -355,7 +355,7 @@ seconds, so running it twice costs little and covers both.
 
 Left open: on the light page the drawn logo, though within the rules,
 is hard to read. The user left it as it is in this slice and moved it
-to a card of its own.
+to a card of its own, [review the logo](../backlog/review-the-logo.md).
 
 Also left open: the two backgrounds now have accents of slightly different
 hue. Turning the dark page's amber towards red too would be a decision

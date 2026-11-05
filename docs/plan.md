@@ -29,6 +29,9 @@ live since 2026-10-26
   readability first with amber as an accent: colours, text size, code
   in Hack, headings, quotes, tables and the light background are done;
   the licence note at the end of an article remains.
+- [Review the logo](backlog/review-the-logo.md): on the light page the
+  logo drawn in characters is hard to read; the user leans towards the
+  written logo everywhere.
 
 ## Next
 
