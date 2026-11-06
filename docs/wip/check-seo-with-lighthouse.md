@@ -49,6 +49,28 @@ and on the live site after each publication.
   server; the live site alone, which finds a broken page only once it is
   public.
 
+### How does it run?
+
+Chosen by the user: Lighthouse driven from the Playwright tests, as a
+library inside the suite that already exists.
+
+- **What it reuses:** the local server, the `BASE_URL` variable that
+  switches between the two moments, the report in the pipeline, the
+  Playwright container image with its Chromium.
+- **Its price:** some code of the project's own, since Lighthouse needs
+  a browser opened with a dedicated control port, which Playwright does
+  not open by default; and the suite runs twice, dark and light theme,
+  while these rules need one run.
+- **Known tension with the performance card:** there, scores vary and
+  need several runs and their median, which Lighthouse CI provides and
+  the project will then write itself. The SEO rules do not need it,
+  since they always give the same result.
+- **Rejected:** Lighthouse CI (`@lhci/cli` 0.16.0), a second program
+  beside Playwright with its own way of naming pages and the live site;
+  Lighthouse's command line in a script of the project's own, which
+  would hold the thresholds, the server and the list of pages outside
+  both tools.
+
 ### Why a card of its own?
 
 Split off by the user from the description and the Open Graph tags,
@@ -106,8 +128,7 @@ was added to the repository.
 
 ## Questions
 
-- How it runs in the pipeline: Lighthouse CI, Lighthouse driven from
-  Playwright, which package and version, in which container.
+- Which package and version drive Lighthouse from Playwright.
 - The threshold: the full score, or rule by rule.
 - The block-list, which also decides on which pages the check runs: a
   list kept in one place, or a field of each page; and whether a page on
