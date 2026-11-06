@@ -58,6 +58,33 @@ stylesheet, the fonts, the layout) does not move the date.
   which Google does not count as significant; the build's own date,
   which changes at every build.
 
+### How is the significant change found, in this first increment?
+
+Chosen by the user: the date of a page is the date of the last commit
+that changed its Markdown file. It is knowingly imprecise for now, and
+becomes accurate with the card
+[move titles, descriptions and dates into the Markdown's front matter](../backlog/move-page-fields-into-markdown-front-matter.md).
+
+- **The problem:** the code that changes what a page says and the code
+  that changes only how it looks are in the same files, often on the
+  same line: the Tailwind classes are written in the Rust code next to
+  the links and texts (9 in `src/page_frame.rs`, which draws every
+  page's frame; 35 in `src/markdown.rs`). Git sees which files and lines
+  changed, not whether the change is of content or appearance.
+- **Why the Markdown:** it already holds each page's body, the pure
+  content. The user wants it to become the only source of content, with
+  the titles, descriptions and dates now in the code moved into a YAML
+  front matter in each file: a card of its own.
+- **The imprecision, accepted for now:** a change to an article's title,
+  description or date, to a page's description, or to the links of the
+  header and footer does not move the date.
+- **Rejected:** a list of files per page, where a file holding both
+  content and appearance counts entirely, so a change of colour would
+  move every page's date; a fingerprint of each generated page's
+  significant parts, compared with the previous version's, accurate but
+  needing the previous fingerprints and dates, which the build keeps
+  nowhere.
+
 ## Known from the start
 
 - **The build already decides which pages are indexed:** each page is
@@ -83,7 +110,6 @@ stylesheet, the fonts, the layout) does not move the date.
 
 ## Questions
 
-- How the build tells, for each page, which files make its content,
-  links and data, and which only its appearance; some files hold both.
+- Which date the home page gets, since it has no Markdown of its own.
 - How the build generates it from the pages it already writes.
 - How the test checks it, locally and on the live site.
