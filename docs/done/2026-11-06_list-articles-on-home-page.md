@@ -3,7 +3,10 @@
 - **Opened:** 2026-11-06, by the user, splitting the card on site
   navigation, opened on 2026-10-29; the other part is the card
   [add a menu for the site](../backlog/add-site-menu.md). In Now.
-- **Status:** started on 2026-11-06.
+- **Status:** done on 2026-11-06. The home page lists the two
+  articles, newest first, and the curriculum has its own page,
+  `curriculum.html`. Validated by the user in the browser. A version is
+  published next, the articles with it.
 
 ## Why
 
@@ -19,7 +22,7 @@ categories, subscribing and settings stay with the
 [menu card](../backlog/add-site-menu.md). When this card is done, a version is
 published, the articles with it.
 
-## Answers so far (2026-11-06)
+## The answers (2026-11-06)
 
 ### Where the list lives
 
@@ -159,3 +162,14 @@ copied, not changed", and the home page, now holding the author's
 titles and descriptions, says "Reuse with attribution" as the other
 pages do. The about page's link to the curriculum points to
 `curriculum.html`.
+
+## Results
+
+- **Two slices, one commit each:** the curriculum on its own page
+  (`8f8e077`), then the home page as the list of articles (`09ad2e5`).
+  Every check of the pipeline passed on both: formatting, lint, 150
+  unit tests, the browser tests' types, 820 browser tests.
+- **Validated by the user** on the site served locally: the home page,
+  the way from a title to its article and back by the logo, the way
+  from the footer to the about page and on to the curriculum, on both
+  backgrounds: "all fine".

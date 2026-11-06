@@ -14,9 +14,8 @@ live since 2026-10-26
 
 ## Now
 
-- [List the articles on the home page](wip/list-articles-on-home-page.md),
-  the curriculum on a page of its own, so a reader finds the articles;
-  then a version is published, the articles with it.
+- Publish a version, the articles with it, now that the home page
+  lists them ([card](done/2026-11-06_list-articles-on-home-page.md)).
 
 ## Next
 
