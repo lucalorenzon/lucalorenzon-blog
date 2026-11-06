@@ -14,9 +14,10 @@ live since 2026-10-26
 
 ## Now
 
-- [Add SEO and Open Graph tags to every page](wip/add-seo-and-open-graph-tags.md),
-  from fields each article declares, checked in the build, with a
-  block-list of pages left out; the first slice is still to be found.
+- [Add the canonical link to the article pages](wip/add-canonical-link-to-articles.md),
+  so search engines take the site's copy of each article as the
+  original, not Medium's; with its own tests, the compliance check
+  comes later.
 
 ## Next
 
@@ -30,6 +31,10 @@ live since 2026-10-26
 - [Add a menu for the site](backlog/add-site-menu.md), in the room the
   header keeps on the right: search, categories, subscribing,
   settings, after the list of articles is published.
+- [Add SEO and Open Graph tags to every page](backlog/add-seo-and-open-graph-tags.md),
+  from fields each article declares, checked in the build, with a
+  block-list of pages left out; the canonical link of the articles
+  comes first, in Now.
 - [Use the space beside the text on wide screens](backlog/use-space-beside-text-on-wide-screens.md),
   left empty by the narrower column of version 0.5.0.
 - [Check performance in the build](backlog/check-performance-in-the-build.md),
