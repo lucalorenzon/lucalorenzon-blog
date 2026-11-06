@@ -4,8 +4,8 @@
   2026-11-06: the canonical link went to a card of its own,
   [add the canonical link to every page](../done/2026-11-06_add-canonical-link-to-every-page.md),
   with the "do not index" tag of the "page not found".
-  In Next.
-- **Status:** noticed, not started.
+  In Now.
+- **Status:** started on 2026-11-06, after the canonical link.
 
 ## Why
 
@@ -70,7 +70,7 @@ the check do not apply to.
   Leptos view leaves a marker (`<!>`) in the pages without it.
 - **Lighthouse has an SEO category,** with basic checks (title,
   description, status code, links, `robots`). The card
-  [check performance in the build](check-performance-in-the-build.md)
+  [check performance in the build](../backlog/check-performance-in-the-build.md)
   may bring Lighthouse into the build; its SEO score does not check
   Open Graph.
 - **The build already opens every page in a browser** (Playwright, on
