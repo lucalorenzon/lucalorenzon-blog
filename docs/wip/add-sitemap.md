@@ -85,6 +85,24 @@ becomes accurate with the card
   needing the previous fingerprints and dates, which the build keeps
   nowhere.
 
+### Which date does the home page get?
+
+Chosen by the user: none, for now. The home page is in the sitemap with
+its address only; the date is optional entry by entry.
+
+- **The problem:** the home page has no Markdown of its own; its content
+  is the list of articles (title, description and date of each), all in
+  the code.
+- **When the home page changes:** in the user's words, when a new
+  article is added. Its date belongs with how content is edited and
+  added, more than with the front matter.
+- **Rejected:** the latest date among the articles' Markdown files,
+  wrong in the most common case, since correcting an article's text
+  would move the home page's date while the home page, which shows only
+  title, description and date, does not change; the date of the home
+  page's code files, which brings back the mixed files already
+  rejected.
+
 ## Known from the start
 
 - **The build already decides which pages are indexed:** each page is
@@ -110,6 +128,5 @@ becomes accurate with the card
 
 ## Questions
 
-- Which date the home page gets, since it has no Markdown of its own.
 - How the build generates it from the pages it already writes.
 - How the test checks it, locally and on the live site.
