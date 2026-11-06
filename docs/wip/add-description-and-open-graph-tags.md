@@ -86,6 +86,12 @@ characters, the length search engines show in full:
   the protocol lets several pages of the same person be profiles, each
   told apart by its address.
 - **`og:url`:** the canonical address of the page.
+- **The home page's tab title:** "Luca Lorenzon - Product Engineer",
+  instead of "Home Page - Luca Lorenzon", chosen by the user after
+  seeing how a search result would look. Google shows the tab title
+  (`<title>`), not `og:title`, so a result titled "Home Page" said
+  little of the author; the articles' tab titles work well as they
+  are. The page's heading and `og:title` stay "Home Page".
 
 ### Why no image yet?
 

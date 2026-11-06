@@ -19,6 +19,12 @@ The card
 rested on visitors being mostly Italian; with an English site that
 premise no longer holds.
 
+- **The home page's tab title changed** on 2026-11-06, from "Home
+  Page - Luca Lorenzon" to "Luca Lorenzon - Product Engineer"
+  ([card](../wip/add-description-and-open-graph-tags.md)); the reference
+  transcript and the record in `docs/accessibility/` still speak of
+  "Home Page", the page's heading, which did not change.
+
 ## Questions
 
 - Run the check (it needs Docker, run by the user) and accept the new
