@@ -14,8 +14,9 @@ live since 2026-10-26
 
 ## Now
 
-- Publish a version, the articles with it, now that the home page
-  lists them ([card](done/2026-11-06_list-articles-on-home-page.md)).
+- Nothing yet: version 0.9.0 published the articles on 2026-11-06
+  ([card](done/2026-11-06_list-articles-on-home-page.md)); the next
+  card is chosen by the user from Next.
 
 ## Next
 
