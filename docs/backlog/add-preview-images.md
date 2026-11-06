@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-06, by the user, splitting the card on SEO and
   Open Graph tags, opened on 2026-11-02; the other parts are
-  [add the description and the Open Graph tags to every indexed page](../wip/add-description-and-open-graph-tags.md)
+  [add the description and the Open Graph tags to every indexed page](../done/2026-11-06_add-description-and-open-graph-tags.md)
   and [check SEO with Lighthouse in the build](check-seo-with-lighthouse.md).
   In Next, after the logo is reviewed.
 - **Status:** noticed, not started.
@@ -28,7 +28,7 @@ in a session of their own.
   addresses from the site's address
   ([ADR-002](../adr/ADR-002-relative-paths-and-site-address-at-build.md)).
 - **The other Open Graph tags come first**
-  ([card](../wip/add-description-and-open-graph-tags.md)), so adding the
+  ([card](../done/2026-11-06_add-description-and-open-graph-tags.md)), so adding the
   image redoes none of them.
 - **Visual work is shown before it is committed:** alternatives side by
   side, then the result on the real page.

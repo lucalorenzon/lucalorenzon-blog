@@ -107,7 +107,7 @@ Two things the comparison brought out:
   not more: it fixes the prefix at build time. The only page with a
   problem is the "page not found".
 - **A build value comes anyway.** The card
-  [add SEO and Open Graph tags to every page](../wip/add-description-and-open-graph-tags.md)
+  [add SEO and Open Graph tags to every page](../done/2026-11-06_add-description-and-open-graph-tags.md)
   needs the site's full address (`og:url`, `og:image`, the canonical
   link). MkDocs takes the "page not found"'s path from that same value.
 
@@ -150,7 +150,7 @@ fonts still break below the root.
 path part (`/`, or `/blog/` behind a gateway), so locally it loads the
 files just built and not those of the published site. The full address
 serves the search-engine and Open Graph tags of the card
-[add SEO and Open Graph tags to every page](../wip/add-description-and-open-graph-tags.md).
+[add SEO and Open Graph tags to every page](../done/2026-11-06_add-description-and-open-graph-tags.md).
 
 Rejected: a base path of its own for the "page not found", which would
 make two settings to keep in agreement once the SEO card needs the

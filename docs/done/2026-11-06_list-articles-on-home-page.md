@@ -61,7 +61,7 @@ from the home page. **The user has not given that address to anyone,
 and will not promote the site** until it has observability, search
 engine tags and a few other features
 ([observe the visitors](../backlog/observe-visitors-in-production.md),
-[SEO and Open Graph tags](../wip/add-description-and-open-graph-tags.md)).
+[SEO and Open Graph tags](../done/2026-11-06_add-description-and-open-graph-tags.md)).
 So the way to the curriculum chosen above is enough: the footer's link
 to the about page, and the about page's link to the curriculum.
 
@@ -73,7 +73,7 @@ the only thing the site knew of an article: it lives in the code, not
 in the Markdown. A date, a summary or a category would need fields of
 each article's own, and the model of an "article" was left to the
 [run of `residuality`](../backlog/run-full-residuality-round.md) and to
-the [card on search-engine tags](../wip/add-description-and-open-graph-tags.md),
+the [card on search-engine tags](../done/2026-11-06_add-description-and-open-graph-tags.md),
 which plans fields each article declares. The user first chose the
 title only; offered a description written in the code as an
 alternative, which gives the reader something to choose by without

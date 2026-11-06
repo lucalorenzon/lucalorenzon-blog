@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-06, by the user, splitting the card on SEO and
   Open Graph tags, opened on 2026-11-02; the other parts are
-  [add the description and the Open Graph tags to every indexed page](../wip/add-description-and-open-graph-tags.md)
+  [add the description and the Open Graph tags to every indexed page](../done/2026-11-06_add-description-and-open-graph-tags.md)
   and [add preview images](add-preview-images.md). In Now, after the
   description and the Open Graph tags.
 - **Status:** noticed, not started.

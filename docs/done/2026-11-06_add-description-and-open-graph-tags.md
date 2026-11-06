@@ -6,7 +6,10 @@
   The other parts went to
   [check SEO with Lighthouse in the build](../backlog/check-seo-with-lighthouse.md)
   and [add preview images](../backlog/add-preview-images.md). In Now.
-- **Status:** started on 2026-11-06.
+- **Status:** done on 2026-11-06. Every indexed page carries its
+  description and its Open Graph tags, without an image; the home
+  page's tab title became "Luca Lorenzon - Product Engineer". On the
+  live site with the next version.
 
 ## Why
 
@@ -119,18 +122,32 @@ As for every change to the code: unit tests on the head of each page,
 and a Playwright test that reads the description and the Open Graph
 tags on every indexed page, on the local build and on the live site.
 
-## Known from the start
+## Results
 
-- **The head of every page is written in one place,** `PageFrame` in
-  `src/page_frame.rs`, which already takes from every page either its
-  canonical address or "do not index" (`Indexing`). An optional tag in
-  a Leptos view leaves a marker (`<!>`) in the pages without it, so the
-  new tags follow the same pattern: a value that every page gives, never
-  an optional child.
-- **The full addresses** come from the site's address the build takes
-  ([ADR-002](../adr/ADR-002-relative-paths-and-site-address-at-build.md)),
-  through `SiteAddress::join`, as for the canonical link.
-- **The Markdown has no fields:** pulldown-cmark 0.13 can recognise a
-  metadata block at the top of a file and hand it over as raw text, but
-  does not read it; reading YAML or TOML would mean a new dependency.
-  The fields stay in the code for now, like the articles' list.
+- **The pages:** each indexed page gains, after its canonical link,
+  the description and the tags `og:title`, `og:type`, `og:url`,
+  `og:description`, `og:site_name`, `og:locale`, plus the author's
+  names on the profiles and `article:published_time` on the articles.
+  Nothing changes outside the head (compared with a build of the code
+  before); the "page not found" is byte-identical to before, and so is
+  the stylesheet.
+- **The code:** an indexed page declares its address, its description
+  and its kind in one value (`IndexedPage` in `src/page_frame.rs`), so
+  the description and the preview come with indexing and the "page not
+  found" cannot get them by mistake; the head stays one, with no marker.
+  The site's name and locale are one constant each.
+- **A Leptos detail:** its `view!` macro takes `property` for a DOM
+  property, so the Open Graph tags are written by a small function
+  (`preview_tag`) that sets the attribute; the HTML is ordinary.
+- **Tests:** unit tests with the exact values of every page, and one
+  that fails the build when a description is longer than 160
+  characters; a Playwright test checks behaviour rather than texts (the
+  preview's title is the page's heading, `og:url` is the canonical
+  link, and so on) on every page of `end2end/tests/support.ts`, locally
+  and on the live site. All the checks of the pipeline passed: 173 unit
+  tests, 848 browser tests.
+- **How the previews should look** (shown to the user before the tab
+  title changed): Google shows the tab title and the description;
+  LinkedIn, without an image, a compact card with `og:title` and the
+  domain, usually without the description. LinkedIn keeps a preview for
+  about a week; its Post Inspector shows and refreshes it.

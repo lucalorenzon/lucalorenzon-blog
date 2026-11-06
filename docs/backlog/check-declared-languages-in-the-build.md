@@ -27,5 +27,5 @@ stays a tool run on demand (reasons in the card linked above).
   width (the text logo and the ASCII-art logo)?
 - Whether the pages declare `lang="en-GB"` rather than `lang="en"`: on
   2026-11-06 the user chose `en_GB` for the Open Graph locale
-  ([card](../wip/add-description-and-open-graph-tags.md)), since the
+  ([card](../done/2026-11-06_add-description-and-open-graph-tags.md)), since the
   site's spelling is British; `en` stays correct meanwhile.

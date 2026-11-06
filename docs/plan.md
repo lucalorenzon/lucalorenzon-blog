@@ -14,12 +14,13 @@ live since 2026-10-26
 
 ## Now
 
-- [Add the description and the Open Graph tags to every indexed page](wip/add-description-and-open-graph-tags.md),
-  each page with its own values, the missing descriptions written in
-  this session; no image yet. The canonical link is done
-  ([card](done/2026-11-06_add-canonical-link-to-every-page.md)).
 - [Check SEO with Lighthouse in the build](backlog/check-seo-with-lighthouse.md),
-  right after, with the block-list the "page not found" needs.
+  with the block-list the "page not found" needs, before the next
+  version is published; the canonical link, the descriptions and the
+  Open Graph tags are done
+  ([card](done/2026-11-06_add-canonical-link-to-every-page.md),
+  [card](done/2026-11-06_add-description-and-open-graph-tags.md)) and
+  wait for that version, together with the check.
 
 ## Next
 
