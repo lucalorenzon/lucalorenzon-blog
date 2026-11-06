@@ -3,7 +3,9 @@
 - **Opened:** 2026-11-06, by the user, splitting the card
   [add SEO and Open Graph tags to every page](../backlog/add-seo-and-open-graph-tags.md),
   opened on 2026-11-02. In Now.
-- **Status:** started on 2026-11-06.
+- **Status:** done on 2026-11-06. Every page declares its own full
+  address as the original, and the "page not found" asks not to be
+  indexed; on the live site with the next version.
 
 ## Why
 
@@ -70,9 +72,30 @@ point 4: the full address is kept for what needs a full address). The
 program keeps only its path part today, so the type that holds it also
 keeps the full text.
 
-## Medium's side, by the author
+## Results
+
+- **The pages:** each one gains exactly one tag at the end of its
+  head, and nothing else changes (compared with a build of the code
+  before, page by page). The home page declares
+  `https://www.lucalorenzon.com/`, the others their own address; the
+  "page not found" carries `<meta name="robots" content="noindex">`.
+  The stylesheet is identical to the one before.
+- **The code:** the page frame takes, from every page, either its
+  canonical address or "do not index" (`Indexing` in
+  `src/page_frame.rs`), so a new page cannot forget it. The site's
+  address keeps its full text and joins a page's address onto it
+  (`src/site_address.rs`).
+- **One trap found:** Tailwind reads the comments in `src/`, so a
+  comment with the word "absolute" added an unused CSS rule; the
+  comment was reworded.
+- **Tests:** a unit test per page; a Playwright test reads the tags on
+  the pages of `end2end/tests/support.ts` and on the "page not found",
+  on the local build and, after a publication, on the live site. All
+  the checks of the pipeline passed: 163 unit tests, 834 browser tests.
+
+## Left to the author: Medium's side
 
 Each story on Medium has a canonical link setting in its advanced
-settings. It should point at the site's address of the same article,
-once the site is published with this card. Without it two copies still
+settings. Once the site is published with this card, it should point
+at the site's address of the same article. Without it two copies still
 claim to be the original.

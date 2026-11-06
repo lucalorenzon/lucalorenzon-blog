@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-02, by the user. Split by the user on
   2026-11-06: the canonical link went to a card of its own,
-  [add the canonical link to every page](../wip/add-canonical-link-to-every-page.md),
+  [add the canonical link to every page](../done/2026-11-06_add-canonical-link-to-every-page.md),
   with the "do not index" tag of the "page not found".
   In Next.
 - **Status:** noticed, not started.
@@ -56,7 +56,7 @@ the check do not apply to.
   2026-11-03, when the card on the Medium articles was split: the
   site's copy of each article is the original, so its page declares
   itself canonical. On 2026-11-06 the user moved it to a card of its
-  own, [add the canonical link to every page](../wip/add-canonical-link-to-every-page.md),
+  own, [add the canonical link to every page](../done/2026-11-06_add-canonical-link-to-every-page.md),
   since it is the only part that loses something each day it waits;
   that card also carries Medium's side, by the author. Every page got
   the link there, so the page frame keeps one head.

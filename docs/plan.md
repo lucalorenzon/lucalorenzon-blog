@@ -14,10 +14,9 @@ live since 2026-10-26
 
 ## Now
 
-- [Add the canonical link to every page](wip/add-canonical-link-to-every-page.md),
-  so search engines take the site's copy of each article as the
-  original, not Medium's, and "do not index" on the "page not found";
-  with its own tests, the compliance check comes later.
+- Nothing yet: the canonical link on every page is done
+  ([card](done/2026-11-06_add-canonical-link-to-every-page.md)), live
+  with the next version; the next card is chosen by the user from Next.
 
 ## Next
 
