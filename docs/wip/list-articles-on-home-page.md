@@ -38,14 +38,87 @@ articles, the footer's link leads to the about page, and that page
 leads to the curriculum. The right side of the header stays empty for
 now: a visible tool there is the [menu card](../backlog/add-site-menu.md).
 
-## Questions
+### The curriculum's address
 
-- **The curriculum's address.** Today the curriculum is at the site's
-  root, `www.lucalorenzon.com/`; anyone who has that address as the link
-  to the curriculum will land on the list instead.
-- **What each entry of the list shows.**
-- **The footer's licence sentence on each page.** Today the home page's
-  says the CV may be copied, not changed; the others say "Reuse with
-  attribution".
-- **The about page's link to the curriculum,** which points to the home
-  page today.
+**Chosen, by the user: `curriculum.html`, at the site's root,** beside
+`about.html` and `licence.html`, named by its subject as they are. An
+address, once published, ends up in shared links and search engines,
+and GitHub Pages does not make redirects easy, so it is meant to stay.
+The [card on the curriculum in more languages](../backlog/publish-curriculum-in-more-languages.md),
+in Later, will find its own addresses beside it: the user left the
+languages for then. Rejected: an address laid out for languages
+today, which would prepare something that may never come.
+
+### Readers who kept the old address
+
+The curriculum has been at the site's root, `www.lucalorenzon.com/`,
+since version 0.4.0. A reader who had that address as the link to the
+curriculum would land on the list and might need a visible way to it
+from the home page. **The user has not given that address to anyone,
+and will not promote the site** until it has observability, search
+engine tags and a few other features
+([observe the visitors](../backlog/observe-visitors-in-production.md),
+[SEO and Open Graph tags](../backlog/add-seo-and-open-graph-tags.md)).
+So the way to the curriculum chosen above is enough: the footer's link
+to the about page, and the about page's link to the curriculum.
+
+### What each entry shows
+
+**Chosen, by the user: the title, a one-line description and a date,
+written in the code for now, as the title already is.** The title is
+the only thing the site knew of an article: it lives in the code, not
+in the Markdown. A date, a summary or a category would need fields of
+each article's own, and the model of an "article" was left to the
+[run of `residuality`](../backlog/run-full-residuality-round.md) and to
+the [card on search-engine tags](../backlog/add-seo-and-open-graph-tags.md),
+which plans fields each article declares. The user first chose the
+title only; offered a description written in the code as an
+alternative, which gives the reader something to choose by without
+waiting for that model, the user took it, and added the date. The
+cost: more text in the code, to move when the articles get fields of
+their own.
+
+### The order of the list
+
+**Chosen, by the user: by date.**
+
+### Which date
+
+Each article has two dates: the day it was published on Medium, and the
+day it is published on this site, the next version's day, the same for
+both, so it could not order them. **Chosen, by the user, for these two
+articles: the date of Medium, the day they were made public:** "How to
+generate hybris PK values without hybris" on 25 April 2023, "After Save
+Event" on 30 April 2023. The later one links to the earlier, as it did on
+Medium. An article first published on this site will take this site's
+date.
+
+### Newest or oldest first
+
+**Chosen, by the user: newest first,** so a returning reader finds the
+latest article at the top. The cost, with today's two articles: "After
+Save Event" comes before the article it links to. Rejected: oldest
+first, which reads the two in the order they were written but puts
+every new article at the bottom.
+
+### The descriptions
+
+**Written by the user,** with three touches the agent pointed out and
+the user accepted: "SAP hybris", as the articles write it; "inner
+behaviour"; "Dive into" and "use cases".
+
+| Article | Date | Description |
+|---|---|---|
+| After Save Event | 30 April 2023 | SAP hybris change events system: architecture and inner behaviour. |
+| How to generate hybris PK values without hybris | 25 April 2023 | Dive into the PK generation logic of SAP hybris, for extreme use cases. |
+
+### The footer and the about page
+
+Decided by the agent, as they follow from rules already agreed. The
+footer names the licence of the page's own content
+([card](../done/2026-11-03_show-licences-on-the-site.md)), so it follows
+the curriculum, not the address: `curriculum.html` says "This CV may be
+copied, not changed", and the home page, now holding the author's
+titles and descriptions, says "Reuse with attribution" as the other
+pages do. The about page's link to the curriculum points to
+`curriculum.html`.
