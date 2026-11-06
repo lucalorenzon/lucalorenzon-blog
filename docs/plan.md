@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Add a sitemap](backlog/add-sitemap.md), from which the SEO check
+- [Add a sitemap](wip/add-sitemap.md), from which the SEO check
   takes its list of pages.
 - [Add a robots.txt](backlog/add-robots-txt.md), pointing to the
   sitemap.

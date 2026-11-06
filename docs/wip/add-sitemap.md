@@ -2,9 +2,9 @@
 
 - **Opened:** 2026-11-06, by the user, while choosing on which pages the
   SEO check runs
-  ([card](../wip/check-seo-with-lighthouse.md)). In Now, before the SEO
+  ([card](check-seo-with-lighthouse.md)). In Now, before the SEO
   check is resumed.
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-06.
 
 ## Why
 
@@ -37,7 +37,7 @@ moments.
 - **The site is served from the root** of `https://www.lucalorenzon.com/`
   since 2026-11-01, where a sitemap is expected.
 - **Pointing search engines to it** is the job of a `robots.txt`
-  ([card](add-robots-txt.md)).
+  ([card](../backlog/add-robots-txt.md)).
 - **The next version waits for this card,** the `robots.txt` and the SEO
   check: the user chose to publish them together with the canonical
   link, the descriptions and the Open Graph tags already done.

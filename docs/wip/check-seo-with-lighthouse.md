@@ -7,7 +7,7 @@
   description and the Open Graph tags.
 - **Status:** being worked on, since 2026-11-06; on hold from
   2026-11-06, waiting for the cards
-  [add a sitemap](../backlog/add-sitemap.md) and
+  [add a sitemap](add-sitemap.md) and
   [add a robots.txt](../backlog/add-robots-txt.md). It stays in
   `docs/wip/` meanwhile, by the user's choice: half of its answers are
   given.
