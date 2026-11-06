@@ -71,6 +71,25 @@ library inside the suite that already exists.
   would hold the thresholds, the server and the list of pages outside
   both tools.
 
+### Which package?
+
+Chosen by the user: the `lighthouse` package alone, at version 13.6.0,
+plus the project's own few dozen lines that open Chromium with a control
+port and hand the page to Lighthouse.
+
+- **The package:** by the Chrome team, Apache 2.0 licence, version
+  13.6.0 released on 2026-10-27, the one of the trial run. It goes into
+  `end2end/`'s development dependencies at an exact version, as the
+  others there, and Dependabot already follows that folder.
+- **Its weight:** about 120 packages come with it, among them Puppeteer
+  and the Sentry client. Read in its code (`core/lib/sentry.js`): used
+  as a library, Lighthouse loads Sentry only when the option
+  `enableErrorReporting` is passed, so it sends nothing unless asked.
+- **Rejected:** `playwright-lighthouse` 4.0.0 on top of `lighthouse`. It
+  would write the link between the two tools for the project, but it has
+  one maintainer, its last version dates from 2024-01-15, and it has not
+  been checked against recent Lighthouse versions since.
+
 ### Why a card of its own?
 
 Split off by the user from the description and the Open Graph tags,
@@ -128,7 +147,6 @@ was added to the repository.
 
 ## Questions
 
-- Which package and version drive Lighthouse from Playwright.
 - The threshold: the full score, or rule by rule.
 - The block-list, which also decides on which pages the check runs: a
   list kept in one place, or a field of each page; and whether a page on
