@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-06, by the user, splitting the card on SEO and
   Open Graph tags, opened on 2026-11-02; the other parts are
   [add the description and the Open Graph tags to every indexed page](../done/2026-11-06_add-description-and-open-graph-tags.md)
-  and [add preview images](add-preview-images.md). In Now, after the
+  and [add preview images](../backlog/add-preview-images.md). In Now, after the
   description and the Open Graph tags.
 - **Status:** being worked on, since 2026-11-06; on hold from
   2026-11-06, waiting for the cards
@@ -30,7 +30,7 @@ maintained by the project; the price is a new dependency, to be audited
 as any other.
 
 This anticipates the choice of tool of the card
-[check performance in the build](check-performance-in-the-build.md),
+[check performance in the build](../backlog/check-performance-in-the-build.md),
 knowingly: that card will find Lighthouse already in the build, and its
 performance category can be added to it.
 
