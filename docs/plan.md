@@ -14,13 +14,16 @@ live since 2026-10-26
 
 ## Now
 
+- [Add a sitemap](backlog/add-sitemap.md), from which the SEO check
+  takes its list of pages.
+- [Add a robots.txt](backlog/add-robots-txt.md), pointing to the
+  sitemap.
 - [Check SEO with Lighthouse in the build](wip/check-seo-with-lighthouse.md),
-  with the block-list the "page not found" needs, before the next
-  version is published; the canonical link, the descriptions and the
-  Open Graph tags are done
+  on hold until the sitemap and the `robots.txt` exist, then resumed.
+- The next version publishes all three together with the canonical
+  link, the descriptions and the Open Graph tags, already done
   ([card](done/2026-11-06_add-canonical-link-to-every-page.md),
-  [card](done/2026-11-06_add-description-and-open-graph-tags.md)) and
-  wait for that version, together with the check.
+  [card](done/2026-11-06_add-description-and-open-graph-tags.md)).
 
 ## Next
 

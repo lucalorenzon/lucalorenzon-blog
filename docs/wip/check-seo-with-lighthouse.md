@@ -5,7 +5,12 @@
   [add the description and the Open Graph tags to every indexed page](../done/2026-11-06_add-description-and-open-graph-tags.md)
   and [add preview images](add-preview-images.md). In Now, after the
   description and the Open Graph tags.
-- **Status:** being worked on, since 2026-11-06.
+- **Status:** being worked on, since 2026-11-06; on hold from
+  2026-11-06, waiting for the cards
+  [add a sitemap](../backlog/add-sitemap.md) and
+  [add a robots.txt](../backlog/add-robots-txt.md). It stays in
+  `docs/wip/` meanwhile, by the user's choice: half of its answers are
+  given.
 
 ## Why
 
@@ -138,6 +143,32 @@ applies to it: title, links, response status, and the rest.
   counts as blocked too, so the rule would fail anyway, and which would
   hide the `noindex` from search engines, as Google warns.
 
+### On which pages, and why on hold?
+
+Chosen by the user: the check takes its list of pages from a sitemap,
+which the site does not have yet. The card is on hold until the sitemap
+and the `robots.txt` exist, each in a card of its own.
+
+- **The problem:** on the live site there is no folder to walk, so the
+  check needs a list of pages, and the only one, `TEXT_PAGES` in
+  `end2end/tests/support.ts`, is written by hand; the card
+  [make the browser tests check behaviour](../backlog/make-browser-tests-check-behaviour.md)
+  wants to get rid of such lists. The "page not found", asked on the
+  live site through a missing address, answers with status 404 and
+  fails the rule on the response status, rightly, since a missing
+  address must answer 404; asked as `/404.html`, it answers 200, at an
+  address no search engine meets.
+- **Why the sitemap:** it lists the pages the site asks search engines
+  to index, exactly those the check is about; the test reads it from
+  the local server or from the live site in the same way; the build can
+  generate it from the decision it already takes, `Indexing::Indexed`
+  or `NoIndex`. The "page not found" is not in it, so the problem of its
+  404 on the live site goes away.
+- **The version waits:** the canonical link, the descriptions and the
+  Open Graph tags, already done, are published together with the
+  sitemap, the `robots.txt` and this check, by the user's choice.
+- **Rejected:** publishing the tags first, without the check.
+
 ### Why a card of its own?
 
 Split off by the user from the description and the Open Graph tags,
@@ -195,8 +226,10 @@ was added to the repository.
 
 ## Questions
 
-- On which pages the check runs, locally and on the live site; and how
-  the "page not found" is asked on the live site, where a missing
-  address answers with status 404 and fails the rule on the response
-  status, which `noindex` does not exempt.
-- Whether the site needs a `robots.txt`, and what it says.
+- **To be answered when the card is resumed.** With the pages taken from
+  the sitemap, the "page not found" is never checked, so the exemption
+  derived from `noindex` never applies. Whether the local check also
+  runs on the pages found in the built site's folder, where the "page
+  not found" is, or the exemption is dropped.
+- Whether the site needs a `robots.txt`, and what it says: moved to the
+  card [add a robots.txt](../backlog/add-robots-txt.md).
