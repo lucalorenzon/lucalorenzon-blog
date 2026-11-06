@@ -82,7 +82,7 @@ direct check locally.
 ### What about search engines?
 
 The page goes on the block-list of the card
-[add SEO and Open Graph tags to every page](../wip/add-seo-and-open-graph-tags.md):
+[add SEO and Open Graph tags to every page](../backlog/check-seo-with-lighthouse.md):
 GitHub answers with status 404, so it is not indexed anyway.
 
 ## Results

@@ -35,7 +35,7 @@ home, about or licence pages. The link from "After Save Event" to the
 other article now points to its address on the site, as planned when
 it was written. Search engines are unlikely to find the pages this
 way, which is consistent with leaving them to the
-[card on search-engine tags](../wip/add-seo-and-open-graph-tags.md).
+[card on search-engine tags](../wip/add-description-and-open-graph-tags.md).
 
 ### When they are published
 

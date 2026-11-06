@@ -1,7 +1,7 @@
 # Add the canonical link to every page
 
 - **Opened:** 2026-11-06, by the user, splitting the card
-  [add SEO and Open Graph tags to every page](../wip/add-seo-and-open-graph-tags.md),
+  [add SEO and Open Graph tags to every page](../wip/add-description-and-open-graph-tags.md),
   opened on 2026-11-02. In Now.
 - **Status:** done on 2026-11-06. Every page declares its own full
   address as the original, and the "page not found" asks not to be

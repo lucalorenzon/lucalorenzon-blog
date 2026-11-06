@@ -14,11 +14,12 @@ live since 2026-10-26
 
 ## Now
 
-- [Add SEO and Open Graph tags to every page](wip/add-seo-and-open-graph-tags.md),
-  from fields each article declares, checked in the build, with a
-  block-list of pages left out; the canonical link is done
-  ([card](done/2026-11-06_add-canonical-link-to-every-page.md)), the
-  next slice is still to be found.
+- [Add the description and the Open Graph tags to every indexed page](wip/add-description-and-open-graph-tags.md),
+  each page with its own values, the missing descriptions written in
+  this session; no image yet. The canonical link is done
+  ([card](done/2026-11-06_add-canonical-link-to-every-page.md)).
+- [Check SEO with Lighthouse in the build](backlog/check-seo-with-lighthouse.md),
+  right after, with the block-list the "page not found" needs.
 
 ## Next
 
@@ -29,14 +30,17 @@ live since 2026-10-26
 - [Review the logo](backlog/review-the-logo.md): on the light page the
   logo drawn in characters is hard to read; the user leans towards the
   written logo everywhere.
+- [Add preview images](backlog/add-preview-images.md) for links shared
+  on LinkedIn or elsewhere, one per page, in a session of their own,
+  probably after the logo is reviewed.
 - [Add a menu for the site](backlog/add-site-menu.md), in the room the
   header keeps on the right: search, categories, subscribing,
   settings, after the list of articles is published.
 - [Use the space beside the text on wide screens](backlog/use-space-beside-text-on-wide-screens.md),
   left empty by the narrower column of version 0.5.0.
 - [Check performance in the build](backlog/check-performance-in-the-build.md),
-  Lighthouse or similar, so a choice that makes the site slower or
-  heavier does not go unnoticed.
+  so a choice that makes the site slower or heavier does not go
+  unnoticed; Lighthouse arrives first with the SEO check.
 - [Observe the visitors in production](backlog/observe-visitors-in-production.md):
   who reads the site, what they look for, where they interact; with
   the consent and the cookie policy it brings.
