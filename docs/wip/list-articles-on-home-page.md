@@ -124,6 +124,31 @@ title naming the list, such as "Articles", which tells an arriving
 reader more but would change when the home page holds more than
 articles.
 
+### The look of the list
+
+**Chosen, by the user: each entry with the title first, as a link,
+then the description, then the date written out ("30 April 2023");**
+no bullets and no indent; title, description and date close together,
+entries apart like paragraphs; the title in the site's section-title
+style. The user compared, on the built page at iPhone SE width on both
+backgrounds, and at laptop width:
+
+- **The date above the title.** Not chosen: it shows at once when an
+  article came out, but the title no longer opens the entry; it suits
+  a list where dates matter more than subjects, such as a diary.
+- **The date written as "2023-04-30".** Not chosen: shorter and the
+  same in every language, but it reads as a technical record.
+
+Decided by the agent, as it changes nothing a reader sees: the list is
+an HTML list, and each title is a heading, so a screen reader can move
+from article to article; the order comes from the dates in the code,
+so a new article takes its place by itself. The date is a `<time>`
+element rather than a paragraph, which keeps it close to the
+description: the readability check asks 1.5 lines between two
+paragraphs. The first build still showed the text column's bullets
+and indent, whose rule weighed more than the list's; the list's rule
+now weighs more, and a browser test checks there are neither.
+
 ### The footer and the about page
 
 Decided by the agent, as they follow from rules already agreed. The

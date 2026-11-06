@@ -318,6 +318,42 @@ body {
   --long-text-size: 20px;
 }
 
+/* The home page's list of articles, in the text column: no bullets and no
+   indent, entries 2.25em apart like paragraphs. Inside an entry the title
+   (an h2), the description and the date sit close together, so the three read
+   as one. The column's rule for lists (`ul`, bullets and indent) is heavier
+   than a single class, so the list's own reset is written with `:is(ul)` twice
+   to outweigh it; the other rules are heavier than the column's by their
+   selectors (a list item's paragraph, heading and date) or tie and win by
+   coming after it. The date is a block of its own
+   but not a paragraph: two paragraphs in a row must be 1.5 line heights apart
+   (readability checks). */
+@utility article-list {
+  &:is(ul):is(ul) {
+    @apply list-none p-0;
+  }
+
+  & > li {
+    @apply mt-[2.25em];
+  }
+
+  & > li:first-child {
+    @apply mt-0;
+  }
+
+  & > li > h2 {
+    @apply mt-0;
+  }
+
+  & > li > p {
+    @apply mt-[0.25em];
+  }
+
+  & > li > time {
+    @apply block mt-[0.25em];
+  }
+}
+
 @utility footer-sticky-bottom {
   @apply sticky bottom-0 bg-page border-t border-accent-line px-2 text-left text-ink;
 }

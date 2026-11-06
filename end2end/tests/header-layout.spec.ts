@@ -14,7 +14,7 @@ const MENU_WIDTH = 56;
 const SPACE_UNDER_LINE = 24;
 const MIN_GAP = 24;
 
-const HOME_TITLE = 'Curriculum Vitae';
+const HOME_TITLE = 'Home Page';
 const LONG_TITLES = [
   'Disaccoppiamento infrastrutturale nei microservizi',
   'Contestualizzazione dell’interoperabilità nei dati',

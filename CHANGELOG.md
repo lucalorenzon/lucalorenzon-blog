@@ -52,6 +52,9 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ### Changed
 
+- The home page lists the articles, newest first: each with its title,
+  as a link, a one-line description and its date. Its title is "Home
+  Page", and its footer reads "Reuse with attribution".
 - Readability first, amber as an accent, on every page
   ([ADR-003](docs/adr/ADR-003-readability-first-amber-as-accent.md)):
   the text and the footer are off-white; amber stays for the logo, the

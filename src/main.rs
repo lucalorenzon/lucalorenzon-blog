@@ -36,14 +36,12 @@ fn build() -> Result<(), Box<dyn Error>> {
     )?;
     fs::write(out_dir.join("about.html"), about_page::render_about_page())?;
     fs::create_dir_all(out_dir.join("articles"))?;
-    fs::write(
-        out_dir.join("articles/after-save-event.html"),
-        article_page::render_after_save_event_page(),
-    )?;
-    fs::write(
-        out_dir.join("articles/how-to-generate-hybris-pk-values-without-hybris.html"),
-        article_page::render_hybris_pk_page(),
-    )?;
+    for article in &article_page::ARTICLES {
+        fs::write(
+            out_dir.join(article.address),
+            article_page::render_article_page(article),
+        )?;
+    }
     fs::write(
         out_dir.join("licence.html"),
         licence_page::render_licence_page(),

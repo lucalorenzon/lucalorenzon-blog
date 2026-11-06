@@ -134,7 +134,8 @@ for (const { name: pageName, address, onlyLocal } of PAGES) {
 // compared strictly: "/children: equal" makes an extra, missing or reordered
 // element fail, where the default would accept extra ones. ("deep-equal" is
 // not used: it would also demand the ASCII art inside the wide logo.) The
-// content of main is the curriculum, whose text changes at every edit, so
+// content of main is long text (or, on the home page, the list of articles),
+// which changes at every edit, so
 // listing the whole tree would force a change to this test each time; only
 // the structure of its headings is compared (see the test below): the
 // level-2 headings, in order, and no level-1 heading. How the page sounds (the voice,
@@ -179,16 +180,8 @@ const TREE_PAGES = [
   {
     name: 'home page',
     address: './',
-    trees: treeByLogo('Curriculum Vitae', 'This CV may be copied, not changed'),
-    sections: [
-      'Summary',
-      'Experience',
-      'Technical expertise and continuous learning',
-      'Core competencies',
-      'Education',
-      'Certifications and training',
-      'Languages',
-    ],
+    trees: treeByLogo('Home Page', 'Reuse with attribution'),
+    sections: ['After Save Event', 'How to generate hybris PK values without hybris'],
   },
   {
     name: 'curriculum page',

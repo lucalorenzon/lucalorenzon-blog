@@ -33,14 +33,14 @@ export const VIEWPORTS = [
 ];
 
 // The pages whose text (the `main` element) the content tests check. The
-// home page shows the curriculum, with roles (h3) and several consecutive
-// paragraphs; the licence page has neither, so those two checks apply only
-// where the page has some. The After Save Event article has no roles (h3)
+// home page (a list of articles, each entry a heading, a description and a date) has no roles (h3) and
+// no consecutive paragraphs; the curriculum page has both; the licence page has neither, so those two
+// checks apply only where the page has some. The After Save Event article has no roles (h3)
 // and several consecutive paragraphs. The hybris PK article has no roles
 // (h3) and several consecutive paragraphs; its wide table becomes a record
 // viewer below a readable width.
 export const TEXT_PAGES = [
-  { name: 'home page', address: './', hasRoles: true, hasConsecutiveParagraphs: true },
+  { name: 'home page', address: './', hasRoles: false, hasConsecutiveParagraphs: false },
   { name: 'curriculum page', address: './curriculum.html', hasRoles: true, hasConsecutiveParagraphs: true },
   { name: 'licence page', address: './licence.html', hasRoles: false, hasConsecutiveParagraphs: false },
   { name: 'about page', address: './about.html', hasRoles: false, hasConsecutiveParagraphs: false },

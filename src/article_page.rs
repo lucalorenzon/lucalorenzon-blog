@@ -2,55 +2,122 @@ use crate::markdown;
 use crate::page_frame::{FooterLicence, PageFrame};
 use leptos::prelude::*;
 
-const AFTER_SAVE_EVENT_TITLE: &str = "After Save Event";
-const AFTER_SAVE_EVENT_TAB: &str = "After Save Event - Luca Lorenzon";
-const AFTER_SAVE_EVENT: &str = include_str!("../content/articles/after-save-event.md");
+/// A day, written in the code with the article it dates.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Date {
+    pub year: u16,
+    pub month: u8,
+    pub day: u8,
+}
 
-const HYBRIS_PK_TITLE: &str = "How to generate hybris PK values without hybris";
-const HYBRIS_PK_TAB: &str = "How to generate hybris PK values without hybris - Luca Lorenzon";
-const HYBRIS_PK: &str =
-    include_str!("../content/articles/how-to-generate-hybris-pk-values-without-hybris.md");
+impl Date {
+    const MONTHS: [&'static str; 12] = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+
+    /// The machine-readable form, for `<time datetime>`: `2023-04-30`.
+    pub fn iso(self) -> String {
+        format!("{:04}-{:02}-{:02}", self.year, self.month, self.day)
+    }
+
+    /// The form a reader sees: `30 April 2023`.
+    pub fn long_form(self) -> String {
+        format!(
+            "{} {} {}",
+            self.day,
+            Self::MONTHS[usize::from(self.month) - 1],
+            self.year
+        )
+    }
+}
+
+/// What the site knows of an article: written here, in one list, for the article pages and the
+/// home page's list alike. The model of an "article" with fields of its own, read from the
+/// Markdown, is left for later (card docs/wip/list-articles-on-home-page.md).
+pub struct Article {
+    pub title: &'static str,
+    pub tab_title: &'static str,
+    /// Where the page is written, relative to the site's root.
+    pub address: &'static str,
+    pub description: &'static str,
+    pub date: Date,
+    text: &'static str,
+}
+
+/// Every article of the site. A new article is added here, and nowhere else.
+pub const ARTICLES: [Article; 2] = [
+    Article {
+        title: "After Save Event",
+        tab_title: "After Save Event - Luca Lorenzon",
+        address: "articles/after-save-event.html",
+        description: "SAP hybris change events system: architecture and inner behaviour.",
+        date: Date {
+            year: 2023,
+            month: 4,
+            day: 30,
+        },
+        text: include_str!("../content/articles/after-save-event.md"),
+    },
+    Article {
+        title: "How to generate hybris PK values without hybris",
+        tab_title: "How to generate hybris PK values without hybris - Luca Lorenzon",
+        address: "articles/how-to-generate-hybris-pk-values-without-hybris.html",
+        description: "Dive into the PK generation logic of SAP hybris, for extreme use cases.",
+        date: Date {
+            year: 2023,
+            month: 4,
+            day: 25,
+        },
+        text: include_str!(
+            "../content/articles/how-to-generate-hybris-pk-values-without-hybris.md"
+        ),
+    },
+];
+
+/// The articles, newest first.
+pub fn newest_first() -> Vec<&'static Article> {
+    newest_first_of(&ARTICLES)
+}
+
+fn newest_first_of(articles: &[Article]) -> Vec<&Article> {
+    let mut sorted: Vec<&Article> = articles.iter().collect();
+    sorted.sort_by_key(|article| std::cmp::Reverse(article.date));
+    sorted
+}
 
 /// A whole article page document, `<html>` element included. The page lives in the `articles/`
 /// folder, so every address is relative to that folder (ADR-002). The Markdown has no title:
 /// the title is the page heading.
 #[component]
-pub fn ArticlePage(
-    tab_title: &'static str,
-    title: &'static str,
-    text: &'static str,
-) -> impl IntoView {
+pub fn ArticlePage(article: &'static Article) -> impl IntoView {
     view! {
         <PageFrame
-            title=tab_title
-            heading=title
+            title=article.tab_title
+            heading=article.title
             address_prefix="../"
             footer_licence=FooterLicence::ReuseWithAttribution
         >
-            <main class="long-text-column md:long-text-large" inner_html=markdown::to_html(text)></main>
+            <main class="long-text-column md:long-text-large" inner_html=markdown::to_html(article.text)></main>
         </PageFrame>
     }
 }
 
-fn render_article_page(tab_title: &'static str, title: &'static str, text: &'static str) -> String {
+/// Renders an article page to a complete HTML document string.
+pub fn render_article_page(article: &'static Article) -> String {
     let owner = Owner::new();
-    let body = owner
-        .with(|| view! { <ArticlePage tab_title=tab_title title=title text=text /> }.to_html());
+    let body = owner.with(|| view! { <ArticlePage article=article /> }.to_html());
     format!("<!DOCTYPE html>{body}")
-}
-
-/// Renders the After Save Event article page to a complete HTML document string.
-pub fn render_after_save_event_page() -> String {
-    render_article_page(
-        AFTER_SAVE_EVENT_TAB,
-        AFTER_SAVE_EVENT_TITLE,
-        AFTER_SAVE_EVENT,
-    )
-}
-
-/// Renders the hybris PK article page to a complete HTML document string.
-pub fn render_hybris_pk_page() -> String {
-    render_article_page(HYBRIS_PK_TAB, HYBRIS_PK_TITLE, HYBRIS_PK)
 }
 
 #[cfg(test)]
@@ -60,7 +127,7 @@ mod tests {
         use super::super::*;
 
         fn page() -> String {
-            render_after_save_event_page()
+            render_article_page(&ARTICLES[0])
         }
 
         #[test]
@@ -142,7 +209,7 @@ mod tests {
         use super::super::*;
 
         fn page() -> String {
-            render_hybris_pk_page()
+            render_article_page(&ARTICLES[1])
         }
 
         #[test]
@@ -212,6 +279,62 @@ mod tests {
             let html = page();
             assert!(!html.contains("href=\"/"));
             assert!(!html.contains("src=\"/"));
+        }
+    }
+
+    mod list {
+        use super::super::*;
+
+        #[test]
+        fn formats_a_date_for_the_reader_and_for_the_machine() {
+            let date = Date {
+                year: 2023,
+                month: 4,
+                day: 30,
+            };
+            assert_eq!(date.long_form(), "30 April 2023");
+            assert_eq!(date.iso(), "2023-04-30");
+            let date = Date {
+                year: 2024,
+                month: 12,
+                day: 5,
+            };
+            assert_eq!(date.long_form(), "5 December 2024");
+            assert_eq!(date.iso(), "2024-12-05");
+        }
+
+        #[test]
+        fn orders_by_date_whatever_the_order_of_the_list() {
+            let article = |title, day| Article {
+                title,
+                tab_title: "",
+                address: "",
+                description: "",
+                date: Date {
+                    year: 2023,
+                    month: 4,
+                    day,
+                },
+                text: "",
+            };
+            let oldest_first = [article("a", 1), article("c", 30), article("b", 25)];
+            let titles: Vec<&str> = newest_first_of(&oldest_first)
+                .iter()
+                .map(|a| a.title)
+                .collect();
+            assert_eq!(titles, ["c", "b", "a"]);
+        }
+
+        #[test]
+        fn lists_the_site_articles_newest_first() {
+            let titles: Vec<&str> = newest_first().iter().map(|a| a.title).collect();
+            assert_eq!(
+                titles,
+                [
+                    "After Save Event",
+                    "How to generate hybris PK values without hybris"
+                ]
+            );
         }
     }
 }

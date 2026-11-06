@@ -27,12 +27,12 @@ test('home page shows header, body and footer, and loads stylesheet, fonts and f
     const font = waitFor('.woff');
     const textFont = waitFor('.woff2');
     await page.goto('./');
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Curriculum Vitae', {
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText('Home Page', {
       timeout: 5_000,
     });
-    await expect(page.getByRole('heading', { level: 2, name: 'Summary' })).toBeVisible();
+    await expect(page.getByRole('main').getByRole('heading', { level: 2 })).toHaveCount(2);
     await expect(page.getByText('© 2026 Luca Lorenzon')).toBeVisible();
-    await expect(page.getByRole('link', { name: 'This CV may be copied, not changed' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Reuse with attribution' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Lvk@73r, home page' })).toHaveCount(1);
     expect((await stylesheet).status()).toBe(200);
     expect((await font).status()).toBe(200);
@@ -44,10 +44,55 @@ test('home page shows header, body and footer, and loads stylesheet, fonts and f
   await retryWhenLive(check);
 });
 
+// The list shows the newest article first; each title is a link to its article.
+const LISTED_ARTICLES = [
+  { title: 'After Save Event', url: /articles\/after-save-event\.html$/ },
+  {
+    title: 'How to generate hybris PK values without hybris',
+    url: /articles\/how-to-generate-hybris-pk-values-without-hybris\.html$/,
+  },
+];
+
+test('the home page lists the articles, newest first, with description and date', async ({
+  page,
+}) => {
+  const check = async () => {
+    await page.goto('./');
+    const entries = page.getByRole('main').getByRole('listitem');
+    await expect(entries).toHaveCount(2);
+    // No bullets and no indent: the column's own rule for lists must not win.
+    const list = page.getByRole('main').getByRole('list');
+    await expect(list).toHaveCSS('list-style-type', 'none');
+    await expect(list).toHaveCSS('padding-left', '0px');
+    await expect(entries.nth(0)).toContainText('After Save Event');
+    await expect(entries.nth(0)).toContainText('SAP hybris change events system');
+    await expect(entries.nth(0).locator('time')).toHaveText('30 April 2023');
+    await expect(entries.nth(0).locator('time')).toHaveAttribute('datetime', '2023-04-30');
+    await expect(entries.nth(1)).toContainText('How to generate hybris PK values without hybris');
+    await expect(entries.nth(1).locator('time')).toHaveText('25 April 2023');
+    await expect(entries.nth(1).locator('time')).toHaveAttribute('datetime', '2023-04-25');
+  };
+
+  await retryWhenLive(check);
+});
+
+for (const { title, url } of LISTED_ARTICLES) {
+  test(`from the home page, the title "${title}" opens the article`, async ({ page }) => {
+    const check = async () => {
+      await page.goto('./');
+      await page.getByRole('main').getByRole('link', { name: title }).click();
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText(title, { timeout: 5_000 });
+      await expect(page).toHaveURL(url);
+    };
+
+    await retryWhenLive(check);
+  });
+}
+
 test('the footer link of the home page leads to the about page', async ({ page }) => {
   const check = async () => {
     await page.goto('./');
-    await page.getByRole('link', { name: 'This CV may be copied, not changed' }).click();
+    await page.getByRole('link', { name: 'Reuse with attribution' }).click();
     await expect(page).toHaveTitle('About - Luca Lorenzon', { timeout: 5_000 });
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('About');
     await expect(page.getByRole('heading', { level: 2, name: 'My views' })).toBeVisible();
@@ -98,14 +143,14 @@ for (const { name, width, height } of [
       await expect(logo.locator('> div:visible')).toHaveCount(1);
       await expect(logo).toHaveCSS('outline-style', 'solid');
       await page.keyboard.press('Enter');
-      await expect(page.getByRole('heading', { level: 1 })).toHaveText('Curriculum Vitae', {
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText('Home Page', {
         timeout: 5_000,
       });
 
       // Pointer.
       await page.goto('./licence.html');
       await logo.click();
-      await expect(page.getByRole('heading', { level: 1 })).toHaveText('Curriculum Vitae');
+      await expect(page.getByRole('heading', { level: 1 })).toHaveText('Home Page');
     };
 
     await retryWhenLive(check);

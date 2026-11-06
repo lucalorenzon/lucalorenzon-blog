@@ -28,7 +28,7 @@ test('the "page not found" page has its title, heading and stylesheet, and leads
   await expect(page.locator('body')).toHaveCSS('background-color', styledBackground(testInfo.project.use.colorScheme));
 
   await page.getByRole('link', { name: 'Go to the home page' }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Curriculum Vitae');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Home Page');
 });
 
 test('the footer link of the "page not found" leads to the about page', async ({ page }) => {

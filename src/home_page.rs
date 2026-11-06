@@ -1,11 +1,37 @@
-use crate::curriculum_page::CurriculumPage;
+use crate::article_page::newest_first;
+use crate::page_frame::{FooterLicence, PageFrame};
 use leptos::prelude::*;
 
-/// The whole home page document, `<html>` element included. For now the home page still shows
-/// the curriculum, so it reuses the curriculum page.
+/// The whole home page document, `<html>` element included: the list of the articles, newest
+/// first.
 #[component]
 pub fn HomePage() -> impl IntoView {
-    view! { <CurriculumPage /> }
+    let entries = newest_first()
+        .into_iter()
+        .map(|article| {
+            view! {
+                <li>
+                    <h2>
+                        <a href=article.address>{article.title}</a>
+                    </h2>
+                    <p>{article.description}</p>
+                    <time datetime=article.date.iso()>{article.date.long_form()}</time>
+                </li>
+            }
+        })
+        .collect_view();
+    view! {
+        <PageFrame
+            title="Home Page - Luca Lorenzon"
+            heading="Home Page"
+            address_prefix=""
+            footer_licence=FooterLicence::ReuseWithAttribution
+        >
+            <main class="long-text-column md:long-text-large">
+                <ul class="article-list">{entries}</ul>
+            </main>
+        </PageFrame>
+    }
 }
 
 /// Renders the home page to a complete HTML document string.
@@ -19,6 +45,10 @@ pub fn render_home_page() -> String {
 mod tests {
     use super::render_home_page;
 
+    fn main_of(html: &str) -> &str {
+        &html[html.find("<main").expect("main")..html.find("</main>").expect("end")]
+    }
+
     #[test]
     fn starts_with_doctype() {
         assert!(render_home_page().starts_with("<!DOCTYPE html>"));
@@ -31,22 +61,60 @@ mod tests {
 
     #[test]
     fn sets_tab_title() {
-        assert!(render_home_page().contains("<title>Curriculum Vitae - Luca Lorenzon</title>"));
+        assert!(render_home_page().contains("<title>Home Page - Luca Lorenzon</title>"));
     }
 
     #[test]
-    fn has_curriculum_vitae_as_only_h1() {
+    fn has_home_page_as_only_h1() {
         let html = render_home_page();
         assert_eq!(html.matches("<h1").count(), 1);
-        assert!(html.contains(">Curriculum Vitae</h1>"));
+        assert!(html.contains(">Home Page</h1>"));
+        assert!(!main_of(&html).contains("<h1"));
     }
 
     #[test]
-    fn shows_the_curriculum_in_main() {
+    fn lists_both_articles_with_relative_links() {
+        let main = render_home_page();
+        let main = main_of(&main);
+        assert!(main.contains("<ul class=\"article-list\">"));
+        assert_eq!(main.matches("<li>").count(), 2);
+        assert!(main.contains("<a href=\"articles/after-save-event.html\">After Save Event</a>"));
+        assert!(main.contains(
+            "<a href=\"articles/how-to-generate-hybris-pk-values-without-hybris.html\">How to generate hybris PK values without hybris</a>"
+        ));
+        assert!(!main.contains("href=\"/"));
+    }
+
+    #[test]
+    fn titles_are_h2_headings() {
+        let main = render_home_page();
+        assert_eq!(main_of(&main).matches("<h2>").count(), 2);
+    }
+
+    #[test]
+    fn lists_the_newest_article_first() {
         let html = render_home_page();
-        let main = &html[html.find("<main").expect("main")..html.find("</main>").expect("end")];
-        assert!(main.contains("<h2>Summary</h2>"));
-        assert!(!main.contains("<h1"));
+        let main = main_of(&html);
+        let newer = main.find("After Save Event").expect("newer");
+        let older = main.find("How to generate hybris PK").expect("older");
+        assert!(newer < older);
+    }
+
+    #[test]
+    fn shows_each_description_then_its_date() {
+        let html = render_home_page();
+        let main = main_of(&html);
+        let first = "<p>SAP hybris change events system: architecture and inner behaviour.</p>\
+            <time datetime=\"2023-04-30\">30 April 2023</time>";
+        let second = "<p>Dive into the PK generation logic of SAP hybris, for extreme use cases.</p>\
+            <time datetime=\"2023-04-25\">25 April 2023</time>";
+        assert!(main.contains(first), "{main}");
+        assert!(main.contains(second), "{main}");
+    }
+
+    #[test]
+    fn does_not_show_the_curriculum() {
+        assert!(!render_home_page().contains("Curriculum Vitae"));
     }
 
     #[test]
@@ -57,10 +125,10 @@ mod tests {
     }
 
     #[test]
-    fn footer_says_the_cv_may_be_copied_and_links_to_the_about_page() {
+    fn footer_says_reuse_with_attribution_and_links_to_the_about_page() {
         let html = render_home_page();
         let footer = &html[html.find("<footer").expect("footer")..];
-        assert!(footer.contains(">This CV may be copied, not changed</a>"));
+        assert!(footer.contains(">Reuse with attribution</a>"));
         assert!(footer.contains("<a href=\"about.html\""));
     }
 

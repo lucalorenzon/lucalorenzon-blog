@@ -14,7 +14,7 @@ pub const LOGO: &str = r#"    __        __   ______  __________
 pub enum FooterLicence {
     /// Everything but the curriculum: reuse is allowed, citing the author.
     ReuseWithAttribution,
-    /// The curriculum, shown on the home page: copying yes, changing no.
+    /// The curriculum, shown on the curriculum page: copying yes, changing no.
     CurriculumCopyNotChange,
 }
 
