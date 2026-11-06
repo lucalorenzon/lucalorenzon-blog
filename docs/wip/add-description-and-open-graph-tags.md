@@ -16,7 +16,7 @@ and the Open Graph tags that make a link shared on LinkedIn or
 elsewhere show a proper preview, so that search engines describe the
 pages well and a shared link says what it leads to.
 
-## Answers so far
+## Answers
 
 ### What does this slice give?
 
@@ -38,12 +38,54 @@ The tags, as read from the Open Graph protocol (ogp.me):
 
 ### Where do the descriptions come from?
 
-The articles already have a one-line description in the list
-`ARTICLES` (`src/article_page.rs`, from the
-[card on the home page's list](../done/2026-11-06_list-articles-on-home-page.md)).
-The home page, the curriculum, the about page and the licence page have
-none: the agent proposes one for each, and the user approves them one
-by one, since they speak for the author.
+The articles keep the one-line description they already have in the
+list `ARTICLES` (`src/article_page.rs`, from the
+[card on the home page's list](../done/2026-11-06_list-articles-on-home-page.md)),
+taken from Medium. The other four were proposed by the agent and
+reworded with the user, who approved each one; all stay within 160
+characters, the length search engines show in full:
+
+| Page | Description |
+|---|---|
+| Home page | Articles by Luca Lorenzon, product engineer: what I have learned, my thoughts on topics of public debate, and stories of paths I have taken. |
+| Curriculum | Curriculum of Luca Lorenzon: collaboration, architecture and hands-on implementation in e-commerce and enterprise integration, in international contexts. |
+| About | Who writes this site and why: Luca Lorenzon, a product engineer sharing what I have learned. The views here are my own. |
+| Licence | How you may reuse this site: the articles under CC BY 4.0, the code samples under MIT-0, the curriculum under CC BY-ND 4.0. |
+
+- **Home page:** "at work" was dropped, at the user's request: it
+  narrowed the site for no reason.
+- **Curriculum:** the user's wording, with "other solutions" replaced
+  by "enterprise integration", which the curriculum's summary already
+  names; "product engineer" was dropped to stay within 160 characters.
+  The international context is the author's whole career, though the
+  published curriculum, cleaned of employer data, says so explicitly
+  only once.
+- **About:** the part on reuse was dropped as redundant with the
+  licence page, which the about page links; at 77 characters what was
+  left was too short (search engines tend to replace a short
+  description with text of the page) and promised a "why" it did not
+  say, so the author and the views were added back.
+
+### The other values
+
+- **`og:title`:** the page's heading, without the site's name ("After
+  Save Event", "Home Page"), chosen by the user; the home page keeps
+  "Home Page", which the user finds universal.
+- **`og:site_name`:** "Luca Lorenzon", as in the tab titles; "Luca
+  Lorenzon Blog" was considered and rejected, since the site also holds
+  the curriculum and the about page, and the name would differ from the
+  tab titles. The logo's "Lvk@73r" was not chosen: the logo is still to
+  be reviewed.
+- **`og:locale`:** `en_GB`, chosen by the user; the site's spelling is
+  British ("licence", "colour"). The pages keep `lang="en"`, of which
+  `en_GB` is a case.
+- **`og:type`:** `article` for the articles, `profile` for the
+  curriculum and the about page, which both speak of the author (with
+  `profile:first_name` "Luca" and `profile:last_name` "Lorenzon"),
+  `website` for the home page and the licence page. Chosen by the user;
+  the protocol lets several pages of the same person be profiles, each
+  told apart by its address.
+- **`og:url`:** the canonical address of the page.
 
 ### Why no image yet?
 
@@ -86,14 +128,3 @@ tags on every indexed page, on the local build and on the live site.
   metadata block at the top of a file and hand it over as raw text, but
   does not read it; reading YAML or TOML would mean a new dependency.
   The fields stay in the code for now, like the articles' list.
-
-## Questions
-
-- The language of `og:locale`: the pages declare `lang="en"`, the
-  protocol wants a language and a territory, such as `en_US` or `en_GB`.
-- The preview's title: the page's heading ("After Save Event") or its
-  tab title ("After Save Event - Luca Lorenzon"), given that
-  `og:site_name` already carries the site's name.
-- The type of the pages other than articles: `website` for all, or
-  `profile` for the curriculum.
-- The text of the four new descriptions.
