@@ -42,7 +42,7 @@ Two needs put it to the test:
    it finds its files at any depth.
 4. **The full address is kept for what needs a full address,** the
    search-engine and Open Graph tags of the card
-   [add SEO and Open Graph tags to every page](../backlog/add-seo-and-open-graph-tags.md),
+   [add SEO and Open Graph tags to every page](../wip/add-seo-and-open-graph-tags.md),
    when that card is done.
 
 Why: only relative paths let a gateway expose the site under any prefix

@@ -1,7 +1,7 @@
 # Add SEO and Open Graph tags to every page
 
-- **Opened:** 2026-11-02, by the user; in Next.
-- **Status:** noticed, not started.
+- **Opened:** 2026-11-02, by the user; in Now.
+- **Status:** started on 2026-11-06.
 
 ## Why
 
@@ -55,7 +55,7 @@ the check do not apply to.
   indexed nor previewed.
 - **Lighthouse has an SEO category,** with basic checks (title,
   description, status code, links, `robots`). The card
-  [check performance in the build](check-performance-in-the-build.md)
+  [check performance in the build](../backlog/check-performance-in-the-build.md)
   may bring Lighthouse into the build; its SEO score does not check
   Open Graph.
 - **The build already opens every page in a browser** (Playwright, on
