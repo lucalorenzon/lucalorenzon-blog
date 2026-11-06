@@ -78,6 +78,12 @@ live since 2026-10-26
   so moving a card no longer breaks links in minutes and finished cards.
 - [Show the check results as badges in the README](backlog/show-check-results-as-readme-badges.md),
   from shields.io, after the performance check.
+- [Watch the rules Lighthouse finds not applicable](backlog/watch-lighthouse-rules-not-applicable.md),
+  which the SEO check counts as passed, so a rule that stops or starts
+  applying does not go unnoticed.
+- [Check the structured data](backlog/check-structured-data.md), which
+  Lighthouse leaves to a person: whether the site needs any, and how to
+  check it.
 - [Measure the CO2 of a page view](backlog/measure-co2-of-a-page-view.md),
   an estimate from the bytes transferred.
 - [Let readers adjust font and spacing](backlog/let-readers-adjust-font-and-spacing.md),

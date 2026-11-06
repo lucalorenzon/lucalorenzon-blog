@@ -90,6 +90,26 @@ port and hand the page to Lighthouse.
   one maintainer, its last version dates from 2024-01-15, and it has not
   been checked against recent Lighthouse versions since.
 
+### Which threshold?
+
+Chosen by the user: rule by rule, every rule of the category. Since
+every rule is pass or fail, this is as strict as the full score of 100,
+but the test names each rule that fails, instead of a number to be
+explained by reading the report. A rule that a future Lighthouse version
+adds enters the check by itself, since the check takes the category's
+rules as they are, not a list of the project's own.
+
+- **"Not applicable" counts as passed,** as Lighthouse does in its score.
+  A change in what is not applicable goes unnoticed; it is handled by
+  the card
+  [watch the rules Lighthouse finds not applicable](../backlog/watch-lighthouse-rules-not-applicable.md).
+- **The "manual" rule on structured data is ignored** by the automatic
+  check, since Lighthouse never judges it; it is handled by the card
+  [check the structured data](../backlog/check-structured-data.md).
+- **Rejected:** the full score, which also catches a new rule but says
+  only "95" when one fails; a list of rules chosen by the project, which
+  a new rule would not enter until someone adds it.
+
 ### Why a card of its own?
 
 Split off by the user from the description and the Open Graph tags,
@@ -147,7 +167,6 @@ was added to the repository.
 
 ## Questions
 
-- The threshold: the full score, or rule by rule.
 - The block-list, which also decides on which pages the check runs: a
   list kept in one place, or a field of each page; and whether a page on
   it drops the check only, or the tags too.
