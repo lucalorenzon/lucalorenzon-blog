@@ -26,7 +26,7 @@ pub fn HomePage(canonical: String) -> impl IntoView {
         .collect_view();
     view! {
         <PageFrame
-            title="Home Page - Luca Lorenzon"
+            title="Luca Lorenzon - Product Engineer"
             heading="Home Page"
             address_prefix=""
             footer_licence=FooterLicence::ReuseWithAttribution
@@ -115,7 +115,7 @@ mod tests {
 
     #[test]
     fn sets_tab_title() {
-        assert!(render_home_page().contains("<title>Home Page - Luca Lorenzon</title>"));
+        assert!(render_home_page().contains("<title>Luca Lorenzon - Product Engineer</title>"));
     }
 
     #[test]
