@@ -30,6 +30,8 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-11-06
+
 ### Added
 
 - Two articles, each on a page of its own under `articles/`: "After
