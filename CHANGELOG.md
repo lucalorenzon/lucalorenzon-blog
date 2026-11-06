@@ -34,6 +34,8 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 - Two articles, each on a page of its own under `articles/`: "After
   Save Event" and "How to generate hybris PK values without hybris".
+- The curriculum has a page of its own, `curriculum.html`, and the about
+  page links to it.
 - Code blocks in a box: off-white code in the Hack font, served by the
   site itself, on a dark grey, in a thin amber frame. A line too long
   for the box scrolls sideways, and a "wrap" toggle appears only where

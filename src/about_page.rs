@@ -64,6 +64,11 @@ mod tests {
     }
 
     #[test]
+    fn links_to_the_curriculum_page_with_a_relative_address() {
+        assert!(render_about_page().contains("<a href=\"curriculum.html\">my curriculum</a>"));
+    }
+
+    #[test]
     fn footer_says_reuse_with_attribution_and_links_to_the_about_page() {
         let html = render_about_page();
         let footer = &html[html.find("<footer").expect("footer")..];

@@ -70,6 +70,7 @@ test('from the about page, the text links lead to the licence page and to the cu
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Curriculum Vitae', {
       timeout: 5_000,
     });
+    await expect(page).toHaveURL(/curriculum\.html$/);
   };
 
   await retryWhenLive(check);

@@ -1,4 +1,4 @@
-I'm Luca Lorenzon, a product engineer. Here I share what I have learned, my thoughts and doubts on topics of public debate, and stories of paths I have taken, whether they went well or badly. You can read [my curriculum](./) too.
+I'm Luca Lorenzon, a product engineer. Here I share what I have learned, my thoughts and doubts on topics of public debate, and stories of paths I have taken, whether they went well or badly. You can read [my curriculum](curriculum.html) too.
 
 ## My views
 

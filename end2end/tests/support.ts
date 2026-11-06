@@ -41,6 +41,7 @@ export const VIEWPORTS = [
 // viewer below a readable width.
 export const TEXT_PAGES = [
   { name: 'home page', address: './', hasRoles: true, hasConsecutiveParagraphs: true },
+  { name: 'curriculum page', address: './curriculum.html', hasRoles: true, hasConsecutiveParagraphs: true },
   { name: 'licence page', address: './licence.html', hasRoles: false, hasConsecutiveParagraphs: false },
   { name: 'about page', address: './about.html', hasRoles: false, hasConsecutiveParagraphs: false },
   { name: 'After Save Event page', address: './articles/after-save-event.html', hasRoles: false, hasConsecutiveParagraphs: true },

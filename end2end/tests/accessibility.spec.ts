@@ -56,6 +56,7 @@ test.beforeAll(() => {
 // leaves them out too.
 const PAGES = [
   { name: 'home page', address: './', onlyLocal: false },
+  { name: 'curriculum page', address: './curriculum.html', onlyLocal: false },
   { name: 'licence page', address: './licence.html', onlyLocal: false },
   { name: 'about page', address: './about.html', onlyLocal: false },
   { name: 'After Save Event article page', address: './articles/after-save-event.html', onlyLocal: true },
@@ -178,6 +179,20 @@ const TREE_PAGES = [
   {
     name: 'home page',
     address: './',
+    trees: treeByLogo('Curriculum Vitae', 'This CV may be copied, not changed'),
+    sections: [
+      'Summary',
+      'Experience',
+      'Technical expertise and continuous learning',
+      'Core competencies',
+      'Education',
+      'Certifications and training',
+      'Languages',
+    ],
+  },
+  {
+    name: 'curriculum page',
+    address: './curriculum.html',
     trees: treeByLogo('Curriculum Vitae', 'This CV may be copied, not changed'),
     sections: [
       'Summary',

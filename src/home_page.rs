@@ -1,23 +1,11 @@
-use crate::markdown;
-use crate::page_frame::{FooterLicence, PageFrame};
+use crate::curriculum_page::CurriculumPage;
 use leptos::prelude::*;
 
-/// The curriculum, written in Markdown and converted to HTML at build time.
-const CURRICULUM: &str = include_str!("../content/curriculum.md");
-
-/// The whole home page document, `<html>` element included.
+/// The whole home page document, `<html>` element included. For now the home page still shows
+/// the curriculum, so it reuses the curriculum page.
 #[component]
 pub fn HomePage() -> impl IntoView {
-    view! {
-        <PageFrame
-            title="Curriculum Vitae - Luca Lorenzon"
-            heading="Curriculum Vitae"
-            address_prefix=""
-            footer_licence=FooterLicence::CurriculumCopyNotChange
-        >
-            <main class="long-text-column md:long-text-large" inner_html=markdown::to_html(CURRICULUM)></main>
-        </PageFrame>
-    }
+    view! { <CurriculumPage /> }
 }
 
 /// Renders the home page to a complete HTML document string.
