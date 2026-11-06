@@ -17,8 +17,9 @@ What each number means for this site:
   repository, adding one also counts as a patch.
 
 While the site is at version 0, a new design counts as MINOR, not MAJOR:
-the leading 0 says the site is still being built: the articles and the
-navigation are still to come. Set on 2026-10-28, when the first design came with version 0.2.0
+the leading 0 says the site is still being built: the articles came
+with version 0.9.0, the site's menu is still to come. Set on 2026-10-28,
+when the first design came with version 0.2.0
 ([card](docs/done/2026-10-28_add-header-footer-and-favicon.md)).
 
 A version tag is never moved. If one has to be deleted, its name is never
