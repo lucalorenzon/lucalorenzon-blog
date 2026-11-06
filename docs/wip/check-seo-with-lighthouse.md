@@ -110,6 +110,34 @@ rules as they are, not a list of the project's own.
   only "95" when one fails; a list of rules chosen by the project, which
   a new rule would not enter until someone adds it.
 
+### How is a page exempted?
+
+Chosen by the user: from the page itself. A page that carries
+`<meta name="robots" content="noindex">` skips two rules: the rule on
+indexing, which `noindex` fails by definition, and the rule on the
+description, since the build gives a description only to indexed pages
+(`Indexing::NoIndex` in `src/page_frame.rs`). Every other rule still
+applies to it: title, links, response status, and the rest.
+
+- **One source:** the build already decides, page by page, whether a page
+  is indexed; the check reads that decision instead of repeating it.
+- **How:** the test reads the page, and if it carries `noindex` it calls
+  Lighthouse with the option `skipAudits` set to those two rules
+  (`is-crawlable`, `meta-description`), present in version 13.6.0.
+  Lighthouse has no notion of a set of pages: it checks the one address
+  it is given, so which pages are checked is always the test's choice.
+- **Its price:** a page marked `NoIndex` by mistake would drop out of
+  those two rules in silence.
+- **The tags go with it:** a page with `noindex` has no description and
+  no Open Graph tags, as decided by the card
+  [add the description and the Open Graph tags](../done/2026-11-06_add-description-and-open-graph-tags.md);
+  this card does not change that.
+- **Rejected:** a list kept in the test, which would be a second
+  declaration beside the build's, free to disagree with it; a
+  `robots.txt` that disallows the "page not found", which Lighthouse
+  counts as blocked too, so the rule would fail anyway, and which would
+  hide the `noindex` from search engines, as Google warns.
+
 ### Why a card of its own?
 
 Split off by the user from the description and the Open Graph tags,
@@ -167,7 +195,8 @@ was added to the repository.
 
 ## Questions
 
-- The block-list, which also decides on which pages the check runs: a
-  list kept in one place, or a field of each page; and whether a page on
-  it drops the check only, or the tags too.
+- On which pages the check runs, locally and on the live site; and how
+  the "page not found" is asked on the live site, where a missing
+  address answers with status 404 and fails the rule on the response
+  status, which `noindex` does not exempt.
 - Whether the site needs a `robots.txt`, and what it says.
