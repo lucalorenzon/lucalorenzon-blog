@@ -105,6 +105,31 @@ its address only; the date is optional entry by entry.
   page's code files, which brings back the mixed files already
   rejected.
 
+### Where does the list of pages come from?
+
+Chosen by the user: from the pages already written in the built site's
+folder. The sitemap is generated after the pages, by reading them and
+leaving out those that carry `noindex`.
+
+- **The problem:** the build program (`src/main.rs`) writes the pages
+  one by one, each with its own function, which decides inside whether
+  the page is indexed; each page's Markdown is named in its own code,
+  with `include_str!`. No single place knows "these are the indexed
+  pages, at these addresses, with these Markdown files".
+- **Why the built pages:** what is in the sitemap is what is actually
+  published, whatever produced it. In the user's words, it prepares the
+  ground for an external source of content
+  ([card](../backlog/take-content-from-several-repositories.md)): the
+  sitemap does not depend on how the build gets a page, only on the
+  page.
+- **What it leaves open:** the link between a written page and its
+  Markdown file, needed for the date, has to be found another way.
+- **Rejected:** a list of pages kept beside the calls that write them,
+  free to disagree with them, so a new page could be written and
+  forgotten in the sitemap; a single list from which the build writes
+  both the pages and the sitemap, which rules out the disagreement but
+  reshapes `src/main.rs` and every page's function.
+
 ## Known from the start
 
 - **The build already decides which pages are indexed:** each page is
@@ -130,5 +155,7 @@ its address only; the date is optional entry by entry.
 
 ## Questions
 
-- How the build generates it from the pages it already writes.
+- How a written page is linked to its Markdown file, for the date.
+- How the build reads the dates from git, and what it does if git does
+  not answer.
 - How the test checks it, locally and on the live site.
