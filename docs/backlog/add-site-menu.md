@@ -5,7 +5,7 @@
   [adapt the header to screen width](../done/2026-10-29_adapt-header-to-screen-width.md)
   was being discussed. Split by the user on 2026-11-06: the list of
   articles on the home page went to a card of its own,
-  [list the articles on the home page](list-articles-on-home-page.md).
+  [list the articles on the home page](../wip/list-articles-on-home-page.md).
   In Next.
 - **Status:** noticed, not started.
 
@@ -22,8 +22,9 @@ site's identity on the left and keeps space for this tool on the right
 On 2026-11-06 the user chose to publish the articles first with what
 the site already has: the logo leading to the home page, the list of
 articles there, the footer's link to the about page
-([card](list-articles-on-home-page.md)). This card brings the visible
-tool, and the actions beyond finding and reading the articles.
+([card](../wip/list-articles-on-home-page.md)). This card brings the
+visible tool, and the actions beyond finding and reading the
+articles.
 
 ## Entries the user has in mind
 
@@ -44,7 +45,7 @@ unavailable, so it does not mislead.
 
 ## When to pick this up
 
-After the [list of articles on the home page](list-articles-on-home-page.md)
+After the [list of articles on the home page](../wip/list-articles-on-home-page.md)
 is done and its version published.
 
 ## Questions

@@ -2,8 +2,8 @@
 
 - **Opened:** 2026-11-06, by the user, splitting the card on site
   navigation, opened on 2026-10-29; the other part is the card
-  [add a menu for the site](add-site-menu.md). In Now.
-- **Status:** noticed, not started.
+  [add a menu for the site](../backlog/add-site-menu.md). In Now.
+- **Status:** started on 2026-11-06.
 
 ## Why
 
@@ -16,7 +16,7 @@ user on 2026-11-06 ([card](../done/2026-11-06_design-look-of-articles.md)).
 Asked what the first published navigation must let a reader do, the
 user answered: find and read the articles, the rest later. Search,
 categories, subscribing and settings stay with the
-[menu card](add-site-menu.md). When this card is done, a version is
+[menu card](../backlog/add-site-menu.md). When this card is done, a version is
 published, the articles with it.
 
 ## Answers so far (2026-11-06)
@@ -36,7 +36,7 @@ first and have to look for them.
 every page leads to the home page, the list there leads to the
 articles, the footer's link leads to the about page, and that page
 leads to the curriculum. The right side of the header stays empty for
-now: a visible tool there is the [menu card](add-site-menu.md).
+now: a visible tool there is the [menu card](../backlog/add-site-menu.md).
 
 ## Questions
 

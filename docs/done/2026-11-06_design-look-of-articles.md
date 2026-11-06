@@ -17,7 +17,7 @@ look for: code blocks, notes in quotes and tables. Until this card was
 done, the [article pages](2026-11-04_add-article-pages.md) show them with the
 default style. The user wanted the article pages accessible and in as
 good a state as the curriculum before the navigation links to them, so
-this card came before the [navigation](../backlog/list-articles-on-home-page.md).
+this card came before the [navigation](../wip/list-articles-on-home-page.md).
 "Done" meant the automatic checks passing on the article pages, as on
 the curriculum, and the user's validation in the browser.
 
