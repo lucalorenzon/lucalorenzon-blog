@@ -5,7 +5,7 @@
   [add the description and the Open Graph tags to every indexed page](../done/2026-11-06_add-description-and-open-graph-tags.md)
   and [add preview images](add-preview-images.md). In Now, after the
   description and the Open Graph tags.
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-06.
 
 ## Why
 

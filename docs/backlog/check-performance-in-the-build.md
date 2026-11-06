@@ -29,7 +29,7 @@ noticing: Google Lighthouse, or something similar if it exists.
 - **Lighthouse comes first for SEO:** on 2026-11-06 the user chose
   Lighthouse for the search-engine check, knowingly anticipating this
   card's choice of tool
-  ([card](check-seo-with-lighthouse.md)). Once that card is done, the
+  ([card](../wip/check-seo-with-lighthouse.md)). Once that card is done, the
   performance category may be added to the same run, and the question
   "which tool" below is mostly answered.
 - **The build already starts a browser** (Playwright, Chromium) on the

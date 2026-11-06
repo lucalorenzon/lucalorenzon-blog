@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Check SEO with Lighthouse in the build](backlog/check-seo-with-lighthouse.md),
+- [Check SEO with Lighthouse in the build](wip/check-seo-with-lighthouse.md),
   with the block-list the "page not found" needs, before the next
   version is published; the canonical link, the descriptions and the
   Open Graph tags are done
