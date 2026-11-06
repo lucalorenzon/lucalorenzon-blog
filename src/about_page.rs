@@ -1,5 +1,6 @@
 use crate::markdown;
-use crate::page_frame::{FooterLicence, PageFrame};
+use crate::page_frame::{FooterLicence, Indexing, PageFrame};
+use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
 /// Who the author is and how to reuse the site, written in Markdown and converted to HTML at
@@ -8,13 +9,14 @@ const ABOUT: &str = include_str!("../content/about.md");
 
 /// The whole about page document, `<html>` element included.
 #[component]
-pub fn AboutPage() -> impl IntoView {
+pub fn AboutPage(canonical: String) -> impl IntoView {
     view! {
         <PageFrame
             title="About - Luca Lorenzon"
             heading="About"
             address_prefix=""
             footer_licence=FooterLicence::ReuseWithAttribution
+            indexing=Indexing::Canonical(canonical)
         >
             <main class="long-text-column md:long-text-large" inner_html=markdown::to_html(ABOUT)></main>
         </PageFrame>
@@ -22,15 +24,43 @@ pub fn AboutPage() -> impl IntoView {
 }
 
 /// Renders the about page to a complete HTML document string.
-pub fn render_about_page() -> String {
+pub fn render_about_page(site: &SiteAddress) -> String {
     let owner = Owner::new();
-    let body = owner.with(|| view! { <AboutPage /> }.to_html());
+    let canonical = site.join("about.html");
+    let body = owner.with(|| view! { <AboutPage canonical=canonical /> }.to_html());
     format!("<!DOCTYPE html>{body}")
 }
 
 #[cfg(test)]
 mod tests {
-    use super::render_about_page;
+    use super::render_about_page as render;
+    use crate::site_address::SiteAddress;
+
+    fn site() -> SiteAddress {
+        SiteAddress::parse("https://www.lucalorenzon.com/").unwrap()
+    }
+
+    fn render_about_page() -> String {
+        render(&site())
+    }
+
+    #[test]
+    fn has_its_own_full_address_as_canonical_link() {
+        assert!(
+            render_about_page().contains(
+                "<link rel=\"canonical\" href=\"https://www.lucalorenzon.com/about.html\">"
+            )
+        );
+    }
+
+    #[test]
+    fn canonical_link_follows_the_prefix_of_the_site_address() {
+        let site = SiteAddress::parse("https://example.com/blog/").unwrap();
+        assert!(
+            render(&site)
+                .contains("<link rel=\"canonical\" href=\"https://example.com/blog/about.html\">")
+        );
+    }
 
     #[test]
     fn starts_with_doctype() {

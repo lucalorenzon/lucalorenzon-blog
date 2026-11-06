@@ -1,4 +1,4 @@
-use crate::page_frame::{FooterLicence, PageFrame};
+use crate::page_frame::{FooterLicence, Indexing, PageFrame};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
@@ -16,6 +16,7 @@ pub fn NotFoundPage(site_path: String) -> impl IntoView {
             heading="Page not found"
             address_prefix=site_path.clone()
             footer_licence=FooterLicence::ReuseWithAttribution
+            indexing=Indexing::NoIndex
         >
             <main class="long-text-column md:long-text-large">
                 <p>
@@ -50,6 +51,13 @@ mod tests {
     #[test]
     fn starts_with_doctype() {
         assert!(default_page().starts_with("<!DOCTYPE html>"));
+    }
+
+    #[test]
+    fn asks_not_to_be_indexed_and_has_no_canonical_link() {
+        let html = default_page();
+        assert!(html.contains("<meta name=\"robots\" content=\"noindex\">"));
+        assert!(!html.contains("rel=\"canonical\""));
     }
 
     #[test]

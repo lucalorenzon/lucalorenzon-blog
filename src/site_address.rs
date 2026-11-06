@@ -4,9 +4,11 @@ use std::fmt;
 ///
 /// Built only through [`SiteAddress::parse`], so a value of this type is
 /// already known to be a full `https` address with a host and a final `/`
-/// (ADR-002). Only its path part is used for now.
+/// (ADR-002). It keeps the full text, for the addresses that must be complete
+/// (the canonical link), and its path part, for the pages served at any depth.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SiteAddress {
+    full: String,
     path: String,
 }
 
@@ -38,6 +40,7 @@ impl SiteAddress {
             return Err(refuse());
         }
         Ok(Self {
+            full: text.to_owned(),
             path: rest[slash..].to_owned(),
         })
     }
@@ -46,6 +49,12 @@ impl SiteAddress {
     /// Always starts and ends with `/`.
     pub fn path(&self) -> &str {
         &self.path
+    }
+
+    /// The full address of a page, given its address relative to the site's
+    /// root: `articles/a.html` becomes `https://host/blog/articles/a.html`.
+    pub fn join(&self, relative: &str) -> String {
+        format!("{}{relative}", self.full)
     }
 }
 
@@ -63,6 +72,24 @@ mod tests {
     fn accepts_an_address_under_a_prefix() {
         let address = SiteAddress::parse("https://host/blog/").unwrap();
         assert_eq!(address.path(), "/blog/");
+    }
+
+    #[test]
+    fn joins_a_page_onto_the_root_of_a_domain() {
+        let address = SiteAddress::parse("https://www.lucalorenzon.com/").unwrap();
+        assert_eq!(
+            address.join("articles/a.html"),
+            "https://www.lucalorenzon.com/articles/a.html"
+        );
+    }
+
+    #[test]
+    fn joins_a_page_onto_an_address_under_a_prefix() {
+        let address = SiteAddress::parse("https://example.com/blog/").unwrap();
+        assert_eq!(
+            address.join("articles/a.html"),
+            "https://example.com/blog/articles/a.html"
+        );
     }
 
     #[test]

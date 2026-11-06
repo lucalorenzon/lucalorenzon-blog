@@ -29,22 +29,28 @@ fn build() -> Result<(), Box<dyn Error>> {
     })?;
 
     fs::create_dir_all(&out_dir)?;
-    fs::write(out_dir.join("index.html"), home_page::render_home_page())?;
+    fs::write(
+        out_dir.join("index.html"),
+        home_page::render_home_page(&address),
+    )?;
     fs::write(
         out_dir.join("curriculum.html"),
-        curriculum_page::render_curriculum_page(),
+        curriculum_page::render_curriculum_page(&address),
     )?;
-    fs::write(out_dir.join("about.html"), about_page::render_about_page())?;
+    fs::write(
+        out_dir.join("about.html"),
+        about_page::render_about_page(&address),
+    )?;
     fs::create_dir_all(out_dir.join("articles"))?;
     for article in &article_page::ARTICLES {
         fs::write(
             out_dir.join(article.address),
-            article_page::render_article_page(article),
+            article_page::render_article_page(article, &address),
         )?;
     }
     fs::write(
         out_dir.join("licence.html"),
-        licence_page::render_licence_page(),
+        licence_page::render_licence_page(&address),
     )?;
     fs::write(
         out_dir.join("404.html"),

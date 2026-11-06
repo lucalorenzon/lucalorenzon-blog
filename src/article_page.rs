@@ -1,5 +1,6 @@
 use crate::markdown;
-use crate::page_frame::{FooterLicence, PageFrame};
+use crate::page_frame::{FooterLicence, Indexing, PageFrame};
+use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
 /// A day, written in the code with the article it dates.
@@ -100,23 +101,27 @@ fn newest_first_of(articles: &[Article]) -> Vec<&Article> {
 /// folder, so every address is relative to that folder (ADR-002). The Markdown has no title:
 /// the title is the page heading.
 #[component]
-pub fn ArticlePage(article: &'static Article) -> impl IntoView {
+pub fn ArticlePage(article: &'static Article, canonical: String) -> impl IntoView {
     view! {
         <PageFrame
             title=article.tab_title
             heading=article.title
             address_prefix="../"
             footer_licence=FooterLicence::ReuseWithAttribution
+            indexing=Indexing::Canonical(canonical)
         >
             <main class="long-text-column md:long-text-large" inner_html=markdown::to_html(article.text)></main>
         </PageFrame>
     }
 }
 
-/// Renders an article page to a complete HTML document string.
-pub fn render_article_page(article: &'static Article) -> String {
+/// Renders an article page to a complete HTML document string. Its canonical link is the
+/// site's full address followed by the article's address.
+pub fn render_article_page(article: &'static Article, site: &SiteAddress) -> String {
     let owner = Owner::new();
-    let body = owner.with(|| view! { <ArticlePage article=article /> }.to_html());
+    let canonical = site.join(article.address);
+    let body =
+        owner.with(|| view! { <ArticlePage article=article canonical=canonical /> }.to_html());
     format!("<!DOCTYPE html>{body}")
 }
 
@@ -127,7 +132,27 @@ mod tests {
         use super::super::*;
 
         fn page() -> String {
-            render_article_page(&ARTICLES[0])
+            render_article_page(&ARTICLES[0], &site())
+        }
+
+        fn site() -> SiteAddress {
+            SiteAddress::parse("https://www.lucalorenzon.com/").unwrap()
+        }
+
+        #[test]
+        fn has_the_canonical_link_with_the_full_address() {
+            assert!(page().contains(
+                "<link rel=\"canonical\" href=\"https://www.lucalorenzon.com/articles/after-save-event.html\""
+            ));
+        }
+
+        #[test]
+        fn canonical_link_follows_the_prefix_of_the_site_address() {
+            let site = SiteAddress::parse("https://example.com/blog/").unwrap();
+            let html = render_article_page(&ARTICLES[0], &site);
+            assert!(html.contains(
+                "<link rel=\"canonical\" href=\"https://example.com/blog/articles/after-save-event.html\""
+            ));
         }
 
         #[test]
@@ -209,7 +234,10 @@ mod tests {
         use super::super::*;
 
         fn page() -> String {
-            render_article_page(&ARTICLES[1])
+            render_article_page(
+                &ARTICLES[1],
+                &SiteAddress::parse("https://www.lucalorenzon.com/").unwrap(),
+            )
         }
 
         #[test]

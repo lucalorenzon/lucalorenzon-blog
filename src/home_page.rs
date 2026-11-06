@@ -1,11 +1,12 @@
 use crate::article_page::newest_first;
-use crate::page_frame::{FooterLicence, PageFrame};
+use crate::page_frame::{FooterLicence, Indexing, PageFrame};
+use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
 /// The whole home page document, `<html>` element included: the list of the articles, newest
 /// first.
 #[component]
-pub fn HomePage() -> impl IntoView {
+pub fn HomePage(canonical: String) -> impl IntoView {
     let entries = newest_first()
         .into_iter()
         .map(|article| {
@@ -26,6 +27,7 @@ pub fn HomePage() -> impl IntoView {
             heading="Home Page"
             address_prefix=""
             footer_licence=FooterLicence::ReuseWithAttribution
+            indexing=Indexing::Canonical(canonical)
         >
             <main class="long-text-column md:long-text-large">
                 <ul class="article-list">{entries}</ul>
@@ -35,15 +37,41 @@ pub fn HomePage() -> impl IntoView {
 }
 
 /// Renders the home page to a complete HTML document string.
-pub fn render_home_page() -> String {
+pub fn render_home_page(site: &SiteAddress) -> String {
     let owner = Owner::new();
-    let body = owner.with(|| view! { <HomePage /> }.to_html());
+    let canonical = site.join("");
+    let body = owner.with(|| view! { <HomePage canonical=canonical /> }.to_html());
     format!("<!DOCTYPE html>{body}")
 }
 
 #[cfg(test)]
 mod tests {
-    use super::render_home_page;
+    use super::render_home_page as render;
+    use crate::site_address::SiteAddress;
+
+    fn site() -> SiteAddress {
+        SiteAddress::parse("https://www.lucalorenzon.com/").unwrap()
+    }
+
+    fn render_home_page() -> String {
+        render(&site())
+    }
+
+    #[test]
+    fn has_its_own_full_address_as_canonical_link() {
+        assert!(
+            render_home_page()
+                .contains("<link rel=\"canonical\" href=\"https://www.lucalorenzon.com/\">")
+        );
+    }
+
+    #[test]
+    fn canonical_link_follows_the_prefix_of_the_site_address() {
+        let site = SiteAddress::parse("https://example.com/blog/").unwrap();
+        assert!(
+            render(&site).contains("<link rel=\"canonical\" href=\"https://example.com/blog/\">")
+        );
+    }
 
     fn main_of(html: &str) -> &str {
         &html[html.find("<main").expect("main")..html.find("</main>").expect("end")]

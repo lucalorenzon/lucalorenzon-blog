@@ -1,5 +1,6 @@
 use crate::markdown;
-use crate::page_frame::{FooterLicence, PageFrame};
+use crate::page_frame::{FooterLicence, Indexing, PageFrame};
+use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
 /// The curriculum, written in Markdown and converted to HTML at build time.
@@ -7,13 +8,14 @@ const CURRICULUM: &str = include_str!("../content/curriculum.md");
 
 /// The whole curriculum page document, `<html>` element included.
 #[component]
-pub fn CurriculumPage() -> impl IntoView {
+pub fn CurriculumPage(canonical: String) -> impl IntoView {
     view! {
         <PageFrame
             title="Curriculum Vitae - Luca Lorenzon"
             heading="Curriculum Vitae"
             address_prefix=""
             footer_licence=FooterLicence::CurriculumCopyNotChange
+            indexing=Indexing::Canonical(canonical)
         >
             <main class="long-text-column md:long-text-large" inner_html=markdown::to_html(CURRICULUM)></main>
         </PageFrame>
@@ -21,15 +23,40 @@ pub fn CurriculumPage() -> impl IntoView {
 }
 
 /// Renders the curriculum page to a complete HTML document string.
-pub fn render_curriculum_page() -> String {
+pub fn render_curriculum_page(site: &SiteAddress) -> String {
     let owner = Owner::new();
-    let body = owner.with(|| view! { <CurriculumPage /> }.to_html());
+    let canonical = site.join("curriculum.html");
+    let body = owner.with(|| view! { <CurriculumPage canonical=canonical /> }.to_html());
     format!("<!DOCTYPE html>{body}")
 }
 
 #[cfg(test)]
 mod tests {
-    use super::render_curriculum_page;
+    use super::render_curriculum_page as render;
+    use crate::site_address::SiteAddress;
+
+    fn site() -> SiteAddress {
+        SiteAddress::parse("https://www.lucalorenzon.com/").unwrap()
+    }
+
+    fn render_curriculum_page() -> String {
+        render(&site())
+    }
+
+    #[test]
+    fn has_its_own_full_address_as_canonical_link() {
+        assert!(render_curriculum_page().contains(
+            "<link rel=\"canonical\" href=\"https://www.lucalorenzon.com/curriculum.html\">"
+        ));
+    }
+
+    #[test]
+    fn canonical_link_follows_the_prefix_of_the_site_address() {
+        let site = SiteAddress::parse("https://example.com/blog/").unwrap();
+        assert!(render(&site).contains(
+            "<link rel=\"canonical\" href=\"https://example.com/blog/curriculum.html\">"
+        ));
+    }
 
     #[test]
     fn starts_with_doctype() {

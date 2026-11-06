@@ -1,3 +1,4 @@
+use leptos::either::Either;
 use leptos::prelude::*;
 
 /// The ASCII-art logo (narrow version of the old site's `AsciiArtLogo`).
@@ -27,6 +28,18 @@ impl FooterLicence {
     }
 }
 
+/// What a page tells search engines about indexing. Every page says exactly one thing: a page
+/// that says both "this is the page" (canonical) and "do not index" would send contradicting
+/// signals.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Indexing {
+    /// The page is indexed, under this one full address, however it is reached.
+    Canonical(String),
+    /// The page is kept out of the index. For the "page not found", which GitHub also serves
+    /// with status 200 when asked for directly.
+    NoIndex,
+}
+
 /// The frame every page shares: the `<html>` element with its `<head>`, the
 /// header (logo, title, reserved menu slot) and the footer. The page supplies
 /// its tab title, its `<h1>` and its `<main>` element.
@@ -36,12 +49,15 @@ impl FooterLicence {
 /// (the rule of ADR-002), the path of the site's address, such as `"/"`, for
 /// the "page not found", which the host serves at any depth. The footer's
 /// link to the about page follows the same rule.
+///
+/// `indexing` puts the canonical link or the `noindex` meta at the end of the `<head>`.
 #[component]
 pub fn PageFrame(
     title: &'static str,
     heading: &'static str,
     #[prop(into)] address_prefix: String,
     footer_licence: FooterLicence,
+    indexing: Indexing,
     children: Children,
 ) -> impl IntoView {
     let about_page = format!("{address_prefix}about.html");
@@ -52,6 +68,10 @@ pub fn PageFrame(
     };
     let icon = format!("{address_prefix}favicon.ico");
     let stylesheet = format!("{address_prefix}style.css");
+    let indexing_tag = match indexing {
+        Indexing::Canonical(href) => Either::Left(view! { <link rel="canonical" href=href /> }),
+        Indexing::NoIndex => Either::Right(view! { <meta name="robots" content="noindex" /> }),
+    };
     view! {
         <html lang="en">
             <head>
@@ -60,6 +80,7 @@ pub fn PageFrame(
                 <title>{title}</title>
                 <link rel="icon" href=icon />
                 <link rel="stylesheet" href=stylesheet />
+                {indexing_tag}
             </head>
             <body>
                 <div class="page-fills-screen">
