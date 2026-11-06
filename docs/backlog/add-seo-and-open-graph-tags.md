@@ -1,8 +1,9 @@
 # Add SEO and Open Graph tags to every page
 
 - **Opened:** 2026-11-02, by the user. Split by the user on
-  2026-11-06: the canonical link on the article pages went to a card of
-  its own, [add the canonical link to the article pages](../wip/add-canonical-link-to-articles.md).
+  2026-11-06: the canonical link went to a card of its own,
+  [add the canonical link to every page](../wip/add-canonical-link-to-every-page.md),
+  with the "do not index" tag of the "page not found".
   In Next.
 - **Status:** noticed, not started.
 
@@ -27,8 +28,8 @@ the check do not apply to.
 - **Today the head is almost empty:** `src/page_frame.rs`, the frame
   every page shares, writes only the character set, the viewport and
   the title; the card split off on 2026-11-06 adds the canonical link
-  to the article pages. There is no description, no Open Graph tag, no
-  robots directive.
+  to every page and the "do not index" tag to the "page not found".
+  There is no description and no Open Graph tag.
 - **The Markdown has no fields yet:** `content/curriculum.md` starts
   directly with the text. pulldown-cmark 0.13 can recognise a metadata
   block at the top of a file (YAML-style `---`, or `+++`) and hand it
@@ -55,13 +56,18 @@ the check do not apply to.
   2026-11-03, when the card on the Medium articles was split: the
   site's copy of each article is the original, so its page declares
   itself canonical. On 2026-11-06 the user moved it to a card of its
-  own, [add the canonical link to the article pages](../wip/add-canonical-link-to-articles.md),
+  own, [add the canonical link to every page](../wip/add-canonical-link-to-every-page.md),
   since it is the only part that loses something each day it waits;
-  that card also carries Medium's side, by the author. Whether the
-  other pages get a canonical link too stays here.
+  that card also carries Medium's side, by the author. Every page got
+  the link there, so the page frame keeps one head.
 - **A first candidate for the block-list:** the site's own "page not
   found" ([card](../done/2026-11-02_serve-own-not-found-page.md)), which should not be
-  indexed nor previewed.
+  indexed nor previewed. It already says "do not index me" (`noindex`)
+  since the canonical link card, because `/404.html` asked directly
+  answers with status 200; the head of every page declares one thing
+  about its indexing, so the page frame keeps one head. Whatever tags
+  this card adds, the same constraint holds: an optional tag in a
+  Leptos view leaves a marker (`<!>`) in the pages without it.
 - **Lighthouse has an SEO category,** with basic checks (title,
   description, status code, links, `robots`). The card
   [check performance in the build](check-performance-in-the-build.md)

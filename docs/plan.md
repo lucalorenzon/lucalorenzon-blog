@@ -14,10 +14,10 @@ live since 2026-10-26
 
 ## Now
 
-- [Add the canonical link to the article pages](wip/add-canonical-link-to-articles.md),
+- [Add the canonical link to every page](wip/add-canonical-link-to-every-page.md),
   so search engines take the site's copy of each article as the
-  original, not Medium's; with its own tests, the compliance check
-  comes later.
+  original, not Medium's, and "do not index" on the "page not found";
+  with its own tests, the compliance check comes later.
 
 ## Next
 
@@ -33,8 +33,8 @@ live since 2026-10-26
   settings, after the list of articles is published.
 - [Add SEO and Open Graph tags to every page](backlog/add-seo-and-open-graph-tags.md),
   from fields each article declares, checked in the build, with a
-  block-list of pages left out; the canonical link of the articles
-  comes first, in Now.
+  block-list of pages left out; the canonical link comes first, in
+  Now.
 - [Use the space beside the text on wide screens](backlog/use-space-beside-text-on-wide-screens.md),
   left empty by the narrower column of version 0.5.0.
 - [Check performance in the build](backlog/check-performance-in-the-build.md),
