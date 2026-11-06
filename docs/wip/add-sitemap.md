@@ -95,7 +95,9 @@ its address only; the date is optional entry by entry.
   the code.
 - **When the home page changes:** in the user's words, when a new
   article is added. Its date belongs with how content is edited and
-  added, more than with the front matter.
+  arrives on the site, more than with the front matter: noted, by the
+  user's choice, in the card
+  [take the site's content from several repositories](../backlog/take-content-from-several-repositories.md).
 - **Rejected:** the latest date among the articles' Markdown files,
   wrong in the most common case, since correcting an article's text
   would move the home page's date while the home page, which shows only
