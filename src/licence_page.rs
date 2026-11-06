@@ -1,5 +1,5 @@
 use crate::markdown;
-use crate::page_frame::{FooterLicence, Indexing, PageFrame};
+use crate::page_frame::{FooterLicence, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
@@ -8,6 +8,9 @@ use leptos::prelude::*;
 const LICENCE: &str = include_str!("../content/licence.md");
 
 /// The whole licence page document, `<html>` element included.
+/// What search engines and link previews show of the page.
+const DESCRIPTION: &str = "How you may reuse this site: the articles under CC BY 4.0, the code samples under MIT-0, the curriculum under CC BY-ND 4.0.";
+
 #[component]
 pub fn LicencePage(canonical: String) -> impl IntoView {
     view! {
@@ -16,7 +19,11 @@ pub fn LicencePage(canonical: String) -> impl IntoView {
             heading="Licence"
             address_prefix=""
             footer_licence=FooterLicence::ReuseWithAttribution
-            indexing=Indexing::Canonical(canonical)
+            indexing=Indexing::Indexed(IndexedPage {
+                canonical,
+                description: DESCRIPTION,
+                kind: PageKind::Website,
+            })
         >
             <main class="long-text-column md:long-text-large" inner_html=markdown::to_html(LICENCE)></main>
         </PageFrame>
@@ -42,6 +49,25 @@ mod tests {
 
     fn render_licence_page() -> String {
         render(&site())
+    }
+
+    #[test]
+    fn has_its_description_and_preview_tags() {
+        let html = render_licence_page();
+        let url = "https://www.lucalorenzon.com/licence.html";
+        assert!(html.contains("<meta name=\"description\" content=\"How you may reuse this site: the articles under CC BY 4.0, the code samples under MIT-0, the curriculum under CC BY-ND 4.0.\">"));
+        assert!(html.contains("<meta property=\"og:title\" content=\"Licence\">"));
+        assert!(html.contains("<meta property=\"og:type\" content=\"website\">"));
+        assert!(html.contains(&format!("<meta property=\"og:url\" content=\"{url}\">")));
+        assert!(html.contains("<meta property=\"og:description\" content=\"How you may reuse this site: the articles under CC BY 4.0, the code samples under MIT-0, the curriculum under CC BY-ND 4.0.\">"));
+        assert!(html.contains("<meta property=\"og:site_name\" content=\"Luca Lorenzon\">"));
+        assert!(html.contains("<meta property=\"og:locale\" content=\"en_GB\">"));
+        assert!(!html.contains("og:image"));
+    }
+
+    #[test]
+    fn description_fits_a_search_result() {
+        assert!(super::DESCRIPTION.chars().count() <= 160);
     }
 
     #[test]

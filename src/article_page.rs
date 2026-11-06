@@ -1,5 +1,5 @@
 use crate::markdown;
-use crate::page_frame::{FooterLicence, Indexing, PageFrame};
+use crate::page_frame::{FooterLicence, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
@@ -108,7 +108,11 @@ pub fn ArticlePage(article: &'static Article, canonical: String) -> impl IntoVie
             heading=article.title
             address_prefix="../"
             footer_licence=FooterLicence::ReuseWithAttribution
-            indexing=Indexing::Canonical(canonical)
+            indexing=Indexing::Indexed(IndexedPage {
+                canonical,
+                description: article.description,
+                kind: PageKind::Article { published: article.date.iso() },
+            })
         >
             <main class="long-text-column md:long-text-large" inner_html=markdown::to_html(article.text)></main>
         </PageFrame>
@@ -137,6 +141,29 @@ mod tests {
 
         fn site() -> SiteAddress {
             SiteAddress::parse("https://www.lucalorenzon.com/").unwrap()
+        }
+
+        #[test]
+        fn has_its_description_and_preview_tags() {
+            let html = page();
+            assert!(html.contains("<meta name=\"description\" content=\"SAP hybris change events system: architecture and inner behaviour.\">"));
+            assert!(html.contains("<meta property=\"og:title\" content=\"After Save Event\">"));
+            assert!(html.contains("<meta property=\"og:type\" content=\"article\">"));
+            assert!(html.contains("<meta property=\"og:url\" content=\"https://www.lucalorenzon.com/articles/after-save-event.html\">"));
+            assert!(html.contains("<meta property=\"og:description\" content=\"SAP hybris change events system: architecture and inner behaviour.\">"));
+            assert!(html.contains("<meta property=\"og:site_name\" content=\"Luca Lorenzon\">"));
+            assert!(html.contains("<meta property=\"og:locale\" content=\"en_GB\">"));
+            assert!(
+                html.contains("<meta property=\"article:published_time\" content=\"2023-04-30\">")
+            );
+            assert!(!html.contains("og:image"));
+        }
+
+        #[test]
+        fn every_article_description_fits_a_search_result() {
+            for article in &ARTICLES {
+                assert!(article.description.chars().count() <= 160);
+            }
         }
 
         #[test]

@@ -1,10 +1,13 @@
 use crate::article_page::newest_first;
-use crate::page_frame::{FooterLicence, Indexing, PageFrame};
+use crate::page_frame::{FooterLicence, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
 /// The whole home page document, `<html>` element included: the list of the articles, newest
 /// first.
+/// What search engines and link previews show of the page.
+const DESCRIPTION: &str = "Articles by Luca Lorenzon, product engineer: what I have learned, my thoughts on topics of public debate, and stories of paths I have taken.";
+
 #[component]
 pub fn HomePage(canonical: String) -> impl IntoView {
     let entries = newest_first()
@@ -27,7 +30,11 @@ pub fn HomePage(canonical: String) -> impl IntoView {
             heading="Home Page"
             address_prefix=""
             footer_licence=FooterLicence::ReuseWithAttribution
-            indexing=Indexing::Canonical(canonical)
+            indexing=Indexing::Indexed(IndexedPage {
+                canonical,
+                description: DESCRIPTION,
+                kind: PageKind::Website,
+            })
         >
             <main class="long-text-column md:long-text-large">
                 <ul class="article-list">{entries}</ul>
@@ -55,6 +62,25 @@ mod tests {
 
     fn render_home_page() -> String {
         render(&site())
+    }
+
+    #[test]
+    fn has_its_description_and_preview_tags() {
+        let html = render_home_page();
+        let url = "https://www.lucalorenzon.com/";
+        assert!(html.contains("<meta name=\"description\" content=\"Articles by Luca Lorenzon, product engineer: what I have learned, my thoughts on topics of public debate, and stories of paths I have taken.\">"));
+        assert!(html.contains("<meta property=\"og:title\" content=\"Home Page\">"));
+        assert!(html.contains("<meta property=\"og:type\" content=\"website\">"));
+        assert!(html.contains(&format!("<meta property=\"og:url\" content=\"{url}\">")));
+        assert!(html.contains("<meta property=\"og:description\" content=\"Articles by Luca Lorenzon, product engineer: what I have learned, my thoughts on topics of public debate, and stories of paths I have taken.\">"));
+        assert!(html.contains("<meta property=\"og:site_name\" content=\"Luca Lorenzon\">"));
+        assert!(html.contains("<meta property=\"og:locale\" content=\"en_GB\">"));
+        assert!(!html.contains("og:image"));
+    }
+
+    #[test]
+    fn description_fits_a_search_result() {
+        assert!(super::DESCRIPTION.chars().count() <= 160);
     }
 
     #[test]

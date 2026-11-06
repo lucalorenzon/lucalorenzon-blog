@@ -58,6 +58,10 @@ mod tests {
         let html = default_page();
         assert!(html.contains("<meta name=\"robots\" content=\"noindex\">"));
         assert!(!html.contains("rel=\"canonical\""));
+        assert!(!html.contains("name=\"description\""));
+        assert!(!html.contains("og:"));
+        assert!(!html.contains("profile:"));
+        assert!(!html.contains("article:"));
     }
 
     #[test]

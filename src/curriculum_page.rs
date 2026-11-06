@@ -1,5 +1,5 @@
 use crate::markdown;
-use crate::page_frame::{FooterLicence, Indexing, PageFrame};
+use crate::page_frame::{FooterLicence, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
@@ -7,6 +7,9 @@ use leptos::prelude::*;
 const CURRICULUM: &str = include_str!("../content/curriculum.md");
 
 /// The whole curriculum page document, `<html>` element included.
+/// What search engines and link previews show of the page.
+const DESCRIPTION: &str = "Curriculum of Luca Lorenzon: collaboration, architecture and hands-on implementation in e-commerce and enterprise integration, in international contexts.";
+
 #[component]
 pub fn CurriculumPage(canonical: String) -> impl IntoView {
     view! {
@@ -15,7 +18,11 @@ pub fn CurriculumPage(canonical: String) -> impl IntoView {
             heading="Curriculum Vitae"
             address_prefix=""
             footer_licence=FooterLicence::CurriculumCopyNotChange
-            indexing=Indexing::Canonical(canonical)
+            indexing=Indexing::Indexed(IndexedPage {
+                canonical,
+                description: DESCRIPTION,
+                kind: PageKind::Profile,
+            })
         >
             <main class="long-text-column md:long-text-large" inner_html=markdown::to_html(CURRICULUM)></main>
         </PageFrame>
@@ -41,6 +48,27 @@ mod tests {
 
     fn render_curriculum_page() -> String {
         render(&site())
+    }
+
+    #[test]
+    fn has_its_description_and_preview_tags() {
+        let html = render_curriculum_page();
+        let url = "https://www.lucalorenzon.com/curriculum.html";
+        assert!(html.contains("<meta name=\"description\" content=\"Curriculum of Luca Lorenzon: collaboration, architecture and hands-on implementation in e-commerce and enterprise integration, in international contexts.\">"));
+        assert!(html.contains("<meta property=\"og:title\" content=\"Curriculum Vitae\">"));
+        assert!(html.contains("<meta property=\"og:type\" content=\"profile\">"));
+        assert!(html.contains(&format!("<meta property=\"og:url\" content=\"{url}\">")));
+        assert!(html.contains("<meta property=\"og:description\" content=\"Curriculum of Luca Lorenzon: collaboration, architecture and hands-on implementation in e-commerce and enterprise integration, in international contexts.\">"));
+        assert!(html.contains("<meta property=\"og:site_name\" content=\"Luca Lorenzon\">"));
+        assert!(html.contains("<meta property=\"og:locale\" content=\"en_GB\">"));
+        assert!(!html.contains("og:image"));
+        assert!(html.contains("<meta property=\"profile:first_name\" content=\"Luca\">"));
+        assert!(html.contains("<meta property=\"profile:last_name\" content=\"Lorenzon\">"));
+    }
+
+    #[test]
+    fn description_fits_a_search_result() {
+        assert!(super::DESCRIPTION.chars().count() <= 160);
     }
 
     #[test]
