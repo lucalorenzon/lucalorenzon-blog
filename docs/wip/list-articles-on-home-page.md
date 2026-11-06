@@ -112,6 +112,18 @@ behaviour"; "Dive into" and "use cases".
 | After Save Event | 30 April 2023 | SAP hybris change events system: architecture and inner behaviour. |
 | How to generate hybris PK values without hybris | 25 April 2023 | Dive into the PK generation logic of SAP hybris, for extreme use cases. |
 
+### The home page's title
+
+The shared frame gives every page one title, used for the browser tab
+("<page> - Luca Lorenzon") and as the page's only `h1`, the first thing
+a screen reader announces. "Curriculum Vitae" no longer fits.
+**Chosen, by the user: "Home Page",** the title the home page had
+before the curriculum came (version 0.2.0): general enough to last when
+the menu, categories or other kinds of content arrive. Not chosen: a
+title naming the list, such as "Articles", which tells an arriving
+reader more but would change when the home page holds more than
+articles.
+
 ### The footer and the about page
 
 Decided by the agent, as they follow from rules already agreed. The
