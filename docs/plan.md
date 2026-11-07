@@ -14,11 +14,10 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing yet: each article on the home page now sits in an amber box,
-  with the date on its border
+- [Show the first box of the home page at mid-height of the screen](wip/centre-first-box-on-home-page.md),
+  where the eye goes first. The boxes themselves are done
   ([card](done/2026-11-07_frame-home-page-articles-in-boxes.md)), not
-  published yet: it goes out with the next version. The next card is
-  chosen by the user, from Next.
+  published yet: they go out with the next version.
 
 ## Next
 
