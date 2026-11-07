@@ -31,8 +31,14 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-11-07
+
 ### Changed
 
+- Each article on the home page sits in a box with an amber border and
+  rounded corners, its date on the bottom border line; the whole box
+  leads to the article, and its border thickens under the mouse or with
+  the keyboard focus.
 - The bullets and numbers of lists take the amber accent; the text of the
   items stays in its colour.
 
