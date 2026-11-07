@@ -5,7 +5,7 @@ use leptos::prelude::*;
 
 /// The licences of the site, written in Markdown and converted to HTML at
 /// build time.
-const LICENCE: &str = include_str!("../content/licence.md");
+pub(crate) const LICENCE: &str = include_str!("../content/licence.md");
 
 /// The whole licence page document, `<html>` element included.
 /// What search engines and link previews show of the page.

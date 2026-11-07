@@ -5,7 +5,7 @@ use leptos::prelude::*;
 
 /// Who the author is and how to reuse the site, written in Markdown and converted to HTML at
 /// build time.
-const ABOUT: &str = include_str!("../content/about.md");
+pub(crate) const ABOUT: &str = include_str!("../content/about.md");
 
 /// The whole about page document, `<html>` element included.
 /// What search engines and link previews show of the page.

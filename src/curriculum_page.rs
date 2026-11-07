@@ -4,7 +4,7 @@ use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
 /// The curriculum, written in Markdown and converted to HTML at build time.
-const CURRICULUM: &str = include_str!("../content/curriculum.md");
+pub(crate) const CURRICULUM: &str = include_str!("../content/curriculum.md");
 
 /// The whole curriculum page document, `<html>` element included.
 /// What search engines and link previews show of the page.

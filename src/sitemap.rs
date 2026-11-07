@@ -408,6 +408,27 @@ mod tests {
         }
     }
 
+    /// `every_source_is_a_file_that_exists` would not notice two fixed pages whose
+    /// sources were swapped; this checks each source holds the text its page renders.
+    #[test]
+    fn each_fixed_page_names_the_file_its_text_comes_from() {
+        let root = Path::new(env!("CARGO_MANIFEST_DIR"));
+        let pages = pages(&site());
+        for (file, text) in [
+            ("curriculum.html", crate::curriculum_page::CURRICULUM),
+            ("about.html", crate::about_page::ABOUT),
+            ("licence.html", crate::licence_page::LICENCE),
+        ] {
+            let page = pages.iter().find(|p| p.file == file).unwrap();
+            let source = page.source.unwrap();
+            assert_eq!(
+                fs::read_to_string(root.join(source)).unwrap(),
+                text,
+                "{file}"
+            );
+        }
+    }
+
     #[test]
     fn accepts_only_well_formed_dates() {
         assert!(ContentDate::parse("2026-11-06").is_some());
