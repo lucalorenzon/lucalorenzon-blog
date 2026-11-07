@@ -189,6 +189,16 @@ today, and takes the dates from the file.
   164 commits earlier, got 2026-11-03 instead of 2026-11-01; most
   commits are documentation, so content files age fast when counted in
   commits. A full clone weighs 3.3 MB.
+- **Which date of the commit:** the author's, the day the change was
+  written, chosen by the user for now. The committer's date is when the
+  commit was last applied, and `git pull --rebase` changes it for
+  commits not yet pushed: on 2026-11-07 the two fell on different days
+  in 13 of 413 commits, while for the last change of each content
+  Markdown file they coincide.
+  Neither is the day the page changes on the site, which is the
+  publication of the version that carries it: the card
+  [use the publication date in the sitemap](../backlog/use-publication-date-in-the-sitemap.md),
+  by the user's choice.
 - **Rejected:** the last two commits, which would need the previous
   build's dates kept somewhere, which the build does not do, and one
   new commit per build, while a push often brings many; a fixed depth,
@@ -222,8 +232,6 @@ today, and takes the dates from the file.
 
 ## Questions
 
-- Which date of a commit: the author's or the committer's, which a
-  rebase changes.
 - What the build does when the file of dates is missing or lacks a
   page.
 - How the test checks it, locally and on the live site.

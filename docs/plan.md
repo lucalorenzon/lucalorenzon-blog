@@ -32,6 +32,9 @@ live since 2026-10-26
   dates become accurate; it anticipates part of the `residuality` run.
 - [Give the home page a date in the sitemap](backlog/date-the-home-page-in-the-sitemap.md):
   the date of the last addition or removal of an article.
+- [Use the publication date in the sitemap](backlog/use-publication-date-in-the-sitemap.md),
+  instead of the day a change was written, without publishing something
+  other than what was tested.
 - [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for
