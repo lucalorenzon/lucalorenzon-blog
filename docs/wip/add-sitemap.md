@@ -93,11 +93,10 @@ its address only; the date is optional entry by entry.
 - **The problem:** the home page has no Markdown of its own; its content
   is the list of articles (title, description and date of each), all in
   the code.
-- **When the home page changes:** in the user's words, when a new
-  article is added. Its date belongs with how content is edited and
-  arrives on the site, more than with the front matter: noted, by the
-  user's choice, in the card
-  [take the site's content from several repositories](../backlog/take-content-from-several-repositories.md).
+- **When the home page changes:** in the user's words, when an article
+  is added or removed. Using that date is a card of its own, by the
+  user's choice:
+  [give the home page a date in the sitemap](../backlog/date-the-home-page-in-the-sitemap.md).
 - **Rejected:** the latest date among the articles' Markdown files,
   wrong in the most common case, since correcting an article's text
   would move the home page's date while the home page, which shows only
@@ -107,28 +106,47 @@ its address only; the date is optional entry by entry.
 
 ### Where does the list of pages come from?
 
-Chosen by the user: from the pages already written in the built site's
-folder. The sitemap is generated after the pages, by reading them and
-leaving out those that carry `noindex`.
+Chosen by the user, revised on 2026-11-07: from the Markdown files under
+`content/`, from which the build writes the pages. The date of a page is
+the date of the Markdown file the build writes it from; the build knows
+it while writing the page, and writes the sitemap's entry with it.
+`README.md` and `LICENSE-MIT-0`, in `content/` but not pages, are on an
+exclusion list.
 
-- **The problem:** the build program (`src/main.rs`) writes the pages
-  one by one, each with its own function, which decides inside whether
-  the page is indexed; each page's Markdown is named in its own code,
-  with `include_str!`. No single place knows "these are the indexed
-  pages, at these addresses, with these Markdown files".
-- **Why the built pages:** what is in the sitemap is what is actually
-  published, whatever produced it. In the user's words, it prepares the
-  ground for an external source of content
-  ([card](../backlog/take-content-from-several-repositories.md)): the
-  sitemap does not depend on how the build gets a page, only on the
-  page.
-- **What it leaves open:** the link between a written page and its
-  Markdown file, needed for the date, has to be found another way.
-- **Rejected:** a list of pages kept beside the calls that write them,
-  free to disagree with them, so a new page could be written and
-  forgotten in the sitemap; a single list from which the build writes
-  both the pages and the sitemap, which rules out the disagreement but
-  reshapes `src/main.rs` and every page's function.
+- **The model the user aims at,** with the card
+  [move titles, descriptions and dates into the Markdown's front matter](../backlog/move-page-fields-into-markdown-front-matter.md):
+  the build goes through every `.md` file under `content/` and its
+  folders, reads its front matter (title, description, slug) and its
+  date of last change, and from them writes both the page and its
+  sitemap entry. The address comes from the slug, which follows the
+  marketing campaigns, not the file's name. Old slugs, and redirects
+  from them, are left out of this card.
+- **Pages without a Markdown file:** today only the home page, which
+  lists the articles, and the "page not found", which carries `noindex`
+  and stays out of the sitemap. Fixed pages without Markdown, should
+  there ever be any, are dealt with when they arrive.
+- **What changed from the first answer:** on 2026-11-06 the user had
+  chosen to read the pages already written in the built site's folder,
+  leaving out those that carry `noindex`, so that the sitemap would not
+  depend on how a page is produced. That left the link between a page
+  and its Markdown file to be rebuilt another way: by a rule on names,
+  implicit and fragile; or by a record the build writes while writing
+  the pages, which makes the sitemap depend on the build again. Thinking
+  it through, the user moved the source of the list to `content/`
+  itself: the list is not written by hand, it is the folder.
+- **The problem it solves:** the build program (`src/main.rs`) writes
+  the pages one by one, each with its own function, which decides inside
+  whether the page is indexed; each page's Markdown is named in its own
+  code, with `include_str!`. No single place knows "these are the
+  indexed pages, at these addresses, with these Markdown files".
+- **The exclusion list** belongs to the process that goes through
+  `content/`: the step that reads the dates now, and the build itself
+  once it goes through every `.md` file.
+- **Rejected:** the pages written in the built site's folder (the first
+  answer, see above); a list of pages kept by hand beside the calls that
+  write them, free to disagree with them, so a new page could be
+  written and forgotten in the sitemap; a rule on names (`X.html` from
+  `content/X.md`), which an address chosen for a campaign would break.
 
 ## Known from the start
 
@@ -155,7 +173,7 @@ leaving out those that carry `noindex`.
 
 ## Questions
 
-- How a written page is linked to its Markdown file, for the date.
-- How the build reads the dates from git, and what it does if git does
-  not answer.
+- How the dates are read from git: with the full history, or with the
+  last two commits, as the user proposed on 2026-11-07; and what the
+  build does if git does not answer.
 - How the test checks it, locally and on the live site.

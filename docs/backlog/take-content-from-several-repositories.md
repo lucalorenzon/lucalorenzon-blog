@@ -25,9 +25,7 @@ drift from its source, and nothing tells when it has.
 - Who cleans a source of personal data before it is published: the
   source repository, or this build?
 - How the site tells which version of each source it shows.
-- How the home page's date of last change is found, for the sitemap.
-  Noted by the user on 2026-11-06, while making the sitemap
-  ([card](../wip/add-sitemap.md)): the home page changes when a new
-  article is added, which is a matter of how content is edited and
-  arrives on the site. Until then the home page is in the sitemap
-  without a date.
+- How the home page's date of last change is found, for the sitemap:
+  noted here by the user on 2026-11-06, then moved by the user on
+  2026-11-07 to a card of its own,
+  [give the home page a date in the sitemap](date-the-home-page-in-the-sitemap.md).

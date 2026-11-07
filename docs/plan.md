@@ -30,6 +30,8 @@ live since 2026-10-26
 - [Move titles, descriptions and dates into the Markdown's front matter](backlog/move-page-fields-into-markdown-front-matter.md),
   so the Markdown is the only source of content and the sitemap's
   dates become accurate; it anticipates part of the `residuality` run.
+- [Give the home page a date in the sitemap](backlog/date-the-home-page-in-the-sitemap.md):
+  the date of the last addition or removal of an article.
 - [Cover the WCAG criteria axe cannot check](backlog/cover-wcag-criteria-axe-cannot-check.md),
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](done/2026-11-02_improve-site-readability.md)): for

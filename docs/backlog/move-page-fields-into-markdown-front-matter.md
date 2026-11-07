@@ -41,6 +41,17 @@ accurate for those fields too.
   is not HTML, but the conversion with pulldown-cmark has to skip it.
 - **A comment in `src/article_page.rs`** still points to
   `docs/wip/list-articles-on-home-page.md`, a card now in `docs/done/`.
+- **The model the user aims at** (2026-11-07, while making the
+  [sitemap](../wip/add-sitemap.md)): the build goes through every `.md`
+  file under `content/` and its folders, reads its front matter (title,
+  description, slug and the rest) and its date of last change, and from
+  them writes both the page and its sitemap entry. The page's address
+  comes from the slug, which follows the marketing campaigns and may
+  differ from the file's name. A list of old slugs, for redirects, may
+  follow later.
+- **Files in `content/` that are not pages,** `README.md` and
+  `LICENSE-MIT-0`, are on an exclusion list, chosen by the user for the
+  sitemap's card.
 - **What stays in the code:** the links of the header and the footer,
   in `src/page_frame.rs`. A change to them does not move the sitemap's
   dates.
