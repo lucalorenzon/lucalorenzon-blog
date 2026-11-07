@@ -260,6 +260,28 @@ sitemap ([card](check-seo-with-lighthouse.md)).
 - **Rejected:** a Playwright test of the sitemap's own, which the SEO
   check would mostly repeat.
 
+### How is the dates step written?
+
+Chosen by the user: in Python, as the screen reader check
+(`scripts/screen-reader/`), with its tests written with the standard
+library's `unittest`, on a small git repository created by the test with
+known dates.
+
+- **Why Python:** it is ready on the runner, as Bash is, so the dates
+  job does not have to install a toolchain or compile; and it can be
+  tested, so its dates are checked independently of the build, rather
+  than computed again by the same logic. It is also the language the
+  step grows in, when it gathers content from external sources.
+- **Standard library only:** `subprocess` for git, `unittest` for the
+  tests; no new dependency.
+- **Its tests run in the pipeline,** in the dates job, before the file
+  of dates is written: unlike the screen reader check, which runs on
+  demand, this step is part of every build.
+- **Rejected:** Bash, the lightest, but the project has no way to test
+  a Bash script, so the dates would go unchecked; Rust, inside the build
+  program, tested with `cargo test`, but the dates job would install the
+  toolchain and compile only to run `git log`.
+
 ## Known from the start
 
 - **The build already decides which pages are indexed:** each page is
@@ -285,6 +307,4 @@ sitemap ([card](check-seo-with-lighthouse.md)).
 
 ## Questions
 
-- How the dates step is written, and how its dates are checked: a test
-  can see that a date is there and well formed, but checking it is the
-  right one means computing it again from git.
+- None left: the card is ready to be built.
