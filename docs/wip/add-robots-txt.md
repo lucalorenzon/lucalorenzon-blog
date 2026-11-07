@@ -71,12 +71,13 @@ and those that index pages for search.
 
 - **The list,** read on 2026-11-07: MIT licence, about 4,200 stars, last
   updated on 2026-11-05, 204 robots in `robots.json`, each with a
-  free-text `function`. 147 fall into seven recurring categories: "AI
+  free-text `function`. 122 fall into seven recurring categories: "AI
   Assistants" (31, such as `Claude-User`, `ChatGPT-User`), "AI Search
   Crawlers" (14, such as `OAI-SearchBot`), "AI Data Scrapers" (21), "AI
   Data Providers" (20), "AI Agents" (19), "AI Coding Agents" (9),
-  "Undocumented AI Agents" (8); the other 57 have descriptions of their
-  own, such as "LLM training." or "Data is sold.".
+  "Undocumented AI Agents" (8); the other 82 have descriptions of their
+  own, such as "LLM training." or "Data is sold.". (First counted, by
+  mistake, as 147 and 57; corrected on 2026-11-07.)
 - **Why filtered:** the project's own `robots.txt` blocks all 204,
   reading on request and search included, against the user's choice.
 - **Rejected:** a short list written by the project, clear but left
