@@ -195,6 +195,29 @@ the build already knows.
   card
   [port the Python scripts to Rust, run with Docker](../backlog/port-python-scripts-to-rust-with-docker.md).
 
+### How is it checked?
+
+Chosen by the user, as proposed:
+
+- **The Python script's tests,** on a small `robots.json` written for
+  them, with no network: the filter (the four useful categories pass,
+  everything else is blocked, descriptions of their own included), the
+  exceptions, a wrong checksum stopping everything, and the local
+  command's comparison between two versions of the list.
+- **The Rust build's tests:** the format of `robots.txt`; the
+  `Sitemap:` line with the full address, identical to the sitemap's own
+  address; the group with `__usage_ai-training`; each blocked robot
+  with `Disallow: /`; no rule blocking the ordinary search engines.
+- **The SEO check, when resumed,** turns on by itself Lighthouse's rule
+  on `robots.txt`, "not applicable" today, and checks it in a browser,
+  locally and on the live site
+  ([card](check-seo-with-lighthouse.md)).
+- **The download:** if the network is missing or the checksum does not
+  match, the build stops, locally and in the pipeline alike, as it does
+  for Tailwind: a wrong checksum is not a draft, it is a file other than
+  the one pinned. The downloaded file is kept in `target/tools/`, as
+  Tailwind is, so a build does not need the network every time.
+
 ## Known from the start
 
 - **There is nothing to disallow today.** The "page not found" is kept
@@ -218,5 +241,4 @@ the build already knows.
 
 ## Questions
 
-- How `robots.txt` and the step that makes its list are checked.
 - How the build writes it, and how the test checks it.
