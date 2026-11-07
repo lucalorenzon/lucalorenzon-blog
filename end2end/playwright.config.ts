@@ -20,11 +20,29 @@ export default defineConfig({
   retries: 0,
   reporter: process.env.CI ? [['list'], ['github']] : 'list',
   use: { baseURL },
-  // The whole suite runs twice: the site shows a dark or a light page
-  // depending on the browser's colour scheme preference.
+  // The suite runs three times. Twice for everything except the SEO check: the
+  // site shows a dark or a light page depending on the browser's colour scheme
+  // preference. Once for the SEO check alone: the search-engine rules do not
+  // depend on the colour scheme, so running it in both theme projects would
+  // give the same result in twice the time. Lighthouse opens its own Chromium
+  // with a control port anyway, so it does not use the browser Playwright
+  // prepares for each project.
   projects: [
-    { name: 'chromium-dark', use: { ...devices['Desktop Chrome'], colorScheme: 'dark' } },
-    { name: 'chromium-light', use: { ...devices['Desktop Chrome'], colorScheme: 'light' } },
+    {
+      name: 'chromium-dark',
+      testIgnore: 'seo.spec.ts',
+      use: { ...devices['Desktop Chrome'], colorScheme: 'dark' },
+    },
+    {
+      name: 'chromium-light',
+      testIgnore: 'seo.spec.ts',
+      use: { ...devices['Desktop Chrome'], colorScheme: 'light' },
+    },
+    {
+      name: 'lighthouse',
+      testMatch: 'seo.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
   ],
   webServer: live
     ? undefined
