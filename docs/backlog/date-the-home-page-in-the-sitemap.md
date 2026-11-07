@@ -1,7 +1,7 @@
 # Give the home page a date in the sitemap
 
 - **Opened:** 2026-11-07, by the user, while making the sitemap
-  ([card](../wip/add-sitemap.md)), where the home page is listed without
+  ([card](../done/2026-11-07_add-sitemap.md)), where the home page is listed without
   a date.
 - **Status:** noticed, not started.
 
@@ -23,7 +23,7 @@ apart from the sitemap's first increment.
   correcting an article's text does not change the home page.
 - **The latest date among the articles' Markdown files was rejected**
   for the home page, since it moves when an article's text is corrected
-  ([card](../wip/add-sitemap.md), "Which date does the home page get?").
+  ([card](../done/2026-11-07_add-sitemap.md), "Which date does the home page get?").
 - **A change to an article's title, description or date** also changes
   the home page; once those fields are in the Markdown's front matter
   ([card](move-page-fields-into-markdown-front-matter.md)), it shows in

@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-06, by the user, while choosing on which pages the
   SEO check runs
   ([card](../wip/check-seo-with-lighthouse.md)), where it was the last
-  open question. In Now, after the [sitemap](../wip/add-sitemap.md).
+  open question. In Now, after the [sitemap](../done/2026-11-07_add-sitemap.md).
 - **Status:** noticed, not started.
 
 ## Why
@@ -25,7 +25,7 @@ its own.
   ([card](../wip/check-seo-with-lighthouse.md), "How is a page
   exempted?").
 - **Its main use here** would be the `Sitemap:` line, pointing search
-  engines to the [sitemap](../wip/add-sitemap.md).
+  engines to the [sitemap](../done/2026-11-07_add-sitemap.md).
 - **Lighthouse's rule on `robots.txt`** is "not applicable" today, since
   the file is missing; with the file it becomes active and checks it is
   valid. That change is one of those the card

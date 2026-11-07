@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-06
+Last updated: 2026-11-07
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -14,16 +14,17 @@ live since 2026-10-26
 
 ## Now
 
-- [Add a sitemap](wip/add-sitemap.md), from which the SEO check
-  takes its list of pages.
 - [Add a robots.txt](backlog/add-robots-txt.md), pointing to the
   sitemap.
 - [Check SEO with Lighthouse in the build](wip/check-seo-with-lighthouse.md),
-  on hold until the sitemap and the `robots.txt` exist, then resumed.
-- The next version publishes all three together with the canonical
-  link, the descriptions and the Open Graph tags, already done
+  on hold until the `robots.txt` exists, then resumed with its pages
+  read from the sitemap.
+- The next version publishes the `robots.txt` and the SEO check
+  together with what is already done: the canonical link, the
+  descriptions, the Open Graph tags and the sitemap
   ([card](done/2026-11-06_add-canonical-link-to-every-page.md),
-  [card](done/2026-11-06_add-description-and-open-graph-tags.md)).
+  [card](done/2026-11-06_add-description-and-open-graph-tags.md),
+  [card](done/2026-11-07_add-sitemap.md)).
 
 ## Next
 

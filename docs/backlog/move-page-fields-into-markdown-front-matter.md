@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-06, by the user, while choosing where the
   sitemap's dates come from
-  ([card](../wip/add-sitemap.md)).
+  ([card](../done/2026-11-07_add-sitemap.md)).
 - **Status:** noticed, not started.
 
 ## Why
@@ -23,7 +23,7 @@ It matters for the sitemap: its date of a page's last change comes from
 git. As long as titles, descriptions and dates are in the code, a change
 to them does not move the date, which, as a first increment, is taken
 from the page's Markdown file only
-([card](../wip/add-sitemap.md)). With this card the date becomes
+([card](../done/2026-11-07_add-sitemap.md)). With this card the date becomes
 accurate for those fields too.
 
 ## Known from the start
@@ -42,7 +42,7 @@ accurate for those fields too.
 - **A comment in `src/article_page.rs`** still points to
   `docs/wip/list-articles-on-home-page.md`, a card now in `docs/done/`.
 - **The model the user aims at** (2026-11-07, while making the
-  [sitemap](../wip/add-sitemap.md)): the build goes through every `.md`
+  [sitemap](../done/2026-11-07_add-sitemap.md)): the build goes through every `.md`
   file under `content/` and its folders, reads its front matter (title,
   description, slug and the rest) and its date of last change, and from
   them writes both the page and its sitemap entry. The page's address

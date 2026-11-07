@@ -1,7 +1,7 @@
 # Use the publication date in the sitemap
 
 - **Opened:** 2026-11-07, by the user, while choosing which git date
-  the sitemap uses ([card](../wip/add-sitemap.md)).
+  the sitemap uses ([card](../done/2026-11-07_add-sitemap.md)).
 - **Status:** noticed, not started.
 
 ## Why

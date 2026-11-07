@@ -1,7 +1,7 @@
 # Port the Python scripts to Rust, run with Docker
 
 - **Opened:** 2026-11-07, by the user, right after choosing Python for
-  the sitemap's dates step ([card](../wip/add-sitemap.md), "How is the
+  the sitemap's dates step ([card](../done/2026-11-07_add-sitemap.md), "How is the
   dates step written?").
 - **Status:** noticed, not started.
 

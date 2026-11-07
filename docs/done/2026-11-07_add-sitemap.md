@@ -2,9 +2,8 @@
 
 - **Opened:** 2026-11-06, by the user, while choosing on which pages the
   SEO check runs
-  ([card](check-seo-with-lighthouse.md)). In Now, before the SEO
-  check is resumed.
-- **Status:** being worked on, since 2026-11-06.
+  ([card](../wip/check-seo-with-lighthouse.md)).
+- **Status:** done, on 2026-11-07.
 
 ## Why
 
@@ -19,7 +18,7 @@ hand in the tests. The user chose to put the SEO check on hold, add the
 sitemap first, and then take the check's list of pages from it, in both
 moments.
 
-## Answers so far
+## Answers
 
 ### Which fields, and where the date comes from?
 
@@ -239,7 +238,7 @@ the format allows, and prints a warning naming the page.
 Chosen by the user: by the build's Rust tests. The check in a browser,
 on the local build and on the live site, comes with the SEO check, which
 runs Lighthouse from the Playwright tests on the pages read from this
-sitemap ([card](check-seo-with-lighthouse.md)).
+sitemap ([card](../wip/check-seo-with-lighthouse.md)).
 
 - **The Rust tests:** the sitemap is valid XML under the protocol; the
   addresses are full, with special characters escaped; the date has the
@@ -305,6 +304,50 @@ known dates.
   check: the user chose to publish them together with the canonical
   link, the descriptions and the Open Graph tags already done.
 
-## Questions
+## Results
 
-- None left: the card is ready to be built.
+- **Built in three commits:** the dates step (`c9b6819`), the sitemap
+  (`49c4870`), and a test that each fixed page's Markdown file is the one
+  its text comes from (`d90530d`).
+- **One list of pages** in `src/sitemap.rs`: the build writes every page
+  from it and from nowhere else, and each entry names the Markdown file
+  the page is written from. It is not a list kept beside the calls that
+  write the pages, the option rejected above: it is the only place the
+  pages are written from, and a test checks that every Markdown file
+  under `content/`, but those on the exclusion list, is the source of
+  exactly one entry. Going through `content/` by itself waits for the
+  front matter.
+- **The sitemap built on 2026-11-07,** locally and in the pipeline alike:
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url><loc>https://www.lucalorenzon.com/</loc></url>
+    <url><loc>https://www.lucalorenzon.com/about.html</loc><lastmod>2026-11-06</lastmod></url>
+    <url><loc>https://www.lucalorenzon.com/articles/after-save-event.html</loc><lastmod>2026-11-04</lastmod></url>
+    <url><loc>https://www.lucalorenzon.com/articles/how-to-generate-hybris-pk-values-without-hybris.html</loc><lastmod>2026-11-04</lastmod></url>
+    <url><loc>https://www.lucalorenzon.com/curriculum.html</loc><lastmod>2026-11-01</lastmod></url>
+    <url><loc>https://www.lucalorenzon.com/licence.html</loc><lastmod>2026-11-03</lastmod></url>
+  </urlset>
+  ```
+
+- **In the pipeline** (run of commit `d90530d`, 2026-11-07): the job
+  `content-dates` took 6 seconds with the full history without the
+  files' contents; its 11 tests passed and its dates were the same as
+  locally; the snapshot's `sitemap.xml` holds them. The "warning" and
+  "error" lines in that job's log come from the two tests of a missing
+  git, as expected.
+- **Strict and tolerant, tried by hand:** with `CI` set and an empty
+  dates file the build stops with exit code 1, naming the pages without
+  a date; locally, without the file, it warns and writes the sitemap
+  without `<lastmod>`.
+- **Language:** the user asked whether the sitemap should carry the
+  pages' language. The protocol has no such field; Google's extension,
+  `<xhtml:link rel="alternate" hreflang>`, links the versions of a page
+  in several languages, each listing itself and the others. Every page
+  has one version, in English, already declared by `<html lang="en">`
+  and `og:locale`, so there is nothing to link; it matters with the
+  card [publish the curriculum in more languages](../backlog/publish-curriculum-in-more-languages.md).
+- **Editor checks:** Zed's ruff and basedpyright found one error (the
+  description taken from a docstring that `python3 -OO` removes) and one
+  style warning in the Python step before its commit; both fixed.

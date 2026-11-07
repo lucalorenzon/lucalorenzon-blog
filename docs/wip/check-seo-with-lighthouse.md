@@ -7,7 +7,8 @@
   description and the Open Graph tags.
 - **Status:** being worked on, since 2026-11-06; on hold from
   2026-11-06, waiting for the cards
-  [add a sitemap](add-sitemap.md) and
+  [add a sitemap](../done/2026-11-07_add-sitemap.md), done on
+  2026-11-07, and
   [add a robots.txt](../backlog/add-robots-txt.md). It stays in
   `docs/wip/` meanwhile, by the user's choice: half of its answers are
   given.
@@ -226,7 +227,7 @@ was added to the repository.
 
 ## Questions
 
-- **Known from the sitemap's card** ([card](add-sitemap.md), "How is
+- **Known from the sitemap's card** ([card](../done/2026-11-07_add-sitemap.md), "How is
   it checked?"): this check, reading its pages from the sitemap, is also
   the sitemap's check in a browser; the Rust tests check that each
   canonical link matches its sitemap address, which Lighthouse does
