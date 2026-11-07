@@ -14,8 +14,11 @@ live since 2026-10-26
 
 ## Now
 
-- [Frame each article on the home page in a box](wip/frame-home-page-articles-in-boxes.md),
-  its border in the amber of the page's lines.
+- Nothing yet: each article on the home page now sits in an amber box,
+  with the date on its border
+  ([card](done/2026-11-07_frame-home-page-articles-in-boxes.md)), not
+  published yet: it goes out with the next version. The next card is
+  chosen by the user, from Next.
 
 ## Next
 

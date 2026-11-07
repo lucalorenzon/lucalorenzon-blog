@@ -11,7 +11,7 @@
   [card](../done/2026-11-07_show-numbered-lists-and-colour-list-markers.md)).
   Extended again on 2026-11-07: the frame of the boxes that hold the
   articles on the home page joins the uses of amber (see Decision and
-  Technical notes; [card](../wip/frame-home-page-articles-in-boxes.md))
+  Technical notes; [card](../done/2026-11-07_frame-home-page-articles-in-boxes.md))
 - **Card:** [give the articles' code, quotes and tables a look](../done/2026-11-06_design-look-of-articles.md)
 
 ## Context
@@ -141,7 +141,7 @@ small file.
   which stays square; the two never meet on the same page. The date on
   the border keeps the colour of the text, not amber. Why and the
   options rejected:
-  [card](../wip/frame-home-page-articles-in-boxes.md).
+  [card](../done/2026-11-07_frame-home-page-articles-in-boxes.md).
 - **Hack** (version 3.003, npm package `hack-font` 3.3.0): MIT License
   for the Hack project, public domain for DejaVu's work, Bitstream Vera
   License for Bitstream's; the web subset made by the Hack project,
