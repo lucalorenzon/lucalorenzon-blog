@@ -43,6 +43,17 @@ asks, and those that index pages for search.
   search. OpenAI has the same three kinds (`GPTBot`, `ChatGPT-User`,
   `OAI-SearchBot`). Blocking `ClaudeBot` only keeps the site's future
   text out of training; Claude can still read the site when a user asks.
+- **`Google-Extended` is blocked,** by the user's choice: "training
+  matters more". It is not a robot but a name for `robots.txt` that
+  decides how Google may use what its ordinary robot already read, and
+  it covers two things the user treats differently: training the Gemini
+  models, and grounding, where Gemini is given text from Google's search
+  index at the time of a user's question, the equivalent of reading on
+  request. Google's documentation
+  ([Google's common crawlers](https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers),
+  read on 2026-11-07) says blocking it does not affect inclusion or
+  ranking in Google Search. The price: Gemini's answers will not draw on
+  the site's text.
 - **A request, not a lock:** `robots.txt` is honoured by whoever chooses
   to; a browser, a script or a less careful robot can ignore it. Text
   collected before the rule stays where it is.
