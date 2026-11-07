@@ -33,6 +33,12 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ### Added
 
+- Every page names its own full address as the original (a canonical
+  link), so search engines show this site rather than a copy elsewhere,
+  such as the articles first published on Medium.
+- Every indexed page has a description and the tags that give a link
+  shared on LinkedIn or elsewhere its title, description and kind of
+  page (Open Graph). No preview image yet.
 - A sitemap, `sitemap.xml`, listing every page of the site with the date
   of its last change, so search engines find all the pages and know when
   they changed. The home page has no date yet.
@@ -40,6 +46,13 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
   robots that collect text to train artificial intelligence models to stay
   away. Search engines, and assistants that read a page because a user
   asked, stay welcome.
+
+### Changed
+
+- The home page's tab title, the one search results show, is "Luca
+  Lorenzon - Product Engineer"; its heading stays "Home Page".
+- The "page not found" asks search engines not to index it, since its
+  own address answers like a normal page.
 
 ## [0.9.0] - 2026-11-06
 
