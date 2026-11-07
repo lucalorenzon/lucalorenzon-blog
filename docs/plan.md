@@ -14,11 +14,8 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing yet: version 0.10.0, published on 2026-11-07, brought the SEO
-  check together with the canonical link, the descriptions, the Open
-  Graph tags, the sitemap and the `robots.txt`
-  ([card](done/2026-11-07_check-seo-with-lighthouse.md)). The next card
-  is chosen by the user, from Next.
+- [Frame each article on the home page in a box](wip/frame-home-page-articles-in-boxes.md),
+  its border in the amber of the page's lines.
 
 ## Next
 
