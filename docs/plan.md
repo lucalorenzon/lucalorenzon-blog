@@ -14,10 +14,11 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing yet: each article on the home page now sits in an amber box,
-  with the date on its border
-  ([card](done/2026-11-07_frame-home-page-articles-in-boxes.md)), not
-  published yet: it goes out with the next version. Moving the first
+- Nothing yet: version 0.11.0, published on 2026-11-07, framed each
+  article on the home page in an amber box, with the date on its border
+  ([card](done/2026-11-07_frame-home-page-articles-in-boxes.md)),
+  together with the colour of list markers and the numbered lists'
+  fix. Moving the first
   box to mid-height of the screen was tried and not adopted
   ([card](done/2026-11-07_centre-first-box-on-home-page.md)). The next
   card is chosen by the user, from Next.
