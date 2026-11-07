@@ -62,6 +62,28 @@ asks, and those that index pages for search.
   artificial intelligence, which would also keep the site out of the
   answers and searches made with those tools.
 
+### Which training robots?
+
+Chosen by the user: those of the list kept by the community project
+[`ai-robots-txt/ai.robots.txt`](https://github.com/ai-robots-txt/ai.robots.txt),
+filtered to leave out the robots that read a page on a user's request
+and those that index pages for search.
+
+- **The list,** read on 2026-11-07: MIT licence, about 4,200 stars, last
+  updated on 2026-11-05, 204 robots in `robots.json`, each with a
+  free-text `function`. 147 fall into seven recurring categories: "AI
+  Assistants" (31, such as `Claude-User`, `ChatGPT-User`), "AI Search
+  Crawlers" (14, such as `OAI-SearchBot`), "AI Data Scrapers" (21), "AI
+  Data Providers" (20), "AI Agents" (19), "AI Coding Agents" (9),
+  "Undocumented AI Agents" (8); the other 57 have descriptions of their
+  own, such as "LLM training." or "Data is sold.".
+- **Why filtered:** the project's own `robots.txt` blocks all 204,
+  reading on request and search included, against the user's choice.
+- **Rejected:** a short list written by the project, clear but left
+  behind by new robots and updated by hand; blocking everyone and
+  allowing only chosen robots, which would also keep out a new search
+  engine until it is added.
+
 ## Known from the start
 
 - **There is nothing to disallow today.** The "page not found" is kept
@@ -85,5 +107,8 @@ asks, and those that index pages for search.
 
 ## Questions
 
-- Which training robots, by name, and how that list is kept up to date.
+- How the filter is made: which categories are let through, and how
+  the robots with a description of their own are classed.
+- Where the list is taken from and at which version, and how it is kept
+  up to date.
 - How the build writes it, and how the test checks it.
