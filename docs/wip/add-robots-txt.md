@@ -134,6 +134,28 @@ Disallow: /
   and Google only from 2027; it also covers providers that join later.
 - **Found** in the community list itself, which added it on 2026-11-05.
 
+### Where is the list taken from, and how is it kept up to date?
+
+Chosen by the user: downloaded during the build, pinned to a precise
+commit of the community project and checked with a checksum, as
+Tailwind already is in `scripts/build-site.sh`. Locally, a command
+tells how far behind the pinned commit is, so the user knows when to
+move it.
+
+- **Why:** the build stays reproducible, the repository holds no copy
+  of the list, and moving to a newer list is a deliberate act.
+- **The price:** the new content of the list does not show in the diff
+  when the commit is moved; the local command can make up for it.
+- **Dependabot does not follow it,** since it is not a package: moving
+  the pin is the user's act, prompted by the local command.
+- **Rejected:** a copy of `robots.json` in the repository, updated by a
+  commit, which shows every change in the diff but keeps the list in
+  the repository; downloading the latest version at every build, where
+  two builds of the same commit could give a different `robots.txt`
+  and the build depends on the network and the external project; a
+  scheduled job proposing a pull request, which needs write permissions
+  the workflows do not have.
+
 ## Known from the start
 
 - **There is nothing to disallow today.** The "page not found" is kept
@@ -157,6 +179,7 @@ Disallow: /
 
 ## Questions
 
-- Where the list is taken from and at which version, and how it is kept
-  up to date.
+- What the local command shows besides how far behind the pin is.
+- Which step downloads and filters the list, and how the build writes
+  `robots.txt`; how the test checks it.
 - How the build writes it, and how the test checks it.
