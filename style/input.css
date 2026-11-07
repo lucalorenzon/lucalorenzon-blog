@@ -233,6 +233,11 @@ body {
     @apply mt-[2.25em] list-[square] pl-[1.5em];
   }
 
+  /* Numbered lists: the same space above and indent as the bulleted ones. */
+  & ol {
+    @apply mt-[2.25em] list-decimal pl-[1.5em];
+  }
+
   & li {
     @apply mt-[0.75em];
   }

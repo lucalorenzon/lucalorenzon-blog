@@ -14,6 +14,8 @@ import { retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
 //   6. section headings (h2) stand out from the body text by colour (amber); no line above them
 //      (rules 3 and 6 used to check the amber line above h2 and the inverse video of h3: the
 //      headings were changed to amber text, the intent "sections and roles stay apart from the text" holds)
+//   7. a numbered list (ol) shows its numbers and is indented and spaced like the bulleted
+//      lists of the same column (checked on the After Save Event article)
 //
 // The width of the lines (at most 80 characters, counted on the rendered
 // lines) is checked in readability.spec.ts.
@@ -131,3 +133,35 @@ for (const { name, width, height } of VIEWPORTS) {
   });
 }
 }
+
+// A numbered list must show its numbers and sit in the column like a bulleted one:
+// same indent on the left, same space above.
+test('numbered list of the After Save Event page is numbered and indented like a bulleted list', async ({ page }) => {
+  await retryWhenLive(async () => {
+    await page.goto('./articles/after-save-event.html');
+    await page.evaluate(() => document.fonts.ready);
+    const lists = await page.evaluate(() => {
+      const main = document.querySelector('main')!;
+      const look = (el: Element) => {
+        const style = getComputedStyle(el);
+        return {
+          listStyleType: style.listStyleType,
+          paddingLeft: parseFloat(style.paddingLeft),
+          marginTop: parseFloat(style.marginTop),
+          fontSize: parseFloat(style.fontSize),
+        };
+      };
+      const ol = main.querySelector('ol');
+      const ul = main.querySelector('ul');
+      return { ol: ol ? look(ol) : null, ul: ul ? look(ul) : null };
+    });
+    expect(lists.ol, 'the article must have a numbered list').not.toBeNull();
+    expect(lists.ul, 'the article must have a bulleted list').not.toBeNull();
+    const { ol, ul } = lists;
+    expect(ol!.listStyleType, 'the numbered list must show numbers').toBe('decimal');
+    expect(ol!.paddingLeft, 'indent: 1.5em, as the bulleted lists').toBeCloseTo(1.5 * ol!.fontSize, 1);
+    expect(ol!.paddingLeft, 'indent equal to the bulleted list').toBeCloseTo(ul!.paddingLeft, 1);
+    expect(ol!.marginTop, 'space above: 2.25em, as the bulleted lists').toBeCloseTo(2.25 * ol!.fontSize, 1);
+    expect(ol!.marginTop, 'space above equal to the bulleted list').toBeCloseTo(ul!.marginTop, 1);
+  });
+});

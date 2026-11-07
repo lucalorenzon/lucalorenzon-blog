@@ -31,6 +31,11 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+### Fixed
+
+- Numbered lists in articles show their numbers and are indented again;
+  they were shown with neither.
+
 ## [0.10.0] - 2026-11-07
 
 ### Added
