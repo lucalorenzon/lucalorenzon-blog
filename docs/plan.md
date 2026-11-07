@@ -95,6 +95,8 @@ live since 2026-10-26
 - [Check the structured data](backlog/check-structured-data.md), which
   Lighthouse leaves to a person: whether the site needs any, and how to
   check it.
+- [Port the Python scripts to Rust, run with Docker](backlog/port-python-scripts-to-rust-with-docker.md):
+  the screen reader check and the sitemap's dates step.
 - [Measure the CO2 of a page view](backlog/measure-co2-of-a-page-view.md),
   an estimate from the bytes transferred.
 - [Let readers adjust font and spacing](backlog/let-readers-adjust-font-and-spacing.md),
