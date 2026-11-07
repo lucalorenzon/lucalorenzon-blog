@@ -76,6 +76,27 @@ library inside the suite that already exists.
   would hold the thresholds, the server and the list of pages outside
   both tools.
 
+### How many times does it run?
+
+Chosen by the user on 2026-11-07: once, in a third group of tests
+(a Playwright "project") of its own, beside the dark and the light
+theme. That group runs only the SEO check's file, and the two theme
+groups leave it out.
+
+- **Why once:** the search-engine rules do not depend on the colour
+  scheme, so two runs would give the same result in twice the time.
+  Lighthouse also opens a Chromium of its own, with its control port,
+  so it does not use the browser Playwright prepares for each theme.
+- **Why a group of its own:** the rule "it runs once" is written where
+  the reader looks to see how the suite runs, the configuration, and
+  the report shows the check as an entry of its own.
+- **Its price:** the two theme groups each carry the exclusion of the
+  SEO check's file.
+- **Rejected:** the SEO check skipping itself on the light theme, which
+  leaves the configuration unchanged but fills the report with skipped
+  tests and hides in the test the choice of the dark theme, which has
+  no reason behind it.
+
 ### Which package?
 
 Chosen by the user: the `lighthouse` package alone, at version 13.6.0,
