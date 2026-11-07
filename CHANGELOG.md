@@ -46,6 +46,11 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
   robots that collect text to train artificial intelligence models to stay
   away. Search engines, and assistants that read a page because a user
   asked, stay welcome.
+- Every build checks each page of the sitemap against the search-engine
+  rules of Lighthouse, the Chrome team's tool, and the check runs again
+  on the published site after each publication, so a page that loses
+  its title, its description or its canonical link does not go
+  unnoticed.
 
 ### Changed
 
