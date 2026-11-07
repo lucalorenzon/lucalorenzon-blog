@@ -9,7 +9,7 @@
   2026-11-06, waiting for the cards
   [add a sitemap](../done/2026-11-07_add-sitemap.md), done on
   2026-11-07, and
-  [add a robots.txt](../backlog/add-robots-txt.md). It stays in
+  [add a robots.txt](add-robots-txt.md). It stays in
   `docs/wip/` meanwhile, by the user's choice: half of its answers are
   given.
 
@@ -238,4 +238,4 @@ was added to the repository.
   runs on the pages found in the built site's folder, where the "page
   not found" is, or the exemption is dropped.
 - Whether the site needs a `robots.txt`, and what it says: moved to the
-  card [add a robots.txt](../backlog/add-robots-txt.md).
+  card [add a robots.txt](add-robots-txt.md).

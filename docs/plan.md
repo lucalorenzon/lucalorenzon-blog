@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Add a robots.txt](backlog/add-robots-txt.md), pointing to the
+- [Add a robots.txt](wip/add-robots-txt.md), pointing to the
   sitemap.
 - [Check SEO with Lighthouse in the build](wip/check-seo-with-lighthouse.md),
   on hold until the `robots.txt` exists, then resumed with its pages

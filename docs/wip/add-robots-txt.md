@@ -4,7 +4,7 @@
   SEO check runs
   ([card](../wip/check-seo-with-lighthouse.md)), where it was the last
   open question. In Now, after the [sitemap](../done/2026-11-07_add-sitemap.md).
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-07.
 
 ## Why
 
@@ -29,7 +29,7 @@ its own.
 - **Lighthouse's rule on `robots.txt`** is "not applicable" today, since
   the file is missing; with the file it becomes active and checks it is
   valid. That change is one of those the card
-  [watch the rules Lighthouse finds not applicable](watch-lighthouse-rules-not-applicable.md)
+  [watch the rules Lighthouse finds not applicable](../backlog/watch-lighthouse-rules-not-applicable.md)
   is about.
 - **It must be at the root of the host,** `/robots.txt`; the site is
   served from the root of `https://www.lucalorenzon.com/` since
