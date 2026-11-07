@@ -207,6 +207,33 @@ today, and takes the dates from the file.
   build job with the full history, simpler and the same as locally, but
   it would carry every future source and its credentials.
 
+### What if a date is missing?
+
+Chosen by the user: strict in the pipeline, tolerant locally with a
+warning. In the pipeline the build stops when the file of dates is
+missing or lacks a page; locally it lists the page without a date, which
+the format allows, and prints a warning naming the page.
+
+- **The cases:** the file is missing, which cannot happen in the
+  pipeline, where the build job starts only after the dates job
+  succeeded, but can locally, if the Rust program is run without
+  `scripts/build-site.sh`; a Markdown file not yet committed, the common
+  case locally while writing a new article, which git has no date for;
+  a page left without a date by a mistake, such as a path that differs
+  between the dates step and the build, or a file put on the exclusion
+  list by error, which can happen anywhere and is the case a check must
+  find.
+- **Why both:** strict, the build finds the mistake at once, where it
+  matters, before publication; tolerant, it does not block the writing
+  of a new article locally. The price is two behaviours to know instead
+  of one.
+- **How the build tells them apart:** GitHub Actions sets the variable
+  `CI`, which the Playwright configuration already uses to behave
+  differently in the pipeline.
+- **Rejected:** strict everywhere, which blocks a draft locally;
+  tolerant everywhere, which lets the mistake pass in silence in the
+  pipeline too.
+
 ## Known from the start
 
 - **The build already decides which pages are indexed:** each page is
@@ -232,6 +259,4 @@ today, and takes the dates from the file.
 
 ## Questions
 
-- What the build does when the file of dates is missing or lacks a
-  page.
 - How the test checks it, locally and on the live site.
