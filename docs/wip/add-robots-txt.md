@@ -156,6 +156,24 @@ move it.
   scheduled job proposing a pull request, which needs write permissions
   the workflows do not have.
 
+### What does the local command show?
+
+Chosen by the user: what would change in the site's `robots.txt` if the
+pin moved to the project's latest commit: which robots would go from
+allowed to blocked and back, and which new robots would be blocked
+because they come with a description of their own rather than a
+category, the cases where an exception may be wanted. With it, how many
+commits behind the pin is, counting only those that change
+`robots.json`, since the project often changes other files.
+
+- **Why:** it gives the decision to take directly, and makes up for the
+  new content not showing in the diff when the pin moves.
+- **Its consequence:** the command must apply the same filter as the
+  build, so the filter lives in one place, used by both.
+- **Rejected:** only how far behind the pin is, which says when but not
+  what; the changes to the list itself, which still leave the user to
+  apply the filter in their head.
+
 ## Known from the start
 
 - **There is nothing to disallow today.** The "page not found" is kept
@@ -179,7 +197,6 @@ move it.
 
 ## Questions
 
-- What the local command shows besides how far behind the pin is.
 - Which step downloads and filters the list, and how the build writes
   `robots.txt`; how the test checks it.
 - How the build writes it, and how the test checks it.
