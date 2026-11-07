@@ -219,6 +219,35 @@ Chosen by the user, as proposed:
   the one pinned. The downloaded file is kept in `target/tools/`, as
   Tailwind is, so a build does not need the network every time.
 
+### Which exceptions?
+
+Chosen by the user, on 2026-11-07, from the list at commit
+`508985e256295b837210c8d13cf8dd8f1bd04673` (2026-11-05), where the
+filter lets 73 robots through and blocks 131. Among the 82 robots with a
+description of their own, eight declare in words only search or reading
+on request, and pass as exceptions:
+
+| Robot | Its description in the list, in short |
+|---|---|
+| `Claude-SearchBot` | search for Claude's users |
+| `OAI-SearchBot` | OpenAI's search |
+| `PerplexityBot` | Perplexity's search |
+| `MistralAI-Index` | search, to answer questions in Le Chat |
+| `MistralAI-User/1.0` | acts on users' prompts |
+| `cohere-ai` | answers to prompts started by a user |
+| `iaskspider/2.0` | answers to users' questions |
+| `Andibot` | a search engine using artificial intelligence |
+
+- **Stay blocked,** since they mix a useful use with training, or are
+  unclear, the user's two rules applied as for `Google-Extended`:
+  `Amazonbot` (answers for Alexa, but also "service improvement"),
+  `Applebot-Extended` (for Apple what `Google-Extended` is for Google),
+  `YouBot` (search and language models), `meta-externalagent`
+  (training), `PetalBot`, `DoubaoBot`, `Anomura`, `Cloudflare-AutoRAG`,
+  `amazon-kendra`, `atlassian-bot`, `ScryBot`.
+- **The ordinary search engines,** such as `Googlebot` and `Bingbot`,
+  are not in the list and stay allowed.
+
 ## Known from the start
 
 - **There is nothing to disallow today.** The "page not found" is kept
@@ -242,4 +271,4 @@ Chosen by the user, as proposed:
 
 ## Questions
 
-- How the build writes it, and how the test checks it.
+- None left: the card is ready to be built.
