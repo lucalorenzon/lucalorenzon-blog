@@ -29,6 +29,20 @@ if [[ ! -x "$TOOL" ]]; then
     mv "${TOOL}.tmp" "$TOOL"
 fi
 
+# The dates of the last change of each content file come from git history,
+# which the build job's checkout does not have: the pipeline passes a file made
+# by the content-dates job in CONTENT_DATES_FILE; locally it is made here.
+if [[ -n "${CONTENT_DATES_FILE:-}" ]]; then
+    if [[ ! -f "$CONTENT_DATES_FILE" ]]; then
+        echo "error: CONTENT_DATES_FILE does not point to an existing file: ${CONTENT_DATES_FILE}" >&2
+        exit 1
+    fi
+else
+    CONTENT_DATES_FILE="target/generated/content-dates.tsv"
+    python3 scripts/content-dates/content_dates.py --output "$CONTENT_DATES_FILE"
+fi
+export CONTENT_DATES_FILE
+
 # The site's full address can be set with the SITE_ADDRESS environment
 # variable (https, with a host, ending with "/"); default: https://www.lucalorenzon.com/
 cargo run --release -- target/site

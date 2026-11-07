@@ -189,6 +189,7 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
 | `scripts/playwright-version.sh` | Prints the Playwright version locked in `end2end/`, which picks the test container image in both workflows |
 | `scripts/screen-reader/` | The on-demand screen reader check: Orca 51 and Firefox ESR in a Docker container (`Dockerfile`, `entrypoint.sh`), the host program `check.py`, its unit tests and a log sample (`test_check.py`, `fixtures/`) |
+| `scripts/content-dates/` | The content dates step: `content_dates.py` writes the author date of the last commit of each Markdown file in `content/` (tab-separated file in `target/generated/content-dates.tsv`, read by the build through `CONTENT_DATES_FILE`), and its unit tests (`test_content_dates.py`); in the pipeline it runs in the `content-dates` job, on the full history |
 | `end2end/` | Playwright end-to-end test; in `end2end/tools/`, the script that measures Literata's character widths in Chromium and writes `src/literata_widths.rs` |
 | `.zed/settings.json` | Editor settings for this project: CSS files are checked by Tailwind's CSS server, not the generic one, which does not know Tailwind 4's syntax |
 | `.github/workflows/build.yml` | Check, build and test the site on every push and pull request; on `main`, keep the tested site in the `snapshot` Release; never publishes |

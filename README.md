@@ -32,6 +32,13 @@ The build takes the site's full address from `SITE_ADDRESS`, by default
 relative paths; only `404.html` uses the address's path part, so it works
 at any depth. Why: `docs/adr/ADR-002-relative-paths-and-site-address-at-build.md`.
 
+The build also needs the date of the last change of each content file, read
+from git (author date) by `scripts/content-dates/content_dates.py`. Locally
+`scripts/build-site.sh` runs it; in the pipeline the `content-dates` job
+runs it on the full history and the build uses its file, via
+`CONTENT_DATES_FILE`. Its tests:
+`python3 -m unittest discover -s scripts/content-dates -p 'test_*.py'`.
+
 Every push to `main` and every pull request runs the same checks on
 GitHub (workflow `.github/workflows/build.yml`). Nothing is published by
 a push: the site goes live only when a version is published.

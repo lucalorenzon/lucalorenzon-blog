@@ -5,6 +5,10 @@
 # On a push to main, after the browser test passed, it also keeps the release
 # "snapshot" up to date with a zip of the tested site (job snapshot), which
 # deploy.yml publishes when it was built from the tagged commit.
+# Job content-dates reads the git history to find the date of the last change
+# of each content file and hands it to job build as a file (artifact): build
+# checks out the last commit only. It is a separate job because it needs the
+# full history; later it is meant to gather content from external sources too.
 # The browser test (end2end/) runs on the freshly built site served locally
 # (job browser-test).
 # The same job first checks the test's TypeScript types, because Playwright
@@ -122,12 +126,43 @@ jobs:
 
           decide false "documentation only"
 
+  content-dates:
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.code != 'false' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      # Every commit, no historical file contents: dates need only the commits.
+      - name: Check out the repository with its commits
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Test the dates step
+        run: python3 -m unittest discover -s scripts/content-dates -p 'test_*.py'
+
+      - name: Find the date of the last change of each content file
+        run: python3 scripts/content-dates/content_dates.py --output target/generated/content-dates.tsv
+
+      - name: Keep the dates for the build
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: content-dates
+          path: target/generated/content-dates.tsv
+          retention-days: 1
+          if-no-files-found: error
+
   build:
     # Skipped only when detection explicitly said "documentation only". If
     # detection fails its output is empty and build runs anyway, so a broken
     # detector can never let an untested pull request pass the required check.
-    needs: changes
-    if: ${{ !cancelled() && needs.changes.outputs.code != 'false' }}
+    # It also needs the dates file from content-dates to have succeeded.
+    needs: [changes, content-dates]
+    if: ${{ !cancelled() && needs.changes.outputs.code != 'false' && needs.content-dates.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     outputs:
@@ -162,7 +197,15 @@ jobs:
       - name: Test
         run: cargo test
 
+      - name: Download the dates of the last change of each content file
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: content-dates
+          path: target/generated
+
       - name: Build the site
+        env:
+          CONTENT_DATES_FILE: target/generated/content-dates.tsv
         run: scripts/build-site.sh
 
       # The browser-test job needs the site, and runs on every event; deploy.yml
