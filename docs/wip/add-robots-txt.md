@@ -14,6 +14,43 @@ The user chose to add it, in a card of its own, separate from the
 sitemap's: whether the site needs one, and what it says, is a decision of
 its own.
 
+## Answers so far
+
+### What does it say?
+
+Chosen by the user: it points search engines to the sitemap, and it
+blocks the robots that collect text to train artificial intelligence
+models, while it lets through the robots that read a page when a user
+asks, and those that index pages for search.
+
+- **Why a `robots.txt` at all:** without one, search engines take
+  everything as allowed (Google treats a missing `robots.txt`, answering
+  404, as "no restrictions"), so the file is not needed for the site to
+  be read. It is needed for the `Sitemap:` line, the only way a search
+  engine finds the sitemap by itself; the other is submitting it by hand
+  in each engine's console, such as Google Search Console or Bing
+  Webmaster Tools.
+- **Why block training:** the articles are under CC BY 4.0, which allows
+  copying and adapting, also for profit, but asks to credit the author;
+  the curriculum is under CC BY-ND 4.0, which also forbids sharing
+  changed versions ([licences](../../content/README.md)). A model trained
+  on the text usually credits nobody.
+- **Three kinds of robot, decided one by one.** Anthropic's documentation
+  ([Does Anthropic crawl data from the web](https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler),
+  read on 2026-11-07) names three, all honouring `robots.txt`:
+  `ClaudeBot` collects text that may train models; `Claude-User` reads a
+  page when a user asks Claude to; `Claude-SearchBot` indexes pages for
+  search. OpenAI has the same three kinds (`GPTBot`, `ChatGPT-User`,
+  `OAI-SearchBot`). Blocking `ClaudeBot` only keeps the site's future
+  text out of training; Claude can still read the site when a user asks.
+- **A request, not a lock:** `robots.txt` is honoured by whoever chooses
+  to; a browser, a script or a less careful robot can ignore it. Text
+  collected before the rule stays where it is.
+- **Rejected:** a `robots.txt` that only points to the sitemap, which
+  leaves the use of the text for training open; blocking every robot of
+  artificial intelligence, which would also keep the site out of the
+  answers and searches made with those tools.
+
 ## Known from the start
 
 - **There is nothing to disallow today.** The "page not found" is kept
@@ -37,5 +74,5 @@ its own.
 
 ## Questions
 
-- Whether the site needs one, and what it says.
+- Which training robots, by name, and how that list is kept up to date.
 - How the build writes it, and how the test checks it.
