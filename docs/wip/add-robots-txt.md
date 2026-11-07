@@ -223,7 +223,10 @@ Chosen by the user, as proposed:
 
 Chosen by the user, on 2026-11-07, from the list at commit
 `508985e256295b837210c8d13cf8dd8f1bd04673` (2026-11-05), where the
-filter lets 73 robots through and blocks 131. Among the 82 robots with a
+categories alone let 73 robots through and block 131. With the eight
+exceptions, 81 pass and 123 are blocked; `robots.txt` blocks 122 by name,
+since one entry of the list is `__usage_ai-training`, the shared signal,
+which the build writes as a group of its own. Among the 82 robots with a
 description of their own, eight declare in words only search or reading
 on request, and pass as exceptions:
 
