@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-06, by the user, while choosing the threshold of
   the SEO check
-  ([card](../wip/check-seo-with-lighthouse.md)).
+  ([card](../done/2026-11-07_check-seo-with-lighthouse.md)).
 - **Status:** noticed, not started.
 
 ## Why

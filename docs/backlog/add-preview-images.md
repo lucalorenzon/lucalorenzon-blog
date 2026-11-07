@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-06, by the user, splitting the card on SEO and
   Open Graph tags, opened on 2026-11-02; the other parts are
   [add the description and the Open Graph tags to every indexed page](../done/2026-11-06_add-description-and-open-graph-tags.md)
-  and [check SEO with Lighthouse in the build](../wip/check-seo-with-lighthouse.md).
+  and [check SEO with Lighthouse in the build](../done/2026-11-07_check-seo-with-lighthouse.md).
   In Next, after the logo is reviewed.
 - **Status:** noticed, not started.
 

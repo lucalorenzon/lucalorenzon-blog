@@ -29,7 +29,9 @@ noticing: Google Lighthouse, or something similar if it exists.
 - **Lighthouse comes first for SEO:** on 2026-11-06 the user chose
   Lighthouse for the search-engine check, knowingly anticipating this
   card's choice of tool
-  ([card](../wip/check-seo-with-lighthouse.md)). Once that card is done, the
+  ([card](../done/2026-11-07_check-seo-with-lighthouse.md)). That card
+  is done since 2026-11-07: Lighthouse 13.6.0 runs in a Playwright
+  project of its own, once per run, on the pages of the sitemap. The
   performance category may be added to the same run, and the question
   "which tool" below is mostly answered.
 - **The build already starts a browser** (Playwright, Chromium) on the

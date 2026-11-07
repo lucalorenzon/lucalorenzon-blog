@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-06, by the user, while choosing the threshold of
   the SEO check
-  ([card](../wip/check-seo-with-lighthouse.md)).
+  ([card](../done/2026-11-07_check-seo-with-lighthouse.md)).
 - **Status:** noticed, not started.
 
 ## Why
@@ -27,7 +27,11 @@ ways:
   has none), the rule on images' alternative text (the content has no
   images) on every page; the rule on the canonical link on the "page not
   found", which has no canonical link
-  ([trial run](../wip/check-seo-with-lighthouse.md)).
+  ([trial run](../done/2026-11-07_check-seo-with-lighthouse.md)).
+- **Since 2026-11-07** the rule on `robots.txt` applies and passes, since
+  the site has one; `image-alt` is still not applicable on every page of
+  the sitemap
+  ([results](../done/2026-11-07_check-seo-with-lighthouse.md)).
 
 ## Questions
 

@@ -14,12 +14,11 @@ live since 2026-10-26
 
 ## Now
 
-- [Check SEO with Lighthouse in the build](wip/check-seo-with-lighthouse.md),
-  resumed, on the pages of the sitemap only.
-- The next version publishes the SEO check together with what is
-  already done: the canonical link, the descriptions, the Open Graph
-  tags, the sitemap and the `robots.txt`
-  ([card](done/2026-11-06_add-canonical-link-to-every-page.md),
+- Publish the next version: the SEO check, done, together with the
+  canonical link, the descriptions, the Open Graph tags, the sitemap and
+  the `robots.txt`; the first live run of the SEO check comes with it
+  ([card](done/2026-11-07_check-seo-with-lighthouse.md),
+  [card](done/2026-11-06_add-canonical-link-to-every-page.md),
   [card](done/2026-11-06_add-description-and-open-graph-tags.md),
   [card](done/2026-11-07_add-sitemap.md),
   [card](done/2026-11-07_add-robots-txt.md)).
@@ -51,7 +50,7 @@ live since 2026-10-26
   left empty by the narrower column of version 0.5.0.
 - [Check performance in the build](backlog/check-performance-in-the-build.md),
   so a choice that makes the site slower or heavier does not go
-  unnoticed; Lighthouse arrives first with the SEO check.
+  unnoticed; Lighthouse is already in the build, with the SEO check.
 - [Observe the visitors in production](backlog/observe-visitors-in-production.md):
   who reads the site, what they look for, where they interact; with
   the consent and the cookie policy it brings.

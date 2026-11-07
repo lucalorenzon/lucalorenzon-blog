@@ -10,7 +10,7 @@
   [add a sitemap](../done/2026-11-07_add-sitemap.md) and
   [add a robots.txt](../done/2026-11-07_add-robots-txt.md), both done on
   2026-11-07; it stayed in `docs/wip/` meanwhile, by the user's choice.
-  Resumed on 2026-11-07.
+  Resumed on 2026-11-07; done, on 2026-11-07.
 
 ## Why
 
@@ -19,7 +19,7 @@ the search-engine rules, so a page published without its description,
 its title or its canonical link does not go unnoticed. Some pages must
 be able to stay out of it, through a block-list.
 
-## Answers so far
+## Answers
 
 ### Which rules?
 
@@ -111,6 +111,17 @@ port and hand the page to Lighthouse.
   and the Sentry client. Read in its code (`core/lib/sentry.js`): used
   as a library, Lighthouse loads Sentry only when the option
   `enableErrorReporting` is passed, so it sends nothing unless asked.
+- **Audited when installed, on 2026-11-07:** 135 packages came with it,
+  more than the trial run's estimate; `npm audit` found no
+  vulnerability. Every licence is permissive (MIT, Apache 2.0, BSD, ISC,
+  BlueOak and similar) but one: the package `sentry` 0.45.0, Sentry's
+  command line, brought in by `@sentry/node` through
+  `@sentry/bundler-plugins`, under the Functional Source License 1.1,
+  which forbids only using it to build a product competing with Sentry
+  and becomes Apache 2.0 after two years. Accepted, with the user
+  informed: it has no script that runs at installation, the check never
+  calls it, and it stays a development dependency, never part of the
+  published site.
 - **Rejected:** `playwright-lighthouse` 4.0.0 on top of `lighthouse`. It
   would write the link between the two tools for the project, but it has
   one maintainer, its last version dates from 2024-01-15, and it has not
@@ -262,12 +273,39 @@ was added to the repository.
 - **The live home page scores 90:** the published version still lacks
   the description.
 
-## Questions
+## Results
 
-- **Known from the sitemap's card** ([card](../done/2026-11-07_add-sitemap.md), "How is
-  it checked?"): this check, reading its pages from the sitemap, is also
-  the sitemap's check in a browser; the Rust tests check that each
-  canonical link matches its sitemap address, which Lighthouse does
-  not.
-- Whether the site needs a `robots.txt`, and what it says: moved to the
-  card [add a robots.txt](../done/2026-11-07_add-robots-txt.md).
+- **Built in one commit** (`78a2765`): the `lighthouse` package at
+  13.6.0 in `end2end/`, a third Playwright project `lighthouse` beside
+  the two themes, which leave its file out, and the test
+  `end2end/tests/seo.spec.ts`.
+- **How the test reads the sitemap:** it asks the server under test for
+  `sitemap.xml` and keeps the path of each address, since the addresses
+  always name `https://www.lucalorenzon.com/`; locally it opens that
+  path on the local server. On the live site only the reading of the
+  sitemap is retried, for up to a minute, while GitHub Pages serves the
+  new version: six Lighthouse runs one after the other would not fit in
+  that minute, and the sitemap and the pages are published together.
+  This path runs for the first time with the next publication.
+- **On the local build, 2026-11-07:** the six pages of the sitemap
+  (home, curriculum, about, licence, the two articles) give the same
+  result: nine rules pass (`is-crawlable`, `document-title`,
+  `meta-description`, `http-status-code`, `link-text`,
+  `crawlable-anchors`, `robots-txt`, `hreflang`, `canonical`),
+  `image-alt` is not applicable, since there are no images yet, and
+  `structured-data` is manual, so ignored. The rule on `robots.txt`,
+  not applicable in the trial run, now applies, since the site has one.
+  About 5 seconds a page, 30 seconds in all.
+- **It can fail:** with the description removed by hand from the built
+  `about.html`, the test stopped with
+  `http://127.0.0.1:4173/about.html: meta-description (Document does not
+  have a meta description): mode binary, score 0`.
+- **Whole suite:** 849 browser tests passed and 2 skipped, the SEO check
+  included; 199 Rust tests passed. The workflows needed no change: both
+  run `npx playwright test`, which runs the new project too.
+- **It is also the sitemap's check in a browser,** as decided in the
+  sitemap's card ([card](2026-11-07_add-sitemap.md), "How is it
+  checked?"): a page listed there that does not answer, or answers
+  without its title or description, fails here. The Rust tests check
+  that each canonical link matches its sitemap address, which
+  Lighthouse does not.
