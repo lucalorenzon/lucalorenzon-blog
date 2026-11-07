@@ -5,7 +5,10 @@
   Hack, not Meslo LG, whose licence turned out unclear (see Alternatives).
   Completed on 2026-11-05, when the light background was built: the
   default for readers with no preference, and the light shades of amber
-  (see Consequences and Technical notes)
+  (see Consequences and Technical notes). Extended on 2026-11-07: the
+  markers of lists, bullets and numbers, join the uses of amber (see
+  Decision and Technical notes;
+  [card](../done/2026-11-07_show-numbered-lists-and-colour-list-markers.md))
 - **Card:** [give the articles' code, quotes and tables a look](../done/2026-11-06_design-look-of-articles.md)
 
 ## Context
@@ -37,7 +40,8 @@ communicating. The look has one job, letting that content be read.
    around it.
 2. **Amber is an accent, not the colour of the text.** It is kept for the
    logo, the page title, the lines, the frame of code blocks, the bar of
-   quotes and code inside a sentence. The text is off-white on black, or
+   quotes, code inside a sentence and, since 2026-11-07, the markers of
+   lists (the bullet or the number, never the item's text). The text is off-white on black, or
    near-black on a paper-white background.
 3. **Each font has one job, and all are served by the site:**
    - the logo keeps the pixel font, IBM VGA 8x16, the one sign of 1985
@@ -119,6 +123,13 @@ small file.
   sentence, on a code surface of `#ebe7df` and a text of `#1c1a17`.
   Contrasts and the trials:
   [card](../done/2026-11-06_design-look-of-articles.md), "The light background".
+- **The markers of lists** (added on 2026-11-07) follow the same tones:
+  a bullet is a graphic, so it takes the tone of lines and frames
+  (`accent-line`); a number is normal-size text, so it takes the tone
+  of code inside a sentence (`accent-code`). On the light page the two
+  shades differ; on the dark page both are `#dd9911`. Why and the
+  options rejected:
+  [card](../done/2026-11-07_show-numbered-lists-and-colour-list-markers.md).
 - **Hack** (version 3.003, npm package `hack-font` 3.3.0): MIT License
   for the Hack project, public domain for DejaVu's work, Bitstream Vera
   License for Bitstream's; the web subset made by the Hack project,
