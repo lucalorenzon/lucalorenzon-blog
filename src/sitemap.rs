@@ -10,6 +10,14 @@ use crate::{about_page, article_page, curriculum_page, home_page, licence_page, 
 use std::collections::BTreeMap;
 use std::fmt;
 
+/// Where the build writes the sitemap, relative to the site's root.
+pub const SITEMAP_FILE: &str = "sitemap.xml";
+
+/// The sitemap's full address, as `robots.txt` points to it.
+pub fn sitemap_address(site: &SiteAddress) -> String {
+    site.join(SITEMAP_FILE)
+}
+
 /// A page the build writes.
 pub struct Page {
     /// Where the file is written, relative to the site's root: `about.html`.

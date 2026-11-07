@@ -7,6 +7,7 @@ mod literata_widths;
 mod markdown;
 mod not_found_page;
 mod page_frame;
+mod robots_txt;
 mod site_address;
 mod sitemap;
 mod table_widths;
@@ -49,7 +50,18 @@ fn build() -> Result<(), Box<dyn Error>> {
     for warning in &sitemap.warnings {
         eprintln!("warning: {warning}");
     }
-    fs::write(out_dir.join("sitemap.xml"), sitemap.xml)?;
+    fs::write(out_dir.join(sitemap::SITEMAP_FILE), sitemap.xml)?;
+    let blocked_robots = match env::var("BLOCKED_ROBOTS_FILE") {
+        Ok(path) if !path.is_empty() => {
+            fs::read_to_string(&path).map_err(|error| format!("cannot read `{path}`: {error}"))
+        }
+        _ => Err("BLOCKED_ROBOTS_FILE is not set".to_owned()),
+    };
+    let robots = robots_txt::build_robots_txt(&address, blocked_robots, is_ci)?;
+    for warning in &robots.warnings {
+        eprintln!("warning: {warning}");
+    }
+    fs::write(out_dir.join(robots_txt::ROBOTS_FILE), robots.text)?;
     write_code_classes()?;
     Ok(())
 }

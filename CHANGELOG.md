@@ -36,6 +36,10 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 - A sitemap, `sitemap.xml`, listing every page of the site with the date
   of its last change, so search engines find all the pages and know when
   they changed. The home page has no date yet.
+- A `robots.txt` that points search engines to the sitemap and asks the
+  robots that collect text to train artificial intelligence models to stay
+  away. Search engines, and assistants that read a page because a user
+  asked, stay welcome.
 
 ## [0.9.0] - 2026-11-06
 
