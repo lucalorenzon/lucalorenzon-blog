@@ -234,6 +234,32 @@ the format allows, and prints a warning naming the page.
   tolerant everywhere, which lets the mistake pass in silence in the
   pipeline too.
 
+### How is it checked?
+
+Chosen by the user: by the build's Rust tests. The check in a browser,
+on the local build and on the live site, comes with the SEO check, which
+runs Lighthouse from the Playwright tests on the pages read from this
+sitemap ([card](check-seo-with-lighthouse.md)).
+
+- **The Rust tests:** the sitemap is valid XML under the protocol; the
+  addresses are full, with special characters escaped; the date has the
+  right format; the home page has no date; every Markdown file under
+  `content/`, but those on the exclusion list, has its entry, which
+  finds a forgotten page; the canonical link of each page is identical
+  to its address in the sitemap; strict in the pipeline, tolerant with a
+  warning locally.
+- **What the SEO check will add:** every address in the sitemap answers
+  with the right status (Lighthouse's rule on the response status), and
+  a page with `noindex` that ended up in the sitemap fails Lighthouse's
+  rule on indexing. Lighthouse's rule on the canonical link checks that
+  it is valid, not that it matches the sitemap: that is the Rust tests'
+  job.
+- **The gap meanwhile:** until the SEO check is resumed, nothing reads
+  the sitemap in a browser; accepted, since the next version waits for
+  both cards.
+- **Rejected:** a Playwright test of the sitemap's own, which the SEO
+  check would mostly repeat.
+
 ## Known from the start
 
 - **The build already decides which pages are indexed:** each page is
@@ -259,4 +285,6 @@ the format allows, and prints a warning naming the page.
 
 ## Questions
 
-- How the test checks it, locally and on the live site.
+- How the dates step is written, and how its dates are checked: a test
+  can see that a date is there and well formed, but checking it is the
+  right one means computing it again from git.

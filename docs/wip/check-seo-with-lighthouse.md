@@ -226,6 +226,11 @@ was added to the repository.
 
 ## Questions
 
+- **Known from the sitemap's card** ([card](add-sitemap.md), "How is
+  it checked?"): this check, reading its pages from the sitemap, is also
+  the sitemap's check in a browser; the Rust tests check that each
+  canonical link matches its sitemap address, which Lighthouse does
+  not.
 - **To be answered when the card is resumed.** With the pages taken from
   the sitemap, the "page not found" is never checked, so the exemption
   derived from `noindex` never applies. Whether the local check also
