@@ -14,17 +14,16 @@ live since 2026-10-26
 
 ## Now
 
-- [Add a robots.txt](wip/add-robots-txt.md), pointing to the
-  sitemap.
 - [Check SEO with Lighthouse in the build](wip/check-seo-with-lighthouse.md),
-  on hold until the `robots.txt` exists, then resumed with its pages
-  read from the sitemap.
-- The next version publishes the `robots.txt` and the SEO check
-  together with what is already done: the canonical link, the
-  descriptions, the Open Graph tags and the sitemap
+  to be resumed, with its pages read from the sitemap, now that the
+  sitemap and the `robots.txt` exist.
+- The next version publishes the SEO check together with what is
+  already done: the canonical link, the descriptions, the Open Graph
+  tags, the sitemap and the `robots.txt`
   ([card](done/2026-11-06_add-canonical-link-to-every-page.md),
   [card](done/2026-11-06_add-description-and-open-graph-tags.md),
-  [card](done/2026-11-07_add-sitemap.md)).
+  [card](done/2026-11-07_add-sitemap.md),
+  [card](done/2026-11-07_add-robots-txt.md)).
 
 ## Next
 

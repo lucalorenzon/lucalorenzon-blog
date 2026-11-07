@@ -17,7 +17,7 @@ example who wrote an article and when), which search engines may use to
 show a richer result.
 
 Added by the user on 2026-11-07, while writing the `robots.txt`
-([card](../wip/add-robots-txt.md)): the user would like the robots of
+([card](../done/2026-11-07_add-robots-txt.md)): the user would like the robots of
 artificial intelligence that read the site to cite it in their answers.
 No mechanism makes them do it; the site can only declare its terms in a
 form machines read, and one of the ways goes through structured data.

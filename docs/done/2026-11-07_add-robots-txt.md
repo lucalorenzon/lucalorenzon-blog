@@ -3,8 +3,8 @@
 - **Opened:** 2026-11-06, by the user, while choosing on which pages the
   SEO check runs
   ([card](../wip/check-seo-with-lighthouse.md)), where it was the last
-  open question. In Now, after the [sitemap](../done/2026-11-07_add-sitemap.md).
-- **Status:** being worked on, since 2026-11-07.
+  open question.
+- **Status:** done, on 2026-11-07.
 
 ## Why
 
@@ -14,7 +14,7 @@ The user chose to add it, in a card of its own, separate from the
 sitemap's: whether the site needs one, and what it says, is a decision of
 its own.
 
-## Answers so far
+## Answers
 
 ### What does it say?
 
@@ -188,7 +188,7 @@ the build already knows.
 - **Why:** the standard library reads JSON and downloads files, so no
   new dependency; and the step before the build is where what comes
   from outside the repository is gathered, as decided for the dates
-  ([card](../done/2026-11-07_add-sitemap.md), "How are the dates read
+  ([card](2026-11-07_add-sitemap.md), "How are the dates read
   from git?").
 - **Rejected:** Rust, with `scripts/build-site.sh` downloading the file
   as it does Tailwind and the build reading it, which needs a new
@@ -212,7 +212,7 @@ Chosen by the user, as proposed:
 - **The SEO check, when resumed,** turns on by itself Lighthouse's rule
   on `robots.txt`, "not applicable" today, and checks it in a browser,
   locally and on the live site
-  ([card](check-seo-with-lighthouse.md)).
+  ([card](../wip/check-seo-with-lighthouse.md)).
 - **The download:** if the network is missing or the checksum does not
   match, the build stops, locally and in the pipeline alike, as it does
   for Tailwind: a wrong checksum is not a draft, it is a file other than
@@ -262,7 +262,7 @@ on request, and pass as exceptions:
   ([card](../wip/check-seo-with-lighthouse.md), "How is a page
   exempted?").
 - **Its main use here** would be the `Sitemap:` line, pointing search
-  engines to the [sitemap](../done/2026-11-07_add-sitemap.md).
+  engines to the [sitemap](2026-11-07_add-sitemap.md).
 - **Lighthouse's rule on `robots.txt`** is "not applicable" today, since
   the file is missing; with the file it becomes active and checks it is
   valid. That change is one of those the card
@@ -272,6 +272,32 @@ on request, and pass as exceptions:
   served from the root of `https://www.lucalorenzon.com/` since
   2026-11-01.
 
-## Questions
+## Results
 
-- None left: the card is ready to be built.
+- **Built in two commits:** the step that downloads and filters the
+  list (`4291276`), and the `robots.txt` written by the build
+  (`cc900f2`). The pipeline job `content-dates` became `gather-inputs`,
+  by the user's choice, since it now gathers everything that comes from
+  outside the build, and hands the build both files in one artifact,
+  `inputs`.
+- **The file built on 2026-11-07,** in short: a comment line ("Search
+  engines and assistants are welcome; AI training is not."), the group
+  `User-agent: __usage_ai-training` with `Disallow: /`, one group of 122
+  robots with `Disallow: /`, and the line
+  `Sitemap: https://www.lucalorenzon.com/sitemap.xml`. No
+  `User-agent: *` group.
+- **Lighthouse,** run once on the local build's home page: its rule on
+  `robots.txt`, "not applicable" until then, became active and passed,
+  names with spaces included; its rule on indexing passed too, so no
+  search engine's robot is blocked. Score 100.
+- **In the pipeline** (run of commit `cc900f2`, 2026-11-07): the job
+  `gather-inputs` took 6 seconds; the artifact held both files, the list
+  122 names; the snapshot's `robots.txt` was byte for byte the one built
+  locally.
+- **The local command,** `python3 scripts/robots-list/robots_list.py
+  --check-updates`, answered "up to date" on 2026-11-07; its report of
+  changes was tried with a list made up for the test, not yet with a
+  real answer from GitHub.
+- **Counts corrected on the way:** the categorised robots were first
+  counted as 147 instead of 122, and the blocked ones given as 131, the
+  count before the exceptions; both are corrected above.
