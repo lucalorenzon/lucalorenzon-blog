@@ -202,3 +202,86 @@ test('list markers take the amber accent and the item text keeps its colour', as
     expect(seen.ul!.text, 'the item text keeps its colour').not.toBe(seen.ul!.marker);
   });
 });
+
+// The home page's boxes (card frame-home-page-articles-in-boxes), on every device: no sideways
+// scroll, the date label (on the bottom border line) clears the description and the next box, and
+// the border line runs through the middle of the label, at rest and when active.
+for (const { name, width, height } of VIEWPORTS) {
+  test(`the home page's boxes and their date labels are laid out well at ${width}x${height} (${name})`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height });
+
+    const check = async () => {
+      await page.goto('./');
+      const measure = () =>
+        page.evaluate(() => {
+          const rect = (el: Element) => el.getBoundingClientRect();
+          const entries = Array.from(document.querySelectorAll('.article-list > li'));
+          return {
+            innerWidth: window.innerWidth,
+            scrollWidth: document.documentElement.scrollWidth,
+            entries: entries.map((li, i) => {
+              const label = rect(li.querySelector('time')!);
+              const description = rect(li.querySelector('p')!);
+              const box = rect(li);
+              const border = parseFloat(getComputedStyle(li).borderBottomWidth);
+              const next = entries[i + 1] ? rect(entries[i + 1]) : null;
+              return {
+                borderWidth: border,
+                labelAboveDescription: label.top - description.bottom,
+                labelAboveNextBox: next ? next.top - label.bottom : null,
+                lineCentreOffset: box.bottom - border / 2 - (label.top + label.height / 2),
+              };
+            }),
+          };
+        });
+
+      for (const state of ['rest', 'active']) {
+        if (state === 'active') await page.getByRole('main').getByRole('listitem').first().hover();
+        else await page.mouse.move(0, 0);
+        const m = await measure();
+        expect(m.scrollWidth, `${state}: no sideways scroll`).toBeLessThanOrEqual(m.innerWidth);
+        expect(m.entries.length).toBeGreaterThan(0);
+        for (const [i, e] of m.entries.entries()) {
+          expect(e.labelAboveDescription, `${state}, entry ${i}: label clears the description`).toBeGreaterThanOrEqual(0);
+          if (e.labelAboveNextBox !== null)
+            expect(e.labelAboveNextBox, `${state}, entry ${i}: label clears the next box`).toBeGreaterThanOrEqual(0);
+          expect(Math.abs(e.lineCentreOffset), `${state}, entry ${i}: line through the label's middle`).toBeLessThanOrEqual(0.5);
+        }
+      }
+    };
+
+    await retryWhenLive(check);
+  });
+}
+
+// The space between the home page's boxes is 2.25 times the text size and the first box has no
+// margin above it (card frame-home-page-articles-in-boxes). The column's own rule for list items
+// (0.75em above) must not win over it, whatever the order the stylesheet comes in.
+for (const { name, width, height } of VIEWPORTS) {
+  test(`the home page's boxes are 2.25em apart and the first has no margin above at ${width}x${height} (${name})`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height });
+
+    const check = async () => {
+      await page.goto('./');
+      const m = await page.evaluate(() => {
+        const entries = Array.from(document.querySelectorAll('.article-list > li'));
+        const first = entries[0].getBoundingClientRect();
+        const second = entries[1].getBoundingClientRect();
+        const list = document.querySelector('.article-list')!.getBoundingClientRect();
+        return {
+          gap: second.top - first.bottom,
+          fontSize: parseFloat(getComputedStyle(entries[0]).fontSize),
+          firstTopFromList: first.top - list.top,
+        };
+      });
+      expect(Math.abs(m.gap - 2.25 * m.fontSize)).toBeLessThanOrEqual(0.5);
+      expect(Math.abs(m.firstTopFromList)).toBeLessThanOrEqual(0.5);
+    };
+
+    await retryWhenLive(check);
+  });
+}

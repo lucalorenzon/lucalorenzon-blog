@@ -337,30 +337,78 @@ body {
 }
 
 /* The home page's list of articles, in the text column: no bullets and no
-   indent, entries 2.25em apart like paragraphs. Inside an entry the title
-   (an h2), the description and the date sit close together, so the three read
-   as one. The column's rule for lists (`ul`, bullets and indent) is heavier
-   than a single class, so the list's own reset is written with `:is(ul)` twice
-   to outweigh it; the other rules are heavier than the column's by their
-   selectors (a list item's paragraph, heading and date) or tie and win by
-   coming after it. The date is a block of its own
-   but not a paragraph: two paragraphs in a row must be 1.5 line heights apart
-   (readability checks). */
+   indent, each entry framed in a box (card frame-home-page-articles-in-boxes).
+   Inside an entry the title (an h2), the description and the date sit close
+   together, so the three read as one. The column's rule for lists (`ul`,
+   bullets and indent) is heavier than a single class, so the list's own reset
+   is written with `:is(ul)` twice to outweigh it. Every other rule that meets a
+   rule of the column also wins by specificity, never by coming after it (the
+   order Tailwind emits the utilities in is not ours to rely on): the list
+   item's margin has `:is(ul)` in its selector, beating the column's `li`
+   rule; the item's paragraph and heading are heavier than the column's `p`
+   and `h2` by their selectors; the date and the link's ::after meet no rule
+   of the column.
+
+   The box: a border in the tone of lines and frames (ADR-003), 2px at rest and
+   4px when active, 8px rounded corners. `--bw` is the border's width; the
+   padding is computed from it, so when the border grows the padding shrinks and the text
+   never moves. The padding is 0.75em plus 2px, minus the border; the bottom
+   has 4px more, so the date label does not touch the description. Active
+   means under the mouse or with the keyboard focus on the link (`:has`), and
+   the link's own outline is dropped because the box shows the focus.
+
+   The whole box leads to the article while the title's link stays the only
+   link: its ::after covers the box, border included, and goes down far
+   enough to cover the half of the date label that hangs below the box. The
+   date stays after the description in the HTML (screen reader order) and sits
+   on the bottom border line, at the right, 0.75em of the text from the box's
+   edge; its background is the page's, so the line breaks behind it, and the
+   line runs through its vertical middle. It lets clicks through to the
+   ::after. Italic capitals, 0.875 of the text size, the text's colour. */
 @utility article-list {
   &:is(ul):is(ul) {
     @apply list-none p-0;
   }
 
-  & > li {
-    @apply mt-[2.25em];
+  &:is(ul) > li {
+    --bw: 2px;
+    @apply relative mt-[2.25em] rounded-[8px] border-solid border-accent-line;
+    border-width: var(--bw);
+    padding: calc(0.75em + 2px - var(--bw)) calc(0.75em + 2px - var(--bw))
+      calc(0.75em + 4px + 2px - var(--bw));
   }
 
   & > li:first-child {
     @apply mt-0;
   }
 
+  & > li:hover,
+  & > li:has(a:focus-visible) {
+    --bw: 4px;
+  }
+
+  /* The label of the last box hangs below it: room is left so the page's end
+     keeps its space above the footer. */
+  & > li:last-child {
+    @apply mb-[1em];
+  }
+
   & > li > h2 {
     @apply mt-0;
+  }
+
+  & > li > h2 a:focus-visible {
+    @apply outline-none;
+  }
+
+  & > li > h2 a::after {
+    content: "";
+    position: absolute;
+    top: calc(-1 * var(--bw));
+    right: calc(-1 * var(--bw));
+    left: calc(-1 * var(--bw));
+    bottom: calc(-1 * var(--bw) - 1em);
+    border-radius: 8px;
   }
 
   & > li > p {
@@ -368,7 +416,10 @@ body {
   }
 
   & > li > time {
-    @apply block mt-[0.25em];
+    @apply absolute block m-0 px-[0.4em] bg-page pointer-events-none text-[0.875em] italic uppercase tracking-[0.05em];
+    bottom: calc(var(--bw) / -2);
+    right: calc(0.75em / 0.875 - var(--bw));
+    transform: translateY(50%);
   }
 }
 

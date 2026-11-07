@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 import { live, retryWhenLive } from './support';
 
 test.beforeAll(() => {
@@ -156,3 +156,128 @@ for (const { name, width, height } of [
     await retryWhenLive(check);
   });
 }
+
+// Each article is framed in a box (card frame-home-page-articles-in-boxes): the whole box leads to
+// the article, the border thickens when the box is active, the date is a label on the bottom border.
+const FIRST_ARTICLE = LISTED_ARTICLES[0];
+
+// The point at the centre of an element. The description is covered by the title link's stretched
+// area, so Playwright's own click and hover (which wait for the element to receive the event)
+// would wait forever: the mouse is moved to the point instead, as a reader's would be.
+async function centreOf(locator: Locator): Promise<{ x: number; y: number }> {
+  const box = (await locator.boundingBox())!;
+  return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+}
+
+test('in each entry the date comes last, after the description', async ({ page }) => {
+  const check = async () => {
+    await page.goto('./');
+    const order = await page.evaluate(() =>
+      Array.from(document.querySelectorAll('.article-list > li')).map((li) => ({
+        last: li.lastElementChild?.tagName,
+        tags: Array.from(li.children).map((c) => c.tagName),
+      })),
+    );
+    expect(order).toHaveLength(2);
+    for (const { last, tags } of order) {
+      expect(last).toBe('TIME');
+      expect(tags.indexOf('TIME')).toBeGreaterThan(tags.indexOf('P'));
+    }
+  };
+
+  await retryWhenLive(check);
+});
+
+test('a click on the description of an entry opens the article', async ({ page }) => {
+  const check = async () => {
+    await page.goto('./');
+    const { x, y } = await centreOf(page.getByRole('main').getByRole('listitem').first().locator('p'));
+    await page.mouse.click(x, y);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(FIRST_ARTICLE.title, {
+      timeout: 5_000,
+    });
+    await expect(page).toHaveURL(FIRST_ARTICLE.url);
+  };
+
+  await retryWhenLive(check);
+});
+
+test('a click on the lower half of the date label opens the article', async ({ page }) => {
+  const check = async () => {
+    await page.goto('./');
+    const label = page.getByRole('main').getByRole('listitem').first().locator('time');
+    const box = (await label.boundingBox())!;
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height - 2);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(FIRST_ARTICLE.title, {
+      timeout: 5_000,
+    });
+    await expect(page).toHaveURL(FIRST_ARTICLE.url);
+  };
+
+  await retryWhenLive(check);
+});
+
+test('at rest the box has a 2px border in the tone of lines and 8px rounded corners', async ({
+  page,
+}) => {
+  const check = async () => {
+    await page.goto('./');
+    const entry = page.getByRole('main').getByRole('listitem').first();
+    await page.mouse.move(0, 0);
+    const accent = await page.evaluate(() => {
+      const probe = document.createElement('span');
+      probe.style.color = 'var(--color-accent-line)';
+      document.body.append(probe);
+      const colour = getComputedStyle(probe).color;
+      probe.remove();
+      return colour;
+    });
+    for (const side of ['top', 'right', 'bottom', 'left']) {
+      await expect(entry).toHaveCSS(`border-${side}-width`, '2px');
+      await expect(entry).toHaveCSS(`border-${side}-style`, 'solid');
+      await expect(entry).toHaveCSS(`border-${side}-color`, accent);
+    }
+    for (const corner of ['top-left', 'top-right', 'bottom-left', 'bottom-right']) {
+      await expect(entry).toHaveCSS(`border-${corner}-radius`, '8px');
+    }
+  };
+
+  await retryWhenLive(check);
+});
+
+// The border goes from 2px to 4px under the mouse and with the keyboard focus; the title does not move.
+test('hover and keyboard focus raise the border to 4px without moving the title', async ({
+  page,
+}) => {
+  const check = async () => {
+    await page.goto('./');
+    const entry = page.getByRole('main').getByRole('listitem').first();
+    const title = entry.getByRole('heading', { level: 2 });
+    await page.mouse.move(0, 0);
+    await expect(entry).toHaveCSS('border-top-width', '2px');
+    const rest = (await title.boundingBox())!;
+
+    const { x, y } = await centreOf(entry.locator('p'));
+    await page.mouse.move(x, y);
+    for (const side of ['top', 'right', 'bottom', 'left']) {
+      await expect(entry).toHaveCSS(`border-${side}-width`, '4px');
+    }
+    expect(await title.boundingBox()).toEqual(rest);
+
+    await page.mouse.move(0, 0);
+    await expect(entry).toHaveCSS('border-top-width', '2px');
+    // The skip link or logo may come first: Tab until the link of the first entry has the focus.
+    const link = entry.getByRole('link', { name: FIRST_ARTICLE.title });
+    for (let i = 0; i < 10 && !(await link.evaluate((a) => a === document.activeElement)); i++) {
+      await page.keyboard.press('Tab');
+    }
+    await expect(link).toBeFocused();
+    for (const side of ['top', 'right', 'bottom', 'left']) {
+      await expect(entry).toHaveCSS(`border-${side}-width`, '4px');
+    }
+    await expect(link).toHaveCSS('outline-style', 'none');
+    expect(await title.boundingBox()).toEqual(rest);
+  };
+
+  await retryWhenLive(check);
+});
