@@ -6,13 +6,11 @@
   and [add preview images](../backlog/add-preview-images.md). In Now, after the
   description and the Open Graph tags.
 - **Status:** being worked on, since 2026-11-06; on hold from
-  2026-11-06, waiting for the cards
-  [add a sitemap](../done/2026-11-07_add-sitemap.md), done on
-  2026-11-07, and
-  [add a robots.txt](../done/2026-11-07_add-robots-txt.md), done on
-  2026-11-07. It stays in
-  `docs/wip/` meanwhile, by the user's choice: half of its answers are
-  given.
+  2026-11-06 to 2026-11-07, waiting for the cards
+  [add a sitemap](../done/2026-11-07_add-sitemap.md) and
+  [add a robots.txt](../done/2026-11-07_add-robots-txt.md), both done on
+  2026-11-07; it stayed in `docs/wip/` meanwhile, by the user's choice.
+  Resumed on 2026-11-07.
 
 ## Why
 
@@ -119,31 +117,47 @@ rules as they are, not a list of the project's own.
 
 ### How is a page exempted?
 
-Chosen by the user: from the page itself. A page that carries
-`<meta name="robots" content="noindex">` skips two rules: the rule on
-indexing, which `noindex` fails by definition, and the rule on the
-description, since the build gives a description only to indexed pages
-(`Indexing::NoIndex` in `src/page_frame.rs`). Every other rule still
-applies to it: title, links, response status, and the rest.
+Chosen by the user on 2026-11-07, revising the answer of 2026-11-06: no
+page is exempted. The check runs only on the pages of the sitemap, both
+on the local build and on the live site, and every rule of the category
+applies to each of them. A page stays out of the check by staying out
+of the sitemap, which the build decides from `Indexing::Indexed` or
+`NoIndex` (`src/page_frame.rs`, `src/sitemap.rs`): today only the
+"page not found" is `NoIndex`.
 
-- **One source:** the build already decides, page by page, whether a page
-  is indexed; the check reads that decision instead of repeating it.
-- **How:** the test reads the page, and if it carries `noindex` it calls
-  Lighthouse with the option `skipAudits` set to those two rules
-  (`is-crawlable`, `meta-description`), present in version 13.6.0.
-  Lighthouse has no notion of a set of pages: it checks the one address
-  it is given, so which pages are checked is always the test's choice.
-- **Its price:** a page marked `NoIndex` by mistake would drop out of
-  those two rules in silence.
+- **Why revised:** the first answer let a page that carries
+  `<meta name="robots" content="noindex">` skip the rules on indexing
+  and on description (`is-crawlable`, `meta-description`, through
+  Lighthouse's option `skipAudits`). Once the pages came from the
+  sitemap, no page with `noindex` would ever reach the check, so that
+  code would never run.
+- **One list, the one search engines read:** the check is about the
+  pages the site asks to have indexed, and the sitemap names exactly
+  those. Lighthouse has no notion of a set of pages: it checks the one
+  address it is given, so which pages are checked is always the test's
+  choice.
+- **What is left unchecked, and why it is accepted:** the "page not
+  found" never goes through Lighthouse. Its remaining rules (title,
+  links, response status) serve search engines, which that page asks
+  not to index it; the alternative text of images, the one rule that
+  matters outside search too, is already checked by axe in the
+  accessibility test.
+- **Its price:** a page marked `NoIndex` by mistake leaves both the
+  sitemap and this check, in silence.
 - **The tags go with it:** a page with `noindex` has no description and
   no Open Graph tags, as decided by the card
   [add the description and the Open Graph tags](../done/2026-11-06_add-description-and-open-graph-tags.md);
   this card does not change that.
-- **Rejected:** a list kept in the test, which would be a second
-  declaration beside the build's, free to disagree with it; a
-  `robots.txt` that disallows the "page not found", which Lighthouse
-  counts as blocked too, so the rule would fail anyway, and which would
-  hide the `noindex` from search engines, as Google warns.
+- **Rejected:** on the local build, the sitemap's pages plus those found
+  in the built site's folder, keeping the exemption for the "page not
+  found": every built page would be checked, but locally the pages would
+  come from two sources, and the exemption's code would serve one page
+  that asks not to be found. Rejected on 2026-11-06 already: a list of
+  exempted pages kept in the test, which would be a second declaration
+  beside the build's, free to disagree with it; a `robots.txt` that
+  disallows the "page not found", which Lighthouse counts as blocked
+  too, so the rule would fail anyway, and which would hide the
+  `noindex` from search engines, as Google warns.
 
 ### On which pages, and why on hold?
 
@@ -191,6 +205,7 @@ while those tags were almost decided; each part can be published alone.
   ([card](../done/2026-11-06_add-canonical-link-to-every-page.md)). So
   the block-list is needed from the start
   ([card](../done/2026-11-02_serve-own-not-found-page.md) of that page).
+  Revised since: no page is exempted, see "How is a page exempted?".
 - **The site has no `robots.txt` yet.**
 - **The build already starts a browser** (Playwright, Chromium, in
   Playwright's container image) on the built site served locally, and
@@ -233,10 +248,5 @@ was added to the repository.
   the sitemap's check in a browser; the Rust tests check that each
   canonical link matches its sitemap address, which Lighthouse does
   not.
-- **To be answered when the card is resumed.** With the pages taken from
-  the sitemap, the "page not found" is never checked, so the exemption
-  derived from `noindex` never applies. Whether the local check also
-  runs on the pages found in the built site's folder, where the "page
-  not found" is, or the exemption is dropped.
 - Whether the site needs a `robots.txt`, and what it says: moved to the
   card [add a robots.txt](../done/2026-11-07_add-robots-txt.md).

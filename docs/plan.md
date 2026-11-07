@@ -15,8 +15,7 @@ live since 2026-10-26
 ## Now
 
 - [Check SEO with Lighthouse in the build](wip/check-seo-with-lighthouse.md),
-  to be resumed, with its pages read from the sitemap, now that the
-  sitemap and the `robots.txt` exist.
+  resumed, on the pages of the sitemap only.
 - The next version publishes the SEO check together with what is
   already done: the canonical link, the descriptions, the Open Graph
   tags, the sitemap and the `robots.txt`
