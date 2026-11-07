@@ -84,6 +84,27 @@ and those that index pages for search.
   allowing only chosen robots, which would also keep out a new search
   engine until it is added.
 
+### How is the list filtered?
+
+Chosen by the user: only what is declared useful passes, and the agents
+pass. The robots in the categories "AI Assistants", "AI Search
+Crawlers", "AI Agents" and "AI Coding Agents" are let through; every
+other robot of the list is blocked, including "Undocumented AI Agents",
+the robots with a description of their own, and any new robot until it
+falls into a category let through. A short list of the project's own
+exceptions corrects single cases.
+
+- **Why:** training matters more, in the user's words; a robot new or
+  unclear stays out rather than in.
+- **Why the agents pass:** they browse on behalf of a user who asked
+  them something, close to reading on request.
+- **The price:** a robot that reads on request but is described in
+  words of its own is blocked by mistake, until it is added to the
+  exceptions.
+- **Rejected:** blocking only what is declared training or resale,
+  letting everything else through, so a new training robot described in
+  words of its own would pass until someone notices.
+
 ## Known from the start
 
 - **There is nothing to disallow today.** The "page not found" is kept
@@ -107,8 +128,6 @@ and those that index pages for search.
 
 ## Questions
 
-- How the filter is made: which categories are let through, and how
-  the robots with a description of their own are classed.
 - Where the list is taken from and at which version, and how it is kept
   up to date.
 - How the build writes it, and how the test checks it.
