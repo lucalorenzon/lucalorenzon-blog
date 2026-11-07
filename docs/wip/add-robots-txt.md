@@ -174,6 +174,27 @@ commits behind the pin is, counting only those that change
   what; the changes to the list itself, which still leave the user to
   apply the filter in their head.
 
+### Which step downloads and filters the list?
+
+Chosen by the user: Python, beside the dates step. A script downloads
+`robots.json` at the pinned commit, checks its checksum, applies the
+filter and hands the build the names of the robots to block in a text
+file; the same script, with an option, is the local command, so the
+filter lives in one place. The Rust build writes `robots.txt`, as it
+writes the sitemap, since the `Sitemap:` line uses the site's address
+the build already knows.
+
+- **Why:** the standard library reads JSON and downloads files, so no
+  new dependency; and the step before the build is where what comes
+  from outside the repository is gathered, as decided for the dates
+  ([card](../done/2026-11-07_add-sitemap.md), "How are the dates read
+  from git?").
+- **Rejected:** Rust, with `scripts/build-site.sh` downloading the file
+  as it does Tailwind and the build reading it, which needs a new
+  dependency to read JSON (`serde_json`) now; it is the direction of the
+  card
+  [port the Python scripts to Rust, run with Docker](../backlog/port-python-scripts-to-rust-with-docker.md).
+
 ## Known from the start
 
 - **There is nothing to disallow today.** The "page not found" is kept
@@ -197,6 +218,5 @@ commits behind the pin is, counting only those that change
 
 ## Questions
 
-- Which step downloads and filters the list, and how the build writes
-  `robots.txt`; how the test checks it.
+- How `robots.txt` and the step that makes its list are checked.
 - How the build writes it, and how the test checks it.
