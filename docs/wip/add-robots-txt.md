@@ -105,6 +105,35 @@ exceptions corrects single cases.
   letting everything else through, so a new training robot described in
   words of its own would pass until someone notices.
 
+### The shared signal against training
+
+Chosen by the user: added beside the filtered list, since it costs one
+group of lines.
+
+```
+User-Agent: __usage_ai-training
+Disallow: /
+```
+
+- **What it is:** a policy token proposed on 2026-10-30 in an individual
+  Internet-Draft,
+  [draft-kelley-aipref-training-preference-signal](https://datatracker.ietf.org/doc/draft-kelley-aipref-training-preference-signal/),
+  by an author at Anthropic, for the IETF's AI Preferences working
+  group. It says "do not use this site to train generative models" once,
+  to every provider that takes part. It covers training only, and is
+  not a rule on which pages a robot may visit: the rules for single
+  robots still apply beside it.
+- **Its standing:** not an IETF standard; the datatracker says it has
+  "no formal standing". The table of the community list names Anthropic,
+  OpenAI, Google and Bing as honouring it. Google's announcement
+  ([AI training control](https://developers.google.com/search/blog/2026/10/ai-training-control),
+  read on 2026-11-07) says Google aims to support it in 2027, and treats
+  a site that uses it as having disallowed `Google-Extended`, so the
+  case of Gemini stays as decided above.
+- **Why beside the list, not instead of it:** not every robot honours it,
+  and Google only from 2027; it also covers providers that join later.
+- **Found** in the community list itself, which added it on 2026-11-05.
+
 ## Known from the start
 
 - **There is nothing to disallow today.** The "page not found" is kept
