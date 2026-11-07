@@ -48,11 +48,10 @@ stylesheet, the fonts, the layout) does not move the date.
 - **Built before publication:** the published site is always the one
   built and tested from a commit of `main`, through the snapshot or the
   rebuild, so the date is computed there.
-- **Full git history in the pipeline:** the build job downloads only the
+- **Git history in the pipeline:** the build job downloads only the
   last commit today, so every file would get the same date and every
-  page would look changed at each build. It must download the full
-  history, as the job that detects documentation-only changes already
-  does.
+  page would look changed at each build. How the dates are read instead:
+  "How are the dates read from git?" below.
 - **Rejected:** the address alone, always accurate but silent on
   changes; every change to the rendering code, appearance included,
   which Google does not count as significant; the build's own date,
@@ -148,6 +147,56 @@ exclusion list.
   written and forgotten in the sitemap; a rule on names (`X.html` from
   `content/X.md`), which an address chosen for a campaign would break.
 
+### How are the dates read from git?
+
+Chosen by the user: by a step of its own, before the build. It reads
+the whole history of commits without the files' contents, writes the
+date of each Markdown file's last change into a text file, and hands
+that file to the build, which checks out the last commit only, as
+today, and takes the dates from the file.
+
+- **In the pipeline:** a job of its own clones the repository with the
+  full history but only its metadata (`--filter=blob:none`, no
+  `--depth`); `git log -1 -- <file>` needs the commits and their lists
+  of files, not the files' contents, so the dates are exact. The
+  version of `actions/checkout` pinned in the workflows has both inputs
+  this needs, `fetch-depth: 0` and `filter` (read in its `action.yml`
+  on 2026-11-07).
+- **Locally:** the same step is a script working on the repository
+  already there, which has its whole history; `scripts/build-site.sh`
+  stays the single entry point.
+- **Why a job of its own:** the user asked whether the approach holds
+  when articles come from several remote repositories
+  ([card](../backlog/take-content-from-several-repositories.md)). With
+  a single build job, the build would have to know every source, hold
+  the credentials of the private ones (the curriculum's repository is
+  private) and build the site. With a job of its own, that job becomes
+  the step that gathers the content: for each source it reads the dates
+  and takes the files, and hands the build the Markdown files with
+  their dates. The build does not know where the content comes from,
+  does not use git and sees no credentials; a new source changes only
+  that job. The same file can later carry the dates of articles added
+  or removed, for the
+  [home page's date](../backlog/date-the-home-page-in-the-sitemap.md).
+- **Not known yet:** how external sources will arrive (a clone, a
+  submodule, a package, a release file). A source without git history
+  would have to give its dates itself, for example in its front matter;
+  the gathering step is where that is decided, source by source.
+- **Measured on 2026-11-07,** on this repository: with the last two
+  commits only, four of five Markdown files got a wrong date, since git
+  gives every file unchanged in them the date of the oldest commit it
+  has. With `--depth=100` too: `content/curriculum.md`, last changed
+  164 commits earlier, got 2026-11-03 instead of 2026-11-01; most
+  commits are documentation, so content files age fast when counted in
+  commits. A full clone weighs 3.3 MB.
+- **Rejected:** the last two commits, which would need the previous
+  build's dates kept somewhere, which the build does not do, and one
+  new commit per build, while a push often brings many; a fixed depth,
+  which sooner or later misses a page unchanged for longer; a sparse
+  checkout, which would leave out the folders the build needs; a single
+  build job with the full history, simpler and the same as locally, but
+  it would carry every future source and its credentials.
+
 ## Known from the start
 
 - **The build already decides which pages are indexed:** each page is
@@ -173,7 +222,8 @@ exclusion list.
 
 ## Questions
 
-- How the dates are read from git: with the full history, or with the
-  last two commits, as the user proposed on 2026-11-07; and what the
-  build does if git does not answer.
+- Which date of a commit: the author's or the committer's, which a
+  rebase changes.
+- What the build does when the file of dates is missing or lacks a
+  page.
 - How the test checks it, locally and on the live site.
