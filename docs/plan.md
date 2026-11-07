@@ -14,14 +14,11 @@ live since 2026-10-26
 
 ## Now
 
-- Publish the next version: the SEO check, done, together with the
-  canonical link, the descriptions, the Open Graph tags, the sitemap and
-  the `robots.txt`; the first live run of the SEO check comes with it
-  ([card](done/2026-11-07_check-seo-with-lighthouse.md),
-  [card](done/2026-11-06_add-canonical-link-to-every-page.md),
-  [card](done/2026-11-06_add-description-and-open-graph-tags.md),
-  [card](done/2026-11-07_add-sitemap.md),
-  [card](done/2026-11-07_add-robots-txt.md)).
+- Nothing yet: version 0.10.0, published on 2026-11-07, brought the SEO
+  check together with the canonical link, the descriptions, the Open
+  Graph tags, the sitemap and the `robots.txt`
+  ([card](done/2026-11-07_check-seo-with-lighthouse.md)). The next card
+  is chosen by the user, from Next.
 
 ## Next
 
