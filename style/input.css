@@ -238,6 +238,19 @@ body {
     @apply mt-[2.25em] list-decimal pl-[1.5em];
   }
 
+  /* Only the markers are amber (ADR-003: amber is an accent), never the item
+     text. The closest list decides, so a list inside a list of the other kind
+     keeps its own tone. Bullets are graphics: the tone of lines and frames
+     (3:1 is enough). Numbers are text: the tone of normal-size text, which
+     has the stronger contrast the site checks for it. */
+  & ul > li::marker {
+    color: var(--color-accent-line);
+  }
+
+  & ol > li::marker {
+    color: var(--color-accent-code);
+  }
+
   & li {
     @apply mt-[0.75em];
   }

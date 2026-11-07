@@ -31,6 +31,11 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+### Changed
+
+- The bullets and numbers of lists take the amber accent; the text of the
+  items stays in its colour.
+
 ### Fixed
 
 - Numbered lists in articles show their numbers and are indented again;

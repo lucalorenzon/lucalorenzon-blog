@@ -16,6 +16,8 @@ import { retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
 //      headings were changed to amber text, the intent "sections and roles stay apart from the text" holds)
 //   7. a numbered list (ol) shows its numbers and is indented and spaced like the bulleted
 //      lists of the same column (checked on the After Save Event article)
+//   8. the markers of lists take the amber accent while the item text keeps its colour: bullets in
+//      the tone of lines and frames, numbers in the tone of normal-size text (ADR-003)
 //
 // The width of the lines (at most 80 characters, counted on the rendered
 // lines) is checked in readability.spec.ts.
@@ -163,5 +165,40 @@ test('numbered list of the After Save Event page is numbered and indented like a
     expect(ol!.paddingLeft, 'indent equal to the bulleted list').toBeCloseTo(ul!.paddingLeft, 1);
     expect(ol!.marginTop, 'space above: 2.25em, as the bulleted lists').toBeCloseTo(2.25 * ol!.fontSize, 1);
     expect(ol!.marginTop, 'space above equal to the bulleted list').toBeCloseTo(ul!.marginTop, 1);
+  });
+});
+
+// The markers (bullets and numbers) of a list are amber, the text of the items is not.
+// Bullets are graphics (accent-line); numbers are text (accent-code, the contrast of normal text).
+test('list markers take the amber accent and the item text keeps its colour', async ({ page }) => {
+  await retryWhenLive(async () => {
+    await page.goto('./articles/after-save-event.html');
+    await page.evaluate(() => document.fonts.ready);
+    const seen = await page.evaluate(() => {
+      const main = document.querySelector('main')!;
+      // The colour a design token resolves to, as the browser computes it.
+      const resolve = (token: string) => {
+        const probe = document.createElement('span');
+        probe.style.color = `var(${token})`;
+        main.appendChild(probe);
+        const colour = getComputedStyle(probe).color;
+        probe.remove();
+        return colour;
+      };
+      const look = (li: Element | null) =>
+        li ? { marker: getComputedStyle(li, '::marker').color, text: getComputedStyle(li).color } : null;
+      return {
+        ol: look(main.querySelector('ol > li')),
+        ul: look(main.querySelector('ul > li')),
+        accentCode: resolve('--color-accent-code'),
+        accentLine: resolve('--color-accent-line'),
+      };
+    });
+    expect(seen.ol, 'the article must have a numbered list').not.toBeNull();
+    expect(seen.ul, 'the article must have a bulleted list').not.toBeNull();
+    expect(seen.ol!.marker, 'numbers use the tone of normal text').toBe(seen.accentCode);
+    expect(seen.ul!.marker, 'bullets use the tone of lines and frames').toBe(seen.accentLine);
+    expect(seen.ol!.text, 'the item text keeps its colour').not.toBe(seen.ol!.marker);
+    expect(seen.ul!.text, 'the item text keeps its colour').not.toBe(seen.ul!.marker);
   });
 });
