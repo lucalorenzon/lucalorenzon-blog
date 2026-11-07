@@ -45,7 +45,7 @@ impl Date {
 
 /// What the site knows of an article: written here, in one list, for the article pages and the
 /// home page's list alike. The model of an "article" with fields of its own, read from the
-/// Markdown, is left for later (card docs/wip/list-articles-on-home-page.md).
+/// Markdown, is left for later (card docs/done/2026-11-06_list-articles-on-home-page.md).
 pub struct Article {
     pub title: &'static str,
     pub tab_title: &'static str,

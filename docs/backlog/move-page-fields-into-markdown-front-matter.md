@@ -39,8 +39,6 @@ accurate for those fields too.
   of articles, and its description is a constant in `src/home_page.rs`.
 - **The Markdown holds no HTML,** checked by a unit test; a front matter
   is not HTML, but the conversion with pulldown-cmark has to skip it.
-- **A comment in `src/article_page.rs`** still points to
-  `docs/wip/list-articles-on-home-page.md`, a card now in `docs/done/`.
 - **The model the user aims at** (2026-11-07, while making the
   [sitemap](../done/2026-11-07_add-sitemap.md)): the build goes through every `.md`
   file under `content/` and its folders, reads its front matter (title,
