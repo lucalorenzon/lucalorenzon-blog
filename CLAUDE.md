@@ -174,6 +174,10 @@ contributions, the person stays the author and fully accountable, while
   tag `vX.Y.Z` is pushed (how: `README.md`, "Publish a version")
 - [Playwright](https://playwright.dev/) end-to-end test, run on every build
   and again on the live site after each publication
+- [Lighthouse](https://github.com/GoogleChrome/lighthouse) 13.6.0, driven
+  from a Playwright project of its own: the search-engine rules on every
+  page of the sitemap, in both moments (why:
+  `docs/done/2026-11-07_check-seo-with-lighthouse.md`)
 - Rust stable toolchain, pinned in `rust-toolchain.toml`
 
 Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
