@@ -53,6 +53,9 @@ pub struct Article {
     pub address: &'static str,
     pub description: &'static str,
     pub date: Date,
+    /// The Markdown file `text` is read from, relative to the repository's root (the sitemap's
+    /// dates are looked up by it; a test checks it names the file `text` comes from).
+    pub source: &'static str,
     text: &'static str,
 }
 
@@ -68,6 +71,7 @@ pub const ARTICLES: [Article; 2] = [
             month: 4,
             day: 30,
         },
+        source: "content/articles/after-save-event.md",
         text: include_str!("../content/articles/after-save-event.md"),
     },
     Article {
@@ -80,6 +84,7 @@ pub const ARTICLES: [Article; 2] = [
             month: 4,
             day: 25,
         },
+        source: "content/articles/how-to-generate-hybris-pk-values-without-hybris.md",
         text: include_str!(
             "../content/articles/how-to-generate-hybris-pk-values-without-hybris.md"
         ),
@@ -370,6 +375,7 @@ mod tests {
                     month: 4,
                     day,
                 },
+                source: "",
                 text: "",
             };
             let oldest_first = [article("a", 1), article("c", 30), article("b", 25)];
@@ -378,6 +384,15 @@ mod tests {
                 .map(|a| a.title)
                 .collect();
             assert_eq!(titles, ["c", "b", "a"]);
+        }
+
+        #[test]
+        fn names_the_file_its_text_comes_from() {
+            let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+            for article in &ARTICLES {
+                let text = std::fs::read_to_string(root.join(article.source)).unwrap();
+                assert_eq!(article.text, text, "{}", article.source);
+            }
         }
 
         #[test]

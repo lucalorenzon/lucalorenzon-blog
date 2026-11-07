@@ -17,6 +17,7 @@ import sys
 from pathlib import Path
 
 # Files in content/ that are not pages (the sitemap must not list them).
+# Mirrors NOT_PAGES in the tests of src/sitemap.rs: change both.
 EXCLUDED = ("content/README.md", "content/LICENSE-MIT-0")
 
 

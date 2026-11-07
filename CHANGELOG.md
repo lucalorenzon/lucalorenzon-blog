@@ -31,6 +31,12 @@ Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-fr
 
 ## [Unreleased]
 
+### Added
+
+- A sitemap, `sitemap.xml`, listing every page of the site with the date
+  of its last change, so search engines find all the pages and know when
+  they changed. The home page has no date yet.
+
 ## [0.9.0] - 2026-11-06
 
 ### Added

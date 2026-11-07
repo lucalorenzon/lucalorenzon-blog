@@ -8,6 +8,7 @@ mod markdown;
 mod not_found_page;
 mod page_frame;
 mod site_address;
+mod sitemap;
 mod table_widths;
 
 use site_address::SiteAddress;
@@ -29,33 +30,26 @@ fn build() -> Result<(), Box<dyn Error>> {
     })?;
 
     fs::create_dir_all(&out_dir)?;
-    fs::write(
-        out_dir.join("index.html"),
-        home_page::render_home_page(&address),
-    )?;
-    fs::write(
-        out_dir.join("curriculum.html"),
-        curriculum_page::render_curriculum_page(&address),
-    )?;
-    fs::write(
-        out_dir.join("about.html"),
-        about_page::render_about_page(&address),
-    )?;
-    fs::create_dir_all(out_dir.join("articles"))?;
-    for article in &article_page::ARTICLES {
-        fs::write(
-            out_dir.join(article.address),
-            article_page::render_article_page(article, &address),
-        )?;
+    let pages = sitemap::pages(&address);
+    for page in &pages {
+        let path = out_dir.join(page.file);
+        if let Some(folder) = path.parent() {
+            fs::create_dir_all(folder)?;
+        }
+        fs::write(path, &page.html)?;
     }
-    fs::write(
-        out_dir.join("licence.html"),
-        licence_page::render_licence_page(&address),
-    )?;
-    fs::write(
-        out_dir.join("404.html"),
-        not_found_page::render_not_found_page(&address),
-    )?;
+    let dates_file = match env::var("CONTENT_DATES_FILE") {
+        Ok(path) if !path.is_empty() => {
+            fs::read_to_string(&path).map_err(|error| format!("cannot read `{path}`: {error}"))
+        }
+        _ => Err("CONTENT_DATES_FILE is not set".to_owned()),
+    };
+    let is_ci = env::var("CI").is_ok_and(|value| !value.is_empty());
+    let sitemap = sitemap::build_sitemap(&pages, &address, dates_file, is_ci)?;
+    for warning in &sitemap.warnings {
+        eprintln!("warning: {warning}");
+    }
+    fs::write(out_dir.join("sitemap.xml"), sitemap.xml)?;
     write_code_classes()?;
     Ok(())
 }
