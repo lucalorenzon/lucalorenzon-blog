@@ -8,7 +8,10 @@
   (see Consequences and Technical notes). Extended on 2026-11-07: the
   markers of lists, bullets and numbers, join the uses of amber (see
   Decision and Technical notes;
-  [card](../done/2026-11-07_show-numbered-lists-and-colour-list-markers.md))
+  [card](../done/2026-11-07_show-numbered-lists-and-colour-list-markers.md)).
+  Extended again on 2026-11-07: the frame of the boxes that hold the
+  articles on the home page joins the uses of amber (see Decision and
+  Technical notes; [card](../wip/frame-home-page-articles-in-boxes.md))
 - **Card:** [give the articles' code, quotes and tables a look](../done/2026-11-06_design-look-of-articles.md)
 
 ## Context
@@ -41,7 +44,8 @@ communicating. The look has one job, letting that content be read.
 2. **Amber is an accent, not the colour of the text.** It is kept for the
    logo, the page title, the lines, the frame of code blocks, the bar of
    quotes, code inside a sentence and, since 2026-11-07, the markers of
-   lists (the bullet or the number, never the item's text). The text is off-white on black, or
+   lists (the bullet or the number, never the item's text) and the frame
+   of the boxes that hold the articles on the home page. The text is off-white on black, or
    near-black on a paper-white background.
 3. **Each font has one job, and all are served by the site:**
    - the logo keeps the pixel font, IBM VGA 8x16, the one sign of 1985
@@ -130,6 +134,14 @@ small file.
   shades differ; on the dark page both are `#dd9911`. Why and the
   options rejected:
   [card](../done/2026-11-07_show-numbered-lists-and-colour-list-markers.md).
+- **The boxes of the home page** (added on 2026-11-07) are a frame, so
+  their border takes the tone of lines and frames (`accent-line`): 2
+  pixels at rest, 4 under the mouse or with the keyboard focus. Their
+  corners are rounded (8 pixels), unlike the frame of code blocks,
+  which stays square; the two never meet on the same page. The date on
+  the border keeps the colour of the text, not amber. Why and the
+  options rejected:
+  [card](../wip/frame-home-page-articles-in-boxes.md).
 - **Hack** (version 3.003, npm package `hack-font` 3.3.0): MIT License
   for the Hack project, public domain for DejaVu's work, Bitstream Vera
   License for Bitstream's; the web subset made by the Hack project,
