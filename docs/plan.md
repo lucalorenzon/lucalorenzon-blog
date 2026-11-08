@@ -25,6 +25,9 @@ live since 2026-10-26
 
 ## Next
 
+- [Build a design system](backlog/build-a-design-system.md), with
+  Holt or Storybook, so each component is tested once instead of on
+  every page; it takes over the test pages of the browser tests card.
 - [Unify the model of the information pages](backlog/unify-the-information-pages-model.md),
   licence, about and curriculum, today three nearly identical modules;
   probably before reading their fields from the Markdown.
