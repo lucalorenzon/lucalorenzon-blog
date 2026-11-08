@@ -217,7 +217,7 @@ test('a click on the lower half of the date label opens the article', async ({ p
   await retryWhenLive(check);
 });
 
-test('at rest the box has a 2px border in the tone of lines and 8px rounded corners', async ({
+test('at rest the box has a 2px border in the tone of lines and 8px rounded corners', { tag: '@colours' }, async ({
   page,
 }) => {
   const check = async () => {

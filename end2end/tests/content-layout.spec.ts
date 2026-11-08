@@ -8,12 +8,14 @@ import { retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
 // Rules on every viewport:
 //   1. no horizontal scroll
 //   2. section headings (h2) are larger than body text
-//   3. role headings (h3) stand out from the body text by colour (amber, no inverse video)
+//   3. a page with roles has at least one role heading (h3)
 //   4. at the end of the page the content ends at least 32px above the sticky footer
 //   5. consecutive headings, paragraphs and list items do not overlap
-//   6. section headings (h2) stand out from the body text by colour (amber); no line above them
-//      (rules 3 and 6 used to check the amber line above h2 and the inverse video of h3: the
-//      headings were changed to amber text, the intent "sections and roles stay apart from the text" holds)
+//   6. section (h2) and role (h3) headings stand out from the body text by colour (amber); no line
+//      above them. This is a test of its own, tagged @colours so that the dark theme runs it too, at
+//      one width only: colours do not depend on the width. (This rule used to check the amber line
+//      above h2 and the inverse video of h3: the headings were changed to amber text, the intent
+//      "sections and roles stay apart from the text" holds)
 //   7. a numbered list (ol) shows its numbers and is indented and spaced like the bulleted
 //      lists of the same column (checked on the After Save Event article)
 //   8. the markers of lists take the amber accent while the item text keeps its colour: bullets in
@@ -30,10 +32,7 @@ type Snapshot = {
   h2Count: number;
   h2MinFontSize: number;
   pFontSize: number;
-  pColor: string;
-  h2Colors: string[];
   h3Count: number;
-  h3Colors: string[];
   lastBottom: number;
   footerTop: number;
   overlaps: string[];
@@ -77,10 +76,7 @@ async function snapshot(page: Page): Promise<Snapshot> {
       h2Count: h2s.length,
       h2MinFontSize: Math.min(...h2s.map((el) => parseFloat(getComputedStyle(el).fontSize))),
       pFontSize: p ? parseFloat(getComputedStyle(p).fontSize) : NaN,
-      pColor: p ? getComputedStyle(p).color : '',
-      h2Colors: h2s.map((el) => getComputedStyle(el).color),
       h3Count: h3s.length,
-      h3Colors: h3s.map((el) => getComputedStyle(el).color),
       lastBottom,
       footerTop: footer.getBoundingClientRect().top,
       overlaps,
@@ -104,13 +100,7 @@ function violations(s: Snapshot, hasRoles: boolean): string[] {
     s.h2MinFontSize > s.pFontSize,
     `h2 must be larger than body text: smallest h2 ${s.h2MinFontSize}px, paragraph ${s.pFontSize}px`,
   );
-  s.h2Colors.forEach((c, i) =>
-    rule(c !== s.pColor, `h2 number ${i + 1} must differ in colour from the body text (${s.pColor}), has ${c}`),
-  );
   if (hasRoles) rule(s.h3Count > 0, 'the content must have at least one h3');
-  s.h3Colors.forEach((c, i) =>
-    rule(c !== s.pColor, `h3 number ${i + 1} must differ in colour from the body text (${s.pColor}), has ${c}`),
-  );
   rule(
     s.footerTop - s.lastBottom >= MIN_GAP_ABOVE_FOOTER - 0.5,
     `the end of the content (${s.lastBottom}) must be at least ${MIN_GAP_ABOVE_FOOTER}px above the footer (${s.footerTop}), gap is ${s.footerTop - s.lastBottom}px`,
@@ -134,6 +124,34 @@ for (const { name, width, height } of VIEWPORTS) {
     });
   });
 }
+}
+
+// Rule 6, at one width: colours do not depend on it. Tagged so that the dark theme runs it too.
+for (const { name: pageName, address } of TEXT_PAGES) {
+  const { name, width, height } = VIEWPORTS.find((v) => v.name === 'Laptop')!;
+  test(`heading colours of the ${pageName} at ${width}x${height} (${name})`, { tag: '@colours' }, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+
+    await retryWhenLive(async () => {
+      await page.goto(address);
+      await page.evaluate(() => document.fonts.ready);
+      const seen = await page.evaluate(() => {
+        const main = document.querySelector('main')!;
+        const p = main.querySelector('p');
+        const colours = (selector: string) =>
+          Array.from(main.querySelectorAll(selector)).map((el) => getComputedStyle(el).color);
+        return { pColor: p ? getComputedStyle(p).color : '', h2: colours('h2'), h3: colours('h3') };
+      });
+      const found: string[] = [];
+      seen.h2.forEach((c, i) => {
+        if (c === seen.pColor) found.push(`h2 number ${i + 1} must differ in colour from the body text (${seen.pColor}), has ${c}`);
+      });
+      seen.h3.forEach((c, i) => {
+        if (c === seen.pColor) found.push(`h3 number ${i + 1} must differ in colour from the body text (${seen.pColor}), has ${c}`);
+      });
+      expect(found.length, `heading colours broken:\n${found.join('\n')}`).toBe(0);
+    });
+  });
 }
 
 // A numbered list must show its numbers and sit in the column like a bulleted one:
@@ -170,7 +188,7 @@ test('numbered list of the After Save Event page is numbered and indented like a
 
 // The markers (bullets and numbers) of a list are amber, the text of the items is not.
 // Bullets are graphics (accent-line); numbers are text (accent-code, the contrast of normal text).
-test('list markers take the amber accent and the item text keeps its colour', async ({ page }) => {
+test('list markers take the amber accent and the item text keeps its colour', { tag: '@colours' }, async ({ page }) => {
   await retryWhenLive(async () => {
     await page.goto('./articles/after-save-event.html');
     await page.evaluate(() => document.fonts.ready);

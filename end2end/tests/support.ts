@@ -32,6 +32,15 @@ export const VIEWPORTS = [
   { name: 'Full HD', width: 1920, height: 1080 },
 ];
 
+// The pages show different elements per width band (and axe checks only what
+// is shown), so some tests run once per band, with the same names and sizes
+// used in header-layout.spec.ts.
+export const BANDS = [
+  { name: 'iPhone 15', width: 393, height: 659 }, // text logo
+  { name: 'iPad Mini', width: 768, height: 1024 }, // ASCII-art logo, title below the line
+  { name: 'Laptop', width: 1280, height: 720 }, // title beside the logo
+];
+
 // The pages whose text (the `main` element) the content tests check. The
 // home page (a list of articles, each entry a heading, a description and a date) has no roles (h3) and
 // no consecutive paragraphs; the curriculum page has both; the licence page has neither, so those two

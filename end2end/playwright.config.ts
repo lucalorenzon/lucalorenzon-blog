@@ -20,17 +20,20 @@ export default defineConfig({
   retries: 0,
   reporter: process.env.CI ? [['list'], ['github']] : 'list',
   use: { baseURL },
-  // The suite runs three times. Twice for everything except the SEO check: the
-  // site shows a dark or a light page depending on the browser's colour scheme
-  // preference. Once for the SEO check alone: the search-engine rules do not
-  // depend on the colour scheme, so running it in both theme projects would
-  // give the same result in twice the time. Lighthouse opens its own Chromium
-  // with a control port anyway, so it does not use the browser Playwright
-  // prepares for each project.
+  // Everything runs in the light theme: it is what readers with no preference
+  // see (ADR-003). The dark project runs only the tests tagged @colours, the
+  // ones whose answer can differ between the themes. That is valid only while
+  // the themes differ in colours alone; the guard in themes.spec.ts fails if a
+  // theme starts to change size or position. The SEO check runs once, in its
+  // own project: Lighthouse opens its own Chromium with a control port anyway,
+  // so it does not use the browser Playwright prepares for each project.
+  // Why: docs/adr/ADR-004-test-components-once-and-pages-with-a-net.md and the
+  // card docs/wip/run-colour-free-tests-in-one-theme.md.
   projects: [
     {
       name: 'chromium-dark',
       testIgnore: 'seo.spec.ts',
+      grep: /@colours/,
       use: { ...devices['Desktop Chrome'], colorScheme: 'dark' },
     },
     {

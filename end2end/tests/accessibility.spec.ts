@@ -1,8 +1,8 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
-import { live, retryWhenLive } from './support';
+import { expect, test, type Page } from '@playwright/test';
+import { BANDS, live, retryWhenLive } from './support';
 
 // Fails on any accessibility violation that axe-core can find.
 //
@@ -19,26 +19,19 @@ import { live, retryWhenLive } from './support';
 // with a screen reader). That is covered by hand, see the card
 // docs/backlog/check-accessibility-by-hand.md.
 
-// axe checks only what is shown, and the page shows different elements per
-// width band, so there is one test per band, with the same names and sizes
-// used in header-layout.spec.ts.
-const BANDS = [
-  { name: 'iPhone 15', width: 393, height: 659 }, // text logo
-  { name: 'iPad Mini', width: 768, height: 1024 }, // ASCII-art logo, title below the line
-  { name: 'Laptop', width: 1280, height: 720 }, // title beside the logo
-];
-
 // Rules axe has disabled by default (color-contrast-enhanced is one) still run
-// when selected by tag: axe skips a rule only if it has none of the selected
-// tags or carries an excluded tag (deprecated, experimental).
+// when selected by tag or by id: axe skips a rule only if it has none of the
+// selected tags and is not named, or carries an excluded tag (deprecated,
+// experimental).
 const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'wcag2aaa'];
 
-// Rules that must have been evaluated and passed: the page has visible text,
-// so if they are missing from the passes, axe did not look at the colours at
-// all and an empty list of violations would mean nothing.
+// Rules that must have been evaluated and passed by the contrast test: the
+// page has visible text, so if they are missing from the passes, axe did not
+// look at the colours at all and an empty list of violations would mean nothing.
 const MUST_HAVE_RUN = ['color-contrast', 'color-contrast-enhanced'];
 
-// The contrast rules, the only ones the drawn logo is exempt from (see below).
+// The contrast rules: the only ones the drawn logo is exempt from (see below),
+// and the ones kept apart in the tagged test.
 const CONTRAST_RULES = MUST_HAVE_RUN;
 
 test.beforeAll(() => {
@@ -64,66 +57,101 @@ const PAGES = [
   { name: 'page not found', address: './404.html', onlyLocal: true },
 ];
 
+// Two tests per page and band, so that the colours can be checked alone. The
+// dark project runs only the tests tagged @colours (see playwright.config.ts),
+// and the contrast of the dark theme is the one thing axe can tell about it
+// that the light theme cannot. So the contrast rules are a test of their own,
+// tagged, and every other rule stays in the untagged one that runs once.
+// The type of axe's results, taken from the package the project declares
+// rather than from axe-core, which only comes with it.
+type AxeResults = Awaited<ReturnType<AxeBuilder['analyze']>>;
+type Run = (page: Page) => Promise<AxeResults>;
+
+// Opens the page and runs axe; returns the violations, with the drawn logo
+// dropped from the contrast rules, and the ids of the rules that passed.
+async function look(page: Page, address: string, run: Run) {
+  await page.goto(address);
+  await page.evaluate(() => document.fonts.ready);
+
+  const results = await run(page);
+
+  // WCAG 1.4.3 and 1.4.6 exempt text that is part of a logo or brand
+  // name from contrast. The drawn logo (aria-hidden, 16px from md) takes
+  // the accent-heading shade, which on the light page reaches 4.61:1,
+  // enough for large text only; axe cannot know it is a logo. So its
+  // nodes are dropped from the two contrast rules, and from those rules
+  // only: every other rule still looks at it, and the contrast rules
+  // still look at everything else, the 32px text logo below md included
+  // (AxeBuilder.exclude() would drop all rules). A node is the logo when
+  // its element, found again in the page by axe's selector, is inside
+  // the element marked data-testid="ascii-logo"; a violation goes only
+  // when no other node remains.
+  const violations = [];
+  for (const v of results.violations) {
+    if (!CONTRAST_RULES.includes(v.id)) {
+      violations.push(v);
+      continue;
+    }
+    const kept = [];
+    for (const n of v.nodes) {
+      const isLogo =
+        n.target.length === 1 &&
+        typeof n.target[0] === 'string' &&
+        (await page.evaluate(
+          (selector) =>
+            document.querySelector(selector)?.closest('[data-testid="ascii-logo"]') != null,
+          n.target[0],
+        ));
+      if (!isLogo) kept.push(n);
+    }
+    if (kept.length > 0) violations.push({ ...v, nodes: kept });
+  }
+
+  const report = violations
+    .map((v) => {
+      const targets = v.nodes.map((n) => `    ${n.target.join(' ')}`).join('\n');
+      return `- ${v.id} (${v.impact ?? 'no impact given'}): ${v.help}\n${targets}`;
+    })
+    .join('\n');
+  return { violations, report, passed: results.passes.map((r) => r.id) };
+}
+
 for (const { name: pageName, address, onlyLocal } of PAGES) {
   for (const { name, width, height } of BANDS) {
+    // Every selected rule except the two contrast rules.
     test(`accessibility of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
       test.skip(onlyLocal && live, 'checked locally only, see PAGES');
       await page.setViewportSize({ width, height });
 
-      const check = async () => {
-        await page.goto(address);
-        await page.evaluate(() => document.fonts.ready);
-
-        const results = await new AxeBuilder({ page }).withTags(TAGS).analyze();
-
-        // WCAG 1.4.3 and 1.4.6 exempt text that is part of a logo or brand
-        // name from contrast. The drawn logo (aria-hidden, 16px from md) takes
-        // the accent-heading shade, which on the light page reaches 4.61:1,
-        // enough for large text only; axe cannot know it is a logo. So its
-        // nodes are dropped from the two contrast rules, and from those rules
-        // only: every other rule still looks at it, and the contrast rules
-        // still look at everything else, the 32px text logo below md included
-        // (AxeBuilder.exclude() would drop all rules). A node is the logo when
-        // its element, found again in the page by axe's selector, is inside
-        // the element marked data-testid="ascii-logo"; a violation goes only
-        // when no other node remains.
-        const violations = [];
-        for (const v of results.violations) {
-          if (!CONTRAST_RULES.includes(v.id)) {
-            violations.push(v);
-            continue;
-          }
-          const kept = [];
-          for (const n of v.nodes) {
-            const isLogo =
-              n.target.length === 1 &&
-              typeof n.target[0] === 'string' &&
-              (await page.evaluate(
-                (selector) =>
-                  document.querySelector(selector)?.closest('[data-testid="ascii-logo"]') != null,
-                n.target[0],
-              ));
-            if (!isLogo) kept.push(n);
-          }
-          if (kept.length > 0) violations.push({ ...v, nodes: kept });
-        }
-
-        const report = violations
-          .map((v) => {
-            const targets = v.nodes.map((n) => `    ${n.target.join(' ')}`).join('\n');
-            return `- ${v.id} (${v.impact ?? 'no impact given'}): ${v.help}\n${targets}`;
-          })
-          .join('\n');
+      await retryWhenLive(async () => {
+        const { violations, report } = await look(page, address, (p) =>
+          new AxeBuilder({ page: p }).withTags(TAGS).disableRules(CONTRAST_RULES).analyze(),
+        );
         expect(violations, `accessibility violations:\n${report}`).toEqual([]);
-
-        const passed = results.passes.map((r) => r.id);
-        for (const id of MUST_HAVE_RUN) {
-          expect(passed, `axe did not evaluate the rule ${id}`).toContain(id);
-        }
-      };
-
-      await retryWhenLive(check);
+      });
     });
+
+    // Only the two contrast rules, in both themes. Selected by id, so
+    // color-contrast-enhanced (disabled by default in axe) runs too.
+    test(
+      `contrast of the ${pageName} at ${width}x${height} (${name})`,
+      { tag: '@colours' },
+      async ({ page }) => {
+        test.skip(onlyLocal && live, 'checked locally only, see PAGES');
+        await page.setViewportSize({ width, height });
+
+        await retryWhenLive(async () => {
+          const { violations, report, passed } = await look(page, address, (p) =>
+            new AxeBuilder({ page: p }).withRules(CONTRAST_RULES).analyze(),
+          );
+          expect(violations, `accessibility violations:\n${report}`).toEqual([]);
+
+          for (const id of MUST_HAVE_RUN) {
+            expect(passed, `axe did not evaluate the rule ${id}`).toContain(id);
+          }
+        });
+      },
+    );
   }
 }
 
