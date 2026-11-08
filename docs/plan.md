@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Check for newer versions of the pinned tools](backlog/check-for-newer-versions-of-pinned-tools.md),
+- [Check for newer versions of the pinned tools](wip/check-for-newer-versions-of-pinned-tools.md),
   Tailwind and the list of AI robots, which Dependabot does not watch:
   Tailwind 4.3.5 has been out since 2026-11-06 and went unnoticed.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),

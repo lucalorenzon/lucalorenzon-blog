@@ -130,5 +130,5 @@ leaves nothing half-written. The blocked list of robots is identical
 before and after the change.
 
 Opened along the way: [check for newer versions of the pinned
-tools](../backlog/check-for-newer-versions-of-pinned-tools.md), since
+tools](../wip/check-for-newer-versions-of-pinned-tools.md), since
 Tailwind 4.3.5 had been out since 2026-11-06 without anyone noticing.
