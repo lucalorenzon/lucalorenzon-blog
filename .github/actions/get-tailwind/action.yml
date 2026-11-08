@@ -1,0 +1,53 @@
+# Gets the pinned Tailwind tool into target/tools, from the GitHub Actions cache
+# when it is there and downloaded otherwise, and saves a freshly downloaded
+# tool in the cache.
+#
+# It is an action of its own because two workflows need exactly this: the
+# build (build.yml) and the daily job that keeps the cache from expiring
+# (daily.yml). GitHub removes a cache entry nobody restores for 7 days, and the
+# build runs only on code changes, so after a week of documentation-only work
+# the entry would be gone and the next build would depend on GitHub's release
+# server, which failed on 2026-11-08. Restoring the entry counts as using it.
+#
+# The cache is keyed on the tool's version and checksum, printed by
+# scripts/get-tailwind.sh --cache-info, the only source of both. Only the
+# exact pinned file is accepted: there are no restore-keys. A freshly
+# downloaded tool is saved at once, even if a later step of the calling job
+# fails.
+#
+# It assumes the repository is already checked out.
+name: Get Tailwind
+description: Restore the pinned Tailwind tool from the cache, or download it and save it in the cache.
+
+outputs:
+  cache-hit:
+    description: "'true' if the tool was restored from the cache, otherwise 'false' (it was then downloaded and saved)."
+    value: ${{ steps.tailwind-restore.outputs.cache-hit == 'true' }}
+
+runs:
+  using: composite
+  steps:
+    - name: Find the cache key and path of the pinned Tailwind
+      id: tailwind-cache
+      shell: bash
+      run: scripts/get-tailwind.sh --cache-info >> "$GITHUB_OUTPUT"
+
+    - name: Restore the pinned Tailwind from the cache
+      id: tailwind-restore
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        key: ${{ steps.tailwind-cache.outputs.key }}
+        path: ${{ steps.tailwind-cache.outputs.path }}
+
+    # It checks the checksum of a restored file too, and downloads (with
+    # retries) only if there is no valid file.
+    - name: Get Tailwind
+      shell: bash
+      run: scripts/get-tailwind.sh
+
+    - name: Save the pinned Tailwind in the cache
+      if: ${{ steps.tailwind-restore.outputs.cache-hit != 'true' }}
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        key: ${{ steps.tailwind-cache.outputs.key }}
+        path: ${{ steps.tailwind-cache.outputs.path }}

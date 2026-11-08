@@ -1,0 +1,45 @@
+# Jobs that run once a day, on a schedule, and not because of a change.
+#
+# Job keep-tailwind-cache: GitHub removes a cache entry nobody restores for 7
+# days, and build.yml runs only on code changes, so after a week of
+# documentation-only work the cached Tailwind would be gone and the next build
+# would have to download it from GitHub's release server, which failed on
+# 2026-11-08. This job restores the entry every day (a restore counts as use)
+# and, if it is gone, gets Tailwind and saves it again. It runs daily, not
+# every 6 days, because GitHub may delay or skip scheduled runs.
+#
+# A failed scheduled run is mailed by GitHub to whoever last changed the cron
+# line below. GitHub also disables scheduled workflows in a public repository
+# after 60 days without repository activity; re-enable the workflow in the
+# Actions tab if that happens. It can also be run by hand.
+#
+# A job that checks for newer versions of the pinned tools is expected to be
+# added here later.
+name: Daily
+
+on:
+  schedule:
+    # An unusual minute: many workflows start at the top of the hour and
+    # scheduled runs are delayed or dropped when GitHub is busy.
+    - cron: '23 4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daily
+  cancel-in-progress: false
+
+jobs:
+  keep-tailwind-cache:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Get Tailwind, from the cache or downloaded
+        uses: ./.github/actions/get-tailwind

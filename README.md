@@ -68,10 +68,12 @@ GitHub (workflow `.github/workflows/build.yml`). Nothing is published by
 a push: the site goes live only when a version is published.
 
 The pipeline keeps the pinned Tailwind tool in the GitHub Actions cache, keyed
-on its version and checksum, and fetches it in a step of its own ("Get
-Tailwind"), so it downloads the tool only when the cache is empty and a failed
-download shows on that step. The key comes from
-`scripts/get-tailwind.sh --cache-info`.
+on its version and checksum, and gets it in a step of its own ("Get Tailwind",
+the local action `.github/actions/get-tailwind`), so it downloads the tool only
+when the cache is empty and a failed download shows on that step. The key comes
+from `scripts/get-tailwind.sh --cache-info`. GitHub removes a cache entry that
+nobody restores for 7 days, so the workflow `.github/workflows/daily.yml` runs
+every day, restores the entry and, if it is gone, creates it again.
 
 ### Screen reader check, on demand
 
