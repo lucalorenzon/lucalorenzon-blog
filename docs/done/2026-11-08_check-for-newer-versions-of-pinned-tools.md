@@ -72,7 +72,7 @@ blocks.
 
 ### Is the update to Tailwind 4.3.5 done here?
 
-No: in a [card of its own](../wip/update-tailwind-to-4-3-5.md),
+No: in a [card of its own](2026-11-08_update-tailwind-to-4-3-5.md),
 after the check. Updating first would have left the check nothing to
 find, so no proof that it works.
 
