@@ -71,9 +71,17 @@ field ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
    stopping the build in the pipeline (`settle`). **Rejected:** checking
    only when the page is built, which would stop at the first error,
    locally too, unlike every other problem of an article.
-4. **The figure lives in one configuration file** (user, on the agent's
+4. **The figure lives in one file, for now** (user, on the agent's
    proposal): `config/heading-max-graphemes.txt`, holding only the
-   number. The build includes it when it is compiled; the header's
+   number. The user had meant a structured configuration file read by
+   both Rust and JavaScript (a section of `Cargo.toml`, or a
+   `config.toml`); the agent took it as the file's name. Weighed
+   afterwards: `Cargo.toml` does not pass its metadata to the code, so
+   it would need a build script, and a shared TOML or YAML file needs a
+   parser on the tests' side (JSON would not); with a single number the
+   plain file avoids both. The user kept the plain file for now; a
+   structured file is the form to take once there is more than one
+   setting. The build includes it when it is compiled; the header's
    browser test reads it from the disk, which works on the live check
    too, since the tests always run from a copy of the repository; the
    test counts its invented titles in graphemes (`Intl.Segmenter`), as
