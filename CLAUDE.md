@@ -172,7 +172,7 @@ contributions, the person stays the author and fully accountable, while
   only, for the YAML front matter at the top of each article (why:
   `docs/done/2026-11-08_read-article-fields-from-front-matter.md`)
 - [Tailwind CSS](https://tailwindcss.com/) v4, standalone command-line tool
-  pinned by version and checksum in `scripts/build-site.sh`
+  pinned by version and checksum in `scripts/get-tailwind.sh`
 - Hosting on GitHub Pages, published by GitHub Actions only when a version
   tag `vX.Y.Z` is pushed (how: `README.md`, "Publish a version")
 - [Playwright](https://playwright.dev/) end-to-end test, run on every build
@@ -194,6 +194,7 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | `assets/` | Files copied as they are into the site: the favicon, and the fonts with their licences and attribution |
 | `style/input.css` | Tailwind entry point |
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
+| `scripts/get-tailwind.sh` | Gets the pinned Tailwind CSS tool (version and checksum live here): checks a tool already in `target/tools/`, downloads with retries otherwise, prints its path; used by `scripts/build-site.sh` |
 | `scripts/playwright-version.sh` | Prints the Playwright version locked in `end2end/`, which picks the test container image in both workflows |
 | `scripts/screen-reader/` | The on-demand screen reader check: Orca 51 and Firefox ESR in a Docker container (`Dockerfile`, `entrypoint.sh`), the host program `check.py`, its unit tests and a log sample (`test_check.py`, `fixtures/`) |
 | `scripts/content-dates/` | The content dates step: `content_dates.py` writes the author date of the last commit of each Markdown file in `content/` (tab-separated file in `target/generated/content-dates.tsv`, read by the build through `CONTENT_DATES_FILE`), and its unit tests (`test_content_dates.py`); in the pipeline it runs in the `gather-inputs` job, on the full history |
