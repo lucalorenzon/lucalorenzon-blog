@@ -163,11 +163,14 @@ contributions, the person stays the author and fully accountable, while
 
 ## Stack
 
-- [Leptos](https://github.com/leptos-rs/leptos) 0.8.22, used only to render
+- [Leptos](https://github.com/leptos-rs/leptos) 0.8.23, used only to render
   pages to static HTML at build time (no server, no WebAssembly yet)
 - [pulldown-cmark](https://github.com/pulldown-cmark/pulldown-cmark) 0.13,
   converting the content's Markdown to HTML at build time; the Markdown
   holds no HTML (a unit test checks it)
+- [serde-saphyr](https://crates.io/crates/serde-saphyr) 2.1, reading
+  only, for the YAML front matter at the top of each article (why:
+  `docs/done/2026-11-08_read-article-fields-from-front-matter.md`)
 - [Tailwind CSS](https://tailwindcss.com/) v4, standalone command-line tool
   pinned by version and checksum in `scripts/build-site.sh`
 - Hosting on GitHub Pages, published by GitHub Actions only when a version
@@ -187,7 +190,7 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | Path | Content |
 |---|---|
 | `src/` | The page frame shared by every page (`page_frame.rs`), the home page, the curriculum page (`curriculum_page.rs`), the about page, the licence page, the article pages (`article_page.rs`) and the "page not found", the site's address (`site_address.rs`), the Markdown-to-HTML conversion with the code block component and the table's two forms, table and record viewer (`markdown.rs`), the widths that decide when a table becomes a record viewer (`table_widths.rs`, from Literata's character widths in `literata_widths.rs`, generated), the list of pages with the sitemap (`sitemap.rs`), the `robots.txt` (`robots_txt.rs`) and the build program that writes `index.html`, `curriculum.html`, `about.html`, `licence.html`, `404.html`, the articles in `articles/`, `sitemap.xml`, `robots.txt` and, outside the site, the list of generated classes for Tailwind (`target/generated/code-classes.txt`) |
-| `content/` | The site's text in Markdown: today the curriculum, a version written for the site and cleaned of personal and employer data, the text of the about and licence pages (`about.md`, `licence.md`), and the articles in `articles/`, built into pages but not yet published; its licences, different from the code's, in `README.md` and `LICENSE-MIT-0` |
+| `content/` | The site's text in Markdown: today the curriculum, a version written for the site and cleaned of personal and employer data, the text of the about and licence pages (`about.md`, `licence.md`), and the articles in `articles/`, each with its title, description and date in a YAML front matter; its licences, different from the code's, in `README.md` and `LICENSE-MIT-0` |
 | `assets/` | Files copied as they are into the site: the favicon, and the fonts with their licences and attribution |
 | `style/input.css` | Tailwind entry point |
 | `scripts/build-site.sh` | The single build entry point, used locally and in the pipeline |
