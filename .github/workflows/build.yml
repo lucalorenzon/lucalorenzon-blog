@@ -8,8 +8,8 @@
 # Job gather-inputs collects what comes from outside the build and hands it to
 # job build as files (artifact "inputs"): the date of the last change of each
 # content file, read from the full git history (build checks out the last
-# commit only), and the names of the robots robots.txt blocks, from a list
-# downloaded at a pinned commit.
+# commit only), and the names of the robots robots.txt blocks, from the
+# community list of AI robots committed in scripts/robots-list/ (no download).
 # The browser test (end2end/) runs on the freshly built site served locally
 # (job browser-test).
 # The same job first checks the test's TypeScript types, because Playwright
@@ -152,7 +152,7 @@ jobs:
       - name: Test the robots list step
         run: python3 -m unittest discover -s scripts/robots-list -p 'test_*.py'
 
-      - name: Download the list of robots and filter it
+      - name: Filter the list of robots
         run: python3 scripts/robots-list/robots_list.py --output target/generated/blocked-robots.txt
 
       # Both files are in target/generated, so the artifact holds them at its

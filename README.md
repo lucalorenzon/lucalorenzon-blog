@@ -40,12 +40,14 @@ runs it on the full history and the build uses its file, via
 `python3 -m unittest discover -s scripts/content-dates -p 'test_*.py'`.
 
 It also needs the names of the robots the site's `robots.txt` blocks. A
-second step, `scripts/robots-list/robots_list.py`, downloads the community
-list of AI robots (`ai-robots-txt/ai.robots.txt`) at a pinned commit, checks
-its SHA-256, keeps it in `target/tools/`, and writes the names to block to a
-file. Locally `scripts/build-site.sh` runs it; in the pipeline the
+second step, `scripts/robots-list/robots_list.py`, reads the community
+list of AI robots (`ai-robots-txt/ai.robots.txt`) from a copy committed in
+`scripts/robots-list/ai-robots-txt/` at a pinned commit, together with the
+project's MIT licence, checks its SHA-256, and writes the names to block to a
+file. It uses no network, so a build does not depend on GitHub's servers.
+Locally `scripts/build-site.sh` runs it; in the pipeline the
 `gather-inputs` job does, and the build uses its file via
-`BLOCKED_ROBOTS_FILE`. A wrong checksum or a failed download stops the build.
+`BLOCKED_ROBOTS_FILE`. A wrong checksum stops the build.
 Its tests:
 `python3 -m unittest discover -s scripts/robots-list -p 'test_*.py'`.
 
@@ -58,7 +60,8 @@ python3 scripts/robots-list/robots_list.py --check-updates
 It counts the commits that changed the list after the pinned one, shows
 which robots would go from allowed to blocked and back, which new ones would
 be blocked with a description of their own (candidates for an exception),
-and prints the commit and checksum to pin.
+and prints the commit and checksum to pin, with the address of the new
+`robots.json` to put in place of the committed copy.
 
 Every push to `main` and every pull request runs the same checks on
 GitHub (workflow `.github/workflows/build.yml`). Nothing is published by

@@ -63,57 +63,52 @@ class PinnedListTests(unittest.TestCase):
         self._tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self._tmp.cleanup)
         self.repo = Path(self._tmp.name)
-        self.calls: list[str] = []
 
-    def download(self, url: str) -> bytes:
-        self.calls.append(url)
-        return FIXTURE_BYTES
+    def commit_list(self, data: bytes = FIXTURE_BYTES) -> None:
+        path = self.repo / robots_list.COMMITTED_LIST
+        path.parent.mkdir(parents=True)
+        path.write_bytes(data)
 
-    def pinned(self, expected: str, download=None):
-        return robots_list.pinned_list(
-            self.repo, download or self.download, commit="abc", expected=expected
+    def test_committed_list_is_read_and_verified(self):
+        self.commit_list()
+        self.assertEqual(robots_list.pinned_list(self.repo, FIXTURE_SHA), FIXTURE_BYTES)
+
+    def test_missing_file_is_an_error(self):
+        with self.assertRaisesRegex(robots_list.RobotsListError, "cannot read"):
+            robots_list.pinned_list(self.repo, FIXTURE_SHA)
+
+    def test_checksum_mismatch_is_an_error(self):
+        self.commit_list()
+        with self.assertRaisesRegex(robots_list.RobotsListError, "PINNED_SHA256"):
+            robots_list.pinned_list(self.repo, "0" * 64)
+
+    def test_committed_file_matches_the_pin(self):
+        repo = Path(__file__).resolve().parents[2]
+        self.assertTrue(robots_list.pinned_list(repo))
+
+    def test_main_writes_the_list_without_the_network(self):
+        # The fixture is not the pinned file, so the pin is patched to it.
+        self.commit_list()
+        output = self.repo / "out" / "blocked.txt"
+        with (
+            mock.patch.object(robots_list, "PINNED_SHA256", FIXTURE_SHA),
+            mock.patch.object(
+                robots_list, "http_get", side_effect=AssertionError("network used")
+            ),
+        ):
+            code = robots_list.main(["--repo", str(self.repo), "--output", str(output)])
+        self.assertEqual(code, 0)
+        self.assertEqual(
+            output.read_text(encoding="utf-8"),
+            "Provider\nScraper\nTrainer\nUndocumented\n",
         )
 
-    def cache_files(self) -> list[Path]:
-        return list((self.repo / "target" / "tools").glob("*"))
-
-    def test_download_is_verified_and_cached(self):
-        self.assertEqual(self.pinned(FIXTURE_SHA), FIXTURE_BYTES)
-        self.assertEqual(self.calls, [robots_list.raw_url("abc")])
-        self.assertEqual([p.name for p in self.cache_files()], ["ai-robots-abc.json"])
-
-    def test_valid_cache_means_no_download(self):
-        self.pinned(FIXTURE_SHA)
-        self.calls.clear()
-        self.assertEqual(self.pinned(FIXTURE_SHA), FIXTURE_BYTES)
-        self.assertEqual(self.calls, [])
-
-    def test_checksum_mismatch_is_an_error_and_writes_nothing(self):
-        with self.assertRaises(robots_list.RobotsListError):
-            self.pinned("0" * 64)
-        self.assertEqual(self.cache_files(), [])
-
-    def test_corrupt_cache_is_downloaded_again(self):
-        self.pinned(FIXTURE_SHA)
-        (self.repo / "target" / "tools" / "ai-robots-abc.json").write_bytes(b"broken")
-        self.assertEqual(self.pinned(FIXTURE_SHA), FIXTURE_BYTES)
-        self.assertEqual(len(self.calls), 2)
-
-    def test_failed_download_is_an_error(self):
-        def failing(url: str) -> bytes:
-            raise robots_list.RobotsListError("no network")
-
-        with self.assertRaises(robots_list.RobotsListError):
-            self.pinned(FIXTURE_SHA, failing)
-
     def test_main_writes_nothing_on_mismatch(self):
-        # The fixture is not the pinned file, so its checksum cannot match.
+        self.commit_list()
         output = self.repo / "out" / "blocked.txt"
-        with mock.patch.object(robots_list, "http_get", self.download):
-            code = robots_list.main(["--repo", str(self.repo), "--output", str(output)])
+        code = robots_list.main(["--repo", str(self.repo), "--output", str(output)])
         self.assertEqual(code, 1)
         self.assertFalse(output.exists())
-        self.assertEqual(self.cache_files(), [])
 
 
 OLD = {

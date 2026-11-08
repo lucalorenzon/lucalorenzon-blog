@@ -43,8 +43,8 @@ else
 fi
 export CONTENT_DATES_FILE
 
-# The names of the robots robots.txt blocks come from a list downloaded at a
-# pinned commit (cached in target/tools/): the pipeline passes the file made
+# The names of the robots robots.txt blocks come from a list committed in
+# scripts/robots-list/ai-robots-txt/ (no download): the pipeline passes the file made
 # by the gather-inputs job in BLOCKED_ROBOTS_FILE; locally it is made here.
 if [[ -n "${BLOCKED_ROBOTS_FILE:-}" ]]; then
     if [[ ! -f "$BLOCKED_ROBOTS_FILE" ]]; then

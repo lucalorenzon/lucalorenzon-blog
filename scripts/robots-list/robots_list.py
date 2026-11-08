@@ -2,12 +2,16 @@
 
 The robots.txt blocks the robots that collect text to train AI models and
 lets through those that read a page for a user or index it for search. The
-list of AI robots is kept by a community project; this step downloads it at a
-pinned commit, checks its checksum, filters it and hands the build the names
-to block as a plain file (one per line, sorted).
+list of AI robots is kept by a community project; a copy of its robots.json
+at a pinned commit is committed in ai-robots-txt/ next to this script, with
+the project's MIT licence, which requires the notice to travel with the copy.
+This step reads that copy, checks its checksum, filters it and hands the build
+the names to block as a plain file (one per line, sorted). It never uses the
+network: a build must not fail because GitHub's servers do.
 
 With --check-updates it instead tells what would change in the blocked list
-if the pin moved to the project's latest commit. It needs the network.
+if the pin moved to the project's latest commit. Only this mode needs the
+network.
 
 Run: python3 scripts/robots-list/robots_list.py --output FILE
      python3 scripts/robots-list/robots_list.py --check-updates
@@ -23,11 +27,18 @@ from collections.abc import Callable
 from pathlib import Path
 
 # The pinned source: robots.json of https://github.com/ai-robots-txt/ai.robots.txt
-# at this commit (2026-11-05). Moving the pin is a deliberate act: run
-# --check-updates, read what would change, then change the three lines below.
+# at this commit (2026-11-05), committed as ai-robots-txt/robots.json. The
+# commit records where the copy came from and is where --check-updates starts.
+# Moving the pin is a deliberate act: run --check-updates, read what would
+# change, then replace ai-robots-txt/robots.json (and LICENSE, if it changed)
+# with the project's files at the new commit and change the two constants
+# below.
 PROJECT = "ai-robots-txt/ai.robots.txt"
 PINNED_COMMIT = "508985e256295b837210c8d13cf8dd8f1bd04673"
 PINNED_SHA256 = "4695fa6839dfb2ff8dbd9e00f673b9685fa5c16d0cb86e3fb779469baf185337"
+
+# Where the committed copy lives, relative to the repository.
+COMMITTED_LIST = Path("scripts/robots-list/ai-robots-txt/robots.json")
 
 # Only robots whose function is one of these pass: a robot that is new or
 # unclear stays blocked until it falls into one of them.
@@ -69,7 +80,7 @@ Functions = dict[str, str]
 
 
 class RobotsListError(Exception):
-    """The list could not be obtained or did not match the pin."""
+    """The list could not be read or did not match the pin."""
 
 
 def raw_url(commit: str) -> str:
@@ -122,31 +133,20 @@ def write(output: Path, text: str) -> None:
     output.write_text(text, encoding="utf-8", newline="\n")
 
 
-def pinned_list(
-    repo: Path,
-    download: Callable[[str], bytes] | None = None,
-    commit: str = PINNED_COMMIT,
-    expected: str = PINNED_SHA256,
-) -> bytes:
-    """The pinned robots.json, from the cache in target/tools/ or downloaded."""
-    download = download or http_get
-    cached = repo / "target" / "tools" / f"ai-robots-{commit}.json"
-    if cached.is_file():
-        data = cached.read_bytes()
-        if sha256(data) == expected:
-            return data
-    data = download(raw_url(commit))
+def pinned_list(repo: Path, expected: str | None = None) -> bytes:
+    """The committed robots.json, checked against the pin."""
+    expected = expected or PINNED_SHA256
+    path = repo / COMMITTED_LIST
+    try:
+        data = path.read_bytes()
+    except OSError as error:
+        raise RobotsListError(f"cannot read {path}: {error}") from error
     actual = sha256(data)
     if actual != expected:
+        # Either the file was edited by hand or the pin was moved without it.
         raise RobotsListError(
-            f"robots.json checksum mismatch (expected {expected}, got {actual})"
+            f"{path} does not match PINNED_SHA256 (expected {expected}, got {actual})"
         )
-    # Written under a temporary name and renamed, so a stopped run never
-    # leaves a half-written file that looks like a valid cache.
-    cached.parent.mkdir(parents=True, exist_ok=True)
-    temporary = cached.with_name(cached.name + ".tmp")
-    temporary.write_bytes(data)
-    temporary.replace(cached)
     return data
 
 
@@ -231,7 +231,7 @@ def commits_changing_list(download: Callable[[str], bytes]) -> list[dict]:
 
 def check_updates(repo: Path, download: Callable[[str], bytes] | None = None) -> int:
     download = download or http_get
-    old = parse_functions(pinned_list(repo, download))
+    old = parse_functions(pinned_list(repo))
     newer = commits_changing_list(download)
     if not newer:
         print(f"Up to date: no commit changed robots.json after {PINNED_COMMIT}.")
@@ -249,9 +249,12 @@ def check_updates(repo: Path, download: Callable[[str], bytes] | None = None) ->
         f"Blocked now: {len(blocked_names(old))}; blocked after the move: {len(blocked_names(new))}."
     )
     print("\n".join(lines) if lines else "The blocked list would not change.")
-    print("To move the pin, set in robots_list.py:")
-    print(f'  PINNED_COMMIT = "{latest["sha"]}"')
-    print(f'  PINNED_SHA256 = "{sha256(data)}"')
+    print("To move the pin:")
+    print(f"  1. download {raw_url(latest['sha'])}")
+    print(f"     and put it at {COMMITTED_LIST} (check LICENSE too);")
+    print("  2. set in robots_list.py:")
+    print(f'     PINNED_COMMIT = "{latest["sha"]}"')
+    print(f'     PINNED_SHA256 = "{sha256(data)}"')
     return 0
 
 
