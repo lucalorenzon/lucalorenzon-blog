@@ -14,13 +14,12 @@ live since 2026-10-26
 
 ## Now
 
-- [Read the articles' title, description and date from the front matter](wip/read-article-fields-from-front-matter.md),
-  so the Markdown is the only source of an article and the sitemap's
-  dates become accurate for those fields too; it anticipates part of
-  the `residuality` run. Being worked on since 2026-11-08.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
-  article pages and the sitemap; right after the articles' card.
+  article pages and the sitemap. The articles now read their title,
+  description and date from the front matter
+  ([card](done/2026-11-08_read-article-fields-from-front-matter.md)),
+  not published yet.
 
 ## Next
 

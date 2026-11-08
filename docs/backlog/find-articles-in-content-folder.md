@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-08, by the user, while reviewing the code of the
   card on the articles' front matter
-  ([card](../wip/read-article-fields-from-front-matter.md)).
+  ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
 - **Status:** noticed, not started.
 
 ## Why
@@ -36,7 +36,7 @@ sitemap entry.
   `LICENSE-MIT-0`, are on an exclusion list, written twice today: in
   `src/sitemap.rs`'s tests and in `scripts/content-dates/content_dates.py`.
 - **The articles' rule for a missing or wrong field** applies to every
-  file found ([card](../wip/read-article-fields-from-front-matter.md)).
+  file found ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
 
 ## Questions
 

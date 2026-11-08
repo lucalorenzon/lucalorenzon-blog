@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-08, by the user, while reviewing the code of the
   card on the articles' front matter
-  ([card](../wip/read-article-fields-from-front-matter.md)).
+  ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
 - **Status:** noticed, not started.
 
 ## Why
@@ -22,7 +22,7 @@ matter, is a plain string that nothing checks:
 The user wants both checked in the build, with the same rule as a
 missing or wrong field: on the author's machine the article is skipped
 and listed, in the pipeline the build stops
-([card](../wip/read-article-fields-from-front-matter.md), "What does
+([card](../done/2026-11-08_read-article-fields-from-front-matter.md), "What does
 the build do when a field is missing or wrong?").
 
 ## Known from the start

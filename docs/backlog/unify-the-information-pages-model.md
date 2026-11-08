@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-08, by the user, while reviewing the code of the
   card on the articles' front matter
-  ([card](../wip/read-article-fields-from-front-matter.md)).
+  ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
 - **Status:** noticed, not started.
 
 ## Why
@@ -17,7 +17,7 @@ the component and the function that render the page are the same
 code three times, and so are most of their tests.
 
 The articles now have one model, `Article`, built from their file
-([card](../wip/read-article-fields-from-front-matter.md)). The user
+([card](../done/2026-11-08_read-article-fields-from-front-matter.md)). The user
 wants the same for the information pages: one model of data for the
 three, instead of three modules.
 

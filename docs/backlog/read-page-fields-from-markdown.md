@@ -4,7 +4,7 @@
   on moving titles, descriptions and dates into the Markdown's front
   matter, opened on 2026-11-06 while choosing where the sitemap's dates
   come from ([card](../done/2026-11-07_add-sitemap.md)). The articles
-  come first ([card](../wip/read-article-fields-from-front-matter.md)).
+  come first ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
 - **Status:** noticed, not started.
 
 ## Why
@@ -25,7 +25,7 @@ sitemap's date of the page, which comes from its Markdown file only
 
 - **The articles' card sets the pattern:** the fields read with
   serde-saphyr, the rule for a missing or wrong field
-  ([card](../wip/read-article-fields-from-front-matter.md)).
+  ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
 - **The home page has no Markdown of its own:** its content is the list
   of articles, and its description is a constant in `src/home_page.rs`.
 - **The tab titles do not all follow one rule:** the home page's is

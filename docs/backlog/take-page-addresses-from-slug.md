@@ -4,7 +4,7 @@
   titles, descriptions and dates into the Markdown's front matter,
   opened on 2026-11-06 while choosing where the sitemap's dates come
   from ([card](../done/2026-11-07_add-sitemap.md)). The articles' other
-  fields come first ([card](../wip/read-article-fields-from-front-matter.md)).
+  fields come first ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
 - **Status:** noticed, not started.
 
 ## Why
