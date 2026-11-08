@@ -20,7 +20,7 @@ live since 2026-10-26
   in three slices, the first done
   ([card](done/2026-11-08_run-colour-free-tests-in-one-theme.md),
   913 tests became 514):
-  [check at every width only what depends on the width](backlog/check-at-every-width-only-what-depends-on-it.md),
+  [check at every width only what depends on the width](wip/check-at-every-width-only-what-depends-on-it.md),
   [check every page with tests written once](backlog/check-every-page-with-tests-written-once.md);
   then the components' test pages, carded after these.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),

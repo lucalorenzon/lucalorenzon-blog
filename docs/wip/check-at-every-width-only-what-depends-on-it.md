@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-08, by the user and the agent, splitting the card
   on making the browser tests check behaviour, not articles
   ([ADR-004](../adr/ADR-004-test-components-once-and-pages-with-a-net.md)); in Now, second of three slices.
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-08.
 
 ## Why
 
