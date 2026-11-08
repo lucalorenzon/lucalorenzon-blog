@@ -1,10 +1,11 @@
 import { test, expect, type Page } from '@playwright/test';
-import { retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
+import { COLUMN_WIDTHS, retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
 
 // Enforces the visual presentation of the text. It checks what the reader
 // sees (rendered sizes, positions, lines), never how the page is built.
 //
-// WCAG 1.4.8 (visual presentation, level AAA), on every viewport:
+// WCAG 1.4.8 (visual presentation, level AAA), at the widths of the text column
+// (COLUMN_WIDTHS in support.ts: it is all this rule depends on):
 //   1. the line height of every paragraph and list item is at least 1.5
 //      times its font size
 //   2. the empty space between two consecutive paragraphs is at least 1.5
@@ -14,7 +15,8 @@ import { retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
 //      from the width: the font is proportional)
 //   4. no text in the content is justified
 //
-// WCAG 1.4.12 (text spacing, level AA), on every viewport: when the reader
+// WCAG 1.4.12 (text spacing, level AA), on every viewport (it also checks the
+// header, which depends on the screen width): when the reader
 // raises line height to 1.5, letter spacing to 0.12em, word spacing to
 // 0.16em and the space after paragraphs to 2em (as a bookmarklet or an
 // extension would do), nothing is lost:
@@ -240,7 +242,7 @@ async function spacingProblems(page: Page): Promise<string[]> {
 // ---- Tests ---------------------------------------------------------------
 
 for (const { name: pageName, address, hasConsecutiveParagraphs } of TEXT_PAGES) {
-for (const { name, width, height } of VIEWPORTS) {
+for (const { name, width, height } of COLUMN_WIDTHS) {
   test(`visual presentation (WCAG 1.4.8) of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
 
@@ -271,7 +273,15 @@ for (const { name, width, height } of VIEWPORTS) {
       expect(justified, `text must not be justified:\n${justified.join('\n')}`).toEqual([]);
     });
   });
+}
+}
 
+// Stays at all the widths for now: it also checks the header, which depends on
+// the screen width. It moves to COLUMN_WIDTHS when the header part moves to
+// header-layout.spec.ts, after the 50-character title limit is enforced in the
+// build (card docs/backlog/enforce-the-title-length-limit-in-the-build.md).
+for (const { name: pageName, address } of TEXT_PAGES) {
+for (const { name, width, height } of VIEWPORTS) {
   test(`text spacing (WCAG 1.4.12) of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
 

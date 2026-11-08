@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { VIEWPORTS } from './support';
+import { COLUMN_WIDTHS } from './support';
 
 // Code blocks (Markdown code rendered as a component):
 //   - the "wrap" toggle is visible if and only if the code scrolls sideways
@@ -20,7 +20,7 @@ async function open(page: Page, address: string) {
 }
 
 for (const { name: articleName, address } of ARTICLES) {
-  for (const { name, width, height } of VIEWPORTS) {
+  for (const { name, width, height } of COLUMN_WIDTHS) {
     test(`code blocks of ${articleName} at ${width}x${height} (${name}): the toggle shows exactly when the code scrolls`, async ({ page }) => {
       await page.setViewportSize({ width, height });
       await open(page, address);

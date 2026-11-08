@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { ADDRESSES, VIEWPORTS, live } from './support';
+import { ADDRESSES, COLUMN_WIDTHS, live } from './support';
 
 // A table cell whose text has no whitespace is a single value, not running
 // text, so it stays on one line. Browsers treat an en dash as a place to
@@ -8,7 +8,8 @@ import { ADDRESSES, VIEWPORTS, live } from './support';
 // and are not checked.
 //
 // The rule is checked on every page of the built site that has tables, at
-// the phone widths, where columns are narrow. The pages are found by
+// the phone widths of the text column (COLUMN_WIDTHS below 768), where columns
+// are narrow. The pages are found by
 // walking the built site, so a new page is covered without being listed;
 // a live run has no folder to walk and skips the test.
 //
@@ -17,7 +18,7 @@ import { ADDRESSES, VIEWPORTS, live } from './support';
 // than articles.
 // It checks what the reader sees, never how the page is built.
 
-const PHONES = VIEWPORTS.filter(({ width }) => width < 768);
+const PHONES = COLUMN_WIDTHS.filter(({ width }) => width < 768);
 
 test.beforeAll(() => {
   if (!live && ADDRESSES.length === 0) {

@@ -1,18 +1,21 @@
 import { test, expect, type Locator, type Page } from '@playwright/test';
-import { TABLE_ADDRESSES, VIEWPORTS, live } from './support';
+import { COLUMN_WIDTHS, TABLE_ADDRESSES, live } from './support';
 
 // Every Markdown table is rendered in two forms inside one wrapper: the
 // table, and a "record viewer" (the names of the columns stay still on the
 // left, a box on the right shows one record at a time). The page shows the
 // table while its columns get a readable width and the viewer below that;
 // tables never scroll sideways. Checked on every page of the built site that
-// has tables, found by walking the built site (see support.ts), at every
-// viewport, whatever form the table has there:
+// has tables, found by walking the built site (see support.ts), at the widths
+// of the text column (COLUMN_WIDTHS), whatever form the table has there:
 //   - exactly one of the two forms is displayed
 //   - the table is not wider than its wrapper
 //   - in the viewer, for each record: every row of the box is as tall as, and
 //     level with, the matching row of the label column; the number row reads
-//     "k / n"; the keyboard reaches the box and moves it one record
+//     "k / n"
+//   - the keyboard reaches the box and moves it one record (once per page, at
+//     320x568, where the viewers are shown: the keyboard does not behave
+//     differently with the width once the viewer is shown)
 //   - the page does not scroll sideways
 // A live run has no folder to walk and skips them. It checks what the reader
 // sees, never how the page is built (the class names below only find the
@@ -68,7 +71,7 @@ async function showRecord(box: Locator, k: number) {
 }
 
 for (const address of TABLE_ADDRESSES) {
-  for (const { name, width, height } of VIEWPORTS) {
+  for (const { name, width, height } of COLUMN_WIDTHS) {
     const where = `of ${address} at ${width}x${height} (${name})`;
 
     test(`exactly one form of each table ${where} is shown, and the page does not scroll sideways`, async ({ page }) => {
@@ -160,48 +163,49 @@ for (const address of TABLE_ADDRESSES) {
         }
       }
     });
-
-    test(`the keyboard reaches the viewers ${where} and moves one record`, async ({ page }) => {
-      test.skip(live, 'checked locally only: the pages come from the built folder');
-      await page.setViewportSize({ width, height });
-      await gotoReady(page, address);
-
-      for (const wrapper of await wrappersOf(page)) {
-        if (!(await formsShown(wrapper)).viewer) continue;
-        const box = wrapper.getByRole('region');
-        const records = await box.getByRole('group').count();
-
-        // Tab from the top of the page until the box has focus.
-        await page.evaluate(() => window.scrollTo(0, 0));
-        await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
-        let focused = false;
-        for (let presses = 0; presses < 60 && !focused; presses++) {
-          await page.keyboard.press('Tab');
-          focused = await box.evaluate((el) => el === document.activeElement);
-        }
-        expect(focused, 'Tab reaches the box of the viewer').toBe(true);
-
-        const top = () => box.evaluate((el) => el.scrollTop);
-        expect(await top(), 'the box starts at the first record').toBeLessThan(1);
-        if (records < 2) continue;
-        await page.keyboard.press('ArrowDown');
-        await expect
-          .poll(() =>
-            box.evaluate((el) => (el.querySelectorAll('[role="group"]')[1] as HTMLElement).offsetTop - el.scrollTop),
-          )
-          .toBeLessThan(1);
-        await page.keyboard.press('PageDown');
-        await expect
-          .poll(() =>
-            box.evaluate((el) => {
-              const pane = (el.querySelectorAll('[role="group"]')[Math.min(2, el.querySelectorAll('[role="group"]').length - 1)] as HTMLElement);
-              return Math.abs(pane.offsetTop - el.scrollTop);
-            }),
-          )
-          .toBeLessThan(1);
-      }
-    });
   }
+
+  const { name, width, height } = COLUMN_WIDTHS[0];
+  test(`the keyboard reaches the viewers of ${address} at ${width}x${height} (${name}) and moves one record`, async ({ page }) => {
+    test.skip(live, 'checked locally only: the pages come from the built folder');
+    await page.setViewportSize({ width, height });
+    await gotoReady(page, address);
+
+    for (const wrapper of await wrappersOf(page)) {
+      if (!(await formsShown(wrapper)).viewer) continue;
+      const box = wrapper.getByRole('region');
+      const records = await box.getByRole('group').count();
+
+      // Tab from the top of the page until the box has focus.
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+      let focused = false;
+      for (let presses = 0; presses < 60 && !focused; presses++) {
+        await page.keyboard.press('Tab');
+        focused = await box.evaluate((el) => el === document.activeElement);
+      }
+      expect(focused, 'Tab reaches the box of the viewer').toBe(true);
+
+      const top = () => box.evaluate((el) => el.scrollTop);
+      expect(await top(), 'the box starts at the first record').toBeLessThan(1);
+      if (records < 2) continue;
+      await page.keyboard.press('ArrowDown');
+      await expect
+        .poll(() =>
+          box.evaluate((el) => (el.querySelectorAll('[role="group"]')[1] as HTMLElement).offsetTop - el.scrollTop),
+        )
+        .toBeLessThan(1);
+      await page.keyboard.press('PageDown');
+      await expect
+        .poll(() =>
+          box.evaluate((el) => {
+            const pane = (el.querySelectorAll('[role="group"]')[Math.min(2, el.querySelectorAll('[role="group"]').length - 1)] as HTMLElement);
+            return Math.abs(pane.offsetTop - el.scrollTop);
+          }),
+        )
+        .toBeLessThan(1);
+    }
+  });
 }
 
 // The card fixes the form of the hybris PK article's six-column table at two

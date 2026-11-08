@@ -1,11 +1,11 @@
 import { test, expect, type Page } from '@playwright/test';
-import { retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
+import { COLUMN_WIDTHS, retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
 
-// Enforces that the content (the text in <main>: the curriculum, the licence) is readable on every
-// device. It checks what the reader sees (sizes, positions, colours), never
+// Enforces that the content (the text in <main>: the curriculum, the licence) is readable at the
+// widths of the text column (COLUMN_WIDTHS in support.ts). It checks what the reader sees (sizes, positions, colours), never
 // how the page is built.
 //
-// Rules on every viewport:
+// Rules at those widths:
 //   1. no horizontal scroll
 //   2. section headings (h2) are larger than body text
 //   3. a page with roles has at least one role heading (h3)
@@ -112,7 +112,7 @@ function violations(s: Snapshot, hasRoles: boolean): string[] {
 // ---- Tests ---------------------------------------------------------------
 
 for (const { name: pageName, address, hasRoles } of TEXT_PAGES) {
-for (const { name, width, height } of VIEWPORTS) {
+for (const { name, width, height } of COLUMN_WIDTHS) {
   test(`content layout of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
 
@@ -221,10 +221,10 @@ test('list markers take the amber accent and the item text keeps its colour', { 
   });
 });
 
-// The home page's boxes (card frame-home-page-articles-in-boxes), on every device: no sideways
+// The home page's boxes (card frame-home-page-articles-in-boxes), at the widths of the column (the list is inside it): no sideways
 // scroll, the date label (on the bottom border line) clears the description and the next box, and
 // the border line runs through the middle of the label, at rest and when active.
-for (const { name, width, height } of VIEWPORTS) {
+for (const { name, width, height } of COLUMN_WIDTHS) {
   test(`the home page's boxes and their date labels are laid out well at ${width}x${height} (${name})`, async ({
     page,
   }) => {
@@ -277,7 +277,7 @@ for (const { name, width, height } of VIEWPORTS) {
 // The space between the home page's boxes is 2.25 times the text size and the first box has no
 // margin above it (card frame-home-page-articles-in-boxes). The column's own rule for list items
 // (0.75em above) must not win over it, whatever the order the stylesheet comes in.
-for (const { name, width, height } of VIEWPORTS) {
+for (const { name, width, height } of COLUMN_WIDTHS) {
   test(`the home page's boxes are 2.25em apart and the first has no margin above at ${width}x${height} (${name})`, async ({
     page,
   }) => {

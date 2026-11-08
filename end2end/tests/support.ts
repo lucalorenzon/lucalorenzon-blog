@@ -32,6 +32,17 @@ export const VIEWPORTS = [
   { name: 'Full HD', width: 1920, height: 1080 },
 ];
 
+// The widths for tests of what is inside the text column. Measured in the
+// browser: the column grows with the screen from 304 to 584 px up to about
+// 600 px, stays at 584 px up to 767 px (text 18 px), and is 704 px wide from
+// 768 px up (text 20 px). The table forms and the code "wrap" toggle follow
+// the column. So a test of what is inside the column needs one width per
+// column size: 659 and 767 give the same result, and so do the seven widths
+// from 768 to 1920. The widths between 412 and 600 are sampled at three
+// points only, as before. Why: docs/wip/check-at-every-width-only-what-depends-on-it.md
+const COLUMN_WIDTH_NAMES = ['iPhone SE', 'iPhone 15', 'Pixel 7', 'boundary 767', 'iPad Mini'];
+export const COLUMN_WIDTHS = VIEWPORTS.filter(({ name }) => COLUMN_WIDTH_NAMES.includes(name));
+
 // The pages show different elements per width band (and axe checks only what
 // is shown), so some tests run once per band, with the same names and sizes
 // used in header-layout.spec.ts.
