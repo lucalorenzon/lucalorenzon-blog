@@ -27,6 +27,9 @@ live since 2026-10-26
 - [Unify the model of the information pages](backlog/unify-the-information-pages-model.md),
   licence, about and curriculum, today three nearly identical modules;
   probably before reading their fields from the Markdown.
+- [Let a page state its own licence terms](backlog/let-a-page-state-its-own-licence-terms.md),
+  departing from the licence page, as the SAP articles' closing note
+  does today in the text; after the information pages' model.
 - [Read the other pages' title and description from the Markdown](backlog/read-page-fields-from-markdown.md),
   the curriculum, about and licence pages, and where the home page's
   description goes, after the articles.
