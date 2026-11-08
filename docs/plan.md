@@ -20,9 +20,13 @@ live since 2026-10-26
   in three slices, the first two done
   ([themes](done/2026-11-08_run-colour-free-tests-in-one-theme.md),
   [widths](done/2026-11-08_check-at-every-width-only-what-depends-on-it.md):
-  913 tests became 315; axe and the SEO check now bound the time):
-  [check every page with tests written once](backlog/check-every-page-with-tests-written-once.md);
-  then the components' test pages, carded after these.
+  913 tests became 315; axe and the SEO check now bound the time).
+  The third, checking every page with tests written once, is split in
+  three: [take the net's pages from the sitemap](wip/take-the-nets-pages-from-the-sitemap.md)
+  (in progress), then
+  [accessibility](backlog/check-accessibility-on-every-page-with-the-net.md)
+  and [layout](backlog/check-the-layout-on-every-page-with-the-net.md)
+  on every page; then the components' test pages, carded after these.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
   article pages and the sitemap. The articles now read their title,

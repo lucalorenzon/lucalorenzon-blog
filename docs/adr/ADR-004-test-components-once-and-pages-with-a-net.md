@@ -6,8 +6,12 @@
   articles" (opened 2026-11-05, split on 2026-11-08) into
   [run in one theme the tests that do not check colours](../done/2026-11-08_run-colour-free-tests-in-one-theme.md),
   [check at every width only what depends on the width](../done/2026-11-08_check-at-every-width-only-what-depends-on-it.md)
+  and "check every page with tests written once", itself split on
+  2026-11-08 into
+  [take the net's pages from the sitemap](../wip/take-the-nets-pages-from-the-sitemap.md),
+  [check accessibility on every page with the net](../backlog/check-accessibility-on-every-page-with-the-net.md)
   and
-  [check every page with tests written once](../backlog/check-every-page-with-tests-written-once.md);
+  [check the layout on every page with the net](../backlog/check-the-layout-on-every-page-with-the-net.md);
   related: [build a design system](../backlog/build-a-design-system.md)
 
 ## Context
