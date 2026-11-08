@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-08, by the user, after the pipeline failed three
   times on the download of Tailwind
   ([session](../sessions/2026-11-08-articles-front-matter.md)).
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-08.
 
 ## Why
 
