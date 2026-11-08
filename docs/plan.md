@@ -18,6 +18,9 @@ live since 2026-10-26
   first in the next session: on 2026-11-08 the pipeline failed three
   times on the download of Tailwind, so the browser tests did not run
   on the day's change.
+- [Check for newer versions of the pinned tools](backlog/check-for-newer-versions-of-pinned-tools.md),
+  Tailwind and the list of AI robots, which Dependabot does not watch:
+  Tailwind 4.3.5 has been out since 2026-11-06 and went unnoticed.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
   article pages and the sitemap. The articles now read their title,
@@ -105,6 +108,9 @@ live since 2026-10-26
   so moving a card no longer breaks links in minutes and finished cards.
 - [Show the check results as badges in the README](backlog/show-check-results-as-readme-badges.md),
   from shields.io, after the performance check.
+- [Add a second way to download Tailwind](backlog/add-a-second-way-to-download-tailwind.md),
+  through GitHub's programming interface, if the build stops again on
+  its download despite the cache and the retries.
 - [Watch the rules Lighthouse finds not applicable](backlog/watch-lighthouse-rules-not-applicable.md),
   which the SEO check counts as passed, so a rule that stops or starts
   applying does not go unnoticed.
