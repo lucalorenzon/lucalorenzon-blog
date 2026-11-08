@@ -103,4 +103,4 @@ Pushed on 2026-11-08, commits `c4833b9` (the check, read-only) and
 
 Noticed along the way: a unit test of the robots list prints an
 expected error message in the job's log, which reads like a failure
-([card](../wip/silence-expected-error-in-robots-list-tests.md)).
+([card](2026-11-08_silence-expected-error-in-robots-list-tests.md)).

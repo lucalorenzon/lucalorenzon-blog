@@ -16,8 +16,6 @@ live since 2026-10-26
 
 - [Update Tailwind to 4.3.5](backlog/update-tailwind-to-4-3-5.md),
   reported by the daily check in its first issue, #33.
-- [Silence the expected error in the robots list's tests](wip/silence-expected-error-in-robots-list-tests.md),
-  which reads like a failure in every log of the tests.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
   article pages and the sitemap. The articles now read their title,
