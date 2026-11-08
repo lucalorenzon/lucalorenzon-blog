@@ -14,9 +14,10 @@ live since 2026-10-26
 
 ## Now
 
-- [Check for newer versions of the pinned tools](wip/check-for-newer-versions-of-pinned-tools.md),
-  Tailwind and the list of AI robots, which Dependabot does not watch:
-  Tailwind 4.3.5 has been out since 2026-11-06 and went unnoticed.
+- [Update Tailwind to 4.3.5](backlog/update-tailwind-to-4-3-5.md),
+  reported by the daily check in its first issue, #33.
+- [Silence the expected error in the robots list's tests](backlog/silence-expected-error-in-robots-list-tests.md),
+  which reads like a failure in every log of the tests.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
   article pages and the sitemap. The articles now read their title,
