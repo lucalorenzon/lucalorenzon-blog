@@ -279,7 +279,7 @@ for (const { name, width, height } of COLUMN_WIDTHS) {
 // Stays at all the widths for now: it also checks the header, which depends on
 // the screen width. It moves to COLUMN_WIDTHS when the header part moves to
 // header-layout.spec.ts, after the 50-character title limit is enforced in the
-// build (card docs/backlog/enforce-the-title-length-limit-in-the-build.md).
+// build (card docs/wip/enforce-the-title-length-limit-in-the-build.md).
 for (const { name: pageName, address } of TEXT_PAGES) {
 for (const { name, width, height } of VIEWPORTS) {
   test(`text spacing (WCAG 1.4.12) of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {

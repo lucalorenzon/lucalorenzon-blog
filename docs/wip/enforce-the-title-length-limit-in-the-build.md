@@ -4,7 +4,7 @@
   browser tests need, in the card
   [check at every width only what depends on the width](../wip/check-at-every-width-only-what-depends-on-it.md);
   in Now, before the header check of that card moves.
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-08.
 
 ## Why
 

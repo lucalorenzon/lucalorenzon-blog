@@ -23,7 +23,7 @@ live since 2026-10-26
   [check at every width only what depends on the width](wip/check-at-every-width-only-what-depends-on-it.md),
   [check every page with tests written once](backlog/check-every-page-with-tests-written-once.md);
   then the components' test pages, carded after these.
-- [Enforce the 50-character title limit in the build](backlog/enforce-the-title-length-limit-in-the-build.md),
+- [Enforce the 50-character title limit in the build](wip/enforce-the-title-length-limit-in-the-build.md),
   before the header check of the widths card moves to the invented
   titles.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),

@@ -56,5 +56,5 @@ cannot run at one width, and which one.
    header; the header with the reader's spacing moves into the header's
    own test, at 12 widths on the invented 50-character titles. **On one
    condition** (user): the 50-character limit is first enforced in the
-   build ([card](../backlog/enforce-the-title-length-limit-in-the-build.md)),
+   build ([card](../wip/enforce-the-title-length-limit-in-the-build.md)),
    since otherwise a longer real title would be seen by no test.
