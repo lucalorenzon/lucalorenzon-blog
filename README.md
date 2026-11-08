@@ -67,6 +67,12 @@ Every push to `main` and every pull request runs the same checks on
 GitHub (workflow `.github/workflows/build.yml`). Nothing is published by
 a push: the site goes live only when a version is published.
 
+The pipeline keeps the pinned Tailwind tool in the GitHub Actions cache, keyed
+on its version and checksum, and fetches it in a step of its own ("Get
+Tailwind"), so it downloads the tool only when the cache is empty and a failed
+download shows on that step. The key comes from
+`scripts/get-tailwind.sh --cache-info`.
+
 ### Screen reader check, on demand
 
 Orca 51, GNOME's screen reader, reads the built site in Firefox inside a

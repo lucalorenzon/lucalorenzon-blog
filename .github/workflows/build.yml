@@ -20,6 +20,14 @@
 # end2end/package-lock.json (job build, output playwright_version) because
 # Dependabot does not update images referenced in workflows: a bump of
 # @playwright/test then needs no workflow edit.
+# The pinned Tailwind tool is kept in the GitHub Actions cache, keyed on its
+# version and checksum (printed by scripts/get-tailwind.sh --cache-info, the
+# only source of both), so the pipeline downloads it only when the cache is
+# empty. It is fetched in a step of its own, "Get Tailwind", after formatting,
+# lint and the Rust tests, so that a failed download shows on that step and
+# not on the build. A freshly downloaded tool is saved at once, even if a later
+# step fails. Only the exact pinned file is accepted: there are no
+# restore-keys.
 # Documentation-only changes skip build and tests. The workflow is
 # still always triggered (no paths filters) because the "build" check is
 # required: a job skipped by a job-level "if" is reported as skipped, which
@@ -207,6 +215,29 @@ jobs:
 
       - name: Test
         run: cargo test
+
+      - name: Find the cache key and path of the pinned Tailwind
+        id: tailwind-cache
+        run: scripts/get-tailwind.sh --cache-info >> "$GITHUB_OUTPUT"
+
+      - name: Restore the pinned Tailwind from the cache
+        id: tailwind-restore
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          key: ${{ steps.tailwind-cache.outputs.key }}
+          path: ${{ steps.tailwind-cache.outputs.path }}
+
+      # It checks the checksum of a restored file too, and downloads (with
+      # retries) only if there is no valid file.
+      - name: Get Tailwind
+        run: scripts/get-tailwind.sh
+
+      - name: Save the pinned Tailwind in the cache
+        if: ${{ steps.tailwind-restore.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          key: ${{ steps.tailwind-cache.outputs.key }}
+          path: ${{ steps.tailwind-cache.outputs.path }}
 
       - name: Download the inputs gathered from outside the build
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2

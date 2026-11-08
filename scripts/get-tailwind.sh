@@ -11,10 +11,43 @@
 # a cache) is removed and downloaded again. Only the pinned version is ever
 # used. The download is retried, because GitHub answered 504 three times in a
 # row on 2026-11-08; if it still fails, the message says it is the network.
+#
+# Usage:
+#   scripts/get-tailwind.sh              get the tool and print its path
+#   scripts/get-tailwind.sh --cache-info print, in GitHub Actions output format
+#                                        and without touching the network, the
+#                                        cache key and path of the tool
+#
+# --cache-info exists so that the version and checksum have a single source:
+# the pipeline and the daily job that keeps the cache alive both build the same
+# key from it, and so can never disagree about what is in the cache.
 set -euo pipefail
 
 TAILWIND_VERSION="4.3.3"
 TAILWIND_SHA256="dc61b3ac6b8c9ca874c0cc4c57b2409791a64c5540404ca5f5367360babc313a"
+
+TOOL="target/tools/tailwindcss-${TAILWIND_VERSION}"
+
+case "${1-}" in
+    "") ;;
+    --cache-info)
+        if [[ $# -ne 1 ]]; then
+            echo "usage: $0 [--cache-info]" >&2
+            exit 2
+        fi
+        echo "key=tailwindcss-${TAILWIND_VERSION}-linux-x64-${TAILWIND_SHA256}"
+        echo "path=${TOOL}"
+        exit 0
+        ;;
+    *)
+        echo "usage: $0 [--cache-info]" >&2
+        exit 2
+        ;;
+esac
+if [[ $# -gt 1 ]]; then
+    echo "usage: $0 [--cache-info]" >&2
+    exit 2
+fi
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
@@ -23,8 +56,6 @@ if [[ "$(uname -s)" != "Linux" || "$(uname -m)" != "x86_64" ]]; then
     echo "error: this script supports only linux-x64 (found $(uname -s) $(uname -m))" >&2
     exit 1
 fi
-
-TOOL="target/tools/tailwindcss-${TAILWIND_VERSION}"
 
 if [[ -e "$TOOL" ]]; then
     CACHED="$(sha256sum "$TOOL" | cut -d' ' -f1)"
