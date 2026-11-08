@@ -108,9 +108,14 @@ class PinnedListTests(unittest.TestCase):
     def test_main_writes_nothing_on_mismatch(self):
         self.commit_list()
         output = self.repo / "out" / "blocked.txt"
-        code = robots_list.main(["--repo", str(self.repo), "--output", str(output)])
+        # The program reports the mismatch on stderr; hold it back from the
+        # test log, where it would read like a failure, and check it instead.
+        stderr = io.StringIO()
+        with contextlib.redirect_stderr(stderr):
+            code = robots_list.main(["--repo", str(self.repo), "--output", str(output)])
         self.assertEqual(code, 1)
         self.assertFalse(output.exists())
+        self.assertIn("does not match PINNED_SHA256", stderr.getvalue())
 
 
 OLD = {

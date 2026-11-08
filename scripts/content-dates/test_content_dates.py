@@ -3,6 +3,8 @@
 Run: python3 -m unittest discover -s scripts/content-dates -p 'test_*.py'
 """
 
+import contextlib
+import io
 import os
 import subprocess
 import tempfile
@@ -134,29 +136,33 @@ class NotARepositoryTest(unittest.TestCase):
         self.addCleanup(patcher.stop)
 
     def run_main(self):
-        return content_dates.main(
-            ["--repo", str(self.plain), "--output", str(self.output)]
-        )
+        # The program reports on stderr; hold it back from the test log,
+        # where it would read like a failure, and keep it for the tests.
+        stderr = io.StringIO()
+        with contextlib.redirect_stderr(stderr):
+            code = content_dates.main(
+                ["--repo", str(self.plain), "--output", str(self.output)]
+            )
+        self.stderr = stderr.getvalue()
+        return code
 
     def test_in_ci_it_fails(self):
         with mock.patch.dict(os.environ, {"CI": "true"}):
             self.assertNotEqual(self.run_main(), 0)
         self.assertFalse(self.output.exists())
+        self.assertIn("error: git rev-parse --git-dir failed", self.stderr)
 
     def test_outside_ci_it_warns_and_writes_an_empty_file(self):
         env = {k: v for k, v in os.environ.items() if k != "CI"}
-        with (
-            mock.patch.dict(os.environ, env, clear=True),
-            mock.patch("sys.stderr") as stderr,
-        ):
+        with mock.patch.dict(os.environ, env, clear=True):
             self.assertEqual(self.run_main(), 0)
         self.assertEqual(self.output.read_text(encoding="utf-8"), "")
-        written = "".join(c.args[0] for c in stderr.write.call_args_list)
-        self.assertIn("warning", written)
+        self.assertIn("warning", self.stderr)
 
     def test_empty_ci_variable_counts_as_unset(self):
         with mock.patch.dict(os.environ, {"CI": ""}):
             self.assertEqual(self.run_main(), 0)
+        self.assertIn("warning", self.stderr)
 
 
 if __name__ == "__main__":
