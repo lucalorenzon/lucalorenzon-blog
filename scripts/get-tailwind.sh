@@ -26,8 +26,8 @@
 # gives the same to the check for newer versions (scripts/version-check).
 set -euo pipefail
 
-TAILWIND_VERSION="4.3.3"
-TAILWIND_SHA256="dc61b3ac6b8c9ca874c0cc4c57b2409791a64c5540404ca5f5367360babc313a"
+TAILWIND_VERSION="4.3.5"
+TAILWIND_SHA256="e47695cee3f0d90623a91f3939b08bdee610eb5ad99340adff9d4145b284d6cc"
 
 TOOL="target/tools/tailwindcss-${TAILWIND_VERSION}"
 
