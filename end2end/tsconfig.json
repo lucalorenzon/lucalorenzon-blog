@@ -5,7 +5,10 @@
     "target": "ES2023",
     // DOM: the functions passed to page.evaluate run in the browser.
     // ESNext.Disposable: Playwright's own types use Symbol.asyncDispose.
-    "lib": ["ES2023", "ESNext.Disposable", "DOM"],
+    // DOM.Iterable: for the editor. TypeScript 6 and later count lists of the
+    // page's elements as iterable with DOM alone; the editor's language
+    // server bundles TypeScript 5, which needs this library to spread them.
+    "lib": ["ES2023", "ESNext.Disposable", "DOM", "DOM.Iterable"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "types": ["node"],
