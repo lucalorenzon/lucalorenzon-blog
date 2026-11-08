@@ -21,6 +21,9 @@ error types written by hand.
 - **A refactor:** what the build writes and the messages it prints stay
   the same; only the code's structure changes.
 - **thiserror is a new dependency,** to be audited as any other.
+- **The YAML reader's messages begin with a doubled "error:",** as in
+  `front matter: error: line 4 column 7: ...`
+  ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
 
 ## Questions
 

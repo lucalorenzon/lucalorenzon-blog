@@ -14,6 +14,10 @@ live since 2026-10-26
 
 ## Now
 
+- [Make the build's external downloads reliable](backlog/make-external-downloads-in-the-build-reliable.md),
+  first in the next session: on 2026-11-08 the pipeline failed three
+  times on the download of Tailwind, so the browser tests did not run
+  on the day's change.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
   article pages and the sitemap. The articles now read their title,
