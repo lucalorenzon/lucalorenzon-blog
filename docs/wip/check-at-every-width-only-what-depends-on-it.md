@@ -29,3 +29,32 @@ cannot run at one width, and which one.
   shown only where a table no longer fits, the wrap toggle of code only
   where a line does not fit; a single width must be one where the
   component is shown.
+
+## Decided so far
+
+1. **Scope widened** (user): the card decides, for every layout test,
+   the widths that can change its result, accepting losses where they
+   are named, instead of reducing only the tests whose result cannot
+   change with the width (which would have touched one test). Not left
+   to the card on the net, which is wide enough already.
+2. **Five widths for what is inside the text column** (agent's
+   measurement, user's decision). Measured on the hybris PK article and
+   the curriculum: the column grows with the screen from 304 to 584
+   pixels up to about 600, stays at 584 up to 767 (text 18 pixels), and
+   at 704 from 768 up (text 20 pixels); table forms and code toggles
+   follow the column. So 659 and 767 give the same result inside the
+   column, and so do the seven widths from 768 to 1920. The column's
+   checks keep 320, 393, 412, 767 and 768: readability, content
+   layout, home page boxes, code toggle, table forms and viewer rows;
+   the table cells, at phone widths, keep 320, 393, 412, 767. The
+   keyboard test of the record viewer runs at 320 only. The header (12
+   widths) and accessibility (3 bands) stay as they are. Known limit,
+   as today: the widths between 412 and 600, where the column grows,
+   are sampled at three points only.
+3. **The text spacing test is split** (agent's proposal, user's
+   decision): every page at the five widths for everything outside the
+   header; the header with the reader's spacing moves into the header's
+   own test, at 12 widths on the invented 50-character titles. **On one
+   condition** (user): the 50-character limit is first enforced in the
+   build ([card](../backlog/enforce-the-title-length-limit-in-the-build.md)),
+   since otherwise a longer real title would be seen by no test.

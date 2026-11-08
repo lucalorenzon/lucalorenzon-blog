@@ -33,6 +33,8 @@ discussed.
 
 ## Questions
 
-- How the 50-character limit is enforced when articles are written.
+- How the 50-character limit is enforced when articles are written:
+  in the build, decided on 2026-11-08
+  ([card](enforce-the-title-length-limit-in-the-build.md)).
 - Whether the footer needs anything on a phone.
 - How an article's body adapts: text width, code blocks, images.
