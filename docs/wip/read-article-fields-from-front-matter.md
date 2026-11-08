@@ -99,3 +99,21 @@ reading part only (`default-features = false, features =
   - a small reader of `key: value` lines written for the site, with no
     dependency, but it would accept only part of YAML while the file
     looks like YAML.
+
+### Where are the fields checked?
+
+In the constructors, following "parse, don't validate": each field is a
+type that can only hold a valid value, built with `TryFrom`, and an
+article is built, again with `TryFrom`, from its Markdown file. A
+built article is the proof that its fields are valid; nothing checks
+them again further on. A failed construction returns an error that
+says which file and which field, and why: the build turns it into the
+warning, or the stop, described above.
+
+- **Why:** the user chose it, so the checks live in one place, next to
+  the values they protect.
+- **The error types are written by hand** in this card. Moving them,
+  and the rest of the code's errors, to
+  [thiserror](https://crates.io/crates/thiserror) is a
+  [card of its own](../backlog/refactor-errors-with-thiserror.md), as
+  the user asked.

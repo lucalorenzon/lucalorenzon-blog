@@ -27,6 +27,8 @@ live since 2026-10-26
 - [Take the pages' addresses from a slug, with redirects](backlog/take-page-addresses-from-slug.md),
   so an address can follow the marketing campaigns without breaking
   the old one.
+- [Refactor the code's errors with thiserror](backlog/refactor-errors-with-thiserror.md),
+  instead of plain text, generic boxes and types written by hand.
 - [Give the home page a date in the sitemap](backlog/date-the-home-page-in-the-sitemap.md):
   the date of the last addition or removal of an article.
 - [Use the publication date in the sitemap](backlog/use-publication-date-in-the-sitemap.md),
