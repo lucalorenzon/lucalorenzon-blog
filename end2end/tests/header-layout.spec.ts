@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { test, expect, type Page } from '@playwright/test';
 import { retryWhenLive, VIEWPORTS } from './support';
 
@@ -15,6 +17,18 @@ const SPACE_UNDER_LINE = 24;
 const MIN_GAP = 24;
 
 const HOME_TITLE = 'Home Page';
+// The longest heading the build accepts, in graphemes. It is read from the same file the
+// build includes (config/heading-max-graphemes.txt), so there is one figure, not two copies that
+// could drift apart; and it is counted in graphemes, as the build does. The tests also run on
+// the live site, always from a checkout of the repository, so the file is on the disk there too.
+const HEADING_MAX_GRAPHEMES = Number.parseInt(
+  readFileSync(resolve(__dirname, '../../config/heading-max-graphemes.txt'), 'utf8').trim(),
+  10,
+);
+const graphemes = (text: string) =>
+  [...new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(text)].length;
+
+// Invented titles, each exactly as long as the limit lets a real one be.
 const LONG_TITLES = [
   'Disaccoppiamento infrastrutturale nei microservizi',
   'Contestualizzazione dell’interoperabilità nei dati',
@@ -233,7 +247,8 @@ async function setTitle(page: Page, title: string) {
 
 for (const { name, width, height } of VIEWPORTS) {
   test(`header layout at ${width}x${height} (${name})`, async ({ page }, testInfo) => {
-    for (const title of LONG_TITLES) expect(title).toHaveLength(50);
+    expect(HEADING_MAX_GRAPHEMES).toBeGreaterThan(0);
+    for (const title of LONG_TITLES) expect(graphemes(title)).toBe(HEADING_MAX_GRAPHEMES);
     await page.setViewportSize({ width, height });
 
     let screenshot: Buffer | undefined;

@@ -1,4 +1,4 @@
-use crate::page_frame::{FooterLicence, Indexing, PageFrame};
+use crate::page_frame::{FooterLicence, Heading, Indexing, PageFrame};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
@@ -13,7 +13,7 @@ pub fn NotFoundPage(site_path: String) -> impl IntoView {
     view! {
         <PageFrame
             title="Page not found - Luca Lorenzon"
-            heading="Page not found"
+            heading=Heading::try_from("Page not found").expect("the page not found's heading fits the frame")
             address_prefix=site_path.clone()
             footer_licence=FooterLicence::ReuseWithAttribution
             indexing=Indexing::NoIndex
@@ -46,6 +46,12 @@ mod tests {
 
     fn default_page() -> String {
         render("https://www.lucalorenzon.com/")
+    }
+
+    #[test]
+    fn its_heading_fits_the_frame() {
+        // The heading is a constant of the code: building the page proves it is not too long.
+        assert!(default_page().contains("<h1 "));
     }
 
     #[test]

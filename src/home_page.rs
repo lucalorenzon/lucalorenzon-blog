@@ -1,5 +1,5 @@
 use crate::article_page::{Article, newest_first};
-use crate::page_frame::{FooterLicence, IndexedPage, Indexing, PageFrame, PageKind};
+use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
@@ -27,7 +27,7 @@ pub fn HomePage(canonical: String, articles: Vec<Article>) -> impl IntoView {
     view! {
         <PageFrame
             title="Luca Lorenzon - Product Engineer"
-            heading="Home Page"
+            heading=Heading::try_from("Home Page").expect("the home page's heading fits the frame")
             address_prefix=""
             footer_licence=FooterLicence::ReuseWithAttribution
             indexing=Indexing::Indexed(IndexedPage {
@@ -64,6 +64,12 @@ mod tests {
 
     fn render_home_page() -> String {
         render(&site(), &real_articles())
+    }
+
+    #[test]
+    fn its_heading_fits_the_frame() {
+        // The heading is a constant of the code: building the page proves it is not too long.
+        assert!(render_home_page().contains("<h1 "));
     }
 
     #[test]

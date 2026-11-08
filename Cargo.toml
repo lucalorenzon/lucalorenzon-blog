@@ -9,3 +9,4 @@ leptos = { version = "0.8.22", features = ["ssr"] }
 pulldown-cmark = { version = "0.13.6", default-features = false, features = ["html"] }
 serde = { version = "1", features = ["derive"] }
 serde-saphyr = { version = "2.1.1", default-features = false, features = ["deserialize"] }
+unicode-segmentation = "1.13.3"

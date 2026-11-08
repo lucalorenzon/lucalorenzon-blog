@@ -1,5 +1,7 @@
 use crate::markdown;
-use crate::page_frame::{FooterLicence, IndexedPage, Indexing, PageFrame, PageKind, SITE_NAME};
+use crate::page_frame::{
+    FooterLicence, Heading, HeadingError, IndexedPage, Indexing, PageFrame, PageKind, SITE_NAME,
+};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 use serde::Deserialize;
@@ -122,7 +124,9 @@ impl Date {
     }
 }
 
-/// The title of an article: the page's heading. Not empty.
+/// The title of an article: the content's own name for it. Not empty. It has no length limit:
+/// the limit belongs to the page's heading ([`Heading`]), which an article builds from its
+/// title when it is read.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize)]
 #[serde(try_from = "String")]
 pub struct Title(String);
@@ -283,6 +287,8 @@ pub enum FrontMatterError {
     /// The YAML reader's message: malformed YAML, a field missing, an unknown field, a field
     /// of the wrong kind, or a field whose value is not valid (`Title`, `Description`, `Date`).
     Invalid(String),
+    /// The title is valid as content but does not fit the frame's heading (too long).
+    Heading(HeadingError),
 }
 
 impl fmt::Display for FrontMatterError {
@@ -297,6 +303,7 @@ impl fmt::Display for FrontMatterError {
                 "front matter: {}",
                 problem.lines().next().unwrap_or_default()
             ),
+            Self::Heading(problem) => write!(f, "front matter: field `title`: {problem}"),
         }
     }
 }
@@ -344,6 +351,9 @@ fn split_front_matter(text: &str) -> Result<(&str, &str), FrontMatterError> {
 #[derive(Clone, Debug)]
 pub struct Article {
     pub title: Title,
+    /// What the frame shows as the page's heading, built from the title when the article is
+    /// read: a title that does not fit is a problem of the article, found with the others.
+    pub heading: Heading,
     pub description: Description,
     pub date: Date,
     /// Where the page is written, relative to the site's root.
@@ -365,8 +375,11 @@ impl TryFrom<&ArticleFile> for Article {
         let (front_matter, body) = split_front_matter(file.text).map_err(error)?;
         let fields: FrontMatter = serde_saphyr::from_str(front_matter)
             .map_err(|problem| error(FrontMatterError::Invalid(problem.to_string())))?;
+        let heading = Heading::try_from(fields.title.as_str())
+            .map_err(|problem| error(FrontMatterError::Heading(problem)))?;
         Ok(Self {
             title: fields.title,
+            heading,
             description: fields.description,
             date: fields.date,
             address: file.address,
@@ -455,7 +468,7 @@ pub fn ArticlePage(article: Article, canonical: String) -> impl IntoView {
     view! {
         <PageFrame
             title=article.title.tab_title()
-            heading=article.title.as_str().to_owned()
+            heading=article.heading.clone()
             address_prefix="../"
             footer_licence=FooterLicence::ReuseWithAttribution
             indexing=Indexing::Indexed(IndexedPage {
@@ -706,6 +719,7 @@ mod tests {
         fn article(title: &str, date: &str) -> Article {
             Article {
                 title: Title::try_from(title).unwrap(),
+                heading: Heading::try_from(title).unwrap(),
                 description: Description::try_from("d").unwrap(),
                 date: Date::try_from(date).unwrap(),
                 address: "",
@@ -860,6 +874,7 @@ mod tests {
 
     mod construction {
         use super::super::*;
+        use crate::page_frame::heading_max_graphemes;
 
         const GOOD: &str = "---\ntitle: A title\ndescription: \"A: description.\"\ndate: 2023-04-30\n---\n\nBody *text*.\n";
 
@@ -951,6 +966,60 @@ mod tests {
             let message = error.to_string();
             assert!(message.starts_with("content/articles/a.md: "), "{message}");
             assert!(message.contains("field `title` is empty"), "{message}");
+        }
+
+        #[test]
+        fn a_title_too_long_for_the_heading_names_the_file_the_field_and_the_count() {
+            let max = heading_max_graphemes();
+            let title = "a".repeat(max + 7);
+            let text: &'static str = Box::leak(
+                format!("---\ntitle: {title}\ndescription: D\ndate: 2023-04-30\n---\nB\n")
+                    .into_boxed_str(),
+            );
+            let error = error_of(text);
+            assert!(matches!(error.error, FrontMatterError::Heading(_)));
+            assert_eq!(
+                error.to_string(),
+                format!(
+                    "content/articles/a.md: front matter: field `title`: the title has {} \
+                     characters, at most {max} fit in the page heading",
+                    max + 7
+                )
+            );
+        }
+
+        #[test]
+        fn a_title_too_long_is_one_more_problem_of_the_articles() {
+            let max = heading_max_graphemes();
+            let text: &'static str = Box::leak(
+                format!(
+                    "---\ntitle: {}\ndescription: D\ndate: 2023-04-30\n---\nB\n",
+                    "a".repeat(max + 1)
+                )
+                .into_boxed_str(),
+            );
+            let loaded = || load_articles(&[file(GOOD), file(text), file("no front matter")]);
+            let skipped_locally = settle(loaded(), false).unwrap();
+            assert_eq!(skipped_locally.articles.len(), 1);
+            assert_eq!(skipped_locally.warnings.len(), 2);
+            assert!(skipped_locally.warnings[0].contains("fit in the page heading"));
+            let stopped = settle(loaded(), true).unwrap_err();
+            assert!(
+                stopped.starts_with("2 article(s) have problems:"),
+                "{stopped}"
+            );
+            assert!(stopped.contains("fit in the page heading"), "{stopped}");
+        }
+
+        #[test]
+        fn a_title_at_the_limit_builds_and_is_the_heading() {
+            let title = "a".repeat(heading_max_graphemes());
+            let text: &'static str = Box::leak(
+                format!("---\ntitle: {title}\ndescription: D\ndate: 2023-04-30\n---\nB\n")
+                    .into_boxed_str(),
+            );
+            let article = Article::try_from(&file(text)).unwrap();
+            assert_eq!(article.heading.as_str(), title);
         }
 
         #[test]

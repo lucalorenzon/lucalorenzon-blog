@@ -1,5 +1,5 @@
 use crate::markdown;
-use crate::page_frame::{FooterLicence, IndexedPage, Indexing, PageFrame, PageKind};
+use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 
@@ -16,7 +16,7 @@ pub fn AboutPage(canonical: String) -> impl IntoView {
     view! {
         <PageFrame
             title="About - Luca Lorenzon"
-            heading="About"
+            heading=Heading::try_from("About").expect("the about page's heading fits the frame")
             address_prefix=""
             footer_licence=FooterLicence::ReuseWithAttribution
             indexing=Indexing::Indexed(IndexedPage {
@@ -49,6 +49,12 @@ mod tests {
 
     fn render_about_page() -> String {
         render(&site())
+    }
+
+    #[test]
+    fn its_heading_fits_the_frame() {
+        // The heading is a constant of the code: building the page proves it is not too long.
+        assert!(render_about_page().contains("<h1 "));
     }
 
     #[test]

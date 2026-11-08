@@ -912,6 +912,7 @@ dependencies = [
  "pulldown-cmark",
  "serde",
  "serde-saphyr",
+ "unicode-segmentation",
 ]
 
 [[package]]

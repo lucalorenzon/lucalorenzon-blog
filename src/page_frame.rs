@@ -1,5 +1,8 @@
 use leptos::either::{Either, EitherOf3};
 use leptos::prelude::*;
+use std::fmt;
+use std::sync::LazyLock;
+use unicode_segmentation::UnicodeSegmentation;
 
 /// The ASCII-art logo (narrow version of the old site's `AsciiArtLogo`).
 pub const LOGO: &str = r#"    __        __   ______  __________
@@ -77,6 +80,87 @@ fn preview_tag(property: &'static str, content: impl Into<String>) -> impl IntoV
         .attr("content", content.into())
 }
 
+/// The configuration file that holds the heading's length limit. One file is the single source
+/// of the figure: the build includes it when it is compiled, and the header's browser test
+/// (`end2end/tests/header-layout.spec.ts`) reads the same file from the disk.
+const HEADING_MAX_GRAPHEMES_FILE: &str = include_str!("../config/heading-max-graphemes.txt");
+
+/// The most graphemes a [`Heading`] may have. With that many, a heading beside the logo takes
+/// at most two lines from 1280px wide (decided 2026-10-29).
+static HEADING_MAX_GRAPHEMES: LazyLock<usize> = LazyLock::new(|| {
+    parse_limit(HEADING_MAX_GRAPHEMES_FILE).expect("config/heading-max-graphemes.txt")
+});
+
+/// Reads the limit from the configuration file's text: a positive whole number.
+fn parse_limit(text: &str) -> Result<usize, String> {
+    match text.trim().parse::<usize>() {
+        Ok(0) => Err("the heading limit must be more than zero".to_owned()),
+        Ok(limit) => Ok(limit),
+        Err(error) => Err(format!("`{}` is not a whole number: {error}", text.trim())),
+    }
+}
+
+/// The most graphemes a heading may have, as the configuration file says.
+pub fn heading_max_graphemes() -> usize {
+    *HEADING_MAX_GRAPHEMES
+}
+
+/// The text the frame shows as the page's heading (the `<h1>` and the link preview's title).
+/// Trimmed, not empty and short enough to fit the header: at most
+/// [`heading_max_graphemes`] graphemes. It belongs to the view, not to the content: an article's
+/// title may differ from the heading its page shows.
+///
+/// Length is counted in graphemes (extended grapheme clusters), what a reader sees as one
+/// character, so an accent written as a letter plus a combining mark, or an emoji made of
+/// several code points, counts once. The messages say "characters" because the author of an
+/// article reads them.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Heading(String);
+
+/// Why a text is not a [`Heading`].
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum HeadingError {
+    Empty,
+    TooLong { graphemes: usize, max: usize },
+}
+
+impl fmt::Display for HeadingError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Empty => f.write_str("the title is empty"),
+            Self::TooLong { graphemes, max } => write!(
+                f,
+                "the title has {graphemes} characters, at most {max} fit in the page heading"
+            ),
+        }
+    }
+}
+
+impl std::error::Error for HeadingError {}
+
+impl TryFrom<&str> for Heading {
+    type Error = HeadingError;
+
+    fn try_from(text: &str) -> Result<Self, HeadingError> {
+        let text = text.trim();
+        if text.is_empty() {
+            return Err(HeadingError::Empty);
+        }
+        let graphemes = text.graphemes(true).count();
+        let max = heading_max_graphemes();
+        if graphemes > max {
+            return Err(HeadingError::TooLong { graphemes, max });
+        }
+        Ok(Self(text.to_owned()))
+    }
+}
+
+impl Heading {
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
 /// The tags every indexed page has, whatever its kind.
 fn common_tags(page: IndexedPage, heading: String, og_type: &'static str) -> impl IntoView {
     view! {
@@ -106,7 +190,7 @@ fn common_tags(page: IndexedPage, heading: String, og_type: &'static str) -> imp
 #[component]
 pub fn PageFrame(
     #[prop(into)] title: String,
-    #[prop(into)] heading: String,
+    heading: Heading,
     #[prop(into)] address_prefix: String,
     footer_licence: FooterLicence,
     indexing: Indexing,
@@ -122,18 +206,20 @@ pub fn PageFrame(
     let stylesheet = format!("{address_prefix}style.css");
     let indexing_tags = match indexing {
         Indexing::Indexed(page) => match page.kind.clone() {
-            PageKind::Website => {
-                Either::Left(EitherOf3::A(common_tags(page, heading.clone(), "website")))
-            }
+            PageKind::Website => Either::Left(EitherOf3::A(common_tags(
+                page,
+                heading.as_str().to_owned(),
+                "website",
+            ))),
             PageKind::Profile => Either::Left(EitherOf3::B((
-                common_tags(page, heading.clone(), "profile"),
+                common_tags(page, heading.as_str().to_owned(), "profile"),
                 view! {
                     {preview_tag("profile:first_name", "Luca")}
                     {preview_tag("profile:last_name", "Lorenzon")}
                 },
             ))),
             PageKind::Article { published } => Either::Left(EitherOf3::C((
-                common_tags(page, heading.clone(), "article"),
+                common_tags(page, heading.as_str().to_owned(), "article"),
                 preview_tag("article:published_time", published),
             ))),
         },
@@ -164,7 +250,7 @@ pub fn PageFrame(
                                 class="not-shown md:art-logo-left"
                             >{LOGO}</div>
                         </a>
-                        <h1 class="title-below-line md:title-below-line-large xl:title-beside-logo">{heading}</h1>
+                        <h1 class="title-below-line md:title-below-line-large xl:title-beside-logo">{heading.as_str().to_owned()}</h1>
                         <div
                             data-testid="menu-slot"
                             aria-hidden="true"
@@ -181,5 +267,95 @@ pub fn PageFrame(
                 </div>
             </body>
         </html>
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// A text of exactly `count` graphemes, each one made of `unit`.
+    fn of(count: usize, unit: &str) -> String {
+        unit.repeat(count)
+    }
+
+    #[test]
+    fn the_configuration_file_holds_a_positive_number() {
+        assert!(parse_limit(HEADING_MAX_GRAPHEMES_FILE).is_ok());
+        assert!(heading_max_graphemes() > 0);
+    }
+
+    #[test]
+    fn the_limit_is_read_from_a_whole_positive_number_only() {
+        assert_eq!(parse_limit(" 12\n"), Ok(12));
+        assert!(parse_limit("0").is_err());
+        assert!(parse_limit("").is_err());
+        assert!(parse_limit("fifty").is_err());
+        assert!(parse_limit("-3").is_err());
+    }
+
+    #[test]
+    fn a_heading_at_the_limit_is_accepted() {
+        let text = of(heading_max_graphemes(), "a");
+        assert_eq!(Heading::try_from(text.as_str()).unwrap().as_str(), text);
+    }
+
+    #[test]
+    fn one_grapheme_more_is_refused_with_both_numbers() {
+        let max = heading_max_graphemes();
+        let text = of(max + 1, "a");
+        assert_eq!(
+            Heading::try_from(text.as_str()),
+            Err(HeadingError::TooLong {
+                graphemes: max + 1,
+                max
+            })
+        );
+    }
+
+    #[test]
+    fn an_empty_or_blank_heading_is_refused() {
+        assert_eq!(Heading::try_from(""), Err(HeadingError::Empty));
+        assert_eq!(Heading::try_from(" \t\n "), Err(HeadingError::Empty));
+    }
+
+    #[test]
+    fn the_heading_is_trimmed_and_the_spaces_do_not_count() {
+        let text = format!("  {}  ", of(heading_max_graphemes(), "a"));
+        assert!(Heading::try_from(text.as_str()).is_ok());
+        assert_eq!(Heading::try_from("  Hello ").unwrap().as_str(), "Hello");
+    }
+
+    #[test]
+    fn a_letter_with_a_combining_accent_counts_once() {
+        let text = of(heading_max_graphemes(), "e\u{301}");
+        assert!(text.chars().count() > heading_max_graphemes());
+        assert!(Heading::try_from(text.as_str()).is_ok());
+    }
+
+    #[test]
+    fn an_emoji_made_of_several_code_points_counts_once() {
+        let family = "\u{1F468}\u{200D}\u{1F469}\u{200D}\u{1F467}\u{200D}\u{1F466}";
+        let text = of(heading_max_graphemes(), family);
+        assert!(text.chars().count() > heading_max_graphemes());
+        assert!(Heading::try_from(text.as_str()).is_ok());
+        let one_more = format!("{text}a");
+        assert!(matches!(
+            Heading::try_from(one_more.as_str()),
+            Err(HeadingError::TooLong { .. })
+        ));
+    }
+
+    #[test]
+    fn the_messages_speak_to_the_author_of_an_article() {
+        assert_eq!(
+            HeadingError::TooLong {
+                graphemes: 57,
+                max: 50
+            }
+            .to_string(),
+            "the title has 57 characters, at most 50 fit in the page heading"
+        );
+        assert_eq!(HeadingError::Empty.to_string(), "the title is empty");
     }
 }
