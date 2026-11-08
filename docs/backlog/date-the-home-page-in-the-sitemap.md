@@ -26,7 +26,7 @@ apart from the sitemap's first increment.
   ([card](../done/2026-11-07_add-sitemap.md), "Which date does the home page get?").
 - **A change to an article's title, description or date** also changes
   the home page; once those fields are in the Markdown's front matter
-  ([card](../wip/move-page-fields-into-markdown-front-matter.md)), it shows in
+  ([card](../wip/read-article-fields-from-front-matter.md)), it shows in
   git as a change to the Markdown file, not as an addition.
 
 ## Questions

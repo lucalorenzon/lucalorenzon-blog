@@ -14,13 +14,19 @@ live since 2026-10-26
 
 ## Now
 
-- [Move titles, descriptions and dates into the Markdown's front matter](wip/move-page-fields-into-markdown-front-matter.md),
-  so the Markdown is the only source of content and the sitemap's
-  dates become accurate; it anticipates part of the `residuality` run.
-  Being worked on since 2026-11-08; first, how to cut it into slices.
+- [Read the articles' title, description and date from the front matter](wip/read-article-fields-from-front-matter.md),
+  so the Markdown is the only source of an article and the sitemap's
+  dates become accurate for those fields too; it anticipates part of
+  the `residuality` run. Being worked on since 2026-11-08.
 
 ## Next
 
+- [Read the other pages' title and description from the Markdown](backlog/read-page-fields-from-markdown.md),
+  the curriculum, about and licence pages, and where the home page's
+  description goes, after the articles.
+- [Take the pages' addresses from a slug, with redirects](backlog/take-page-addresses-from-slug.md),
+  so an address can follow the marketing campaigns without breaking
+  the old one.
 - [Give the home page a date in the sitemap](backlog/date-the-home-page-in-the-sitemap.md):
   the date of the last addition or removal of an article.
 - [Use the publication date in the sitemap](backlog/use-publication-date-in-the-sitemap.md),
