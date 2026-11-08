@@ -1,3 +1,9 @@
+---
+title: How to generate hybris PK values without hybris
+description: "Dive into the PK generation logic of SAP hybris, for extreme use cases."
+date: 2023-04-25
+---
+
 The logic of the PK is a bit complex. More than one implementation of
 the PK exists: a legacy one, based on UUIDs, and another based on a
 counter, which is the one I'm going to explain.

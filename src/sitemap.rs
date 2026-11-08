@@ -5,6 +5,7 @@
 //! date of the file's last change comes from a text file made by
 //! `scripts/content-dates/content_dates.py` (card docs/wip/add-sitemap.md).
 
+use crate::article_page::Article;
 use crate::site_address::SiteAddress;
 use crate::{about_page, article_page, curriculum_page, home_page, licence_page, not_found_page};
 use std::collections::BTreeMap;
@@ -33,7 +34,7 @@ pub struct Page {
 }
 
 /// Every page of the site, rendered.
-pub fn pages(site: &SiteAddress) -> Vec<Page> {
+pub fn pages(site: &SiteAddress, articles: &[Article]) -> Vec<Page> {
     let fixed = |file, source, html| Page {
         file,
         address: file,
@@ -47,7 +48,7 @@ pub fn pages(site: &SiteAddress) -> Vec<Page> {
             address: "",
             source: None,
             indexed: true,
-            html: home_page::render_home_page(site),
+            html: home_page::render_home_page(site, articles),
         },
         fixed(
             "curriculum.html",
@@ -65,7 +66,7 @@ pub fn pages(site: &SiteAddress) -> Vec<Page> {
             licence_page::render_licence_page(site),
         ),
     ];
-    for article in &article_page::ARTICLES {
+    for article in articles {
         pages.push(fixed(
             article.address,
             article.source,
@@ -235,6 +236,7 @@ fn escape_xml(text: &str) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::article_page::real_articles;
     use std::fs;
     use std::path::{Path, PathBuf};
 
@@ -252,7 +254,7 @@ mod tests {
     }
 
     fn sitemap_of(site: &SiteAddress) -> String {
-        let pages = pages(site);
+        let pages = pages(site, &real_articles());
         build_sitemap(&pages, site, Ok(full_dates(&pages)), true)
             .unwrap()
             .xml
@@ -346,7 +348,7 @@ mod tests {
 
     #[test]
     fn indexed_means_not_noindex() {
-        for page in pages(&site()) {
+        for page in pages(&site(), &real_articles()) {
             assert_eq!(
                 page.indexed,
                 !page.html.contains("noindex"),
@@ -359,7 +361,7 @@ mod tests {
     #[test]
     fn each_listed_page_has_its_address_as_canonical_link() {
         let site = site();
-        for page in pages(&site).iter().filter(|p| p.indexed) {
+        for page in pages(&site, &real_articles()).iter().filter(|p| p.indexed) {
             let canonical = format!(
                 "<link rel=\"canonical\" href=\"{}\"",
                 site.join(page.address)
@@ -386,7 +388,7 @@ mod tests {
         let root = Path::new(env!("CARGO_MANIFEST_DIR"));
         let mut files = Vec::new();
         walk(&root.join("content"), &mut files);
-        let pages = pages(&site());
+        let pages = pages(&site(), &real_articles());
         for file in files {
             let relative = file
                 .strip_prefix(root)
@@ -409,7 +411,7 @@ mod tests {
     #[test]
     fn every_source_is_a_file_that_exists() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR"));
-        for page in pages(&site()) {
+        for page in pages(&site(), &real_articles()) {
             if let Some(source) = page.source {
                 assert!(root.join(source).is_file(), "{source}");
             }
@@ -421,7 +423,7 @@ mod tests {
     #[test]
     fn each_fixed_page_names_the_file_its_text_comes_from() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR"));
-        let pages = pages(&site());
+        let pages = pages(&site(), &real_articles());
         for (file, text) in [
             ("curriculum.html", crate::curriculum_page::CURRICULUM),
             ("about.html", crate::about_page::ABOUT),
@@ -460,7 +462,7 @@ mod tests {
     #[test]
     fn tolerant_locally_when_the_file_is_missing() {
         let site = site();
-        let pages = pages(&site);
+        let pages = pages(&site, &real_articles());
         let sitemap = build_sitemap(&pages, &site, Err("not set".to_owned()), false).unwrap();
         assert!(!sitemap.xml.contains("lastmod"));
         assert_eq!(sitemap.warnings.len(), 1);
@@ -470,7 +472,7 @@ mod tests {
     #[test]
     fn strict_in_the_pipeline_when_the_file_is_missing() {
         let site = site();
-        let pages = pages(&site);
+        let pages = pages(&site, &real_articles());
         let error = build_sitemap(&pages, &site, Err("not set".to_owned()), true)
             .err()
             .unwrap();
@@ -480,7 +482,7 @@ mod tests {
     #[test]
     fn tolerant_locally_when_a_page_has_no_date() {
         let site = site();
-        let pages = pages(&site);
+        let pages = pages(&site, &real_articles());
         let sitemap = build_sitemap(&pages, &site, Ok(String::new()), false).unwrap();
         assert!(!sitemap.xml.contains("lastmod"));
         assert!(sitemap.warnings[0].contains("about.html"));
@@ -490,7 +492,7 @@ mod tests {
     #[test]
     fn strict_in_the_pipeline_when_a_page_has_no_date() {
         let site = site();
-        let pages = pages(&site);
+        let pages = pages(&site, &real_articles());
         let dates = "content/about.md\t2026-11-06\n".to_owned();
         let error = build_sitemap(&pages, &site, Ok(dates), true).err().unwrap();
         assert!(error.contains("curriculum.html"));
@@ -501,7 +503,7 @@ mod tests {
     #[test]
     fn a_malformed_line_is_an_error_everywhere() {
         let site = site();
-        let pages = pages(&site);
+        let pages = pages(&site, &real_articles());
         for is_ci in [true, false] {
             for text in [
                 "content/about.md 2026-11-06\n",

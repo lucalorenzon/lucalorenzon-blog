@@ -52,7 +52,7 @@ pub struct IndexedPage {
     /// The page's full address, however it is reached.
     pub canonical: String,
     /// One text for the search result and the preview alike, at most 160 characters.
-    pub description: &'static str,
+    pub description: String,
     pub kind: PageKind,
 }
 
@@ -78,10 +78,10 @@ fn preview_tag(property: &'static str, content: impl Into<String>) -> impl IntoV
 }
 
 /// The tags every indexed page has, whatever its kind.
-fn common_tags(page: IndexedPage, heading: &'static str, og_type: &'static str) -> impl IntoView {
+fn common_tags(page: IndexedPage, heading: String, og_type: &'static str) -> impl IntoView {
     view! {
         <link rel="canonical" href=page.canonical.clone() />
-        <meta name="description" content=page.description />
+        <meta name="description" content=page.description.clone() />
         {preview_tag("og:title", heading)}
         {preview_tag("og:type", og_type)}
         {preview_tag("og:url", page.canonical)}
@@ -105,8 +105,8 @@ fn common_tags(page: IndexedPage, heading: &'static str, og_type: &'static str) 
 /// the preview tags, or the `noindex` meta.
 #[component]
 pub fn PageFrame(
-    title: &'static str,
-    heading: &'static str,
+    #[prop(into)] title: String,
+    #[prop(into)] heading: String,
     #[prop(into)] address_prefix: String,
     footer_licence: FooterLicence,
     indexing: Indexing,
@@ -122,16 +122,18 @@ pub fn PageFrame(
     let stylesheet = format!("{address_prefix}style.css");
     let indexing_tags = match indexing {
         Indexing::Indexed(page) => match page.kind.clone() {
-            PageKind::Website => Either::Left(EitherOf3::A(common_tags(page, heading, "website"))),
+            PageKind::Website => {
+                Either::Left(EitherOf3::A(common_tags(page, heading.clone(), "website")))
+            }
             PageKind::Profile => Either::Left(EitherOf3::B((
-                common_tags(page, heading, "profile"),
+                common_tags(page, heading.clone(), "profile"),
                 view! {
                     {preview_tag("profile:first_name", "Luca")}
                     {preview_tag("profile:last_name", "Lorenzon")}
                 },
             ))),
             PageKind::Article { published } => Either::Left(EitherOf3::C((
-                common_tags(page, heading, "article"),
+                common_tags(page, heading.clone(), "article"),
                 preview_tag("article:published_time", published),
             ))),
         },

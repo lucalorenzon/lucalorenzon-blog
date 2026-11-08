@@ -20,7 +20,7 @@ pub fn CurriculumPage(canonical: String) -> impl IntoView {
             footer_licence=FooterLicence::CurriculumCopyNotChange
             indexing=Indexing::Indexed(IndexedPage {
                 canonical,
-                description: DESCRIPTION,
+                description: DESCRIPTION.to_owned(),
                 kind: PageKind::Profile,
             })
         >

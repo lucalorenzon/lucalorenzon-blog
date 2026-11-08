@@ -1,4 +1,4 @@
-use crate::article_page::newest_first;
+use crate::article_page::{Article, newest_first};
 use crate::page_frame::{FooterLicence, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
@@ -9,16 +9,16 @@ use leptos::prelude::*;
 const DESCRIPTION: &str = "Articles by Luca Lorenzon, product engineer: what I have learned, my thoughts on topics of public debate, and stories of paths I have taken.";
 
 #[component]
-pub fn HomePage(canonical: String) -> impl IntoView {
-    let entries = newest_first()
+pub fn HomePage(canonical: String, articles: Vec<Article>) -> impl IntoView {
+    let entries = newest_first(&articles)
         .into_iter()
         .map(|article| {
             view! {
                 <li>
                     <h2>
-                        <a href=article.address>{article.title}</a>
+                        <a href=article.address>{article.title.as_str().to_owned()}</a>
                     </h2>
-                    <p>{article.description}</p>
+                    <p>{article.description.as_str().to_owned()}</p>
                     <time datetime=article.date.iso()>{article.date.long_form()}</time>
                 </li>
             }
@@ -32,7 +32,7 @@ pub fn HomePage(canonical: String) -> impl IntoView {
             footer_licence=FooterLicence::ReuseWithAttribution
             indexing=Indexing::Indexed(IndexedPage {
                 canonical,
-                description: DESCRIPTION,
+                description: DESCRIPTION.to_owned(),
                 kind: PageKind::Website,
             })
         >
@@ -44,16 +44,18 @@ pub fn HomePage(canonical: String) -> impl IntoView {
 }
 
 /// Renders the home page to a complete HTML document string.
-pub fn render_home_page(site: &SiteAddress) -> String {
+pub fn render_home_page(site: &SiteAddress, articles: &[Article]) -> String {
     let owner = Owner::new();
     let canonical = site.join("");
-    let body = owner.with(|| view! { <HomePage canonical=canonical /> }.to_html());
+    let body = owner
+        .with(|| view! { <HomePage canonical=canonical articles=articles.to_vec() /> }.to_html());
     format!("<!DOCTYPE html>{body}")
 }
 
 #[cfg(test)]
 mod tests {
     use super::render_home_page as render;
+    use crate::article_page::real_articles;
     use crate::site_address::SiteAddress;
 
     fn site() -> SiteAddress {
@@ -61,7 +63,7 @@ mod tests {
     }
 
     fn render_home_page() -> String {
-        render(&site())
+        render(&site(), &real_articles())
     }
 
     #[test]
@@ -95,7 +97,8 @@ mod tests {
     fn canonical_link_follows_the_prefix_of_the_site_address() {
         let site = SiteAddress::parse("https://example.com/blog/").unwrap();
         assert!(
-            render(&site).contains("<link rel=\"canonical\" href=\"https://example.com/blog/\">")
+            render(&site, &real_articles())
+                .contains("<link rel=\"canonical\" href=\"https://example.com/blog/\">")
         );
     }
 

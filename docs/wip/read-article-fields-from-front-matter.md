@@ -51,7 +51,10 @@ the top of each article's Markdown file.
 
 The same as for a missing field, a wrong one: a date that is not a
 date, a file without a front matter, a description longer than 160
-characters.
+characters, a field the front matter does not know. The last one was
+proposed by the agent and accepted by the user: a misspelt field, such
+as `descripton`, is reported by its name instead of only as the
+missing `description`.
 
 - **On the author's machine:** the article is skipped, with a warning;
   at the end, the build lists the skipped articles and why.
@@ -85,9 +88,12 @@ reading part only (`default-features = false, features =
   licensed MIT or Apache 2.0, and reads the front matter straight into
   a Rust structure, reporting a missing field or one of the wrong type.
   It uses serde, already in the project through Leptos.
-- **What it brings,** with the reading part only: five small libraries,
-  the main one being granit-parser, the reader itself, by the same
-  author. It needs Rust 1.89 or later; the project follows the stable
+- **What it brings,** with the reading part only: five libraries of its
+  own, the main one being granit-parser, the reader itself, by the same
+  author; with theirs, fourteen libraries new to the project, counting
+  serde-saphyr. All are under MIT or Apache 2.0, one with data under
+  BSD 3-Clause (encoding_rs). The first count, five, was the agent's,
+  made before trying. It needs Rust 1.89 or later; the project follows the stable
   release.
 - **The risk to know:** both the library and its reader depend on one
   person. If they stop maintaining them, an alternative is needed.
@@ -117,3 +123,8 @@ warning, or the stop, described above.
   [thiserror](https://crates.io/crates/thiserror) is a
   [card of its own](../backlog/refactor-errors-with-thiserror.md), as
   the user asked.
+- **The text after the front matter is not checked here:** an empty
+  text, and HTML in the text, are checked together in a
+  [card of their own](../backlog/check-page-bodies-in-the-build.md),
+  as the user chose, so the type for the text is born once, with both
+  rules.

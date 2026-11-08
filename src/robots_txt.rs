@@ -148,7 +148,7 @@ mod tests {
             last,
             format!("Sitemap: {}", sitemap::sitemap_address(&site))
         );
-        let pages = sitemap::pages(&site);
+        let pages = sitemap::pages(&site, &crate::article_page::real_articles());
         let dates: String = pages
             .iter()
             .filter_map(|p| p.source)

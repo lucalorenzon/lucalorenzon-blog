@@ -21,7 +21,7 @@ pub fn AboutPage(canonical: String) -> impl IntoView {
             footer_licence=FooterLicence::ReuseWithAttribution
             indexing=Indexing::Indexed(IndexedPage {
                 canonical,
-                description: DESCRIPTION,
+                description: DESCRIPTION.to_owned(),
                 kind: PageKind::Profile,
             })
         >

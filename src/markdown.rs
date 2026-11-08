@@ -534,15 +534,14 @@ mod tests {
         assert!(to_html("`x`").contains("<code>x</code>"));
     }
 
-    /// The author writes no raw HTML inside Markdown.
+    /// The author writes no raw HTML inside Markdown. (The articles' bodies are checked in
+    /// `article_page`, after their front matter is taken away.)
     #[test]
     fn curriculum_contains_no_raw_html() {
         for source in [
             include_str!("../content/curriculum.md"),
             include_str!("../content/licence.md"),
             include_str!("../content/about.md"),
-            include_str!("../content/articles/after-save-event.md"),
-            include_str!("../content/articles/how-to-generate-hybris-pk-values-without-hybris.md"),
         ] {
             let raw: Vec<Event> = Parser::new(source)
                 .filter(|e| matches!(e, Event::Html(_) | Event::InlineHtml(_)))

@@ -30,8 +30,17 @@ fn build() -> Result<(), Box<dyn Error>> {
         &configured
     })?;
 
+    let is_ci = env::var("CI").is_ok_and(|value| !value.is_empty());
+    let loaded = article_page::settle(
+        article_page::load_articles(&article_page::ARTICLE_FILES),
+        is_ci,
+    )?;
+    for warning in &loaded.warnings {
+        eprintln!("warning: {warning}");
+    }
+
     fs::create_dir_all(&out_dir)?;
-    let pages = sitemap::pages(&address);
+    let pages = sitemap::pages(&address, &loaded.articles);
     for page in &pages {
         let path = out_dir.join(page.file);
         if let Some(folder) = path.parent() {
@@ -45,7 +54,6 @@ fn build() -> Result<(), Box<dyn Error>> {
         }
         _ => Err("CONTENT_DATES_FILE is not set".to_owned()),
     };
-    let is_ci = env::var("CI").is_ok_and(|value| !value.is_empty());
     let sitemap = sitemap::build_sitemap(&pages, &address, dates_file, is_ci)?;
     for warning in &sitemap.warnings {
         eprintln!("warning: {warning}");
@@ -63,6 +71,9 @@ fn build() -> Result<(), Box<dyn Error>> {
     }
     fs::write(out_dir.join(robots_txt::ROBOTS_FILE), robots.text)?;
     write_code_classes()?;
+    if let Some(summary) = &loaded.summary {
+        eprintln!("{summary}");
+    }
     Ok(())
 }
 
