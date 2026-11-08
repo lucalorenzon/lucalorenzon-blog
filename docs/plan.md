@@ -18,17 +18,28 @@ live since 2026-10-26
   so the Markdown is the only source of an article and the sitemap's
   dates become accurate for those fields too; it anticipates part of
   the `residuality` run. Being worked on since 2026-11-08.
+- [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
+  or a widely used library, instead of two types of day buried in the
+  article pages and the sitemap; right after the articles' card.
 
 ## Next
 
+- [Unify the model of the information pages](backlog/unify-the-information-pages-model.md),
+  licence, about and curriculum, today three nearly identical modules;
+  probably before reading their fields from the Markdown.
 - [Read the other pages' title and description from the Markdown](backlog/read-page-fields-from-markdown.md),
   the curriculum, about and licence pages, and where the home page's
   description goes, after the articles.
 - [Take the pages' addresses from a slug, with redirects](backlog/take-page-addresses-from-slug.md),
   so an address can follow the marketing campaigns without breaking
   the old one.
+- [Find the articles in the content folder](backlog/find-articles-in-content-folder.md)
+  when the build runs, instead of a list of files wired into the code.
 - [Refactor the code's errors with thiserror](backlog/refactor-errors-with-thiserror.md),
   instead of plain text, generic boxes and types written by hand.
+- [Check the pages' text in the build](backlog/check-page-bodies-in-the-build.md):
+  not empty and without HTML, with the same rule as a wrong field,
+  instead of HTML checked by unit tests only.
 - [Give the home page a date in the sitemap](backlog/date-the-home-page-in-the-sitemap.md):
   the date of the last addition or removal of an article.
 - [Use the publication date in the sitemap](backlog/use-publication-date-in-the-sitemap.md),

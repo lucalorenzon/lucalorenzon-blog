@@ -21,13 +21,9 @@ error types written by hand.
 - **A refactor:** what the build writes and the messages it prints stay
   the same; only the code's structure changes.
 - **thiserror is a new dependency,** to be audited as any other.
-- **Two types hold a day:** `Date` in `src/article_page.rs` and
-  `ContentDate` in `src/sitemap.rs`, each with its own reading of
-  `YYYY-MM-DD` once the articles' dates come from the front matter.
 
 ## Questions
 
 - Which errors move to thiserror: all of them, or only those that are
   matched by the code, leaving plain text where the message is all
   that matters.
-- Whether the two types of day become one.

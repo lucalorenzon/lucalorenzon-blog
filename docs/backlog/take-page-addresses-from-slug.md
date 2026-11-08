@@ -29,6 +29,9 @@ brings questions of its own.
   sitemap's card.
 - **The site is static, on GitHub Pages:** there is no server to answer
   an old address with a redirect.
+- **Finding the pages by going through `content/`** is a
+  [card of its own](find-articles-in-content-folder.md), chosen by the
+  user on 2026-11-08.
 
 ## Questions
 
@@ -36,5 +39,3 @@ brings questions of its own.
 - How an old address keeps working when a slug changes: a list of old
   slugs in the front matter, and what each old address serves on a
   static site.
-- Whether the build finds the pages by going through `content/`, in
-  this card or in one of its own.
