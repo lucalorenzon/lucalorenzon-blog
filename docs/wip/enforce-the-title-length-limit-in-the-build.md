@@ -54,3 +54,20 @@ field ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
    compiled in the build as a dependency of Leptos (through
    `convert_case`) and the latest version published, so declaring it
    adds no new code.
+2. **The limit belongs to the frame, not to the article's title**
+   (user): the heading the frame shows may differ from an article's or
+   a fixed page's title (for example a shorter form of a long title), so
+   the domain is not mixed with the view. The article's `Title` stays a
+   piece of content, not empty, with no length limit; the frame takes a
+   type of its own (for example `Heading` in `src/page_frame.rs`) that
+   holds at most 50 graphemes, and every page builds one to get its
+   frame. **Rejected:** moving `Title` out of the article page and
+   making the frame take it (the agent's first proposal), which would
+   tie the content's title to the view's rule.
+3. **Checked when the article is read** (agent's proposal, user's
+   decision): reading an article also builds the frame's heading from
+   its title; a title that does not fit is one more problem of the
+   article, listed with the others, skipped with a warning locally and
+   stopping the build in the pipeline (`settle`). **Rejected:** checking
+   only when the page is built, which would stop at the first error,
+   locally too, unlike every other problem of an article.
