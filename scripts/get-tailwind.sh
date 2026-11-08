@@ -17,10 +17,13 @@
 #   scripts/get-tailwind.sh --cache-info print, in GitHub Actions output format
 #                                        and without touching the network, the
 #                                        cache key and path of the tool
+#   scripts/get-tailwind.sh --version    print only the pinned version, without
+#                                        touching the network
 #
 # --cache-info exists so that the version and checksum have a single source:
 # the pipeline and the daily job that keeps the cache alive both build the same
-# key from it, and so can never disagree about what is in the cache.
+# key from it, and so can never disagree about what is in the cache. --version
+# gives the same to the check for newer versions (scripts/version-check).
 set -euo pipefail
 
 TAILWIND_VERSION="4.3.3"
@@ -32,20 +35,28 @@ case "${1-}" in
     "") ;;
     --cache-info)
         if [[ $# -ne 1 ]]; then
-            echo "usage: $0 [--cache-info]" >&2
+            echo "usage: $0 [--cache-info | --version]" >&2
             exit 2
         fi
         echo "key=tailwindcss-${TAILWIND_VERSION}-linux-x64-${TAILWIND_SHA256}"
         echo "path=${TOOL}"
         exit 0
         ;;
+    --version)
+        if [[ $# -ne 1 ]]; then
+            echo "usage: $0 [--cache-info | --version]" >&2
+            exit 2
+        fi
+        echo "${TAILWIND_VERSION}"
+        exit 0
+        ;;
     *)
-        echo "usage: $0 [--cache-info]" >&2
+        echo "usage: $0 [--cache-info | --version]" >&2
         exit 2
         ;;
 esac
 if [[ $# -gt 1 ]]; then
-    echo "usage: $0 [--cache-info]" >&2
+    echo "usage: $0 [--cache-info | --version]" >&2
     exit 2
 fi
 

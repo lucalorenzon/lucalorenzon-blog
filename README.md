@@ -61,7 +61,22 @@ It counts the commits that changed the list after the pinned one, shows
 which robots would go from allowed to blocked and back, which new ones would
 be blocked with a description of their own (candidates for an exception),
 and prints the commit and checksum to pin, with the address of the new
-`robots.json` to put in place of the committed copy.
+`robots.json` to put in place of the committed copy. With `--json` it
+prints the same as one JSON object, for the check below.
+
+Two things the build pins by hand are not watched by Dependabot: Tailwind and
+this robots list. `scripts/version-check/version_check.py` asks GitHub
+whether either has something newer (a Tailwind release; a robots list whose
+latest commit would change which robots are blocked) and prints what it
+found, or "Nothing newer". It writes nothing. The token is optional, but
+without it GitHub allows only 60 requests an hour:
+
+```
+GITHUB_TOKEN=$(gh auth token) python3 scripts/version-check/version_check.py
+```
+
+Its tests:
+`python3 -m unittest discover -s scripts/version-check -p 'test_*.py'`.
 
 Every push to `main` and every pull request runs the same checks on
 GitHub (workflow `.github/workflows/build.yml`). Nothing is published by

@@ -3,6 +3,8 @@
 Run: python3 -m unittest discover -s scripts/robots-list -p 'test_*.py'
 """
 
+import contextlib
+import io
 import json
 import tempfile
 import unittest
@@ -178,6 +180,133 @@ class CommitsTests(unittest.TestCase):
     def test_pinned_missing_is_an_error(self):
         with self.assertRaises(robots_list.RobotsListError):
             robots_list.newer_commits([{"sha": "x"}], "p")
+
+
+class HeadersTests(unittest.TestCase):
+    def test_token_goes_to_the_api_host(self):
+        headers = robots_list.request_headers(
+            "https://api.github.com/repos/x/y/commits", {"GITHUB_TOKEN": "secret"}
+        )
+        self.assertEqual(headers["Authorization"], "Bearer secret")
+
+    def test_token_never_goes_to_another_host(self):
+        for url in (
+            "https://raw.githubusercontent.com/x/y/abc/robots.json",
+            "https://api.github.com.evil.example/repos",
+            "https://evil.example/?u=api.github.com",
+        ):
+            headers = robots_list.request_headers(url, {"GITHUB_TOKEN": "secret"})
+            self.assertNotIn("Authorization", headers, url)
+
+    def test_no_token_no_header(self):
+        headers = robots_list.request_headers("https://api.github.com/x", {})
+        self.assertNotIn("Authorization", headers)
+        headers = robots_list.request_headers(
+            "https://api.github.com/x", {"GITHUB_TOKEN": ""}
+        )
+        self.assertNotIn("Authorization", headers)
+
+
+def fake_download(commits: list[dict], latest: bytes):
+    def download(url: str) -> bytes:
+        if "api.github.com" in url:
+            return json.dumps(commits).encode("utf-8")
+        return latest
+
+    return download
+
+
+def commit(sha: str, date: str = "2026-11-06T10:00:00Z") -> dict:
+    return {"sha": sha, "commit": {"committer": {"date": date}}}
+
+
+class FindUpdatesTests(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.repo = Path(self._tmp.name)
+        path = self.repo / robots_list.COMMITTED_LIST
+        path.parent.mkdir(parents=True)
+        path.write_bytes(FIXTURE_BYTES)
+        patches = (
+            mock.patch.object(robots_list, "PINNED_SHA256", FIXTURE_SHA),
+            mock.patch.object(robots_list, "PINNED_COMMIT", "pin"),
+        )
+        for patch in patches:
+            patch.start()
+            self.addCleanup(patch.stop)
+
+    def updates(self, latest: dict) -> dict:
+        newer = json.dumps({**FIXTURE, **latest}).encode("utf-8")
+        download = fake_download([commit("new"), commit("pin")], newer)
+        return robots_list.find_updates(self.repo, download)
+
+    def test_nothing_after_the_pin(self):
+        download = fake_download([commit("pin")], b"")
+        updates = robots_list.find_updates(self.repo, download)
+        self.assertIsNone(updates["latest_commit"])
+        self.assertFalse(updates["blocked_list_changes"])
+        self.assertEqual(updates["commits_after_pin"], 0)
+
+    def test_new_blocked_robot_changes_the_list(self):
+        updates = self.updates({"Fresh": {"function": "AI Data Scrapers"}})
+        self.assertEqual(updates["latest_commit"], "new")
+        self.assertTrue(updates["blocked_list_changes"])
+        self.assertEqual(updates["blocked_now"] + 1, updates["blocked_after"])
+        self.assertEqual(updates["commits_after_pin"], 1)
+        self.assertEqual(updates["latest_date"], "2026-11-06T10:00:00Z")
+        self.assertIn("  Fresh  [AI Data Scrapers]", updates["report"])
+        self.assertEqual(updates["latest_url"], robots_list.raw_url("new"))
+
+    def test_new_allowed_robot_leaves_the_list_as_it_is(self):
+        updates = self.updates({"Fresh": {"function": "AI Agents"}})
+        self.assertEqual(updates["latest_commit"], "new")
+        self.assertFalse(updates["blocked_list_changes"])
+
+    def test_json_output_has_the_fields_and_text_is_not_printed(self):
+        newer = json.dumps({**FIXTURE, "Fresh": {"function": "AI Data Scrapers"}})
+        download = fake_download([commit("new"), commit("pin")], newer.encode())
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = robots_list.check_updates(self.repo, download, as_json=True)
+        self.assertEqual(code, 0)
+        data = json.loads(out.getvalue())
+        for key in (
+            "pinned_commit",
+            "latest_commit",
+            "latest_date",
+            "commits_after_pin",
+            "blocked_list_changes",
+            "blocked_now",
+            "blocked_after",
+            "report",
+            "latest_sha256",
+            "latest_url",
+        ):
+            self.assertIn(key, data)
+        self.assertEqual(data["latest_sha256"], robots_list.sha256(newer.encode()))
+
+    def test_text_output_is_unchanged_in_shape(self):
+        newer = json.dumps({**FIXTURE, "Fresh": {"function": "AI Data Scrapers"}})
+        download = fake_download([commit("new"), commit("pin")], newer.encode())
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            robots_list.check_updates(self.repo, download)
+        text = out.getvalue()
+        self.assertIn("1 commit(s) changed robots.json after the pin;", text)
+        self.assertIn("Blocked now: 4; blocked after the move: 5.", text)
+        self.assertIn("To move the pin:", text)
+        self.assertIn('     PINNED_COMMIT = "new"', text)
+
+
+class ArgumentsTests(unittest.TestCase):
+    def test_json_without_check_updates_is_a_parser_error(self):
+        with (
+            contextlib.redirect_stderr(io.StringIO()),
+            self.assertRaises(SystemExit) as raised,
+        ):
+            robots_list.main(["--output", "x.txt", "--json"])
+        self.assertEqual(raised.exception.code, 2)
 
 
 if __name__ == "__main__":

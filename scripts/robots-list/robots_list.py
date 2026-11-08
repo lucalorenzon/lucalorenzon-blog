@@ -11,20 +11,25 @@ network: a build must not fail because GitHub's servers do.
 
 With --check-updates it instead tells what would change in the blocked list
 if the pin moved to the project's latest commit. Only this mode needs the
-network.
+network. With --json as well it prints the same findings as one JSON object,
+for the step that opens an issue when the blocked list would change
+(scripts/version-check).
 
 Run: python3 scripts/robots-list/robots_list.py --output FILE
-     python3 scripts/robots-list/robots_list.py --check-updates
+     python3 scripts/robots-list/robots_list.py --check-updates [--json]
 Tests: python3 -m unittest discover -s scripts/robots-list -p 'test_*.py'
 """
 
 import argparse
 import hashlib
 import json
+import os
 import sys
+import urllib.parse
 import urllib.request
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from pathlib import Path
+from typing import Any
 
 # The pinned source: robots.json of https://github.com/ai-robots-txt/ai.robots.txt
 # at this commit (2026-11-05), committed as ai-robots-txt/robots.json. The
@@ -87,10 +92,23 @@ def raw_url(commit: str) -> str:
     return f"https://raw.githubusercontent.com/{PROJECT}/{commit}/robots.json"
 
 
+def request_headers(url: str, environment: Mapping[str, str]) -> dict[str, str]:
+    """The headers to send to url.
+
+    GitHub's API lets an unauthenticated client make 60 requests an hour per
+    address, which on the shared runners of GitHub Actions is used up by
+    others. So the token, if there is one, goes along, but only to the API's
+    own host: any other host must never see it.
+    """
+    headers = {"User-Agent": "lucalorenzon-blog robots-list check"}
+    token = environment.get("GITHUB_TOKEN")
+    if token and urllib.parse.urlparse(url).hostname == "api.github.com":
+        headers["Authorization"] = f"Bearer {token}"
+    return headers
+
+
 def http_get(url: str) -> bytes:
-    request = urllib.request.Request(
-        url, headers={"User-Agent": "lucalorenzon-blog robots-list check"}
-    )
+    request = urllib.request.Request(url, headers=request_headers(url, os.environ))
     try:
         with urllib.request.urlopen(request, timeout=60) as response:
             return response.read()
@@ -229,32 +247,80 @@ def commits_changing_list(download: Callable[[str], bytes]) -> list[dict]:
     return newer_commits(commits, PINNED_COMMIT)
 
 
-def check_updates(repo: Path, download: Callable[[str], bytes] | None = None) -> int:
+def find_updates(
+    repo: Path, download: Callable[[str], bytes] | None = None
+) -> dict[str, Any]:
+    """What moving the pin to the latest commit would change.
+
+    Text and JSON output both come from this, so they cannot disagree.
+    latest_commit is None when no commit changed robots.json after the pin.
+    """
     download = download or http_get
     old = parse_functions(pinned_list(repo))
     newer = commits_changing_list(download)
     if not newer:
-        print(f"Up to date: no commit changed robots.json after {PINNED_COMMIT}.")
-        return 0
+        return {
+            "pinned_commit": PINNED_COMMIT,
+            "latest_commit": None,
+            "latest_date": None,
+            "commits_after_pin": 0,
+            "blocked_list_changes": False,
+            "blocked_now": len(blocked_names(old)),
+            "blocked_after": len(blocked_names(old)),
+            "report": [],
+            "latest_sha256": None,
+            "latest_url": None,
+        }
     latest = newer[0]
-    date = latest["commit"]["committer"]["date"]
-    print(
-        f"{len(newer)} commit(s) changed robots.json after the pin; the latest is from {date}."
-    )
     # A preview of the newest version: no checksum, it is not pinned yet.
     data = download(raw_url(latest["sha"]))
     new = parse_functions(data)
-    lines = report(compare(old, new), new)
+    return {
+        "pinned_commit": PINNED_COMMIT,
+        "latest_commit": latest["sha"],
+        "latest_date": latest["commit"]["committer"]["date"],
+        "commits_after_pin": len(newer),
+        "blocked_list_changes": blocked_names(old) != blocked_names(new),
+        "blocked_now": len(blocked_names(old)),
+        "blocked_after": len(blocked_names(new)),
+        "report": report(compare(old, new), new),
+        "latest_sha256": sha256(data),
+        "latest_url": raw_url(latest["sha"]),
+    }
+
+
+def how_to_move_the_pin(updates: dict[str, Any]) -> list[str]:
+    return [
+        "To move the pin:",
+        f"  1. download {updates['latest_url']}",
+        f"     and put it at {COMMITTED_LIST} (check LICENSE too);",
+        "  2. set in robots_list.py:",
+        f'     PINNED_COMMIT = "{updates["latest_commit"]}"',
+        f'     PINNED_SHA256 = "{updates["latest_sha256"]}"',
+    ]
+
+
+def check_updates(
+    repo: Path, download: Callable[[str], bytes] | None = None, as_json: bool = False
+) -> int:
+    updates = find_updates(repo, download)
+    if as_json:
+        print(json.dumps(updates, indent=2))
+        return 0
+    if updates["latest_commit"] is None:
+        print(f"Up to date: no commit changed robots.json after {PINNED_COMMIT}.")
+        return 0
     print(
-        f"Blocked now: {len(blocked_names(old))}; blocked after the move: {len(blocked_names(new))}."
+        f"{updates['commits_after_pin']} commit(s) changed robots.json after the pin; "
+        f"the latest is from {updates['latest_date']}."
     )
+    print(
+        f"Blocked now: {updates['blocked_now']}; "
+        f"blocked after the move: {updates['blocked_after']}."
+    )
+    lines = updates["report"]
     print("\n".join(lines) if lines else "The blocked list would not change.")
-    print("To move the pin:")
-    print(f"  1. download {raw_url(latest['sha'])}")
-    print(f"     and put it at {COMMITTED_LIST} (check LICENSE too);")
-    print("  2. set in robots_list.py:")
-    print(f'     PINNED_COMMIT = "{latest["sha"]}"')
-    print(f'     PINNED_SHA256 = "{sha256(data)}"')
+    print("\n".join(how_to_move_the_pin(updates)))
     return 0
 
 
@@ -266,13 +332,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--repo", type=Path, default=default_repo)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--check-updates", action="store_true")
+    parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
     if args.check_updates == (args.output is not None):
         parser.error("give exactly one of --output FILE and --check-updates")
+    if args.json and not args.check_updates:
+        parser.error("--json is only valid together with --check-updates")
 
     try:
         if args.check_updates:
-            return check_updates(args.repo)
+            return check_updates(args.repo, as_json=args.json)
         # An error is an error here in the pipeline and on a laptop alike: a
         # list other than the pinned one must never reach the site.
         names = blocked_names(parse_functions(pinned_list(args.repo)))
