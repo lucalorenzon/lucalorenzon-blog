@@ -14,7 +14,7 @@ live since 2026-10-26
 
 ## Now
 
-- [Update Tailwind to 4.3.5](backlog/update-tailwind-to-4-3-5.md),
+- [Update Tailwind to 4.3.5](wip/update-tailwind-to-4-3-5.md),
   reported by the daily check in its first issue, #33.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the

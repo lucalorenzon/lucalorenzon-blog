@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-08, by the user and the agent, while checking the
   pinned tools for newer versions
   ([card](../done/2026-11-08_check-for-newer-versions-of-pinned-tools.md)).
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-08.
 
 ## Why
 
