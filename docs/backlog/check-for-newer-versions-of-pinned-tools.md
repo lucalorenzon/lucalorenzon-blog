@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-08, by the user, while making the build's external
   downloads reliable
-  ([card](../wip/make-external-downloads-in-the-build-reliable.md)).
+  ([card](../done/2026-11-08_make-external-downloads-in-the-build-reliable.md)).
 - **Status:** noticed, not started.
 
 ## Why

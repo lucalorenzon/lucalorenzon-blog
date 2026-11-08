@@ -14,10 +14,6 @@ live since 2026-10-26
 
 ## Now
 
-- [Make the build's external downloads reliable](wip/make-external-downloads-in-the-build-reliable.md),
-  first in the next session: on 2026-11-08 the pipeline failed three
-  times on the download of Tailwind, so the browser tests did not run
-  on the day's change.
 - [Check for newer versions of the pinned tools](backlog/check-for-newer-versions-of-pinned-tools.md),
   Tailwind and the list of AI robots, which Dependabot does not watch:
   Tailwind 4.3.5 has been out since 2026-11-06 and went unnoticed.
