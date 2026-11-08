@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-07
+Last updated: 2026-11-08
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -14,20 +14,13 @@ live since 2026-10-26
 
 ## Now
 
-- Nothing yet: version 0.11.0, published on 2026-11-07, framed each
-  article on the home page in an amber box, with the date on its border
-  ([card](done/2026-11-07_frame-home-page-articles-in-boxes.md)),
-  together with the colour of list markers and the numbered lists'
-  fix. Moving the first
-  box to mid-height of the screen was tried and not adopted
-  ([card](done/2026-11-07_centre-first-box-on-home-page.md)). The next
-  card is chosen by the user, from Next.
+- [Move titles, descriptions and dates into the Markdown's front matter](wip/move-page-fields-into-markdown-front-matter.md),
+  so the Markdown is the only source of content and the sitemap's
+  dates become accurate; it anticipates part of the `residuality` run.
+  Being worked on since 2026-11-08; first, how to cut it into slices.
 
 ## Next
 
-- [Move titles, descriptions and dates into the Markdown's front matter](backlog/move-page-fields-into-markdown-front-matter.md),
-  so the Markdown is the only source of content and the sitemap's
-  dates become accurate; it anticipates part of the `residuality` run.
 - [Give the home page a date in the sitemap](backlog/date-the-home-page-in-the-sitemap.md):
   the date of the last addition or removal of an article.
 - [Use the publication date in the sitemap](backlog/use-publication-date-in-the-sitemap.md),

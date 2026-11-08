@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-06, by the user, while choosing where the
   sitemap's dates come from
   ([card](../done/2026-11-07_add-sitemap.md)).
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-08.
 
 ## Why
 
@@ -30,7 +30,7 @@ accurate for those fields too.
 
 - **The model of an "article" was left for later** when the home page's
   list was made: to the
-  [run of `residuality`](run-full-residuality-round.md) and to the card
+  [run of `residuality`](../backlog/run-full-residuality-round.md) and to the card
   on search-engine tags
   ([card](../done/2026-11-06_list-articles-on-home-page.md), "What each
   entry shows"). The user noted that this card anticipates part of that
