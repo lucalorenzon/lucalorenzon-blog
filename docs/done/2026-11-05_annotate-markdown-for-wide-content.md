@@ -241,7 +241,7 @@ found it wired to one article, so it became a general rule: on every
 page of the built site, at phone widths, every cell whose visible text
 has no space is on one line. The same weakness in the older tests went
 to a card of its own,
-[make the browser tests check behaviour, not articles](../wip/make-browser-tests-check-behaviour.md).
+[make the browser tests check behaviour, not articles](../adr/ADR-004-test-components-once-and-pages-with-a-net.md).
 
 ### What a wide table does on a phone
 

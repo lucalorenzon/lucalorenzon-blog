@@ -200,7 +200,7 @@ and the `robots.txt` exist, each in a card of its own.
 - **The problem:** on the live site there is no folder to walk, so the
   check needs a list of pages, and the only one, `TEXT_PAGES` in
   `end2end/tests/support.ts`, is written by hand; the card
-  [make the browser tests check behaviour](../wip/make-browser-tests-check-behaviour.md)
+  [make the browser tests check behaviour](../adr/ADR-004-test-components-once-and-pages-with-a-net.md)
   wants to get rid of such lists. The "page not found", asked on the
   live site through a missing address, answers with status 404 and
   fails the rule on the response status, rightly, since a missing

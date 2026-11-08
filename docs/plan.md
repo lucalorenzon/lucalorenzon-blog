@@ -14,8 +14,14 @@ live since 2026-10-26
 
 ## Now
 
-- [Make the browser tests check behaviour, not articles](wip/make-browser-tests-check-behaviour.md),
-  so a new article does not mean editing the tests' lists of pages.
+- Make the browser tests check behaviour, not articles, so the suite
+  stops growing by about 200 tests per article
+  ([ADR-004](adr/ADR-004-test-components-once-and-pages-with-a-net.md)),
+  in three slices:
+  [run in one theme the tests that do not check colours](backlog/run-colour-free-tests-in-one-theme.md),
+  [check at every width only what depends on the width](backlog/check-at-every-width-only-what-depends-on-it.md),
+  [check every page with tests written once](backlog/check-every-page-with-tests-written-once.md);
+  then the components' test pages, carded after these.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
   article pages and the sitemap. The articles now read their title,
@@ -27,7 +33,7 @@ live since 2026-10-26
 
 - [Build a design system](backlog/build-a-design-system.md), with
   Holt or Storybook, so each component is tested once instead of on
-  every page; it takes over the test pages of the browser tests card.
+  every page; it takes over the components' test pages of ADR-004.
 - [Unify the model of the information pages](backlog/unify-the-information-pages-model.md),
   licence, about and curriculum, today three nearly identical modules;
   probably before reading their fields from the Markdown.

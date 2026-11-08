@@ -1,8 +1,8 @@
 # Build a design system
 
 - **Opened:** 2026-11-08, by the user, while classifying the browser
-  tests in the card
-  [make the browser tests check behaviour, not articles](../wip/make-browser-tests-check-behaviour.md);
+  tests in the card on making them check behaviour, not articles, since
+  split ([ADR-004](../adr/ADR-004-test-components-once-and-pages-with-a-net.md));
   in Next.
 - **Status:** noticed, not started.
 
@@ -23,8 +23,8 @@ Two reasons, one older and one new.
   remains on the pages is integration, checked by tests written once
   and run on every page.
 
-The card on the browser tests does not wait for this one: it puts the
-components' worst cases in test pages of its own, shaped as a catalogue
+The browser tests do not wait for this one: they put the components'
+worst cases in test pages of their own (ADR-004), shaped as a catalogue
 of components (one component per page, with its variants), so that the
 design system can take them over.
 
@@ -52,5 +52,5 @@ To be answered by a timeboxed spike before choosing:
   the catalogue is not published, so the check on the live site keeps
   to the net of tests over every page.
 - What `tailwind_fuse` and Holt's way of composing classes mean for
-  the named visual variants the site uses today (ADR-001 in the
-  stylesheet's comments).
+  the named visual variants the site uses today
+  ([ADR-001](../adr/ADR-001-name-styles-by-visual-variant.md)).
