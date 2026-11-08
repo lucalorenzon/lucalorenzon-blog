@@ -13,12 +13,34 @@ marker that lets a later run recognise the issue it already opened.
   commit would change which robots are blocked. The list changes often and
   most changes do not touch the blocked set, so they are not worth a signal.
 
-Run: GITHUB_TOKEN=$(gh auth token) python3 scripts/version-check/version_check.py
+Each finding becomes a GitHub issue with the label "version-check". A hidden
+marker in the issue's body (not its title, which a person may edit) says which
+finding it is, so a daily run can tell what it already reported:
+
+- Tailwind: one issue per newer version. If an issue for that version exists,
+  open or closed, nothing is done; otherwise one is opened. Closing an issue
+  without updating means that version is skipped.
+- The robots list: if an issue for the latest commit exists, open or closed,
+  nothing is done; else, if an issue for an older commit is still open, its
+  title and body are updated to the latest commit (one open issue, not a
+  pile); otherwise a new one is opened. Closing without moving the pin skips
+  the list until it changes again in a way that touches the blocked robots.
+
+Run (read-only: prints what it would do, writes nothing):
+  GITHUB_TOKEN=$(gh auth token) python3 scripts/version-check/version_check.py
+Run and write (what the daily workflow does; needs a token that may write issues):
+  GITHUB_TOKEN=... python3 scripts/version-check/version_check.py --apply
 Tests: python3 -m unittest discover -s scripts/version-check -p 'test_*.py'
 
-For now the findings are only printed; nothing is written anywhere. The token
-is optional but, on GitHub's shared runners, the unauthenticated limit of 60
-requests an hour is shared with others and is used up.
+The repository is read from GITHUB_REPOSITORY (set by GitHub Actions) or, when
+that is absent, from the "origin" remote. The token is optional for reading
+but, on GitHub's shared runners, the unauthenticated limit of 60 requests an
+hour is shared with others and is used up; it is required with --apply. It is
+only ever sent to api.github.com.
+
+Exit status: 0 when the check ran, whether or not it found something (the
+issue is the signal); 1 when it could not run (network, unexpected answers),
+so that the failed run is mailed by GitHub; 2 for a wrong command line.
 """
 
 import json
@@ -26,6 +48,7 @@ import os
 import re
 import subprocess
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from collections.abc import Callable, Mapping
@@ -41,6 +64,28 @@ TAILWIND_RELEASE_PAGE = "https://github.com/tailwindlabs/tailwindcss/releases/ta
 Runner = Callable[[list[str]], str]
 # Returns the body of an HTTP GET.
 Getter = Callable[[str], bytes]
+
+LABEL = "version-check"
+LABEL_COLOR = "0e8a16"
+LABEL_DESCRIPTION = "A newer version of something the build pins by hand"
+PAGE_SIZE = 100
+MARKER_PATTERN = re.compile(r"<!-- version-check: tool=(\S+) key=(\S+) -->")
+REPOSITORY_PATTERNS = (
+    re.compile(r"^([\w.-]+)/([\w.-]+?)(?:\.git)?$"),
+    re.compile(r"^https://github\.com/([\w.-]+)/([\w.-]+?)(?:\.git)?/?$"),
+    re.compile(r"^(?:ssh://)?git@github\.com[:/]([\w.-]+)/([\w.-]+?)(?:\.git)?/?$"),
+)
+
+
+@dataclass(frozen=True)
+class Response:
+    status: int
+    body: bytes
+
+
+# Sends a request to GitHub's API: method, URL, optional JSON payload. A status
+# of 400 or more is returned, not raised, because a 404 is sometimes an answer.
+Api = Callable[[str, str, object | None], Response]
 
 
 class VersionCheckError(Exception):
@@ -86,6 +131,22 @@ def http_get(url: str) -> bytes:
             return response.read()
     except OSError as error:  # URLError and timeouts are OSErrors
         raise VersionCheckError(f"cannot download {url}: {error}") from error
+
+
+def http_api(method: str, url: str, payload: object | None = None) -> Response:
+    headers = request_headers(url, os.environ)
+    data = None
+    if payload is not None:
+        data = json.dumps(payload).encode("utf-8")
+        headers["Content-Type"] = "application/json"
+    request = urllib.request.Request(url, data=data, headers=headers, method=method)
+    try:
+        with urllib.request.urlopen(request, timeout=60) as response:
+            return Response(response.status, response.read())
+    except urllib.error.HTTPError as error:
+        return Response(error.code, error.read())
+    except OSError as error:
+        raise VersionCheckError(f"cannot reach {url}: {error}") from error
 
 
 def run_command(repo: Path) -> Runner:
@@ -226,27 +287,195 @@ def find(run: Runner, download: Getter) -> list[Finding]:
     return [finding for finding in candidates if finding is not None]
 
 
-def render(findings: list[Finding]) -> str:
-    if not findings:
-        return "Nothing newer\n"
-    return "\n\n".join(f"{f.title}\n\n{f.body}" for f in findings) + "\n"
+def parse_repository(text: str) -> str:
+    """'owner/name' from 'owner/name' or from a GitHub remote's address."""
+    for pattern in REPOSITORY_PATTERNS:
+        match = pattern.match(text.strip())
+        if match:
+            return f"{match.group(1)}/{match.group(2)}"
+    raise VersionCheckError(f"{text!r} is not a GitHub repository")
+
+
+def repository(environment: Mapping[str, str], run: Runner) -> str:
+    named = environment.get("GITHUB_REPOSITORY")
+    if named:
+        return parse_repository(named)
+    return parse_repository(run(["git", "remote", "get-url", "origin"]))
+
+
+@dataclass(frozen=True)
+class Issue:
+    number: int
+    is_open: bool
+    tool: str
+    key: str
+
+
+@dataclass(frozen=True)
+class Action:
+    kind: str  # "open", "update" or "nothing"
+    finding: Finding
+    number: int | None = None  # the issue to update, or the one that covers it
+
+
+def parse_issue(item: object) -> Issue | None:
+    """An issue we opened, recognised by the marker in its body; else None."""
+    if not isinstance(item, dict) or "pull_request" in item:
+        return None
+    try:
+        number, state = int(item["number"]), str(item["state"])
+    except (KeyError, TypeError, ValueError) as error:
+        raise VersionCheckError(f"an issue has no number or state: {error}") from error
+    match = MARKER_PATTERN.search(str(item.get("body") or ""))
+    if not match:
+        return None
+    return Issue(number, state == "open", match.group(1), match.group(2))
+
+
+def decide(findings: list[Finding], issues: list[Issue]) -> list[Action]:
+    """What to do about each finding, given the issues that exist.
+
+    Pure on purpose: the whole policy is here, and the tests cover its branches.
+    """
+    actions = []
+    for finding in findings:
+        same_key = [i for i in issues if (i.tool, i.key) == (finding.tool, finding.key)]
+        if same_key:
+            actions.append(Action("nothing", finding, same_key[0].number))
+            continue
+        if finding.tool == "robots":
+            open_older = [i for i in issues if i.tool == "robots" and i.is_open]
+            if open_older:
+                newest = max(open_older, key=lambda i: i.number)
+                actions.append(Action("update", finding, newest.number))
+                continue
+        actions.append(Action("open", finding))
+    return actions
+
+
+def check(response: Response, what: str, allowed: tuple[int, ...] = ()) -> Response:
+    if response.status >= 400 and response.status not in allowed:
+        detail = response.body.decode("utf-8", "replace")[:200]
+        raise VersionCheckError(f"{what} failed with {response.status}: {detail}")
+    return response
+
+
+def existing_issues(api: Api, repo: str) -> list[Issue]:
+    issues = []
+    page = 1
+    while True:
+        url = (
+            f"https://api.github.com/repos/{repo}/issues?labels={LABEL}"
+            f"&state=all&per_page={PAGE_SIZE}&page={page}"
+        )
+        body = check(api("GET", url, None), "listing the issues").body
+        try:
+            items = json.loads(body.decode("utf-8"))
+        except ValueError as error:
+            raise VersionCheckError(
+                f"the list of issues is not JSON: {error}"
+            ) from error
+        if not isinstance(items, list):
+            raise VersionCheckError("the list of issues is not a list")
+        issues.extend(i for i in map(parse_issue, items) if i is not None)
+        if len(items) < PAGE_SIZE:
+            return issues
+        page += 1
+
+
+def ensure_label(api: Api, repo: str) -> None:
+    base = f"https://api.github.com/repos/{repo}/labels"
+    found = check(api("GET", f"{base}/{LABEL}", None), "reading the label", (404,))
+    if found.status != 404:
+        return
+    check(
+        api(
+            "POST",
+            base,
+            {"name": LABEL, "color": LABEL_COLOR, "description": LABEL_DESCRIPTION},
+        ),
+        "creating the label",
+    )
+
+
+def describe(action: Action) -> str:
+    title = action.finding.title
+    if action.kind == "open":
+        return f"would open an issue: {title}"
+    if action.kind == "update":
+        return f"would update issue #{action.number}: {title}"
+    return f"nothing to do: issue #{action.number} already covers: {title}"
+
+
+def apply(api: Api, repo: str, actions: list[Action]) -> list[str]:
+    """Do what decide() said; returns one line per action."""
+    base = f"https://api.github.com/repos/{repo}/issues"
+    lines = []
+    label_ready = False
+    for action in actions:
+        finding = action.finding
+        if action.kind == "nothing":
+            lines.append(describe(action))
+        elif action.kind == "update":
+            payload = {"title": finding.title, "body": finding.body}
+            check(api("PATCH", f"{base}/{action.number}", payload), "updating an issue")
+            lines.append(f"updated issue #{action.number}: {finding.title}")
+        else:
+            if not label_ready:
+                ensure_label(api, repo)
+                label_ready = True
+            payload = {
+                "title": finding.title,
+                "body": finding.body,
+                "labels": [LABEL],
+            }
+            created = check(api("POST", base, payload), "opening an issue")
+            try:
+                number = json.loads(created.body.decode("utf-8"))["number"]
+            except (ValueError, KeyError, TypeError) as error:
+                raise VersionCheckError(
+                    f"GitHub's answer has no number: {error}"
+                ) from error
+            lines.append(f"opened issue #{number}: {finding.title}")
+    return lines
+
+
+USAGE = "usage: version_check.py [--apply]"
 
 
 def main(
     argv: list[str] | None = None,
     run: Runner | None = None,
     download: Getter | None = None,
+    api: Api | None = None,
+    environment: Mapping[str, str] | None = None,
 ) -> int:
-    if argv:
-        print("usage: version_check.py (takes no arguments)", file=sys.stderr)
+    argv = argv or []
+    if argv not in ([], ["--apply"]):
+        print(USAGE, file=sys.stderr)
         return 2
-    repo = Path(__file__).resolve().parents[2]
+    do_apply = argv == ["--apply"]
+    environment = os.environ if environment is None else environment
+    if do_apply and not environment.get("GITHUB_TOKEN"):
+        print("error: --apply needs GITHUB_TOKEN to write issues", file=sys.stderr)
+        return 1
+    root = Path(__file__).resolve().parents[2]
+    run = run or run_command(root)
+    api = api or http_api
     try:
-        findings = find(run or run_command(repo), download or http_get)
+        findings = find(run, download or http_get)
+        if not findings:
+            print("Nothing newer")
+            return 0
+        repo = repository(environment, run)
+        actions = decide(findings, existing_issues(api, repo))
+        lines = (
+            apply(api, repo, actions) if do_apply else [describe(a) for a in actions]
+        )
     except VersionCheckError as error:
         print(f"error: {error}", file=sys.stderr)
         return 1
-    print(render(findings), end="")
+    print("\n".join(lines))
     return 0
 
 

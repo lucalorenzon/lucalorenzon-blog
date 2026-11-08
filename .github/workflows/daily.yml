@@ -13,8 +13,15 @@
 # after 60 days without repository activity; re-enable the workflow in the
 # Actions tab if that happens. It can also be run by hand.
 #
-# A job that checks for newer versions of the pinned tools is expected to be
-# added here later.
+# Job check-pinned-versions: Dependabot does not watch the two things the build
+# pins by hand, Tailwind and the community list of AI robots. This job asks
+# GitHub whether either has something newer and opens an issue (label
+# version-check) for each finding, or updates the open one for the robots list;
+# scripts/version-check/version_check.py holds the rules. The job stays green
+# when it finds something, because the issue is the signal and a red run every
+# day until someone acts would only be noise. It fails, and so GitHub mails the
+# user, only when the check itself cannot run (no network, unexpected answers).
+# It is the only job that writes: issues, and nothing else.
 name: Daily
 
 on:
@@ -43,3 +50,25 @@ jobs:
 
       - name: Get Tailwind, from the cache or downloaded
         uses: ./.github/actions/get-tailwind
+
+  check-pinned-versions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Run the unit tests of the check and of the robots list
+        run: |
+          python3 -m unittest discover -s scripts/robots-list -p 'test_*.py'
+          python3 -m unittest discover -s scripts/version-check -p 'test_*.py'
+
+      - name: Open or update an issue for each newer version
+        run: python3 scripts/version-check/version_check.py --apply
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

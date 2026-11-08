@@ -68,12 +68,21 @@ Two things the build pins by hand are not watched by Dependabot: Tailwind and
 this robots list. `scripts/version-check/version_check.py` asks GitHub
 whether either has something newer (a Tailwind release; a robots list whose
 latest commit would change which robots are blocked) and prints what it
-found, or "Nothing newer". It writes nothing. The token is optional, but
-without it GitHub allows only 60 requests an hour:
+found. By hand it is read-only: it reads the existing issues and says, for
+each finding, whether it would open an issue, update the open one or do
+nothing because an issue already covers it, or prints "Nothing newer". The
+token is optional for that, but without it GitHub allows only 60 requests an
+hour:
 
 ```
 GITHUB_TOKEN=$(gh auth token) python3 scripts/version-check/version_check.py
 ```
+
+With `--apply` (which needs a token that may write issues) it does what it
+said: it opens issues labelled `version-check`, or updates the open one for the
+robots list. That is what the daily workflow runs. Closing an issue without
+updating means that version is skipped. The run stays green when it finds
+something; it fails only when the check itself cannot run.
 
 Its tests:
 `python3 -m unittest discover -s scripts/version-check -p 'test_*.py'`.
