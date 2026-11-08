@@ -39,7 +39,7 @@ export const VIEWPORTS = [
 // the column. So a test of what is inside the column needs one width per
 // column size: 659 and 767 give the same result, and so do the seven widths
 // from 768 to 1920. The widths between 412 and 600 are sampled at three
-// points only, as before. Why: docs/wip/check-at-every-width-only-what-depends-on-it.md
+// points only, as before. Why: docs/done/2026-11-08_check-at-every-width-only-what-depends-on-it.md
 const COLUMN_WIDTH_NAMES = ['iPhone SE', 'iPhone 15', 'Pixel 7', 'boundary 767', 'iPad Mini'];
 export const COLUMN_WIDTHS = VIEWPORTS.filter(({ name }) => COLUMN_WIDTH_NAMES.includes(name));
 

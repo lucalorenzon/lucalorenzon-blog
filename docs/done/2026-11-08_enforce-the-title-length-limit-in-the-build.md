@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-08, by the user, while deciding which widths the
   browser tests need, in the card
-  [check at every width only what depends on the width](../wip/check-at-every-width-only-what-depends-on-it.md),
+  [check at every width only what depends on the width](../done/2026-11-08_check-at-every-width-only-what-depends-on-it.md),
   before its header check moves to the invented titles.
 - **Status:** done, 2026-11-08.
 

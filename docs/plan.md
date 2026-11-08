@@ -17,10 +17,10 @@ live since 2026-10-26
 - Make the browser tests check behaviour, not articles, so the suite
   stops growing by about 200 tests per article
   ([ADR-004](adr/ADR-004-test-components-once-and-pages-with-a-net.md)),
-  in three slices, the first done
-  ([card](done/2026-11-08_run-colour-free-tests-in-one-theme.md),
-  913 tests became 514):
-  [check at every width only what depends on the width](wip/check-at-every-width-only-what-depends-on-it.md),
+  in three slices, the first two done
+  ([themes](done/2026-11-08_run-colour-free-tests-in-one-theme.md),
+  [widths](done/2026-11-08_check-at-every-width-only-what-depends-on-it.md):
+  913 tests became 315; axe and the SEO check now bound the time):
   [check every page with tests written once](backlog/check-every-page-with-tests-written-once.md);
   then the components' test pages, carded after these.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
