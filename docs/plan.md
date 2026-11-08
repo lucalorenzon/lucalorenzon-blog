@@ -32,6 +32,9 @@ live since 2026-10-26
 
 ## Next
 
+- [Start the SEO check first](backlog/start-the-seo-check-first.md),
+  so its 30 seconds overlap the other browser tests instead of running
+  last and alone.
 - [Build a design system](backlog/build-a-design-system.md), with
   Holt or Storybook, so each component is tested once instead of on
   every page; it takes over the components' test pages of ADR-004.
@@ -105,6 +108,8 @@ live since 2026-10-26
   once copying the curriculum and the articles by hand stops scaling.
 - [Refresh the stylesheet after a new version](backlog/refresh-stylesheet-after-a-new-version.md),
   so a returning visitor does not keep the old look.
+- [Use a structured configuration file](backlog/use-a-structured-configuration-file.md)
+  shared by the build and the tests, once a second setting needs it.
 - [Check the workflows with actionlint](backlog/lint-workflows-with-actionlint.md),
   in the pipeline rather than on one machine.
 - [Refer to cards by name in frozen documents](backlog/refer-to-cards-by-name-in-frozen-documents.md),
