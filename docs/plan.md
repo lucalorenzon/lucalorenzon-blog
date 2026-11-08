@@ -17,8 +17,9 @@ live since 2026-10-26
 - Make the browser tests check behaviour, not articles, so the suite
   stops growing by about 200 tests per article
   ([ADR-004](adr/ADR-004-test-components-once-and-pages-with-a-net.md)),
-  in three slices:
-  [run in one theme the tests that do not check colours](wip/run-colour-free-tests-in-one-theme.md),
+  in three slices, the first done
+  ([card](done/2026-11-08_run-colour-free-tests-in-one-theme.md),
+  913 tests became 514):
   [check at every width only what depends on the width](backlog/check-at-every-width-only-what-depends-on-it.md),
   [check every page with tests written once](backlog/check-every-page-with-tests-written-once.md);
   then the components' test pages, carded after these.

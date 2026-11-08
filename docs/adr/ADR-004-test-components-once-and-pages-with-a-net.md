@@ -4,7 +4,7 @@
 - **Status:** Accepted
 - **Cards:** split from "make the browser tests check behaviour, not
   articles" (opened 2026-11-05, split on 2026-11-08) into
-  [run in one theme the tests that do not check colours](../wip/run-colour-free-tests-in-one-theme.md),
+  [run in one theme the tests that do not check colours](../done/2026-11-08_run-colour-free-tests-in-one-theme.md),
   [check at every width only what depends on the width](../backlog/check-at-every-width-only-what-depends-on-it.md)
   and
   [check every page with tests written once](../backlog/check-every-page-with-tests-written-once.md);

@@ -28,7 +28,7 @@ export default defineConfig({
   // own project: Lighthouse opens its own Chromium with a control port anyway,
   // so it does not use the browser Playwright prepares for each project.
   // Why: docs/adr/ADR-004-test-components-once-and-pages-with-a-net.md and the
-  // card docs/wip/run-colour-free-tests-in-one-theme.md.
+  // card docs/done/2026-11-08_run-colour-free-tests-in-one-theme.md.
   projects: [
     {
       name: 'chromium-dark',
