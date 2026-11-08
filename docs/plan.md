@@ -14,6 +14,8 @@ live since 2026-10-26
 
 ## Now
 
+- [Make the browser tests check behaviour, not articles](wip/make-browser-tests-check-behaviour.md),
+  so a new article does not mean editing the tests' lists of pages.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
   article pages and the sitemap. The articles now read their title,
@@ -74,8 +76,6 @@ live since 2026-10-26
   the part of the screen reader check that depends on the site and the
   accessibility tree does not cover.
 - [Run a full round of `residuality`](backlog/run-full-residuality-round.md).
-- [Make the browser tests check behaviour, not articles](backlog/make-browser-tests-check-behaviour.md),
-  so a new article does not mean editing the tests' lists of pages.
 
 ## Later
 

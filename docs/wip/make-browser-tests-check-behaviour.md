@@ -4,7 +4,7 @@
   the rule "a table cell with no space never wraps", in the card
   [let the Markdown ask for components for wide code and tables](../done/2026-11-05_annotate-markdown-for-wide-content.md);
   in Next.
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-08.
 
 ## Why
 

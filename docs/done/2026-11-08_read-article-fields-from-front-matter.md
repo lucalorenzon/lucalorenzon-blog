@@ -72,7 +72,7 @@ of only as the missing `description`.
   published: an article would disappear from the site with a line in a
   log as its only trace. The browser tests would probably notice today,
   since they list the articles by name; the card on
-  [checking behaviour, not articles](../backlog/make-browser-tests-check-behaviour.md)
+  [checking behaviour, not articles](../wip/make-browser-tests-check-behaviour.md)
   means to remove those lists.
 - **What changes for the description's length:** before, a unit test on
   each constant failed on the author's machine too. Now an article with
