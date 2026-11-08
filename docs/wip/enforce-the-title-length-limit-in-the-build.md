@@ -71,3 +71,13 @@ field ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
    stopping the build in the pipeline (`settle`). **Rejected:** checking
    only when the page is built, which would stop at the first error,
    locally too, unlike every other problem of an article.
+4. **The figure lives in one configuration file** (user, on the agent's
+   proposal): `config/heading-max-graphemes.txt`, holding only the
+   number. The build includes it when it is compiled; the header's
+   browser test reads it from the disk, which works on the live check
+   too, since the tests always run from a copy of the repository; the
+   test counts its invented titles in graphemes (`Intl.Segmenter`), as
+   the build does. **Rejected:** the build writing the limit into the
+   page for the test to read (markup that serves only the tests); two
+   copies with comments pointing at each other (nothing would notice
+   them drifting apart).
