@@ -43,3 +43,14 @@ field ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
   ([card](read-page-fields-from-markdown.md)).
 - **Where the figure lives,** so the header test and the build share
   one value instead of two copies of 50.
+
+## Decided so far
+
+1. **Graphemes are counted** (user), what a reader sees as one
+   character, not Unicode scalar values (the agent's proposal: no new
+   dependency, and stricter only on the safe side). The crate is
+   [unicode-segmentation](https://github.com/unicode-rs/unicode-segmentation)
+   1.13.3, MIT or Apache-2.0, from the unicode-rs organisation: already
+   compiled in the build as a dependency of Leptos (through
+   `convert_case`) and the latest version published, so declaring it
+   adds no new code.
