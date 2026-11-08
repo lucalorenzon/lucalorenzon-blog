@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { test, expect, type Page } from '@playwright/test';
-import { retryWhenLive, VIEWPORTS } from './support';
+import { READER_SPACING, retryWhenLive, VIEWPORTS } from './support';
 
 // Enforces the agreed responsive header layout. It checks what the reader
 // sees (positions, sizes, visibility), never how the page is built.
@@ -10,6 +10,17 @@ import { retryWhenLive, VIEWPORTS } from './support';
 //   < 768    text logo 32px; title below the header line, 24px, centred
 //   768-1279 ASCII logo 16px; title below the header line, 32px, centred
 //   >= 1280  ASCII logo 16px; title in the header row, 32px, at most 2 lines
+//
+// A second test per viewport applies the reader's text spacing (WCAG 1.4.12,
+// READER_SPACING in support.ts) and checks that the header's logo, title and
+// menu slot do not intersect, that nothing in the header cuts off its content
+// and that the page does not scroll sideways. It uses the home page title and
+// the two invented titles below instead of the real pages' titles: the build
+// limits a heading to a number of graphemes (card
+// docs/done/2026-11-08_enforce-the-title-length-limit-in-the-build.md), so the
+// longest title any page can have is covered by the invented ones, at every width.
+// The rest of the 1.4.12 checks live in readability.spec.ts, at the widths of
+// the text column.
 
 const PAD = 8;
 const MENU_WIDTH = 56;
@@ -274,5 +285,80 @@ for (const { name, width, height } of VIEWPORTS) {
         await testInfo.attach(`page-${width}x${height}.png`, { body: screenshot, contentType: 'image/png' });
       }
     }
+  });
+}
+
+// ---- Header with the reader's text spacing (WCAG 1.4.12) ------------------
+
+// After the reader's spacing is applied: what is wrong in the header, as messages.
+async function headerSpacingProblems(page: Page, title: string): Promise<string[]> {
+  const where = `[${page.viewportSize()!.width}px, "${title}"]`;
+  const found = await page.evaluate(() => {
+    const out: string[] = [];
+    const label = (el: Element) => `<${el.tagName.toLowerCase()}> "${el.textContent?.slice(0, 30)}"`;
+    const header = document.querySelector('header:not(main header)')!;
+
+    if (document.documentElement.scrollWidth > window.innerWidth) {
+      out.push(`horizontal scroll: scrollWidth ${document.documentElement.scrollWidth} > innerWidth ${window.innerWidth}`);
+    }
+
+    // The boxes of the text itself, not of the elements around it.
+    const textBox = (el: Element) => {
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      return range.getBoundingClientRect();
+    };
+    const parts = Array.from(header.children)
+      .filter((el) => getComputedStyle(el).display !== 'none')
+      .map((el) => ({
+        name: el.getAttribute('data-testid') ?? el.tagName.toLowerCase() + (el.getAttribute('role') ? '[logo]' : ''),
+        box: el.textContent?.trim() ? textBox(el) : el.getBoundingClientRect(),
+      }))
+      .filter((p) => p.box.width > 0 && p.box.height > 0);
+    for (let i = 0; i < parts.length; i++) {
+      for (let j = i + 1; j < parts.length; j++) {
+        const a = parts[i].box;
+        const b = parts[j].box;
+        if (a.left < b.right - 0.5 && b.left < a.right - 0.5 && a.top < b.bottom - 0.5 && b.top < a.bottom - 0.5) {
+          out.push(`header: ${parts[i].name} intersects ${parts[j].name}`);
+        }
+      }
+    }
+
+    // Nothing in the header cut off by its own box.
+    for (const el of [header, ...Array.from(header.querySelectorAll('*'))]) {
+      const rect = el.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) continue;
+      const style = getComputedStyle(el);
+      const clipsX = style.overflowX !== 'visible';
+      const clipsY = style.overflowY !== 'visible';
+      if ((clipsX && el.scrollWidth > el.clientWidth + 1) || (clipsY && el.scrollHeight > el.clientHeight + 1)) {
+        out.push(
+          `${label(el)} cuts off its content (scroll ${el.scrollWidth}x${el.scrollHeight}, box ${el.clientWidth}x${el.clientHeight})`,
+        );
+      }
+    }
+    return out;
+  });
+  return found.map((message) => `${where} ${message}`);
+}
+
+for (const { name, width, height } of VIEWPORTS) {
+  test(`header with the reader's text spacing at ${width}x${height} (${name})`, async ({ page }) => {
+    for (const title of LONG_TITLES) expect(graphemes(title)).toBe(HEADING_MAX_GRAPHEMES);
+    await page.setViewportSize({ width, height });
+
+    await retryWhenLive(async () => {
+      await page.goto('./');
+      await page.addStyleTag({ content: READER_SPACING });
+      await page.evaluate(() => document.fonts.ready);
+
+      const found: string[] = [];
+      for (const title of [HOME_TITLE, ...LONG_TITLES]) {
+        await setTitle(page, title);
+        found.push(...(await headerSpacingProblems(page, title)));
+      }
+      expect(found.length, `header problems with the reader's text spacing:\n${found.join('\n')}`).toBe(0);
+    });
   });
 }

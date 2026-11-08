@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { COLUMN_WIDTHS, retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
+import { COLUMN_WIDTHS, READER_SPACING, retryWhenLive, TEXT_PAGES } from './support';
 
 // Enforces the visual presentation of the text. It checks what the reader
 // sees (rendered sizes, positions, lines), never how the page is built.
@@ -15,15 +15,17 @@ import { COLUMN_WIDTHS, retryWhenLive, TEXT_PAGES, VIEWPORTS } from './support';
 //      from the width: the font is proportional)
 //   4. no text in the content is justified
 //
-// WCAG 1.4.12 (text spacing, level AA), on every viewport (it also checks the
-// header, which depends on the screen width): when the reader
+// WCAG 1.4.12 (text spacing, level AA), at the same widths (rule 7, the header,
+// depends on the screen width and the title, so it is checked in
+// header-layout.spec.ts at every width): when the reader
 // raises line height to 1.5, letter spacing to 0.12em, word spacing to
 // 0.16em and the space after paragraphs to 2em (as a bookmarklet or an
 // extension would do), nothing is lost:
 //   5. no horizontal scroll
 //   6. consecutive blocks of the content do not overlap
-//   7. the header's logo, title and menu slot do not intersect
-//   8. no element cuts off its content
+//   7. (the header's logo, title and menu slot do not intersect, and nothing in
+//      the header is cut off: checked in header-layout.spec.ts)
+//   8. no element outside the header cuts off its content
 //   9. at the end of the page the content ends at least 32px above the
 //      sticky footer
 
@@ -31,16 +33,6 @@ const MIN_LINE_HEIGHT_RATIO = 1.5;
 const MIN_PARAGRAPH_GAP_RATIO = 1.5; // of the line height
 const MAX_CHARACTERS = 80;
 const MIN_GAP_ABOVE_FOOTER = 32;
-
-// What a reader's own style sheet may set, from the text of the criterion.
-const READER_SPACING = `
-  * {
-    line-height: 1.5 !important;
-    letter-spacing: 0.12em !important;
-    word-spacing: 0.16em !important;
-  }
-  p { margin-bottom: 2em !important; }
-`;
 
 type LongestLine = { characters: number; text: string };
 
@@ -170,32 +162,11 @@ async function spacingProblems(page: Page): Promise<string[]> {
         if (a.bottom > b.top + 0.5) out.push(`${label(blocks[i])} overlaps ${label(blocks[i + 1])}`);
       }
 
-      // Header: the boxes of the text itself, not of the elements around it.
-      const header = document.querySelector('header')!;
-      const textBox = (el: Element) => {
-        const range = document.createRange();
-        range.selectNodeContents(el);
-        return range.getBoundingClientRect();
-      };
-      const parts = Array.from(header.children)
-        .filter((el) => getComputedStyle(el).display !== 'none')
-        .map((el) => ({
-          name: el.getAttribute('data-testid') ?? el.tagName.toLowerCase() + (el.getAttribute('role') ? '[logo]' : ''),
-          box: el.textContent?.trim() ? textBox(el) : el.getBoundingClientRect(),
-        }))
-        .filter((p) => p.box.width > 0 && p.box.height > 0);
-      for (let i = 0; i < parts.length; i++) {
-        for (let j = i + 1; j < parts.length; j++) {
-          const a = parts[i].box;
-          const b = parts[j].box;
-          if (a.left < b.right - 0.5 && b.left < a.right - 0.5 && a.top < b.bottom - 0.5 && b.top < a.bottom - 0.5) {
-            out.push(`header: ${parts[i].name} intersects ${parts[j].name}`);
-          }
-        }
-      }
-
-      // Nothing cut off by its own box.
+      // Nothing cut off by its own box. The header is left to header-layout.spec.ts,
+      // which checks it at every width with the longest titles the build accepts.
+      const header = document.querySelector('header:not(main header)')!;
       for (const el of Array.from(document.querySelectorAll('body, body *'))) {
+        if (header.contains(el)) continue;
         const rect = el.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) continue;
         const style = getComputedStyle(el);
@@ -276,12 +247,8 @@ for (const { name, width, height } of COLUMN_WIDTHS) {
 }
 }
 
-// Stays at all the widths for now: it also checks the header, which depends on
-// the screen width. It moves to COLUMN_WIDTHS when the header part moves to
-// header-layout.spec.ts, after the 50-character title limit is enforced in the
-// build (card docs/done/2026-11-08_enforce-the-title-length-limit-in-the-build.md).
 for (const { name: pageName, address } of TEXT_PAGES) {
-for (const { name, width, height } of VIEWPORTS) {
+for (const { name, width, height } of COLUMN_WIDTHS) {
   test(`text spacing (WCAG 1.4.12) of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
 

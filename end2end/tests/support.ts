@@ -89,3 +89,13 @@ export const ADDRESSES = pagesOf(SITE).map((path) => './' + relative(SITE, path)
 export const TABLE_ADDRESSES = ADDRESSES.filter((address) =>
   readFileSync(resolve(SITE, address), 'utf8').includes('table-with-viewer'),
 );
+
+// What a reader's own style sheet may set, from the text of the criterion.
+export const READER_SPACING = `
+  * {
+    line-height: 1.5 !important;
+    letter-spacing: 0.12em !important;
+    word-spacing: 0.16em !important;
+  }
+  p { margin-bottom: 2em !important; }
+`;
