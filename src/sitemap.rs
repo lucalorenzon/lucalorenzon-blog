@@ -87,16 +87,25 @@ pub fn pages(site: &SiteAddress, articles: &[Article]) -> Vec<Page> {
 #[derive(Debug, Default)]
 pub struct ContentDates(BTreeMap<String, Date>);
 
+/// A line of the dates file that is not `<path>`, a tab, `YYYY-MM-DD`.
+#[derive(Debug, PartialEq, Eq, thiserror::Error)]
+#[error(
+    "malformed line {line} in the content dates file: `{text}` (expected `<path>`, a tab, `YYYY-MM-DD`)"
+)]
+pub struct MalformedDateLine {
+    /// The line's number, from 1.
+    pub line: usize,
+    pub text: String,
+}
+
 impl ContentDates {
     /// Reads the dates file: one `<path>\t<YYYY-MM-DD>` line per file.
-    pub fn parse(text: &str) -> Result<Self, String> {
+    pub fn parse(text: &str) -> Result<Self, MalformedDateLine> {
         let mut dates = BTreeMap::new();
         for (index, line) in text.lines().enumerate() {
-            let malformed = || {
-                format!(
-                    "malformed line {} in the content dates file: `{line}` (expected `<path>`, a tab, `YYYY-MM-DD`)",
-                    index + 1
-                )
+            let malformed = || MalformedDateLine {
+                line: index + 1,
+                text: line.to_owned(),
             };
             let (path, date) = line.split_once('\t').ok_or_else(malformed)?;
             let date = date.parse::<Date>().map_err(|_| malformed())?;
@@ -113,35 +122,38 @@ impl ContentDates {
     }
 }
 
-/// The sitemap, and the warnings to show the user.
-pub struct Sitemap {
-    pub xml: String,
-    pub warnings: Vec<String>,
+/// An indexed page written from a Markdown file that has no date in the dates file.
+#[derive(Debug, PartialEq, Eq)]
+pub struct MissingDate {
+    /// The page's file, as in [`Page::file`].
+    pub file: &'static str,
+    /// The Markdown file the page is written from, as in [`Page::source`].
+    pub source: &'static str,
 }
 
-/// Writes the sitemap of the indexed pages.
-///
-/// `dates_file` is the content of the dates file, or why it could not be read. Missing dates are
-/// an error in the pipeline (`is_ci`) and a warning, with the entry left without `<lastmod>`,
-/// anywhere else. A malformed file is an error in both cases.
-pub fn build_sitemap(
-    pages: &[Page],
-    site: &SiteAddress,
-    dates_file: Result<String, String>,
-    is_ci: bool,
-) -> Result<Sitemap, String> {
-    let mut warnings = Vec::new();
-    let dates = match dates_file {
-        Ok(text) => Some(ContentDates::parse(&text)?),
-        Err(problem) if is_ci => return Err(format!("no content dates: {problem}")),
-        Err(problem) => {
-            warnings.push(format!(
-                "no content dates ({problem}): the sitemap has no <lastmod>"
-            ));
-            None
-        }
-    };
+fn list_missing(missing: &[MissingDate]) -> String {
+    missing
+        .iter()
+        .map(|page| format!("{} (from `{}`)", page.file, page.source))
+        .collect::<Vec<_>>()
+        .join(", ")
+}
 
+/// The indexed pages that have a source file but no date in the dates file.
+#[derive(Debug, PartialEq, Eq, thiserror::Error)]
+#[error("no date in the content dates file for: {}", list_missing(.0))]
+pub struct MissingDates(pub Vec<MissingDate>);
+
+/// The sitemap, and the pages it could not date.
+pub struct Sitemap {
+    pub xml: String,
+    /// `None` when every page with a source has a date, or when there are no dates at all.
+    pub missing: Option<MissingDates>,
+}
+
+/// Writes the sitemap of the indexed pages. A page without a date is listed without
+/// `<lastmod>` and reported in `missing`; what to do about it is the caller's.
+pub fn build_sitemap(pages: &[Page], site: &SiteAddress, dates: Option<&ContentDates>) -> Sitemap {
     let mut listed: Vec<&Page> = pages.iter().filter(|page| page.indexed).collect();
     listed.sort_by_key(|page| (!page.address.is_empty(), page.address));
 
@@ -150,11 +162,14 @@ pub fn build_sitemap(
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n",
     );
     for page in listed {
-        let lastmod = match (page.source, &dates) {
+        let lastmod = match (page.source, dates) {
             (Some(source), Some(dates)) => {
                 let date = dates.get(source);
                 if date.is_none() {
-                    missing.push(format!("{} (from `{source}`)", page.file));
+                    missing.push(MissingDate {
+                        file: page.file,
+                        source,
+                    });
                 }
                 date
             }
@@ -171,17 +186,10 @@ pub fn build_sitemap(
     }
     xml.push_str("</urlset>\n");
 
-    if !missing.is_empty() {
-        let message = format!(
-            "no date in the content dates file for: {}",
-            missing.join(", ")
-        );
-        if is_ci {
-            return Err(message);
-        }
-        warnings.push(format!("{message}; written without <lastmod>"));
+    Sitemap {
+        xml,
+        missing: (!missing.is_empty()).then_some(MissingDates(missing)),
     }
-    Ok(Sitemap { xml, warnings })
 }
 
 fn escape_xml(text: &str) -> String {
@@ -221,9 +229,8 @@ mod tests {
 
     fn sitemap_of(site: &SiteAddress) -> String {
         let pages = pages(site, &real_articles());
-        build_sitemap(&pages, site, Ok(full_dates(&pages)), true)
-            .unwrap()
-            .xml
+        let dates = ContentDates::parse(&full_dates(&pages)).unwrap();
+        build_sitemap(&pages, site, Some(&dates)).xml
     }
 
     /// A structural check: tags open and close in order, and the text has no raw `&`.
@@ -428,61 +435,107 @@ mod tests {
     }
 
     #[test]
-    fn tolerant_locally_when_the_file_is_missing() {
+    fn without_dates_no_entry_has_lastmod_and_nothing_is_reported() {
         let site = site();
         let pages = pages(&site, &real_articles());
-        let sitemap = build_sitemap(&pages, &site, Err("not set".to_owned()), false).unwrap();
+        let sitemap = build_sitemap(&pages, &site, None);
         assert!(!sitemap.xml.contains("lastmod"));
-        assert_eq!(sitemap.warnings.len(), 1);
-        assert!(sitemap.warnings[0].contains("not set"));
+        assert_eq!(sitemap.missing, None);
     }
 
     #[test]
-    fn strict_in_the_pipeline_when_the_file_is_missing() {
+    fn with_an_empty_dates_file_every_page_with_a_source_is_missing() {
         let site = site();
         let pages = pages(&site, &real_articles());
-        let error = build_sitemap(&pages, &site, Err("not set".to_owned()), true)
-            .err()
+        let dates = ContentDates::parse("").unwrap();
+        let sitemap = build_sitemap(&pages, &site, Some(&dates));
+        assert!(!sitemap.xml.contains("lastmod"));
+        let missing = sitemap.missing.unwrap();
+        assert!(missing.0.contains(&MissingDate {
+            file: "about.html",
+            source: "content/about.md",
+        }));
+        let message = missing.to_string();
+        assert!(message.starts_with("no date in the content dates file for: "));
+        assert!(message.contains("about.html (from `content/about.md`)"));
+    }
+
+    #[test]
+    fn a_page_without_a_date_is_reported_and_listed_without_lastmod() {
+        let site = site();
+        let pages = pages(&site, &real_articles());
+        let dates = ContentDates::parse("content/about.md\t2026-11-06\n").unwrap();
+        let sitemap = build_sitemap(&pages, &site, Some(&dates));
+        let message = sitemap.missing.unwrap().to_string();
+        assert!(message.contains("curriculum.html (from `content/curriculum.md`)"));
+        assert!(!message.contains("about.html"));
+        let curriculum = sitemap
+            .xml
+            .lines()
+            .find(|l| l.contains("/curriculum.html"))
             .unwrap();
-        assert!(error.contains("not set"));
+        assert!(!curriculum.contains("lastmod"));
+        let about = sitemap
+            .xml
+            .lines()
+            .find(|l| l.contains("/about.html"))
+            .unwrap();
+        assert!(about.contains("<lastmod>2026-11-06</lastmod>"));
     }
 
     #[test]
-    fn tolerant_locally_when_a_page_has_no_date() {
+    fn nothing_is_reported_when_every_page_has_a_date() {
         let site = site();
         let pages = pages(&site, &real_articles());
-        let sitemap = build_sitemap(&pages, &site, Ok(String::new()), false).unwrap();
-        assert!(!sitemap.xml.contains("lastmod"));
-        assert!(sitemap.warnings[0].contains("about.html"));
-        assert!(sitemap.warnings[0].contains("content/about.md"));
+        let dates = ContentDates::parse(&full_dates(&pages)).unwrap();
+        assert_eq!(build_sitemap(&pages, &site, Some(&dates)).missing, None);
     }
 
     #[test]
-    fn strict_in_the_pipeline_when_a_page_has_no_date() {
-        let site = site();
-        let pages = pages(&site, &real_articles());
-        let dates = "content/about.md\t2026-11-06\n".to_owned();
-        let error = build_sitemap(&pages, &site, Ok(dates), true).err().unwrap();
-        assert!(error.contains("curriculum.html"));
-        assert!(error.contains("content/curriculum.md"));
-        assert!(!error.contains("about.html"));
+    fn missing_dates_read_as_a_list_joined_with_commas() {
+        let missing = MissingDates(vec![
+            MissingDate {
+                file: "a.html",
+                source: "content/a.md",
+            },
+            MissingDate {
+                file: "b.html",
+                source: "content/b.md",
+            },
+        ]);
+        assert_eq!(
+            missing.to_string(),
+            "no date in the content dates file for: a.html (from `content/a.md`), b.html (from `content/b.md`)"
+        );
     }
 
     #[test]
-    fn a_malformed_line_is_an_error_everywhere() {
-        let site = site();
-        let pages = pages(&site, &real_articles());
-        for is_ci in [true, false] {
-            for text in [
+    fn a_malformed_line_is_reported_with_its_number() {
+        for (text, line, bad) in [
+            (
                 "content/about.md 2026-11-06\n",
+                1,
+                "content/about.md 2026-11-06",
+            ),
+            (
                 "content/about.md\t2026-13-06\n",
-                "\n",
-            ] {
-                let error = build_sitemap(&pages, &site, Ok(text.to_owned()), is_ci)
-                    .err()
-                    .unwrap();
-                assert!(error.contains("malformed line 1"), "{error}");
-            }
+                1,
+                "content/about.md\t2026-13-06",
+            ),
+            ("\n", 1, ""),
+            ("a.md\t2026-11-06\nb.md\tnope\n", 2, "b.md\tnope"),
+        ] {
+            let error = ContentDates::parse(text).unwrap_err();
+            assert_eq!(
+                error,
+                MalformedDateLine {
+                    line,
+                    text: bad.to_owned()
+                }
+            );
+            assert!(error.to_string().starts_with(&format!(
+                "malformed line {line} in the content dates file: `{bad}` (expected"
+            )));
         }
     }
 }

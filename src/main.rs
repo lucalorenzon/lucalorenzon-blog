@@ -44,6 +44,10 @@ fn read_input(variable: &'static str) -> Result<String, InputError> {
 #[error("no blocked robots list: {0}")]
 struct MissingBlockedRobots(InputError);
 
+#[derive(Debug, thiserror::Error)]
+#[error("no content dates: {0}")]
+struct MissingContentDates(InputError);
+
 /// What the build does with a problem it can live with. In the pipeline (`is_ci`) what is
 /// built is what gets published, so the problem stops the build; anywhere else the build goes
 /// on, and the warning says the problem and what the build does instead.
@@ -88,9 +92,21 @@ fn build() -> Result<(), Box<dyn Error>> {
         }
         fs::write(path, &page.html)?;
     }
-    let dates_file = read_input("CONTENT_DATES_FILE").map_err(|error| error.to_string());
-    let sitemap = sitemap::build_sitemap(&pages, &address, dates_file, is_ci)?;
-    for warning in &sitemap.warnings {
+    let dates = match read_input("CONTENT_DATES_FILE") {
+        Ok(text) => Some(sitemap::ContentDates::parse(&text)?),
+        Err(problem) => {
+            let warning = tolerate(
+                MissingContentDates(problem),
+                is_ci,
+                "the sitemap has no <lastmod>",
+            )?;
+            eprintln!("warning: {warning}");
+            None
+        }
+    };
+    let sitemap = sitemap::build_sitemap(&pages, &address, dates.as_ref());
+    if let Some(missing) = sitemap.missing {
+        let warning = tolerate(missing, is_ci, "written without <lastmod>")?;
         eprintln!("warning: {warning}");
     }
     fs::write(out_dir.join(sitemap::SITEMAP_FILE), sitemap.xml)?;
@@ -182,6 +198,17 @@ mod tests {
         assert_eq!(
             error.to_string(),
             "no blocked robots list: BLOCKED_ROBOTS_FILE is not set"
+        );
+    }
+
+    #[test]
+    fn the_missing_dates_error_reads_as_before() {
+        let error = MissingContentDates(InputError::NotSet {
+            variable: "CONTENT_DATES_FILE",
+        });
+        assert_eq!(
+            error.to_string(),
+            "no content dates: CONTENT_DATES_FILE is not set"
         );
     }
 }

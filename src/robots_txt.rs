@@ -146,9 +146,8 @@ mod tests {
             .filter_map(|p| p.source)
             .map(|s| format!("{s}\t2026-11-06\n"))
             .collect();
-        let xml = sitemap::build_sitemap(&pages, &site, Ok(dates), true)
-            .unwrap()
-            .xml;
+        let dates = sitemap::ContentDates::parse(&dates).unwrap();
+        let xml = sitemap::build_sitemap(&pages, &site, Some(&dates)).xml;
         assert!(xml.contains("<loc>https://example.com/blog/about.html</loc>"));
         assert!(sitemap::sitemap_address(&site).starts_with("https://example.com/blog/"));
         assert!(sitemap::sitemap_address(&site).ends_with(sitemap::SITEMAP_FILE));
