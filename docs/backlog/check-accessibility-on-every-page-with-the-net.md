@@ -4,7 +4,7 @@
   "check every page with tests written once", third slice of
   [ADR-004](../adr/ADR-004-test-components-once-and-pages-with-a-net.md);
   second of its three parts, after
-  [take the net's pages from the sitemap](../wip/take-the-nets-pages-from-the-sitemap.md).
+  [take the net's pages from the sitemap](../done/2026-11-09_take-the-nets-pages-from-the-sitemap.md).
 - **Status:** noticed, not started.
 
 ## Why

@@ -8,7 +8,7 @@
   [check at every width only what depends on the width](../done/2026-11-08_check-at-every-width-only-what-depends-on-it.md)
   and "check every page with tests written once", itself split on
   2026-11-08 into
-  [take the net's pages from the sitemap](../wip/take-the-nets-pages-from-the-sitemap.md),
+  [take the net's pages from the sitemap](../done/2026-11-09_take-the-nets-pages-from-the-sitemap.md),
   [check accessibility on every page with the net](../backlog/check-accessibility-on-every-page-with-the-net.md)
   and
   [check the layout on every page with the net](../backlog/check-the-layout-on-every-page-with-the-net.md);

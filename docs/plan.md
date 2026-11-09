@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-08
+Last updated: 2026-11-09
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -22,8 +22,9 @@ live since 2026-10-26
   [widths](done/2026-11-08_check-at-every-width-only-what-depends-on-it.md):
   913 tests became 315; axe and the SEO check now bound the time).
   The third, checking every page with tests written once, is split in
-  three: [take the net's pages from the sitemap](wip/take-the-nets-pages-from-the-sitemap.md)
-  (in progress), then
+  three: [take the net's pages from the sitemap](done/2026-11-09_take-the-nets-pages-from-the-sitemap.md)
+  (done: the canonical link and Open Graph tests run on the build's
+  sitemap), then
   [accessibility](backlog/check-accessibility-on-every-page-with-the-net.md)
   and [layout](backlog/check-the-layout-on-every-page-with-the-net.md)
   on every page; then the components' test pages, carded after these.
