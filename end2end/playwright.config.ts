@@ -27,9 +27,18 @@ export default defineConfig({
   // theme starts to change size or position. The SEO check runs once, in its
   // own project: Lighthouse opens its own Chromium with a control port anyway,
   // so it does not use the browser Playwright prepares for each project.
-  // Why: docs/adr/ADR-004-test-components-once-and-pages-with-a-net.md and the
-  // card docs/done/2026-11-08_run-colour-free-tests-in-one-theme.md.
+  // It is listed first: Playwright hands the tests out to the workers in the
+  // order of the projects, and this single test of about 30 seconds, listed
+  // last, would start last and run alone while the other workers sit idle.
+  // Why: docs/adr/ADR-004-test-components-once-and-pages-with-a-net.md, the
+  // card docs/done/2026-11-08_run-colour-free-tests-in-one-theme.md and the
+  // card docs/wip/start-the-seo-check-first.md.
   projects: [
+    {
+      name: 'lighthouse',
+      testMatch: 'seo.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
     {
       name: 'chromium-dark',
       testIgnore: 'seo.spec.ts',
@@ -40,11 +49,6 @@ export default defineConfig({
       name: 'chromium-light',
       testIgnore: 'seo.spec.ts',
       use: { ...devices['Desktop Chrome'], colorScheme: 'light' },
-    },
-    {
-      name: 'lighthouse',
-      testMatch: 'seo.spec.ts',
-      use: { ...devices['Desktop Chrome'] },
     },
   ],
   webServer: live
