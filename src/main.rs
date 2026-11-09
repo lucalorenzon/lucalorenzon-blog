@@ -13,7 +13,11 @@ mod sitemap;
 mod table_widths;
 
 use site_address::SiteAddress;
-use std::{env, error::Error, fs, path::PathBuf, process::ExitCode};
+use std::{
+    env, fs,
+    path::{Path, PathBuf},
+    process::ExitCode,
+};
 
 /// The site's full address when `SITE_ADDRESS` is not set (ADR-002).
 const DEFAULT_SITE_ADDRESS: &str = "https://www.lucalorenzon.com/";
@@ -62,19 +66,57 @@ fn warning(problem: &impl std::fmt::Display, instead: &str) -> String {
 
 /// The list of the articles left out, shown at the end of the build.
 fn skipped_summary(skipped: &article_page::ArticleProblems) -> String {
-    let lines: Vec<String> = skipped
-        .0
-        .iter()
-        .map(|error| format!("  - {error}"))
-        .collect();
     format!(
         "{} article(s) skipped, not in the site:\n{}",
         skipped.0.len(),
-        lines.join("\n")
+        skipped.list()
     )
 }
 
-fn build() -> Result<(), Box<dyn Error>> {
+/// Why the build stopped.
+#[derive(Debug, thiserror::Error)]
+enum BuildError {
+    #[error("SITE_ADDRESS: {0}")]
+    SiteAddress(#[from] site_address::InvalidSiteAddress),
+    #[error(transparent)]
+    Articles(#[from] article_page::ArticleProblems),
+    #[error(transparent)]
+    ContentDates(#[from] MissingContentDates),
+    #[error(transparent)]
+    MalformedDateLine(#[from] sitemap::MalformedDateLine),
+    #[error(transparent)]
+    MissingDates(#[from] sitemap::MissingDates),
+    #[error(transparent)]
+    BlockedRobots(#[from] MissingBlockedRobots),
+    #[error(transparent)]
+    MalformedRobotLine(#[from] robots_txt::MalformedRobotLine),
+    #[error("cannot create the folder `{}`: {reason}", path.display())]
+    CreateFolder {
+        path: PathBuf,
+        reason: std::io::Error,
+    },
+    #[error("cannot write `{}`: {reason}", path.display())]
+    Write {
+        path: PathBuf,
+        reason: std::io::Error,
+    },
+}
+
+fn create_folder(path: &Path) -> Result<(), BuildError> {
+    fs::create_dir_all(path).map_err(|reason| BuildError::CreateFolder {
+        path: path.to_path_buf(),
+        reason,
+    })
+}
+
+fn write_file(path: &Path, bytes: impl AsRef<[u8]>) -> Result<(), BuildError> {
+    fs::write(path, bytes).map_err(|reason| BuildError::Write {
+        path: path.to_path_buf(),
+        reason,
+    })
+}
+
+fn build() -> Result<(), BuildError> {
     let out_dir = env::args_os()
         .nth(1)
         .map_or_else(|| PathBuf::from("target/site"), PathBuf::from);
@@ -99,14 +141,14 @@ fn build() -> Result<(), Box<dyn Error>> {
         );
     }
 
-    fs::create_dir_all(&out_dir)?;
+    create_folder(&out_dir)?;
     let pages = sitemap::pages(&address, &loaded.articles);
     for page in &pages {
         let path = out_dir.join(page.file);
         if let Some(folder) = path.parent() {
-            fs::create_dir_all(folder)?;
+            create_folder(folder)?;
         }
-        fs::write(path, &page.html)?;
+        write_file(&path, &page.html)?;
     }
     let dates = match read_input("CONTENT_DATES_FILE") {
         Ok(text) => Some(sitemap::ContentDates::parse(&text)?),
@@ -127,7 +169,7 @@ fn build() -> Result<(), Box<dyn Error>> {
             warning(&missing, "written without <lastmod>")
         );
     }
-    fs::write(out_dir.join(sitemap::SITEMAP_FILE), sitemap.xml)?;
+    write_file(&out_dir.join(sitemap::SITEMAP_FILE), sitemap.xml)?;
     let blocked = match read_input("BLOCKED_ROBOTS_FILE") {
         Ok(text) => robots_txt::parse_blocked_robots(&text)?,
         Err(problem) => {
@@ -139,8 +181,8 @@ fn build() -> Result<(), Box<dyn Error>> {
             Vec::new()
         }
     };
-    fs::write(
-        out_dir.join(robots_txt::ROBOTS_FILE),
+    write_file(
+        &out_dir.join(robots_txt::ROBOTS_FILE),
         robots_txt::robots_txt(&address, &blocked),
     )?;
     write_code_classes()?;
@@ -157,17 +199,17 @@ const CODE_CLASSES_FILE: &str = "target/generated/code-classes.txt";
 
 /// Tailwind must not scan the generated HTML: words of the articles ("table", "block"...) would
 /// become unrelated utilities. It scans this exact list instead.
-fn write_code_classes() -> Result<(), Box<dyn Error>> {
+fn write_code_classes() -> Result<(), BuildError> {
     let path = PathBuf::from(CODE_CLASSES_FILE);
     if let Some(folder) = path.parent() {
-        fs::create_dir_all(folder)?;
+        create_folder(folder)?;
     }
     let mut list = markdown::take_generated_classes()
         .into_iter()
         .collect::<Vec<_>>()
         .join("\n");
     list.push('\n');
-    fs::write(path, list)?;
+    write_file(&path, list)?;
     Ok(())
 }
 
@@ -253,5 +295,46 @@ mod tests {
             error.to_string(),
             "no content dates: CONTENT_DATES_FILE is not set"
         );
+    }
+
+    #[test]
+    fn a_folder_error_names_the_folder() {
+        let error = BuildError::CreateFolder {
+            path: PathBuf::from("/x/out"),
+            reason: std::io::Error::new(std::io::ErrorKind::NotADirectory, "not a directory"),
+        };
+        assert_eq!(
+            error.to_string(),
+            "cannot create the folder `/x/out`: not a directory"
+        );
+    }
+
+    #[test]
+    fn a_write_error_names_the_file() {
+        let error = BuildError::Write {
+            path: PathBuf::from("/x/out/index.html"),
+            reason: std::io::Error::new(std::io::ErrorKind::PermissionDenied, "denied"),
+        };
+        assert_eq!(
+            error.to_string(),
+            "cannot write `/x/out/index.html`: denied"
+        );
+    }
+
+    #[test]
+    fn a_site_address_error_names_the_variable() {
+        let invalid = SiteAddress::parse("x").unwrap_err();
+        let inner = invalid.to_string();
+        let error = BuildError::from(invalid);
+        assert_eq!(error.to_string(), format!("SITE_ADDRESS: {inner}"));
+    }
+
+    #[test]
+    fn a_transparent_error_reads_as_its_inner_error() {
+        let inner = MissingContentDates(InputError::NotSet {
+            variable: "CONTENT_DATES_FILE",
+        });
+        let text = inner.to_string();
+        assert_eq!(BuildError::from(inner).to_string(), text);
     }
 }

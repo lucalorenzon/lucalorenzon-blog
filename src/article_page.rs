@@ -233,15 +233,18 @@ impl TryFrom<&ArticleFile> for Article {
 
 /// The articles that could not be read, each with why, in the order of the files.
 #[derive(Debug, PartialEq, Eq, thiserror::Error)]
-#[error("{} article(s) have problems:\n{}", .0.len(), list_problems(.0))]
+#[error("{} article(s) have problems:\n{}", .0.len(), self.list())]
 pub struct ArticleProblems(pub Vec<ArticleError>);
 
-fn list_problems(errors: &[ArticleError]) -> String {
-    errors
-        .iter()
-        .map(|error| format!("  - {error}"))
-        .collect::<Vec<_>>()
-        .join("\n")
+impl ArticleProblems {
+    /// One line per article, "  - {problem}", in the order of the files.
+    pub fn list(&self) -> String {
+        self.0
+            .iter()
+            .map(|error| format!("  - {error}"))
+            .collect::<Vec<_>>()
+            .join("\n")
+    }
 }
 
 /// The articles that could be read, and the problems of the others.
