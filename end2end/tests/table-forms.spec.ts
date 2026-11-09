@@ -1,5 +1,5 @@
 import { test, expect, type Locator, type Page } from '@playwright/test';
-import { COLUMN_WIDTHS, TABLE_ADDRESSES, live } from './support';
+import { axeReport, COLUMN_WIDTHS, CONTRAST_RULES, TABLE_ADDRESSES, VIEWPORTS, live, runAxe } from './support';
 
 // Every Markdown table is rendered in two forms inside one wrapper: the
 // table, and a "record viewer" (the names of the columns stay still on the
@@ -17,6 +17,8 @@ import { COLUMN_WIDTHS, TABLE_ADDRESSES, live } from './support';
 //     320x568, where the viewers are shown: the keyboard does not behave
 //     differently with the width once the viewer is shown)
 //   - the page does not scroll sideways
+//   - axe finds no accessibility violation inside the tables, in both forms
+//     (on one page at two widths, see the end of the file)
 // A live run has no folder to walk and skips them. It checks what the reader
 // sees, never how the page is built (the class names below only find the
 // parts of the viewer).
@@ -225,3 +227,50 @@ test(`the six-column table of ${SINGLE_TABLE.address} is a viewer at 767x800`, a
   const wrapper = page.locator('.table-with-viewer', { has: page.locator(`tr:first-child > :nth-child(${SINGLE_TABLE.columns})`) }).last();
   expect(await formsShown(wrapper)).toEqual({ table: false, viewer: true });
 });
+
+// Accessibility of the components, with axe limited to the component.
+// Per ADR-004 a component is checked once, on the case that stresses it most.
+// The hybris article is today's worst case: at 320 it shows both forms of a
+// table and both states of a code block; at 768 the table form and both code
+// states (measured 2026-11-09). It moves to the components' test pages when
+// they exist. A guard in each test makes sure the page still shows what makes
+// it the worst case, so the check cannot silently stop being one. The contrast
+// rules are a test of their own, tagged @colours, to run in both themes.
+const AXE_PAGE = './articles/how-to-generate-hybris-pk-values-without-hybris.html';
+const AXE_WIDTHS = VIEWPORTS.filter(({ name }) => ['iPhone SE', 'iPad Mini'].includes(name));
+
+for (const { name, width, height } of AXE_WIDTHS) {
+  const where = `of ${AXE_PAGE} at ${width}x${height} (${name})`;
+
+  // At 320 the page shows a table and a record viewer; at 768 tables only.
+  async function openWorstCase(page: Page) {
+    await page.setViewportSize({ width, height });
+    await gotoReady(page, AXE_PAGE);
+    let tables = 0;
+    let viewers = 0;
+    for (const wrapper of await wrappersOf(page)) {
+      const shown = await formsShown(wrapper);
+      if (shown.table) tables++;
+      if (shown.viewer) viewers++;
+    }
+    expect(tables, 'the worst case shows at least one table').toBeGreaterThan(0);
+    if (width < 768) expect(viewers, 'the worst case shows at least one record viewer').toBeGreaterThan(0);
+  }
+
+  test(`accessibility of the tables ${where}`, async ({ page }) => {
+    test.skip(live, 'checked locally only: the pages come from the built folder');
+    await openWorstCase(page);
+    const { violations } = await runAxe(page, 'rules', { scope: '.table-with-viewer' });
+    expect(violations, `accessibility violations:\n${axeReport(violations)}`).toEqual([]);
+  });
+
+  test(`contrast of the tables ${where}`, { tag: '@colours' }, async ({ page }) => {
+    test.skip(live, 'checked locally only: the pages come from the built folder');
+    await openWorstCase(page);
+    const { violations, passes } = await runAxe(page, 'contrast', { scope: '.table-with-viewer' });
+    expect(violations, `accessibility violations:\n${axeReport(violations)}`).toEqual([]);
+    for (const id of CONTRAST_RULES) {
+      expect(passes.map((r) => r.id), `axe did not evaluate the rule ${id}`).toContain(id);
+    }
+  });
+}

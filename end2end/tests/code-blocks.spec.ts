@@ -1,5 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
-import { COLUMN_WIDTHS } from './support';
+import { axeReport, COLUMN_WIDTHS, CONTRAST_RULES, VIEWPORTS, runAxe } from './support';
 
 // Code blocks (Markdown code rendered as a component):
 //   - the "wrap" toggle is visible if and only if the code scrolls sideways
@@ -7,6 +7,8 @@ import { COLUMN_WIDTHS } from './support';
 //   - the toggle is reached with Tab and switched with Space
 //   - a wrapped line continues 4 columns deeper than its own indent
 //   - copying the code gives the article's code, without the toggle's text
+//   - axe finds no accessibility violation inside the code blocks
+//     (on one article at two widths, see the end of the file)
 // It checks what the reader sees, never how the page is built.
 
 const ARTICLES = [
@@ -145,6 +147,52 @@ for (const { name: articleName, address } of ARTICLES) {
         expect(selected).not.toContain('wrap');
         expect(selected).not.toMatch(/\n\n\n/);
       }
+    }
+  });
+}
+
+// Accessibility of the components, with axe limited to the component.
+// Per ADR-004 a component is checked once, on the case that stresses it most.
+// The hybris article is today's worst case: at 320 it shows both forms of a
+// table and both states of a code block; at 768 the table form and both code
+// states (measured 2026-11-09). It moves to the components' test pages when
+// they exist. A guard in each test makes sure the page still shows what makes
+// it the worst case, so the check cannot silently stop being one. The contrast
+// rules are a test of their own, tagged @colours, to run in both themes.
+const AXE_ARTICLE = './articles/how-to-generate-hybris-pk-values-without-hybris.html';
+const AXE_WIDTHS = VIEWPORTS.filter(({ name }) => ['iPhone SE', 'iPad Mini'].includes(name));
+
+for (const { name, width, height } of AXE_WIDTHS) {
+  const where = `of the hybris PK article at ${width}x${height} (${name})`;
+
+  // At both widths the article has code blocks with the wrap toggle and
+  // without it.
+  async function openWorstCase(page: Page) {
+    await page.setViewportSize({ width, height });
+    await open(page, AXE_ARTICLE);
+    const blocks = page.locator('.code-block');
+    let with_ = 0;
+    let without = 0;
+    for (let i = 0; i < (await blocks.count()); i++) {
+      if (await blocks.nth(i).locator('label').isVisible()) with_++;
+      else without++;
+    }
+    expect(with_, 'the worst case has a code block with the toggle').toBeGreaterThan(0);
+    expect(without, 'the worst case has a code block without the toggle').toBeGreaterThan(0);
+  }
+
+  test(`accessibility of the code blocks ${where}`, async ({ page }) => {
+    await openWorstCase(page);
+    const { violations } = await runAxe(page, 'rules', { scope: '.code-block' });
+    expect(violations, `accessibility violations:\n${axeReport(violations)}`).toEqual([]);
+  });
+
+  test(`contrast of the code blocks ${where}`, { tag: '@colours' }, async ({ page }) => {
+    await openWorstCase(page);
+    const { violations, passes } = await runAxe(page, 'contrast', { scope: '.code-block' });
+    expect(violations, `accessibility violations:\n${axeReport(violations)}`).toEqual([]);
+    for (const id of CONTRAST_RULES) {
+      expect(passes.map((r) => r.id), `axe did not evaluate the rule ${id}`).toContain(id);
     }
   });
 }

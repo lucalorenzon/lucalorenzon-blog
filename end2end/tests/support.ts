@@ -1,4 +1,5 @@
-import { test } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import { test, type Page } from '@playwright/test';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 
@@ -138,3 +139,59 @@ export const READER_SPACING = `
   }
   p { margin-bottom: 2em !important; }
 `;
+
+// axe, shared by the net (accessibility.spec.ts) and by the component tests.
+//
+// TAGS: every axe rule tagged for WCAG 2.0, 2.1 and 2.2 at levels A and AA,
+// plus the three level-AAA rules axe can check (enhanced contrast, links with
+// the same text leading to the same purpose, no automatic page refresh).
+// Rules axe has disabled by default (color-contrast-enhanced is one) still run
+// when selected by tag or by id: axe skips a rule only if it has none of the
+// selected tags and is not named, or carries an excluded tag (deprecated,
+// experimental).
+export const TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'wcag2aaa'];
+
+// Rules that must have been evaluated and passed by a contrast test: the page
+// has visible text, so if they are missing from the passes, axe did not look
+// at the colours at all and an empty list of violations would mean nothing.
+export const CONTRAST_RULES = ['color-contrast', 'color-contrast-enhanced'];
+
+// The structure of the headings. They belong to axe's "best practice" group,
+// not to a WCAG criterion, so the selection by tag leaves them out; they are
+// enabled by name. (The whole group is not selected: a new version of axe
+// could change its rules and stop the build for a rule nobody chose.)
+export const HEADING_RULES = ['page-has-heading-one', 'heading-order', 'empty-heading'];
+
+// The type of axe's results, taken from the package the project declares
+// rather than from axe-core, which only comes with it.
+export type AxeResults = Awaited<ReturnType<AxeBuilder['analyze']>>;
+
+// Runs axe on the open page, optionally limited to the elements matching
+// `scope`. AxeBuilder.withTags() and withRules() both set `runOnly` and
+// exclude each other, and disableRules() replaces the `rules` option, so the
+// options are written whole: `runOnly` selects the tags, and `rules` switches
+// single rules on or off by name, which axe honours over the tags.
+//   - 'rules': TAGS without the contrast rules, plus `extraRules` by name
+//   - 'contrast': only the two contrast rules, selected by id
+export function runAxe(
+  page: Page,
+  kind: 'rules' | 'contrast',
+  { scope, extraRules = [] }: { scope?: string; extraRules?: string[] } = {},
+): Promise<AxeResults> {
+  const builder = new AxeBuilder({ page });
+  if (scope) builder.include(scope);
+  if (kind === 'contrast') return builder.withRules(CONTRAST_RULES).analyze();
+  const rules: Record<string, { enabled: boolean }> = {};
+  for (const id of CONTRAST_RULES) rules[id] = { enabled: false };
+  for (const id of extraRules) rules[id] = { enabled: true };
+  return builder.options({ runOnly: { type: 'tag', values: TAGS }, rules }).analyze();
+}
+
+export function axeReport(violations: AxeResults['violations']): string {
+  return violations
+    .map((v) => {
+      const targets = v.nodes.map((n) => `    ${n.target.join(' ')}`).join('\n');
+      return `- ${v.id} (${v.impact ?? 'no impact given'}): ${v.help}\n${targets}`;
+    })
+    .join('\n');
+}
