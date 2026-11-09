@@ -43,6 +43,8 @@ the speed of one worker out of two, with no visible loss.
 for that, and the user chose the local measurement (2026-11-09). The
 first pipeline run after the next push shows the answer there: the
 browser test step and the SEO check's duration in its log.
+(Answered on 2026-11-09, after the close: barely, see the note at the
+end of Results.)
 
 ### Does the live check after a publication gain the same?
 
@@ -66,3 +68,20 @@ On twelve workers the SEO check already started early (about 3 seconds
 in), so the suite was already bound by its 30 seconds; it now starts at
 once. On two workers the gain is smaller than the full 30 seconds,
 because the other tests then run on a single worker.
+
+**Note, added on 2026-11-09 after the close: the pipeline.** The first
+run after the push (run 42582147436, 227 tests, two workers) against
+the run before the change (run 42578666728, same tests):
+
+| | Before | After |
+|---|---|---|
+| Playwright, first test to last | 77.9 s | 54.7 s, 23 s less (30%) |
+| SEO check | 31.3 s, test 227 of 227 | 32.4 s, test 2 of 227 |
+| Whole browser test job | 113 s | 100 s |
+
+The SEO check took about a second more, within what earlier runs
+showed (30.6 and 31.4 seconds), so Lighthouse's Chromium does not
+measurably slow the tests beside it there either. The job gained less
+than Playwright because its setup before the tests (container and
+dependencies) took 43 seconds instead of 34, a variation of the
+machine unrelated to this change.
