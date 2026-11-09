@@ -15,7 +15,7 @@ live since 2026-10-26
 ## Now
 
 - A round of the refactors left waiting, so the code moves too:
-  [give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
+  [give dates a module of their own](wip/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
   article pages and the sitemap. The articles now read their title,
   description and date from the front matter

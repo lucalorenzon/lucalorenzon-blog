@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-08, by the user, while reviewing the code of the
   card on the articles' front matter
   ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-09.
 
 ## Why
 
@@ -37,7 +37,7 @@ stays in a commit of its own.
   - jiff 0.2.40: the newest; it brings time zones by default, which the
     site does not need.
 - **This card takes over a question** first written in the
-  [thiserror card](refactor-errors-with-thiserror.md): whether the two
+  [thiserror card](../backlog/refactor-errors-with-thiserror.md): whether the two
   types of day become one.
 
 ## Questions
