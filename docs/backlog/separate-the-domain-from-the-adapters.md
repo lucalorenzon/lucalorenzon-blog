@@ -1,7 +1,7 @@
 # Separate the domain from the adapters
 
 - **Opened:** 2026-11-09, by the user, while answering the card
-  [refactor the code's errors with thiserror](../wip/refactor-errors-with-thiserror.md).
+  [refactor the code's errors with thiserror](../done/2026-11-09_refactor-errors-with-thiserror.md).
 - **Status:** noticed, not started. To be picked up after the thiserror
   card.
 

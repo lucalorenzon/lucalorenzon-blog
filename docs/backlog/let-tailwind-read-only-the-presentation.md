@@ -1,7 +1,7 @@
 # Let Tailwind read only the presentation
 
 - **Opened:** 2026-11-09, by the user, while doing the card
-  [refactor the code's errors with thiserror](../wip/refactor-errors-with-thiserror.md).
+  [refactor the code's errors with thiserror](../done/2026-11-09_refactor-errors-with-thiserror.md).
 - **Status:** noticed, not started.
 
 ## Why
