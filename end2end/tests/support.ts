@@ -53,21 +53,40 @@ export const BANDS = [
   { name: 'Laptop', width: 1280, height: 720 }, // title beside the logo
 ];
 
-// The pages whose text (the `main` element) the content tests check. The
-// home page (a list of articles, each entry a heading, a description and a date) has no roles (h3) and
-// no consecutive paragraphs; the curriculum page has both; the licence page has neither, so those two
-// checks apply only where the page has some. The After Save Event article has no roles (h3)
-// and several consecutive paragraphs. The hybris PK article has no roles
-// (h3) and several consecutive paragraphs; its wide table becomes a record
-// viewer below a readable width.
-export const TEXT_PAGES = [
-  { name: 'home page', address: './', hasRoles: false, hasConsecutiveParagraphs: false },
-  { name: 'curriculum page', address: './curriculum.html', hasRoles: true, hasConsecutiveParagraphs: true },
-  { name: 'licence page', address: './licence.html', hasRoles: false, hasConsecutiveParagraphs: false },
-  { name: 'about page', address: './about.html', hasRoles: false, hasConsecutiveParagraphs: false },
-  { name: 'After Save Event page', address: './articles/after-save-event.html', hasRoles: false, hasConsecutiveParagraphs: true },
-  { name: 'hybris PK page', address: './articles/how-to-generate-hybris-pk-values-without-hybris.html', hasRoles: false, hasConsecutiveParagraphs: true },
-];
+// The page the component checks of the text (readability.spec.ts and
+// content-layout.spec.ts) run on: per ADR-004 a component is checked once, on
+// the case that stresses it most. Today it is the After Save Event article: it
+// has every kind of text element those checks look at (consecutive paragraphs,
+// h2, h3, bulleted and numbered lists, a code block, a table) except level-4
+// headings, which are only in the curriculum and enter only the overlap check
+// (measured 2026-11-09). It moves to the components' test pages when they exist.
+export const WORST_CASE = './articles/after-save-event.html';
+
+// The guard of the component checks: fails when the worst case is no longer
+// the worst case, so that a check never passes with nothing to check.
+export async function expectWorstCaseStillWorst(page: Page): Promise<void> {
+  const missing = await page.evaluate(() => {
+    const main = document.querySelector('main')!;
+    const has = (selector: string) => main.querySelector(selector) !== null;
+    const consecutive = Array.from(main.querySelectorAll('p')).some((p) => p.nextElementSibling?.tagName === 'P');
+    const kinds: [string, boolean][] = [
+      ['two consecutive paragraphs', consecutive],
+      ['an h2', has('h2')],
+      ['an h3', has('h3')],
+      ['a bulleted list (ul)', has('ul')],
+      ['a numbered list (ol)', has('ol')],
+      ['a code block (.code-block)', has('.code-block')],
+      ['a table (.table-with-viewer)', has('.table-with-viewer')],
+    ];
+    return kinds.filter(([, ok]) => !ok).map(([what]) => what);
+  });
+  if (missing.length > 0) {
+    throw new Error(
+      `${WORST_CASE} is no longer the worst case: its main lacks ${missing.join(', ')}. ` +
+        'The component checks of the text would pass with nothing to check: a variant that has every kind of element must be found.',
+    );
+  }
+}
 
 // The built site, and its pages, found by walking the folder: a new page is
 // covered by the tests that use these without being listed. A live run has no

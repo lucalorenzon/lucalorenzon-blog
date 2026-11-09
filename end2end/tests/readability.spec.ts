@@ -1,33 +1,51 @@
 import { test, expect, type Page } from '@playwright/test';
-import { COLUMN_WIDTHS, READER_SPACING, retryWhenLive, TEXT_PAGES } from './support';
+import {
+  COLUMN_WIDTHS,
+  expectWorstCaseStillWorst,
+  NET_PAGES,
+  READER_SPACING,
+  retryWhenLive,
+  VIEWPORTS,
+  WORST_CASE,
+} from './support';
 
 // Enforces the visual presentation of the text. It checks what the reader
 // sees (rendered sizes, positions, lines), never how the page is built.
 //
-// WCAG 1.4.8 (visual presentation, level AAA), at the widths of the text column
-// (COLUMN_WIDTHS in support.ts: it is all this rule depends on):
+// Two kinds of test, as ADR-004 says (docs/adr/ADR-004-test-components-once-and-pages-with-a-net.md):
+//
+// The NET runs on every page of the sitemap (NET_PAGES in support.ts), because
+// the rule depends on the text, which any page may change:
+//   - no rendered line is longer than 80 characters (WCAG 1.4.8), at the
+//     widest column, 1280x720 (text 20 px, column 704 px, from 768 px up).
+//     Counted on the lines as the browser breaks them, not estimated from the
+//     width: the font is proportional, so no style rule can bound it.
+// (The sideways scroll, without and with the reader's spacing, is the other
+// net check: see content-layout.spec.ts.)
+//
+// The COMPONENT checks run once, on the worst case (WORST_CASE in support.ts,
+// the After Save Event article), at the widths of the text column
+// (COLUMN_WIDTHS: it is all they depend on). Each test first checks the guard
+// (expectWorstCaseStillWorst): the article still has every kind of element the
+// checks look at.
+//
+// WCAG 1.4.8 (visual presentation, level AAA):
 //   1. the line height of every paragraph and list item is at least 1.5
 //      times its font size
 //   2. the empty space between two consecutive paragraphs is at least 1.5
 //      times the line height
-//   3. no rendered line in the content is longer than 80 characters
-//      (counted on the lines as the browser breaks them, not estimated
-//      from the width: the font is proportional)
-//   4. no text in the content is justified
+//   3. no text in the content is justified
 //
-// WCAG 1.4.12 (text spacing, level AA), at the same widths (rule 7, the header,
-// depends on the screen width and the title, so it is checked in
-// header-layout.spec.ts at every width): when the reader
-// raises line height to 1.5, letter spacing to 0.12em, word spacing to
-// 0.16em and the space after paragraphs to 2em (as a bookmarklet or an
-// extension would do), nothing is lost:
-//   5. no horizontal scroll
-//   6. consecutive blocks of the content do not overlap
-//   7. (the header's logo, title and menu slot do not intersect, and nothing in
-//      the header is cut off: checked in header-layout.spec.ts)
-//   8. no element outside the header cuts off its content
-//   9. at the end of the page the content ends at least 32px above the
+// WCAG 1.4.12 (text spacing, level AA; the header depends on the screen
+// width and the title, so it is checked in header-layout.spec.ts at every
+// width): when the reader raises line height to 1.5, letter spacing to
+// 0.12em, word spacing to 0.16em and the space after paragraphs to 2em (as a
+// bookmarklet or an extension would do), nothing is lost:
+//   4. consecutive blocks of the content do not overlap
+//   5. no element outside the header cuts off its content
+//   6. at the end of the page the content ends at least 32px above the
 //      sticky footer
+//   (no horizontal scroll with the spacing: net, content-layout.spec.ts)
 
 const MIN_LINE_HEIGHT_RATIO = 1.5;
 const MIN_PARAGRAPH_GAP_RATIO = 1.5; // of the line height
@@ -135,23 +153,6 @@ async function spacingProblems(page: Page): Promise<string[]> {
       const out: string[] = [];
       const label = (el: Element) => `<${el.tagName.toLowerCase()}> "${el.textContent?.slice(0, 30)}"`;
 
-      // Known limit, accepted: the build measures words without the reader's
-      // spacing, which makes them about 25% wider. Just above the
-      // record-viewer threshold, the unbreakable values of a table (such as
-      // varchar(255)) then no longer fit, and a table cannot shrink below
-      // them. The page scrolls sideways a little, but no content is lost
-      // (WCAG 1.4.12 asks for no loss of content). So the page width is
-      // measured with the tables in table form taken out of the layout;
-      // everything else must still fit.
-      const tables = Array.from(document.querySelectorAll<HTMLElement>('.table-with-viewer > table'));
-      const shown = tables.map((el) => el.style.display);
-      tables.forEach((el) => (el.style.display = 'none'));
-      const pageWidth = document.documentElement.scrollWidth;
-      tables.forEach((el, i) => (el.style.display = shown[i]));
-      if (pageWidth > window.innerWidth) {
-        out.push(`horizontal scroll: scrollWidth ${pageWidth} > innerWidth ${window.innerWidth}`);
-      }
-
       // Each block of the content against the next one in reading order.
       const main = document.querySelector('main')!;
       const blocks = Array.from(main.querySelectorAll('h2, h3, h4, p, li'));
@@ -212,51 +213,58 @@ async function spacingProblems(page: Page): Promise<string[]> {
 
 // ---- Tests ---------------------------------------------------------------
 
-for (const { name: pageName, address, hasConsecutiveParagraphs } of TEXT_PAGES) {
-for (const { name, width, height } of COLUMN_WIDTHS) {
-  test(`visual presentation (WCAG 1.4.8) of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
+// Net: every page of the sitemap, at the widest column.
+for (const { name: pageName, address } of NET_PAGES) {
+  const { name, width, height } = VIEWPORTS.find((v) => v.name === 'Laptop')!;
+  test(`no line over ${MAX_CHARACTERS} characters on the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
 
     await retryWhenLive(async () => {
       await gotoReady(page, address);
-
-      const tooSmall = await lineHeightsTooSmall(page);
-      expect(tooSmall, `line height must be at least ${MIN_LINE_HEIGHT_RATIO} times the font size:\n${tooSmall.join('\n')}`).toEqual([]);
-
-      const pairs = await paragraphGaps(page);
-      if (hasConsecutiveParagraphs) {
-        expect(pairs.length, 'the content must have at least two consecutive paragraphs').toBeGreaterThan(0);
-      }
-      const tight = pairs.filter((p) => !(p.gap >= MIN_PARAGRAPH_GAP_RATIO * p.lineHeight - 0.5));
-      expect(
-        tight,
-        `space between paragraphs must be at least ${MIN_PARAGRAPH_GAP_RATIO} times the line height:\n${tight.map((p) => `${p.text}: ${p.gap}px on line height ${p.lineHeight}px`).join('\n')}`,
-      ).toEqual([]);
-
       const longest = await longestLine(page);
       console.log(`[${width}px] longest line: ${longest.characters} characters: "${longest.text}"`);
       expect(
         longest.characters,
         `a line is ${longest.characters} characters long, at most ${MAX_CHARACTERS} allowed: "${longest.text}"`,
       ).toBeLessThanOrEqual(MAX_CHARACTERS);
+    });
+  });
+}
+
+// Components, once, on the worst case.
+for (const { name, width, height } of COLUMN_WIDTHS) {
+  test(`visual presentation (WCAG 1.4.8) of the worst case at ${width}x${height} (${name})`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+
+    await retryWhenLive(async () => {
+      await gotoReady(page, WORST_CASE);
+      await expectWorstCaseStillWorst(page);
+
+      const tooSmall = await lineHeightsTooSmall(page);
+      expect(tooSmall, `line height must be at least ${MIN_LINE_HEIGHT_RATIO} times the font size:\n${tooSmall.join('\n')}`).toEqual([]);
+
+      const pairs = await paragraphGaps(page);
+      const tight = pairs.filter((p) => !(p.gap >= MIN_PARAGRAPH_GAP_RATIO * p.lineHeight - 0.5));
+      expect(
+        tight,
+        `space between paragraphs must be at least ${MIN_PARAGRAPH_GAP_RATIO} times the line height:\n${tight.map((p) => `${p.text}: ${p.gap}px on line height ${p.lineHeight}px`).join('\n')}`,
+      ).toEqual([]);
 
       const justified = await justifiedElements(page);
       expect(justified, `text must not be justified:\n${justified.join('\n')}`).toEqual([]);
     });
   });
 }
-}
 
-for (const { name: pageName, address } of TEXT_PAGES) {
 for (const { name, width, height } of COLUMN_WIDTHS) {
-  test(`text spacing (WCAG 1.4.12) of the ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
+  test(`text spacing (WCAG 1.4.12) of the worst case at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
 
     await retryWhenLive(async () => {
-      await gotoReady(page, address);
+      await gotoReady(page, WORST_CASE);
+      await expectWorstCaseStillWorst(page);
       const found = await spacingProblems(page);
       expect(found, `with the reader's text spacing:\n${found.join('\n')}`).toEqual([]);
     });
   });
-}
 }
