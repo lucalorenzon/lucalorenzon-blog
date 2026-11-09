@@ -4,7 +4,7 @@
   tests spend their time at the close of the card
   [check at every width only what depends on the width](../done/2026-11-08_check-at-every-width-only-what-depends-on-it.md);
   in Next.
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-09.
 
 ## Why
 
