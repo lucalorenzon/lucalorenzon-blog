@@ -12,7 +12,7 @@
   [check accessibility on every page with the net](../done/2026-11-09_check-accessibility-on-every-page-with-the-net.md)
   and
   [check the layout on every page with the net](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md);
-  related: [build a design system](../backlog/build-a-design-system.md)
+  related: [build a design system](../wip/build-a-design-system.md)
 
 ## Context
 
@@ -74,7 +74,7 @@ does not wait for the design system.
 (Revised on 2026-11-09: the test pages are no longer built by hand
 before the design system; its catalogue builds them, and the work is
 merged into
-[build a design system](../backlog/build-a-design-system.md). The
+[build a design system](../wip/build-a-design-system.md). The
 growth this rule was meant to stop is gone, stopped by the net, and the
 pages would otherwise be built twice. Meanwhile the components are
 checked on the real article that stresses them most, so two articles

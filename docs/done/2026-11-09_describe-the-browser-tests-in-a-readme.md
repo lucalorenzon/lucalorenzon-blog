@@ -119,7 +119,7 @@ README is documentation, not the site.
   in it: `home.spec.ts` still names the two articles, their dates and
   their order, the content facts ADR-004 meant to remove; and
   `tables.spec.ts` runs on every page (in the card
-  [build a design system](../backlog/build-a-design-system.md)).
+  [build a design system](../wip/build-a-design-system.md)).
 
 Running a test from its row, the user's nice-to-have, has a card of
 its own:

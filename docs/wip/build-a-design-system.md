@@ -8,7 +8,7 @@
   ADR-004, which had no card yet, are built by this card's catalogue
   instead of by hand before it. Moved to Now, after a round of the
   refactors left waiting.
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-10.
 
 ## Why
 

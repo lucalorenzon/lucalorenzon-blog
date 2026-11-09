@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-09
+Last updated: 2026-11-10
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -22,7 +22,7 @@ live since 2026-10-26
   ([card](done/2026-11-09_give-dates-a-module-of-their-own.md)) and
   the articles' front matter
   ([card](done/2026-11-08_read-article-fields-from-front-matter.md)).
-- [Build a design system](backlog/build-a-design-system.md), with
+- [Build a design system](wip/build-a-design-system.md), with
   Holt or Storybook, starting with a timeboxed spike on Holt: each
   component tested once in a catalogue, on cases written for the
   purpose, so the two articles that serve as test pages today go back

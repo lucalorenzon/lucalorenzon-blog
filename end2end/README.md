@@ -36,7 +36,7 @@ says what makes it fail.
 
 The worst cases of the component tests are two real articles, After
 Save Event and hybris PK, until the components get a catalogue of
-their own: [build a design system](../docs/backlog/build-a-design-system.md).
+their own: [build a design system](../docs/wip/build-a-design-system.md).
 
 ## When the tests run
 
