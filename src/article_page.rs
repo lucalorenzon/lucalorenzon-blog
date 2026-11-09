@@ -7,123 +7,6 @@ use leptos::prelude::*;
 use serde::Deserialize;
 use std::fmt;
 
-/// A day of the calendar. Only a real one can be built: from `YYYY-MM-DD`, with `TryFrom`.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Deserialize)]
-#[serde(try_from = "String")]
-pub struct Date {
-    year: u16,
-    month: u8,
-    day: u8,
-}
-
-/// Why a text is not a [`Date`].
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum DateError {
-    /// Not written as `YYYY-MM-DD`.
-    NotIsoFormat(String),
-    /// Written as `YYYY-MM-DD`, but no such day exists: `2023-02-30`.
-    NotACalendarDay(String),
-}
-
-impl fmt::Display for DateError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::NotIsoFormat(text) => {
-                write!(
-                    f,
-                    "field `date`: `{text}` is not a date written as YYYY-MM-DD"
-                )
-            }
-            Self::NotACalendarDay(text) => {
-                write!(f, "field `date`: `{text}` is not a day of the calendar")
-            }
-        }
-    }
-}
-
-impl std::error::Error for DateError {}
-
-impl TryFrom<String> for Date {
-    type Error = DateError;
-
-    fn try_from(text: String) -> Result<Self, DateError> {
-        Self::try_from(text.as_str())
-    }
-}
-
-impl TryFrom<&str> for Date {
-    type Error = DateError;
-
-    fn try_from(text: &str) -> Result<Self, DateError> {
-        let not_iso = || DateError::NotIsoFormat(text.to_owned());
-        let bytes = text.as_bytes();
-        if bytes.len() != 10 || bytes[4] != b'-' || bytes[7] != b'-' {
-            return Err(not_iso());
-        }
-        let digits = |range: std::ops::Range<usize>| -> Result<u16, DateError> {
-            let part = text.get(range).ok_or_else(not_iso)?;
-            if !part.bytes().all(|b| b.is_ascii_digit()) {
-                return Err(not_iso());
-            }
-            part.parse::<u16>().map_err(|_| not_iso())
-        };
-        let year = digits(0..4)?;
-        let month = u8::try_from(digits(5..7)?).map_err(|_| not_iso())?;
-        let day = u8::try_from(digits(8..10)?).map_err(|_| not_iso())?;
-        let not_a_day = || DateError::NotACalendarDay(text.to_owned());
-        if year == 0 || !(1..=12).contains(&month) {
-            return Err(not_a_day());
-        }
-        if day == 0 || day > Self::days_in_month(year, month) {
-            return Err(not_a_day());
-        }
-        Ok(Self { year, month, day })
-    }
-}
-
-impl Date {
-    const MONTHS: [&'static str; 12] = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
-
-    fn days_in_month(year: u16, month: u8) -> u8 {
-        let leap =
-            (year.is_multiple_of(4) && !year.is_multiple_of(100)) || year.is_multiple_of(400);
-        match month {
-            2 if leap => 29,
-            2 => 28,
-            4 | 6 | 9 | 11 => 30,
-            _ => 31,
-        }
-    }
-
-    /// The machine-readable form, for `<time datetime>`: `2023-04-30`.
-    pub fn iso(self) -> String {
-        format!("{:04}-{:02}-{:02}", self.year, self.month, self.day)
-    }
-
-    /// The form a reader sees: `30 April 2023`.
-    pub fn long_form(self) -> String {
-        format!(
-            "{} {} {}",
-            self.day,
-            Self::MONTHS[usize::from(self.month) - 1],
-            self.year
-        )
-    }
-}
-
 /// The title of an article: the content's own name for it. Not empty. It has no length limit:
 /// the limit belongs to the page's heading ([`Heading`]), which an article builds from its
 /// title when it is read.
@@ -274,7 +157,7 @@ pub const ARTICLE_FILES: [ArticleFile; 2] = [
 struct FrontMatter {
     title: Title,
     description: Description,
-    date: Date,
+    date: jiff::civil::Date,
 }
 
 /// What is wrong in an article's front matter.
@@ -355,7 +238,7 @@ pub struct Article {
     /// read: a title that does not fit is a problem of the article, found with the others.
     pub heading: Heading,
     pub description: Description,
-    pub date: Date,
+    pub date: jiff::civil::Date,
     /// Where the page is written, relative to the site's root.
     pub address: &'static str,
     /// The Markdown file, relative to the repository's root.
@@ -474,7 +357,7 @@ pub fn ArticlePage(article: Article, canonical: String) -> impl IntoView {
             indexing=Indexing::Indexed(IndexedPage {
                 canonical,
                 description: article.description.as_str().to_owned(),
-                kind: PageKind::Article { published: article.date.iso() },
+                kind: PageKind::Article { published: article.date.to_string() },
             })
         >
             <main class="long-text-column md:long-text-large" inner_html=html></main>
@@ -706,22 +589,12 @@ mod tests {
     mod list {
         use super::super::*;
 
-        #[test]
-        fn formats_a_date_for_the_reader_and_for_the_machine() {
-            let date = Date::try_from("2023-04-30").unwrap();
-            assert_eq!(date.long_form(), "30 April 2023");
-            assert_eq!(date.iso(), "2023-04-30");
-            let date = Date::try_from("2024-12-05").unwrap();
-            assert_eq!(date.long_form(), "5 December 2024");
-            assert_eq!(date.iso(), "2024-12-05");
-        }
-
         fn article(title: &str, date: &str) -> Article {
             Article {
                 title: Title::try_from(title).unwrap(),
                 heading: Heading::try_from(title).unwrap(),
                 description: Description::try_from("d").unwrap(),
-                date: Date::try_from(date).unwrap(),
+                date: date.parse().unwrap(),
                 address: "",
                 source: "",
                 body: String::new(),
@@ -822,10 +695,24 @@ mod tests {
     mod date {
         use super::super::*;
 
+        fn file_with_date(date: &str) -> String {
+            format!("---\ntitle: T\ndescription: D\ndate: {date}\n---\nB\n")
+        }
+
+        fn date_of(date: &str) -> Result<String, ArticleError> {
+            let text: &'static str = Box::leak(file_with_date(date).into_boxed_str());
+            let file = ArticleFile {
+                address: "articles/a.html",
+                source: "content/articles/a.md",
+                text,
+            };
+            Article::try_from(&file).map(|article| article.date.to_string())
+        }
+
         #[test]
         fn accepts_real_days() {
             for text in ["2023-04-30", "2024-02-29", "2000-02-29", "2023-12-31"] {
-                assert_eq!(Date::try_from(text).unwrap().iso(), text);
+                assert_eq!(date_of(text).as_deref(), Ok(text), "{text}");
             }
         }
 
@@ -840,35 +727,34 @@ mod tests {
                 "2023-00-10",
                 "2023-01-00",
                 "2023-01-32",
-                "0000-01-01",
             ] {
-                assert_eq!(
-                    Date::try_from(text),
-                    Err(DateError::NotACalendarDay(text.to_owned())),
-                    "{text}"
-                );
+                assert!(date_of(text).is_err(), "{text}");
             }
         }
 
         #[test]
         fn rejects_text_that_is_not_a_date() {
             for text in [
-                "",
                 "tomorrow",
                 "2023-4-3",
+                "26-11-06",
                 "2023/04/30",
-                "20230430",
                 "2023-04-3x",
                 "+023-04-30",
                 "2023-04-300",
                 "2023-04-é1",
+                "\"\"",
             ] {
-                assert_eq!(
-                    Date::try_from(text),
-                    Err(DateError::NotIsoFormat(text.to_owned())),
-                    "{text}"
-                );
+                assert!(date_of(text).is_err(), "{text}");
             }
+        }
+
+        #[test]
+        fn accepts_the_forms_the_user_chose_to_take_from_the_library() {
+            // The library's ISO reading also takes these two; the user accepted that on
+            // purpose (card "give dates a module of their own").
+            assert_eq!(date_of("20230430").as_deref(), Ok("2023-04-30"));
+            assert_eq!(date_of("0000-01-01").as_deref(), Ok("0000-01-01"));
         }
     }
 
@@ -895,7 +781,7 @@ mod tests {
             let article = Article::try_from(&file(GOOD)).unwrap();
             assert_eq!(article.title.as_str(), "A title");
             assert_eq!(article.description.as_str(), "A: description.");
-            assert_eq!(article.date.iso(), "2023-04-30");
+            assert_eq!(article.date.to_string(), "2023-04-30");
             assert_eq!(article.address, "articles/a.html");
             assert_eq!(article.body, "\nBody *text*.\n");
         }
@@ -906,7 +792,7 @@ mod tests {
             let article = Article::try_from(&file(text)).unwrap();
             assert_eq!(article.title.as_str(), "Order does not matter");
             assert_eq!(article.description.as_str(), "Blank lines neither.");
-            assert_eq!(article.date.iso(), "2024-02-29");
+            assert_eq!(article.date.to_string(), "2024-02-29");
             assert_eq!(article.body, "\nThe body.\n");
         }
 
@@ -1040,8 +926,9 @@ mod tests {
             let error = error_of("---\ntitle: T\ndescription: D\ndate: 2023-02-30\n---\nB\n");
             assert!(matches!(error.error, FrontMatterError::Invalid(_)));
             let message = error.to_string();
-            assert!(message.contains("field `date`: `2023-02-30`"), "{message}");
-            assert!(message.contains("not a day of the calendar"), "{message}");
+            // The reason is the date library's own message.
+            assert!(message.contains("parameter 'day'"), "{message}");
+            assert!(message.contains("must be in range `1..=28`"), "{message}");
         }
 
         #[test]

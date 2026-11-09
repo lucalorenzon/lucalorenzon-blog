@@ -19,7 +19,7 @@ pub fn HomePage(canonical: String, articles: Vec<Article>) -> impl IntoView {
                         <a href=article.address>{article.title.as_str().to_owned()}</a>
                     </h2>
                     <p>{article.description.as_str().to_owned()}</p>
-                    <time datetime=article.date.iso()>{article.date.long_form()}</time>
+                    <time datetime=article.date.to_string()>{article.date.strftime("%-d %B %Y").to_string()}</time>
                 </li>
             }
         })
@@ -64,6 +64,20 @@ mod tests {
 
     fn render_home_page() -> String {
         render(&site(), &real_articles())
+    }
+
+    #[test]
+    fn shows_an_articles_date_for_the_reader_and_for_the_machine() {
+        for (date, for_the_machine, for_the_reader) in [
+            ("2023-04-30", "2023-04-30", "30 April 2023"),
+            ("2024-12-05", "2024-12-05", "5 December 2024"),
+        ] {
+            let mut article = real_articles().remove(0);
+            article.date = date.parse().unwrap();
+            let html = render(&site(), &[article]);
+            let expected = format!("<time datetime=\"{for_the_machine}\">{for_the_reader}</time>");
+            assert!(html.contains(&expected), "{date}: {expected}");
+        }
     }
 
     #[test]
