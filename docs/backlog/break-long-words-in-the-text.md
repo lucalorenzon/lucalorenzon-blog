@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-08, by the user and the agent, while deciding
   which checks make the net, in what became
-  [check the layout on every page with the net](check-the-layout-on-every-page-with-the-net.md)
+  [check the layout on every page with the net](../wip/check-the-layout-on-every-page-with-the-net.md)
   ([ADR-004](../adr/ADR-004-test-components-once-and-pages-with-a-net.md));
   in Later.
 - **Status:** noticed, not started.

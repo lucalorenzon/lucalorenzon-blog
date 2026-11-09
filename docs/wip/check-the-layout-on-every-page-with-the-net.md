@@ -5,7 +5,7 @@
   [ADR-004](../adr/ADR-004-test-components-once-and-pages-with-a-net.md);
   third of its three parts, after
   [take the net's pages from the sitemap](../done/2026-11-09_take-the-nets-pages-from-the-sitemap.md).
-- **Status:** noticed, not started.
+- **Status:** in progress.
 
 ## Why
 
@@ -23,6 +23,13 @@ itself and belong to the net; the rest are component checks.
   it depends on the text. A style rule breaking long words would make
   it a component check:
   [break long words in the text](break-long-words-in-the-text.md).
+- **Sideways scroll with the reader's spacing, at the narrowest
+  width, is net too** (user, 2026-11-09). It depends on the text even
+  more: with the letters spaced as a reader may set them (WCAG 1.4.12)
+  the same word is about a quarter wider, so a long word overflows
+  there first. ADR-004's census had made it a component check,
+  accepting that loss; with the criterion above it no longer holds,
+  and the ADR carries a note.
 - **At most 80 characters per line, at the widest column, is net.** It
   is counted on the lines as the browser breaks them, and with a
   proportional font no style rule can bound it, so it depends on the

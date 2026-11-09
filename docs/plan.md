@@ -28,7 +28,7 @@ live since 2026-10-26
   [accessibility](done/2026-11-09_check-accessibility-on-every-page-with-the-net.md)
   on every page (done: 315 tests became 300, the components checked
   once on their worst case), then
-  [layout](backlog/check-the-layout-on-every-page-with-the-net.md)
+  [layout](wip/check-the-layout-on-every-page-with-the-net.md)
   on every page; then the components' test pages, carded after these.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
