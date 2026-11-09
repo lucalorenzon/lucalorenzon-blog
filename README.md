@@ -27,6 +27,13 @@ npm run typecheck                # checks the browser test's types
 npx playwright test              # opens the built site in a browser
 ```
 
+On demand, after building, `node tools/check-axe-best-practices.mjs` (from
+`end2end/`) runs all of axe's best-practice rules on every built page, at
+three widths and in both colour themes, and prints how the site fares. It is
+not part of the tests and never runs in the pipeline: axe's best practices
+are not WCAG criteria and may change with axe's versions, so the tests
+enable only three of them by name.
+
 The build takes the site's full address from `SITE_ADDRESS`, by default
 `https://www.lucalorenzon.com/`. Every page refers to its files by
 relative paths; only `404.html` uses the address's path part, so it works
