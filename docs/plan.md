@@ -16,8 +16,8 @@ live since 2026-10-26
 
 - A round of the refactors left waiting, so the code moves too:
   [give dates a module of their own](wip/give-dates-a-module-of-their-own.md),
-  or a widely used library, instead of two types of day buried in the
-  article pages and the sitemap. The articles now read their title,
+  being worked on: jiff's day instead of the two types of day buried
+  in the article pages and the sitemap. The articles now read their title,
   description and date from the front matter
   ([card](done/2026-11-08_read-article-fields-from-front-matter.md)),
   not published yet; and
