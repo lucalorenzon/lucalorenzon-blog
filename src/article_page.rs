@@ -231,8 +231,30 @@ impl TryFrom<&ArticleFile> for Article {
     }
 }
 
-/// Builds every article it can. The others are returned with why, in the order of the files.
-pub fn load_articles(files: &[ArticleFile]) -> (Vec<Article>, Vec<ArticleError>) {
+/// The articles that could not be read, each with why, in the order of the files.
+#[derive(Debug, PartialEq, Eq, thiserror::Error)]
+#[error("{} article(s) have problems:\n{}", .0.len(), list_problems(.0))]
+pub struct ArticleProblems(pub Vec<ArticleError>);
+
+fn list_problems(errors: &[ArticleError]) -> String {
+    errors
+        .iter()
+        .map(|error| format!("  - {error}"))
+        .collect::<Vec<_>>()
+        .join("\n")
+}
+
+/// The articles that could be read, and the problems of the others.
+#[derive(Debug)]
+pub struct LoadedArticles {
+    pub articles: Vec<Article>,
+    /// `None` when every file is an article.
+    pub problems: Option<ArticleProblems>,
+}
+
+/// Builds every article it can. The others are returned with why, in the order of the files;
+/// what to do about them is the caller's.
+pub fn load_articles(files: &[ArticleFile]) -> LoadedArticles {
     let mut articles = Vec::new();
     let mut skipped = Vec::new();
     for file in files {
@@ -241,57 +263,10 @@ pub fn load_articles(files: &[ArticleFile]) -> (Vec<Article>, Vec<ArticleError>)
             Err(error) => skipped.push(error),
         }
     }
-    (articles, skipped)
-}
-
-/// The articles the build goes on with, and what to tell the user about the others.
-#[derive(Debug)]
-pub struct LoadedArticles {
-    pub articles: Vec<Article>,
-    /// One line per skipped article, to show when the build starts.
-    pub warnings: Vec<String>,
-    /// The list of the skipped articles, to show at the end of the build; `None` if none.
-    pub summary: Option<String>,
-}
-
-/// Decides what a problem in an article means. In the pipeline (`is_ci`) what is built is what
-/// gets published, so any problem stops the build, with all the problems listed. Anywhere else
-/// the article is skipped, with a warning, and listed in a summary.
-pub fn settle(
-    loaded: (Vec<Article>, Vec<ArticleError>),
-    is_ci: bool,
-) -> Result<LoadedArticles, String> {
-    let (articles, skipped) = loaded;
-    if skipped.is_empty() {
-        return Ok(LoadedArticles {
-            articles,
-            warnings: Vec::new(),
-            summary: None,
-        });
-    }
-    if is_ci {
-        let lines: Vec<String> = skipped.iter().map(|e| format!("  - {e}")).collect();
-        return Err(format!(
-            "{} article(s) have problems:\n{}",
-            skipped.len(),
-            lines.join("\n")
-        ));
-    }
-    let warnings = skipped
-        .iter()
-        .map(|e| format!("article skipped: {e}"))
-        .collect();
-    let lines: Vec<String> = skipped.iter().map(|e| format!("  - {e}")).collect();
-    let summary = format!(
-        "{} article(s) skipped, not in the site:\n{}",
-        skipped.len(),
-        lines.join("\n")
-    );
-    Ok(LoadedArticles {
+    LoadedArticles {
         articles,
-        warnings,
-        summary: Some(summary),
-    })
+        problems: (!skipped.is_empty()).then_some(ArticleProblems(skipped)),
+    }
 }
 
 /// The articles, newest first.
@@ -339,9 +314,9 @@ pub fn render_article_page(article: &Article, site: &SiteAddress) -> String {
 /// `every_real_article_builds` says which.
 #[cfg(test)]
 pub fn real_articles() -> Vec<Article> {
-    let (articles, skipped) = load_articles(&ARTICLE_FILES);
-    assert!(skipped.is_empty(), "{skipped:?}");
-    articles
+    let loaded = load_articles(&ARTICLE_FILES);
+    assert!(loaded.problems.is_none(), "{:?}", loaded.problems);
+    loaded.articles
 }
 
 #[cfg(test)]
@@ -843,17 +818,11 @@ mod tests {
                 )
                 .into_boxed_str(),
             );
-            let loaded = || load_articles(&[file(GOOD), file(text), file("no front matter")]);
-            let skipped_locally = settle(loaded(), false).unwrap();
-            assert_eq!(skipped_locally.articles.len(), 1);
-            assert_eq!(skipped_locally.warnings.len(), 2);
-            assert!(skipped_locally.warnings[0].contains("fit in the page heading"));
-            let stopped = settle(loaded(), true).unwrap_err();
-            assert!(
-                stopped.starts_with("2 article(s) have problems:"),
-                "{stopped}"
-            );
-            assert!(stopped.contains("fit in the page heading"), "{stopped}");
+            let loaded = load_articles(&[file(GOOD), file(text), file("no front matter")]);
+            assert_eq!(loaded.articles.len(), 1);
+            let problems = loaded.problems.unwrap().0;
+            assert_eq!(problems.len(), 2);
+            assert!(problems[0].to_string().contains("fit in the page heading"));
         }
 
         #[test]
@@ -899,57 +868,55 @@ mod tests {
         #[test]
         fn loading_separates_the_good_from_the_bad() {
             let files = [file(GOOD), file("no front matter"), file(GOOD)];
-            let (articles, skipped) = load_articles(&files);
-            assert_eq!(articles.len(), 2);
-            assert_eq!(skipped.len(), 1);
+            let loaded = load_articles(&files);
+            assert_eq!(loaded.articles.len(), 2);
+            assert_eq!(loaded.problems.unwrap().0.len(), 1);
         }
 
-        fn loaded_with_two_problems() -> (Vec<Article>, Vec<ArticleError>) {
-            load_articles(&[
+        #[test]
+        fn the_problems_come_back_in_the_order_of_the_files() {
+            let loaded = load_articles(&[
                 file(GOOD),
                 file("no front matter"),
                 file("---\nx: 1\n---\n"),
-            ])
-        }
-
-        #[test]
-        fn outside_the_pipeline_problems_are_warnings_and_a_summary() {
-            let loaded = settle(loaded_with_two_problems(), false).unwrap();
+            ]);
             assert_eq!(loaded.articles.len(), 1);
-            assert_eq!(loaded.warnings.len(), 2);
-            assert!(
-                loaded
-                    .warnings
-                    .iter()
-                    .all(|w| w.starts_with("article skipped: "))
+            let problems = loaded.problems.unwrap().0;
+            assert_eq!(problems.len(), 2);
+            assert_eq!(problems[0], error_of("no front matter"));
+            assert_eq!(problems[1], error_of("---\nx: 1\n---\n"));
+        }
+
+        #[test]
+        fn without_problems_there_are_none() {
+            let loaded = load_articles(&[file(GOOD)]);
+            assert_eq!(loaded.articles.len(), 1);
+            assert!(loaded.problems.is_none());
+        }
+
+        #[test]
+        fn the_problems_read_as_a_count_and_a_list() {
+            let problems = load_articles(&[file("no front matter"), file("---\nx: 1\n---\n")])
+                .problems
+                .unwrap();
+            let lines: Vec<String> = problems.0.iter().map(|e| format!("  - {e}")).collect();
+            assert_eq!(
+                problems.to_string(),
+                format!("2 article(s) have problems:\n{}", lines.join("\n"))
             );
-            let summary = loaded.summary.unwrap();
-            assert!(summary.starts_with("2 article(s) skipped"));
-            assert_eq!(summary.matches("content/articles/a.md").count(), 2);
-        }
-
-        #[test]
-        fn in_the_pipeline_all_the_problems_stop_the_build() {
-            let error = settle(loaded_with_two_problems(), true).unwrap_err();
-            assert!(error.starts_with("2 article(s) have problems:"));
-            assert_eq!(error.matches("content/articles/a.md").count(), 2);
-        }
-
-        #[test]
-        fn without_problems_nothing_is_said_in_either_case() {
-            for is_ci in [true, false] {
-                let loaded = settle(load_articles(&[file(GOOD)]), is_ci).unwrap();
-                assert_eq!(loaded.articles.len(), 1);
-                assert!(loaded.warnings.is_empty());
-                assert!(loaded.summary.is_none());
-            }
+            assert!(
+                problems
+                    .to_string()
+                    .starts_with("2 article(s) have problems:\n  - content/articles/a.md: ")
+            );
+            assert!(!problems.to_string().ends_with('\n'));
         }
 
         #[test]
         fn every_real_article_builds() {
-            let (articles, skipped) = load_articles(&ARTICLE_FILES);
-            assert!(skipped.is_empty(), "{skipped:?}");
-            assert_eq!(articles.len(), ARTICLE_FILES.len());
+            let loaded = load_articles(&ARTICLE_FILES);
+            assert!(loaded.problems.is_none(), "{:?}", loaded.problems);
+            assert_eq!(loaded.articles.len(), ARTICLE_FILES.len());
         }
 
         #[test]

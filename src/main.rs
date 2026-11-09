@@ -50,16 +50,28 @@ struct MissingContentDates(InputError);
 
 /// What the build does with a problem it can live with. In the pipeline (`is_ci`) what is
 /// built is what gets published, so the problem stops the build; anywhere else the build goes
-/// on, and the warning says the problem and what the build does instead.
-fn tolerate<E>(problem: E, is_ci: bool, instead: &str) -> Result<String, E>
-where
-    E: std::fmt::Display,
-{
-    if is_ci {
-        Err(problem)
-    } else {
-        Ok(format!("{problem}; {instead}"))
-    }
+/// on.
+fn tolerate<E>(problem: E, is_ci: bool) -> Result<E, E> {
+    if is_ci { Err(problem) } else { Ok(problem) }
+}
+
+/// A warning: the problem, then what the build does instead.
+fn warning(problem: &impl std::fmt::Display, instead: &str) -> String {
+    format!("{problem}; {instead}")
+}
+
+/// The list of the articles left out, shown at the end of the build.
+fn skipped_summary(skipped: &article_page::ArticleProblems) -> String {
+    let lines: Vec<String> = skipped
+        .0
+        .iter()
+        .map(|error| format!("  - {error}"))
+        .collect();
+    format!(
+        "{} article(s) skipped, not in the site:\n{}",
+        skipped.0.len(),
+        lines.join("\n")
+    )
 }
 
 fn build() -> Result<(), Box<dyn Error>> {
@@ -75,12 +87,16 @@ fn build() -> Result<(), Box<dyn Error>> {
     })?;
 
     let is_ci = env::var("CI").is_ok_and(|value| !value.is_empty());
-    let loaded = article_page::settle(
-        article_page::load_articles(&article_page::ARTICLE_FILES),
-        is_ci,
-    )?;
-    for warning in &loaded.warnings {
-        eprintln!("warning: {warning}");
+    let loaded = article_page::load_articles(&article_page::ARTICLE_FILES);
+    let skipped = match loaded.problems {
+        Some(problems) => Some(tolerate(problems, is_ci)?),
+        None => None,
+    };
+    for error in skipped.iter().flat_map(|problems| &problems.0) {
+        eprintln!(
+            "warning: {}",
+            warning(error, "the article is left out of the site")
+        );
     }
 
     fs::create_dir_all(&out_dir)?;
@@ -95,30 +111,31 @@ fn build() -> Result<(), Box<dyn Error>> {
     let dates = match read_input("CONTENT_DATES_FILE") {
         Ok(text) => Some(sitemap::ContentDates::parse(&text)?),
         Err(problem) => {
-            let warning = tolerate(
-                MissingContentDates(problem),
-                is_ci,
-                "the sitemap has no <lastmod>",
-            )?;
-            eprintln!("warning: {warning}");
+            let problem = tolerate(MissingContentDates(problem), is_ci)?;
+            eprintln!(
+                "warning: {}",
+                warning(&problem, "the sitemap has no <lastmod>")
+            );
             None
         }
     };
     let sitemap = sitemap::build_sitemap(&pages, &address, dates.as_ref());
     if let Some(missing) = sitemap.missing {
-        let warning = tolerate(missing, is_ci, "written without <lastmod>")?;
-        eprintln!("warning: {warning}");
+        let missing = tolerate(missing, is_ci)?;
+        eprintln!(
+            "warning: {}",
+            warning(&missing, "written without <lastmod>")
+        );
     }
     fs::write(out_dir.join(sitemap::SITEMAP_FILE), sitemap.xml)?;
     let blocked = match read_input("BLOCKED_ROBOTS_FILE") {
         Ok(text) => robots_txt::parse_blocked_robots(&text)?,
         Err(problem) => {
-            let warning = tolerate(
-                MissingBlockedRobots(problem),
-                is_ci,
-                "the robots.txt blocks only the training signal",
-            )?;
-            eprintln!("warning: {warning}");
+            let problem = tolerate(MissingBlockedRobots(problem), is_ci)?;
+            eprintln!(
+                "warning: {}",
+                warning(&problem, "the robots.txt blocks only the training signal")
+            );
             Vec::new()
         }
     };
@@ -127,8 +144,8 @@ fn build() -> Result<(), Box<dyn Error>> {
         robots_txt::robots_txt(&address, &blocked),
     )?;
     write_code_classes()?;
-    if let Some(summary) = &loaded.summary {
-        eprintln!("{summary}");
+    if let Some(skipped) = &skipped {
+        eprintln!("{}", skipped_summary(skipped));
     }
     Ok(())
 }
@@ -170,14 +187,40 @@ mod tests {
 
     #[test]
     fn a_problem_stops_the_build_in_the_pipeline() {
-        let error = tolerate("it broke".to_owned(), true, "going on").unwrap_err();
+        let error = tolerate("it broke".to_owned(), true).unwrap_err();
         assert_eq!(error, "it broke");
     }
 
     #[test]
-    fn a_problem_is_a_warning_elsewhere() {
-        let warning = tolerate("it broke".to_owned(), false, "going on").unwrap();
-        assert_eq!(warning, "it broke; going on");
+    fn a_problem_is_tolerated_elsewhere() {
+        let problem = tolerate("it broke".to_owned(), false).unwrap();
+        assert_eq!(problem, "it broke");
+    }
+
+    #[test]
+    fn a_warning_is_the_problem_then_what_the_build_does_instead() {
+        assert_eq!(warning(&"it broke", "going on"), "it broke; going on");
+    }
+
+    #[test]
+    fn the_summary_lists_the_articles_left_out() {
+        let skipped = article_page::ArticleProblems(vec![
+            article_page::ArticleError {
+                file: "content/articles/a.md",
+                error: article_page::FrontMatterError::Missing,
+            },
+            article_page::ArticleError {
+                file: "content/articles/b.md",
+                error: article_page::FrontMatterError::Unclosed,
+            },
+        ]);
+        let summary = skipped_summary(&skipped);
+        assert_eq!(
+            summary,
+            "2 article(s) skipped, not in the site:\n  \
+             - content/articles/a.md: the file does not start with a front matter (a line `---`)\n  \
+             - content/articles/b.md: the front matter has no closing line `---`"
+        );
     }
 
     #[test]
