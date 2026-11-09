@@ -1,23 +1,23 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { expect, test } from '@playwright/test';
-import { live, retryWhenLive, TEXT_PAGES } from './support';
+import { live, retryWhenLive, NET_PAGES } from './support';
 
 // Locally the link is built from SITE_ADDRESS (the build's default when unset);
 // on the live site the page's own address is the canonical one.
 const siteAddress = process.env.SITE_ADDRESS?.trim() || 'https://www.lucalorenzon.com/';
 
-for (const textPage of TEXT_PAGES) {
-  test(`the ${textPage.name} has one canonical link with its full address`, async ({
+for (const netPage of NET_PAGES) {
+  test(`the ${netPage.name} has one canonical link with its full address`, async ({
     page,
     baseURL,
   }) => {
     await retryWhenLive(async () => {
-      await page.goto(textPage.address);
+      await page.goto(netPage.address);
       // './' is the home page: its address is the site's address itself.
-      const siteRelative = textPage.address.replace(/^\.\//, '');
+      const siteRelative = netPage.address.replace(/^\.\//, '');
       const expected = live
-        ? new URL(textPage.address, baseURL).href
+        ? new URL(netPage.address, baseURL).href
         : siteAddress + siteRelative;
       const canonical = page.locator('link[rel="canonical"]');
       await expect(canonical).toHaveCount(1);

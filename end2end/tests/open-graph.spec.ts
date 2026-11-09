@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { expect, test, type Page } from '@playwright/test';
-import { live, retryWhenLive, TEXT_PAGES } from './support';
+import { live, retryWhenLive, NET_PAGES } from './support';
 
 // The content of the one meta element that matches; fails if there are none or several.
 async function metaContent(page: Page, selector: string): Promise<string> {
@@ -14,10 +14,10 @@ const og = (property: string) => `meta[property="${property}"]`;
 
 // What the pages say about themselves is checked as behaviour, not as texts:
 // the texts belong to the code and change with it.
-for (const textPage of TEXT_PAGES) {
-  test(`the ${textPage.name} has its description and its Open Graph tags`, async ({ page }) => {
+for (const netPage of NET_PAGES) {
+  test(`the ${netPage.name} has its description and its Open Graph tags`, async ({ page }) => {
     await retryWhenLive(async () => {
-      await page.goto(textPage.address);
+      await page.goto(netPage.address);
 
       const description = await metaContent(page, 'meta[name="description"]');
       expect(description.length).toBeGreaterThan(0);
@@ -33,8 +33,8 @@ for (const textPage of TEXT_PAGES) {
       expect(await metaContent(page, og('og:site_name'))).toBe('Luca Lorenzon');
       expect(await metaContent(page, og('og:locale'))).toBe('en_GB');
 
-      const isArticle = textPage.address.startsWith('./articles/');
-      const isProfile = ['./curriculum.html', './about.html'].includes(textPage.address);
+      const isArticle = netPage.address.startsWith('./articles/');
+      const isProfile = ['./curriculum.html', './about.html'].includes(netPage.address);
       expect(await metaContent(page, og('og:type'))).toBe(
         isArticle ? 'article' : isProfile ? 'profile' : 'website',
       );

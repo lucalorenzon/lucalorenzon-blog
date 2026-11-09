@@ -1,7 +1,7 @@
 import { chromium, expect, test } from '@playwright/test';
 import lighthouse from 'lighthouse';
 import { createServer } from 'node:net';
-import { retryWhenLive } from './support';
+import { pathsOfSitemap, retryWhenLive } from './support';
 
 // What the check reads from Lighthouse's report. Lighthouse's own types are
 // large; only the fields used here are named.
@@ -40,17 +40,9 @@ async function sitemapPaths(
   const response = await request.get('./sitemap.xml');
   expect(response.status(), 'sitemap.xml must be served').toBe(200);
   const body = await response.text();
-  const addresses = [...body.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1].trim());
-  expect(addresses.length, 'sitemap.xml must list at least one <loc>').toBeGreaterThan(0);
-  // The <loc> addresses always point to the site's production address, whatever
-  // server is under test. Locally the pages are served from 127.0.0.1, and
-  // Lighthouse's canonical rule does not compare domains, so each address is
-  // mapped to the server under test by keeping its path and resolving it,
-  // relative, against the test's base URL.
-  return addresses.map((address) => {
-    const url = new URL(address);
-    return './' + url.pathname.replace(/^\/+/, '') + url.search;
-  });
+  const paths = pathsOfSitemap(body);
+  expect(paths.length, 'sitemap.xml must list at least one <loc>').toBeGreaterThan(0);
+  return paths;
 }
 
 // The failures of one page: every rule of Lighthouse's SEO category that is

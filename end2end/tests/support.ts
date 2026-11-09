@@ -90,6 +90,45 @@ export const TABLE_ADDRESSES = ADDRESSES.filter((address) =>
   readFileSync(resolve(SITE, address), 'utf8').includes('table-with-viewer'),
 );
 
+// The paths, on the server under test, of the pages a sitemap lists.
+export function pathsOfSitemap(xml: string): string[] {
+  const addresses = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1].trim());
+  // The <loc> addresses always point to the site's production address, whatever
+  // server is under test. Locally the pages are served from 127.0.0.1, and
+  // Lighthouse's canonical rule does not compare domains, so each address is
+  // mapped to the server under test by keeping its path and resolving it,
+  // relative, against the test's base URL.
+  return addresses.map((address) => {
+    const url = new URL(address);
+    return './' + url.pathname.replace(/^\/+/, '') + url.search;
+  });
+}
+
+// The pages the "net" tests (written once, run on every page) check. The list
+// is the build's sitemap in both moments: locally and in the build the site is
+// in target/site; in the live check after a publication the pipeline puts only
+// the build's sitemap.xml there (see deploy.yml), so the tests that walk the
+// folder (ADDRESSES, TABLE_ADDRESSES) still find no pages and skip. It is read
+// synchronously, because Playwright builds the list of tests before running
+// any. A missing or empty sitemap throws: a net check with nothing to check
+// must not pass.
+function netPages(): { name: string; address: string }[] {
+  const file = resolve(SITE, 'sitemap.xml');
+  if (!existsSync(file)) {
+    throw new Error(
+      `${file} not found: run scripts/build-site.sh from the repository root before the tests` +
+        ' (for the live run, the pipeline copies the build\'s sitemap.xml there).',
+    );
+  }
+  const paths = pathsOfSitemap(readFileSync(file, 'utf8'));
+  if (paths.length === 0) {
+    throw new Error(`${file} lists no <loc>: the net tests would have no page to check.`);
+  }
+  return paths.map((address) => ({ name: address === './' ? 'home page' : address.replace(/^\.\//, ''), address }));
+}
+
+export const NET_PAGES = netPages();
+
 // What a reader's own style sheet may set, from the text of the criterion.
 export const READER_SPACING = `
   * {

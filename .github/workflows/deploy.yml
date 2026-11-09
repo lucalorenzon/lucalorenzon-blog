@@ -288,6 +288,21 @@ jobs:
         with:
           persist-credentials: false
 
+      # The net tests take their list of pages from the build's sitemap. Only
+      # sitemap.xml is copied into target/site, so the tests that walk that
+      # folder keep skipping on the live run.
+      - name: Download the built site
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site
+          path: target/built-site
+
+      - name: Keep only the sitemap of the built site
+        run: |
+          set -euo pipefail
+          mkdir -p target/site
+          cp target/built-site/sitemap.xml target/site/sitemap.xml
+
       - name: Install the browser test dependencies
         working-directory: end2end
         run: npm ci
