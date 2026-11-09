@@ -111,6 +111,9 @@ live since 2026-10-26
   translations.
 - [Take the site's content from several repositories](backlog/take-content-from-several-repositories.md),
   once copying the curriculum and the articles by hand stops scaling.
+- [Check periodically that the published text matches its Markdown](backlog/check-published-text-against-markdown.md),
+  so a section lost while a page is composed does not go unnoticed,
+  now that the tests no longer write the section titles.
 - [Break long words in the text](backlog/break-long-words-in-the-text.md),
   so no text can scroll the page sideways and that check can leave the
   net for a component test.

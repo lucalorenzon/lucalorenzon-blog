@@ -49,17 +49,24 @@ ADR-004's census sorts them so:
   link is only checked when there is one; whether the site needs one
   belongs to the card on the WCAG criteria axe cannot check.
 
+- **The banner and footer comparison becomes a net check of their
+  shape** (user, on the agent's proposal), on every page of the
+  sitemap: the banner holds the logo link "Lvk@73r, home page" and
+  one level-1 heading with any non-empty text; `main` holds no
+  level-1 heading; the footer holds the copyright and one link with
+  any text. This also answers "exactly one level-1 heading". The exact
+  texts stay with Rust's unit tests, which already check each page's
+  heading and footer phrase (`FooterLicence` in `src/page_frame.rs`).
+  The two expected trees, one per form of the logo, were identical,
+  since the logo has the same name in both.
+- **The loss of the section titles is accepted** (user): a section
+  lost while a page is composed would no longer be noticed by the
+  tests. The user asked for a periodic consistency check between the
+  Markdown and the published text instead:
+  [check periodically that the published text matches its Markdown](../backlog/check-published-text-against-markdown.md).
+
 ## Decisions to take
 
-- **Which losses ADR-004 lists for this part are accepted:** a section
-  lost by a fault of the software, no longer noticed by its title but
-  only by the structure of the headings. (The contrast of an element
-  shown only at some widths is now checked by the component's test.)
-- **Exactly one level-1 heading:** axe checks there is at least one;
-  today the accessibility tree checks one in the banner and none in
-  `main`, with the page's heading text written in the test.
-- **What becomes of the banner and footer comparison,** a frame check
-  that writes each page's heading and licence link text in the test.
 - **Repeated identifiers:** axe now checks only those referenced by
   accessibility attributes (`duplicate-id-aria`); its general rule was
   retired with WCAG 2.2's removal of criterion 4.1.1. Link texts are
