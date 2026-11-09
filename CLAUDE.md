@@ -190,8 +190,8 @@ Why: `docs/done/2026-11-09_describe-the-browser-tests-in-a-readme.md`.
   only, for the YAML front matter at the top of each article (why:
   `docs/done/2026-11-08_read-article-fields-from-front-matter.md`)
 - [jiff](https://github.com/BurntSushi/jiff) 0.2, without time zones,
-  reading the articles' dates (strict ISO form, `YYYY-MM-DD`) and
-  writing them for the reader (why:
+  reading the dates of the articles and of the sitemap (strict ISO
+  form, `YYYY-MM-DD`) and writing them for the reader (why:
   `docs/wip/give-dates-a-module-of-their-own.md`)
 - [unicode-segmentation](https://github.com/unicode-rs/unicode-segmentation)
   1.13, counting the graphemes of a page heading against its limit

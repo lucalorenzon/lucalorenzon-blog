@@ -8,8 +8,8 @@
 use crate::article_page::Article;
 use crate::site_address::SiteAddress;
 use crate::{about_page, article_page, curriculum_page, home_page, licence_page, not_found_page};
+use jiff::civil::Date;
 use std::collections::BTreeMap;
-use std::fmt;
 
 /// Where the build writes the sitemap, relative to the site's root.
 pub const SITEMAP_FILE: &str = "sitemap.xml";
@@ -83,43 +83,9 @@ pub fn pages(site: &SiteAddress, articles: &[Article]) -> Vec<Page> {
     pages
 }
 
-/// A day, `YYYY-MM-DD`: only a well-formed one can be built.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct ContentDate {
-    year: u16,
-    month: u8,
-    day: u8,
-}
-
-impl ContentDate {
-    pub fn parse(text: &str) -> Option<Self> {
-        let bytes = text.as_bytes();
-        if bytes.len() != 10 || bytes[4] != b'-' || bytes[7] != b'-' {
-            return None;
-        }
-        let digits = |range: std::ops::Range<usize>| {
-            let part = text.get(range)?;
-            part.bytes()
-                .all(|b| b.is_ascii_digit())
-                .then(|| part.parse::<u16>().ok())
-                .flatten()
-        };
-        let year = digits(0..4)?;
-        let month = u8::try_from(digits(5..7)?).ok()?;
-        let day = u8::try_from(digits(8..10)?).ok()?;
-        ((1..=12).contains(&month) && (1..=31).contains(&day)).then_some(Self { year, month, day })
-    }
-}
-
-impl fmt::Display for ContentDate {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:04}-{:02}-{:02}", self.year, self.month, self.day)
-    }
-}
-
 /// The date of the last change of each content file, by path from the repository's root.
 #[derive(Debug, Default)]
-pub struct ContentDates(BTreeMap<String, ContentDate>);
+pub struct ContentDates(BTreeMap<String, Date>);
 
 impl ContentDates {
     /// Reads the dates file: one `<path>\t<YYYY-MM-DD>` line per file.
@@ -133,7 +99,7 @@ impl ContentDates {
                 )
             };
             let (path, date) = line.split_once('\t').ok_or_else(malformed)?;
-            let date = ContentDate::parse(date).ok_or_else(malformed)?;
+            let date = date.parse::<Date>().map_err(|_| malformed())?;
             if path.is_empty() {
                 return Err(malformed());
             }
@@ -142,7 +108,7 @@ impl ContentDates {
         Ok(Self(dates))
     }
 
-    fn get(&self, path: &str) -> Option<ContentDate> {
+    fn get(&self, path: &str) -> Option<Date> {
         self.0.get(path).copied()
     }
 }
@@ -441,7 +407,8 @@ mod tests {
 
     #[test]
     fn accepts_only_well_formed_dates() {
-        assert!(ContentDate::parse("2026-11-06").is_some());
+        let read = |date: &str| ContentDates::parse(&format!("about.md\t{date}"));
+        assert!(read("2026-11-06").is_ok());
         for bad in [
             "",
             "2026-11-6",
@@ -451,11 +418,12 @@ mod tests {
             "2026-00-10",
             "2026-11-00",
             "2026-11-32",
+            "2026-02-31",
             "2026-1a-06",
             "+026-11-06",
             "2026-11-061",
         ] {
-            assert!(ContentDate::parse(bad).is_none(), "{bad}");
+            assert!(read(bad).is_err(), "{bad}");
         }
     }
 
