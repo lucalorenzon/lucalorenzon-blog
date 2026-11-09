@@ -109,53 +109,69 @@ async function look(page: Page, address: string, run: Run) {
   };
 }
 
-// The two axe tests of a page at a width. `extraRules` are enabled by name on
-// top of the WCAG tags (see runAxe in support.ts).
-function axeTests(
-  title: string,
+type Size = { width: number; height: number };
+type Options = { extraRules?: string[]; onlyLocal?: boolean };
+
+// The skip shared by the tests that open the "page not found".
+const ONLY_LOCAL_REASON =
+  'checked locally only: only the host serves the "page not found" for a missing address, not-found.spec.ts covers it live';
+
+// What the accessibility test of a page at a width does: every selected rule
+// except the two contrast rules. `extraRules` are enabled by name on top of
+// the WCAG tags (see runAxe in support.ts). The test( calls are not here but
+// in the net and in the frame below, so that each has its own declaration.
+async function checkAccessibility(
+  page: Page,
   address: string,
-  { width, height }: { width: number; height: number },
-  { extraRules = [], onlyLocal = false }: { extraRules?: string[]; onlyLocal?: boolean } = {},
+  { width, height }: Size,
+  { extraRules = [], onlyLocal = false }: Options = {},
 ) {
-  // Every selected rule except the two contrast rules.
-  test(`accessibility of ${title}`, async ({ page }) => {
-    test.skip(onlyLocal && live, 'checked locally only: only the host serves the "page not found" for a missing address, not-found.spec.ts covers it live');
-    await page.setViewportSize({ width, height });
+  test.skip(onlyLocal && live, ONLY_LOCAL_REASON);
+  await page.setViewportSize({ width, height });
 
-    await retryWhenLive(async () => {
-      const { violations, report, passed, inapplicable } = await look(page, address, (p) =>
-        runAxe(p, 'rules', { extraRules }),
-      );
-      expect(violations, `accessibility violations:\n${report}`).toEqual([]);
+  await retryWhenLive(async () => {
+    const { violations, report, passed, inapplicable } = await look(page, address, (p) =>
+      runAxe(p, 'rules', { extraRules }),
+    );
+    expect(violations, `accessibility violations:\n${report}`).toEqual([]);
 
-      // Named rules are outside the tags: make sure axe did run them.
-      for (const id of extraRules) {
-        expect([...passed, ...inapplicable], `axe did not run the rule ${id}`).toContain(id);
-      }
-    });
+    // Named rules are outside the tags: make sure axe did run them.
+    for (const id of extraRules) {
+      expect([...passed, ...inapplicable], `axe did not run the rule ${id}`).toContain(id);
+    }
   });
+}
 
-  // Only the two contrast rules, in both themes. Selected by id, so
-  // color-contrast-enhanced (disabled by default in axe) runs too.
-  test(`contrast of ${title}`, { tag: '@colours' }, async ({ page }) => {
-    test.skip(onlyLocal && live, 'checked locally only: only the host serves the "page not found" for a missing address, not-found.spec.ts covers it live');
-    await page.setViewportSize({ width, height });
+// What the contrast test of a page at a width does: only the two contrast
+// rules, in both themes. Selected by id, so color-contrast-enhanced (disabled
+// by default in axe) runs too.
+async function checkContrast(
+  page: Page,
+  address: string,
+  { width, height }: Size,
+  { onlyLocal = false }: Options = {},
+) {
+  test.skip(onlyLocal && live, ONLY_LOCAL_REASON);
+  await page.setViewportSize({ width, height });
 
-    await retryWhenLive(async () => {
-      const { violations, report, passed } = await look(page, address, (p) => runAxe(p, 'contrast'));
-      expect(violations, `accessibility violations:\n${report}`).toEqual([]);
+  await retryWhenLive(async () => {
+    const { violations, report, passed } = await look(page, address, (p) => runAxe(p, 'contrast'));
+    expect(violations, `accessibility violations:\n${report}`).toEqual([]);
 
-      for (const id of MUST_HAVE_RUN) {
-        expect(passed, `axe did not evaluate the rule ${id}`).toContain(id);
-      }
-    });
+    for (const id of MUST_HAVE_RUN) {
+      expect(passed, `axe did not evaluate the rule ${id}`).toContain(id);
+    }
   });
 }
 
 // The net: every page of the sitemap, at one width.
 for (const { name: pageName, address } of NET_PAGES) {
-  axeTests(`the ${pageName} at ${LAPTOP.width}x${LAPTOP.height} (${LAPTOP.name})`, address, LAPTOP, {
-    extraRules: HEADING_RULES,
+  test(`accessibility of the ${pageName} at ${LAPTOP.width}x${LAPTOP.height} (${LAPTOP.name})`, async ({ page }) => {
+    await checkAccessibility(page, address, LAPTOP, { extraRules: HEADING_RULES });
+  });
+
+  test(`contrast of the ${pageName} at ${LAPTOP.width}x${LAPTOP.height} (${LAPTOP.name})`, { tag: '@colours' }, async ({ page }) => {
+    await checkContrast(page, address, LAPTOP);
   });
 
   // axe finds rule violations; it does not notice a change in what a screen
@@ -219,6 +235,11 @@ for (const { name: pageName, address } of NET_PAGES) {
   });
 }
 
+const FRAME_PAGES = [
+  { label: 'home page', address: './', onlyLocal: false },
+  { label: 'page not found', address: './404.html', onlyLocal: true },
+];
+
 // The frame, at the three width bands. The header changes form with the band
 // (text logo, drawn logo, title below or beside the logo); the frame is the
 // same on every page, so one content page plus the "page not found" suffice.
@@ -226,6 +247,13 @@ for (const { name: pageName, address } of NET_PAGES) {
 // a missing address, so a live run leaves it out.
 for (const band of BANDS) {
   const where = `at ${band.width}x${band.height} (${band.name})`;
-  axeTests(`the frame, home page ${where}`, './', band, { extraRules: HEADING_RULES });
-  axeTests(`the frame, page not found ${where}`, './404.html', band, { extraRules: HEADING_RULES, onlyLocal: true });
+  for (const { label, address, onlyLocal } of FRAME_PAGES) {
+    test(`accessibility of the frame, ${label} ${where}`, async ({ page }) => {
+      await checkAccessibility(page, address, band, { extraRules: HEADING_RULES, onlyLocal });
+    });
+
+    test(`contrast of the frame, ${label} ${where}`, { tag: '@colours' }, async ({ page }) => {
+      await checkContrast(page, address, band, { onlyLocal });
+    });
+  }
 }
