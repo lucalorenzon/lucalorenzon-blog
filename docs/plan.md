@@ -142,5 +142,7 @@ live since 2026-10-26
 - [Measure what a Leptos island weighs](backlog/measure-weight-of-a-leptos-island.md),
   the shared part and the component's, with the first island the site
   needs.
+- [Run a browser test from its row in the README](backlog/run-a-test-from-its-readme-row.md),
+  on the last build, without writing the command by hand.
 - Further articles and everything around them, beyond the first two,
   now on the site. Not planned yet, on purpose.
