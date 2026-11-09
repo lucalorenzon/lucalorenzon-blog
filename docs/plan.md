@@ -22,11 +22,11 @@ live since 2026-10-26
   ([card](done/2026-11-09_give-dates-a-module-of-their-own.md)) and
   the articles' front matter
   ([card](done/2026-11-08_read-article-fields-from-front-matter.md)).
-- [Build a design system](wip/build-a-design-system.md), with
-  Holt or Storybook, starting with a timeboxed spike on Holt: each
-  component tested once in a catalogue, on cases written for the
-  purpose, so the two articles that serve as test pages today go back
-  to being content. It takes over the components' test pages of
+- [Build a design system](wip/build-a-design-system.md): a style
+  guide of our own, built with Leptos and published under
+  `/style-guide`, one page per component: each component tested once,
+  on cases written for the purpose, so the two articles that serve as
+  test pages today go back to being content. It takes over the components' test pages of
   [ADR-004](adr/ADR-004-test-components-once-and-pages-with-a-net.md),
   whose other slices are done: 913 tests became 227.
 
