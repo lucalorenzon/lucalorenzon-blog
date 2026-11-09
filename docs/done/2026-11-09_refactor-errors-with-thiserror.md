@@ -2,103 +2,95 @@
 
 - **Opened:** 2026-11-08, by the user, while choosing how the articles'
   front matter is checked
-  ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
-- **Status:** being worked on, since 2026-11-09.
+  ([card](2026-11-08_read-article-fields-from-front-matter.md)).
+- **Status:** done, 2026-11-09.
 
 ## Why
 
-The user wants the code refactored to use
+The user wanted the code refactored to use
 [thiserror](https://crates.io/crates/thiserror), the library that
-writes the boilerplate of an error type from a short declaration.
-Today the errors are written in several ways: plain text
-(`Result<_, String>`, for example in `src/sitemap.rs` and
-`src/robots_txt.rs`), a generic box in the build program
-(`Box<dyn Error>`, in `src/main.rs`), and, from the articles' card,
-error types written by hand.
-
-## Known from the start
-
-- **A refactor:** what the build writes stays the same; only the
-  code's structure changes. The messages it prints were meant to stay
-  the same too; see the answers.
-- **thiserror is a new dependency,** to be audited as any other.
-- **The YAML reader's messages begin with a doubled "error:",** as in
-  `front matter: error: line 4 column 7: ...`
-  ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
+writes the boilerplate of an error type from a short declaration. The
+errors were written in three ways: plain text (`Result<_, String>`, in
+`src/sitemap.rs`, `src/robots_txt.rs` and the articles' `settle`), a
+generic box in the build program (`Box<dyn Error>`, in `src/main.rs`),
+and six error types written by hand. The YAML reader's messages also
+began with a doubled "error:", as in
+`front matter: error: line 4 column 7: ...`.
 
 ## Answers
 
 All chosen by the user on 2026-11-09, on the agent's questions and
-proposals.
+proposals, unless said otherwise.
 
-### Every error moves to thiserror
+### Which errors move to thiserror? All of them
 
-**Chosen:** all three ways of writing an error give way to types
-declared with thiserror: the hand-written types (`InvalidSiteAddress`,
-`HeadingError`, `TitleError`, `DescriptionError`, `FrontMatterError`,
-`ArticleError`), the plain text (`Result<_, String>` in
-`src/sitemap.rs`, `src/robots_txt.rs` and `settle` in
-`src/article_page.rs`) and the generic box (`Box<dyn Error>` in
-`src/main.rs`). The hand-written `Display` and `Error`
-implementations no longer needed are removed.
+**Chosen:** all three ways give way to types declared with thiserror,
+and the hand-written `Display` and `Error` implementations are removed.
+One mechanism, the same annotations on every error type, is the common
+structure the user asked for.
 
-**Why:** the card was opened because errors are written in several
-ways; one mechanism, the same annotations on every error type, is the
-answer. The question as first written, "only those matched by the
-code", separated nothing: no error is told apart by the build's code,
-only by the unit tests.
+**Why:** the card was opened because errors were written in several
+ways. The question as first written, "only those matched by the code",
+separated nothing: no error was told apart by the build's code, only
+by the unit tests.
 
 **Rejected:** moving only the six hand-written types, which would have
 left the plain text and the generic box, so still several ways.
 
-### Every error says where and what
+### What does an error hold? Where and what
 
 **Chosen:** each error carries where the problem is (a file, a line, a
-field) and what is wrong, as data rather than inside a sentence.
+column, a field, a variable) and what is wrong, as data rather than
+inside a sentence.
 
-### Errors start in the domain and are returned; only the adapter prints
+### Who prints? Only the adapter
 
-**Chosen:** the domain returns `Result<T, E>`, with `E` its own error
-declared with thiserror, and composes no message for the user; only
-`src/main.rs`, today the only adapter, prints.
+**Chosen:** errors start in the domain and are returned as
+`Result<T, E>`, with `E` declared with thiserror; the domain composes
+no message for the user. Only `src/main.rs`, today the only adapter,
+prints.
 
-**Warnings are errors too.** A missing content date, a missing dates
-file or a missing list of blocked robots is the same error whether it
-stops the build or not: in the pipeline it stops it, anywhere else it
-is shown as a warning. So the domain returns these errors as values,
-`is_ci` leaves it, and the choice between a warning and a stop is made
-in `src/main.rs`. The adapter no longer passes the domain the reason
+**Warnings are errors too,** in the user's words: a missing content
+date, a missing dates file, a missing list of blocked robots, an
+article that cannot be read is the same error whether it stops the
+build or not. In the pipeline it stops it, anywhere else it is a
+warning. So the domain returns these errors as values, `is_ci` left it,
+and one function of `src/main.rs`, `tolerate`, decides between a
+warning and a stop. The adapter no longer passes the domain the reason
 why a file could not be read, as text: it passes the content, or
 nothing.
 
-### Errors first, the separation of the domain from the adapters after
+### Errors first, or the separation of the domain from the adapters? Errors first
 
-**Chosen:** this card gives the domain its errors without designing
-any port; the errors on the adapter's side (a file that cannot be read,
-a variable not set, a write that fails) stay gathered in a type of
-`src/main.rs`. The separation of the domain from the adapters is a
+**Chosen:** this card gave the domain its errors without designing any
+port; the errors on the adapter's side (a file that cannot be read, a
+variable not set, a write that fails) are gathered in `BuildError`, in
+`src/main.rs`. Separating the domain from the adapters is a
 [card of its own](../backlog/separate-the-domain-from-the-adapters.md),
 which revisits the errors too.
 
-**Why:** most errors are pure domain already (a title, a description,
-a front matter, a line of the dates file or of the robots list) and
-would not change with the separation; the adapter's ones live in
-`src/main.rs` anyway. Starting from the separation would have put two
-decisions in one slice: ports carrying today's errors, or errors
-redesigned together with them.
+**Why:** most errors were pure domain already (a title, a description,
+a front matter, a line of the dates file or of the robots list) and do
+not change with the separation. Starting from the separation would have
+put two decisions in one slice: ports carrying the old errors, or
+errors redesigned together with them.
 
 **Rejected:** the separation first, which the user considered: errors
 designed once, in their final place, but inside a much larger change
 with many open decisions.
 
-### Messages may change when they say more
+### Do the messages stay the same? Only where a new one says no more
 
 **Chosen:** a message may change when the new form carries more
-information, for example the doubled "error:" of the YAML reader,
-which goes once its position (line and column, which serde-saphyr
-gives as data) is taken apart from its message. Each changed message
-is shown to the user before and after, before its commit. The built
-site stays byte-identical.
+information. Each changed message was shown to the user before and
+after, before its commit. The built site stays byte-identical.
+
+**Chosen by the agent,** with the user informed: a warning reads as the
+error, then what the build does instead (`<error>; <instead>`), so it
+holds word for word the error that would stop the pipeline; and the
+YAML reader's position is written as compilers write it,
+`<file>:<line>:<column>:`, which terminals and editors turn into a
+link.
 
 **Rejected:** messages strictly identical, which would have left the
 doubled "error:" to another card.
@@ -106,23 +98,40 @@ doubled "error:" to another card.
 ### thiserror 2.0.21
 
 **Chosen:** thiserror 2, by David Tolnay, under MIT or Apache 2.0. It
-is already compiled as a dependency of Leptos (2.0.21, with
-thiserror-impl), so it adds no code to the build.
+was already compiled as a dependency of Leptos (2.0.21, with
+thiserror-impl), so it adds no code to the build: `Cargo.lock` gained
+one line.
 
-### Six slices, one commit each
+## Results
 
-1. The six hand-written types move to thiserror, with the dependency;
-   messages unchanged.
-2. `robots.txt`: the domain receives the list or nothing, no longer
-   knows about the pipeline, and returns typed errors with their line.
-3. The sitemap, the same way: it returns the sitemap and the missing
-   dates as typed errors; `src/main.rs` decides warning or stop.
-4. The articles: `settle` leaves the domain for `src/main.rs`.
-5. The build: the generic box becomes a type declared with thiserror,
-   gathering the domain's errors and the adapter's; write errors gain
-   the file's path.
-6. The YAML errors: where and what taken apart, the doubled "error:"
-   gone.
+- Six commits of code, one per slice, each written by a sub-agent
+  (Claude Sonnet 5.5) and reviewed before its commit:
+  `f5c5e05` the six hand-written types; `2e930b1` the robots list;
+  `fc2a92a` the sitemap; `f66f0ca` the articles, `settle` leaving the
+  domain; `6ccfdd0` `BuildError` in place of the generic box;
+  `7a68629` the YAML reader's position and message taken apart.
+  Together they add 691 lines and remove 400 in `src/`, `Cargo.toml`
+  and `Cargo.lock`; the unit tests went from 245 to 261, since the
+  choice between warning and stop and the messages are now tested on
+  their own.
+- The site built after each commit is byte-identical to the one built
+  before it. The messages were captured before and after each slice;
+  only the ones announced changed, for example:
 
-Each slice keeps the built site byte-identical and passes the
-pipeline's checks before its commit.
+  | Case | Before | After |
+  |---|---|---|
+  | Robots list missing, locally | `warning: no blocked robots list (BLOCKED_ROBOTS_FILE is not set): the robots.txt blocks only the training signal` | `warning: no blocked robots list: BLOCKED_ROBOTS_FILE is not set; the robots.txt blocks only the training signal` |
+  | Article left out, locally | `warning: article skipped: content/articles/x.md: front matter: ...` | `warning: content/articles/x.md: front matter: ...; the article is left out of the site` |
+  | Site address not valid | `error: invalid site address ...` | `error: SITE_ADDRESS: invalid site address ...` |
+  | Output folder cannot be made | `error: Not a directory (os error 20)` | ``error: cannot create the folder `.../out`: Not a directory (os error 20)`` |
+  | A field missing in an article | ``content/articles/x.md: front matter: error: line 3 column 1: missing field `description` `` | ``content/articles/x.md:3:1: front matter: missing field `description` `` |
+
+  With the position, a wrong date in an article points at the field
+  again, which jiff's message alone no longer named
+  ([card](2026-11-09_give-dates-a-module-of-their-own.md)).
+- **Found on the way:** Tailwind reads every word of the Rust code. A
+  parameter named `contents` added `.contents{display:contents}` to the
+  stylesheet; the byte-by-byte comparison caught it and the parameter
+  was renamed. It is the third time Tailwind reads more than it should;
+  the user tied it to the missing separation of the domain from the
+  adapters ([card](../backlog/let-tailwind-read-only-the-presentation.md)).
