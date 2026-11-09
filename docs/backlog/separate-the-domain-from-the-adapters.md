@@ -39,6 +39,12 @@ configuration files.
   environment variables and the generated files (content dates, blocked
   robots), writes the publication folder and prints.
 - **The site has no server:** what it gives back today is files.
+- **The presentation is an adapter too:** the Leptos views and their
+  named styles. Today they share `src/` with the domain, so Tailwind,
+  which must read the views, reads every Rust file and turns any
+  matching word into a rule of the stylesheet
+  ([card](let-tailwind-read-only-the-presentation.md)). Once separated,
+  Tailwind could read the presentation's files only.
 - **Related cards:** [find the articles in the content folder](find-articles-in-content-folder.md),
   which reads the content when the build runs instead of when it is
   compiled, and [use a structured configuration file](use-a-structured-configuration-file.md).
