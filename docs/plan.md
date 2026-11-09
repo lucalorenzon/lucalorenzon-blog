@@ -60,8 +60,9 @@ live since 2026-10-26
 - [Refactor the code's errors with thiserror](backlog/refactor-errors-with-thiserror.md),
   instead of plain text, generic boxes and types written by hand.
 - [Check the pages' text in the build](backlog/check-page-bodies-in-the-build.md):
-  not empty and without HTML, with the same rule as a wrong field,
-  instead of HTML checked by unit tests only.
+  not empty, without HTML and without empty table headers, with the
+  same rule as a wrong field, instead of HTML checked by unit tests
+  only.
 - [Give the home page a date in the sitemap](backlog/date-the-home-page-in-the-sitemap.md):
   the date of the last addition or removal of an article.
 - [Use the publication date in the sitemap](backlog/use-publication-date-in-the-sitemap.md),
