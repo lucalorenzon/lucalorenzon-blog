@@ -20,7 +20,7 @@ matter, is a plain string that nothing checks:
   the tests shows the problem;
 - **an empty header cell of a table** is not checked anywhere (added
   on 2026-11-09, by the user, in the card
-  [check accessibility on every page with the net](../wip/check-accessibility-on-every-page-with-the-net.md)).
+  [check accessibility on every page with the net](../done/2026-11-09_check-accessibility-on-every-page-with-the-net.md)).
   Markdown allows a header row such as `| | Value |`; the build
   writes an empty header, and in the record viewer an empty label, so
   a screen reader hears a value without knowing what it is. Empty data

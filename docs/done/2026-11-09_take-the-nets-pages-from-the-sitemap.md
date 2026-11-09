@@ -4,7 +4,7 @@
   "check every page with tests written once", third slice of
   [ADR-004](../adr/ADR-004-test-components-once-and-pages-with-a-net.md);
   first of its three parts, the other two being
-  [check accessibility on every page with the net](../wip/check-accessibility-on-every-page-with-the-net.md)
+  [check accessibility on every page with the net](2026-11-09_check-accessibility-on-every-page-with-the-net.md)
   and
   [check the layout on every page with the net](../backlog/check-the-layout-on-every-page-with-the-net.md).
 - **Status:** done, 2026-11-09.

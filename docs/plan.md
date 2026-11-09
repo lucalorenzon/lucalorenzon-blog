@@ -25,8 +25,10 @@ live since 2026-10-26
   three: [take the net's pages from the sitemap](done/2026-11-09_take-the-nets-pages-from-the-sitemap.md)
   (done: the canonical link and Open Graph tests run on the build's
   sitemap), then
-  [accessibility](wip/check-accessibility-on-every-page-with-the-net.md)
-  and [layout](backlog/check-the-layout-on-every-page-with-the-net.md)
+  [accessibility](done/2026-11-09_check-accessibility-on-every-page-with-the-net.md)
+  on every page (done: 315 tests became 300, the components checked
+  once on their worst case), then
+  [layout](backlog/check-the-layout-on-every-page-with-the-net.md)
   on every page; then the components' test pages, carded after these.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the

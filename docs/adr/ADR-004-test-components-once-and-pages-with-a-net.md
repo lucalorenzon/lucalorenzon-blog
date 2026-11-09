@@ -9,7 +9,7 @@
   and "check every page with tests written once", itself split on
   2026-11-08 into
   [take the net's pages from the sitemap](../done/2026-11-09_take-the-nets-pages-from-the-sitemap.md),
-  [check accessibility on every page with the net](../wip/check-accessibility-on-every-page-with-the-net.md)
+  [check accessibility on every page with the net](../done/2026-11-09_check-accessibility-on-every-page-with-the-net.md)
   and
   [check the layout on every page with the net](../backlog/check-the-layout-on-every-page-with-the-net.md);
   related: [build a design system](../backlog/build-a-design-system.md)
