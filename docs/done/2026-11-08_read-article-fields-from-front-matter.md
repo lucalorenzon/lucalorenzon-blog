@@ -155,7 +155,7 @@ own so that each decision stays in a commit of its own:
 
 - [an empty text, and HTML in the text](../backlog/check-page-bodies-in-the-build.md),
   checked together in the build, so the type for the text is born once;
-- [dates in a module of their own](../wip/give-dates-a-module-of-their-own.md),
+- [dates in a module of their own](2026-11-09_give-dates-a-module-of-their-own.md),
   or a widely used library, instead of the two types of day in
   `src/article_page.rs` and `src/sitemap.rs`;
 - [one model for the information pages](../backlog/unify-the-information-pages-model.md),

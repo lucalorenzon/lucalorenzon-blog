@@ -192,7 +192,7 @@ Why: `docs/done/2026-11-09_describe-the-browser-tests-in-a-readme.md`.
 - [jiff](https://github.com/BurntSushi/jiff) 0.2, without time zones,
   reading the dates of the articles and of the sitemap (strict ISO
   form, `YYYY-MM-DD`) and writing them for the reader (why:
-  `docs/wip/give-dates-a-module-of-their-own.md`)
+  `docs/done/2026-11-09_give-dates-a-module-of-their-own.md`)
 - [unicode-segmentation](https://github.com/unicode-rs/unicode-segmentation)
   1.13, counting the graphemes of a page heading against its limit
   (already compiled as a dependency of Leptos; why:

@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-08, by the user, while reviewing the code of the
   card on the articles' front matter
   ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
-- **Status:** being worked on, since 2026-11-09.
+- **Status:** done, 2026-11-09.
 
 ## Why
 

@@ -15,14 +15,12 @@ live since 2026-10-26
 ## Now
 
 - A round of the refactors left waiting, so the code moves too:
-  [give dates a module of their own](wip/give-dates-a-module-of-their-own.md),
-  being worked on: jiff's day instead of the two types of day buried
-  in the article pages and the sitemap. The articles now read their title,
-  description and date from the front matter
-  ([card](done/2026-11-08_read-article-fields-from-front-matter.md)),
-  not published yet; and
   [refactor the code's errors with thiserror](backlog/refactor-errors-with-thiserror.md),
-  instead of plain text, generic boxes and types written by hand.
+  instead of plain text, generic boxes and types written by hand. The
+  dates are already done: jiff's day instead of two types of day
+  ([card](done/2026-11-09_give-dates-a-module-of-their-own.md)), not
+  published yet, like the articles' front matter
+  ([card](done/2026-11-08_read-article-fields-from-front-matter.md)).
 - [Build a design system](backlog/build-a-design-system.md), with
   Holt or Storybook, starting with a timeboxed spike on Holt: each
   component tested once in a catalogue, on cases written for the
