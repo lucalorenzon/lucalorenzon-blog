@@ -71,6 +71,15 @@ shaped as a catalogue of components (one component per page, with its
 variants), so that a design system can take them over later. The work
 does not wait for the design system.
 
+(Revised on 2026-11-09: the test pages are no longer built by hand
+before the design system; its catalogue builds them, and the work is
+merged into
+[build a design system](../backlog/build-a-design-system.md). The
+growth this rule was meant to stop is gone, stopped by the net, and the
+pages would otherwise be built twice. Meanwhile the components are
+checked on the real article that stresses them most, so two articles
+remain test pages until the catalogue exists.)
+
 ## Consequences
 
 **Positive:**
@@ -97,10 +106,12 @@ does not wait for the design system.
   on every page:
   [check the layout on every page with the net](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md).)
 - The test pages may be built twice: by hand now, then in the design
-  system.
+  system. (Revised on 2026-11-09: avoided, see the revision under
+  Decision.)
 
 Which of these losses are acceptable is decided in the card of the net
-and in the card of the test pages, check by check.
+and in the card of the test pages, check by check (since 2026-11-09,
+the card of the design system).
 
 ## Alternatives Considered
 

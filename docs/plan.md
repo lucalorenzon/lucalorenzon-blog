@@ -14,32 +14,25 @@ live since 2026-10-26
 
 ## Now
 
-- Make the browser tests check behaviour, not articles, so the suite
-  stops growing by about 200 tests per article
-  ([ADR-004](adr/ADR-004-test-components-once-and-pages-with-a-net.md)):
-  913 tests became 227. Done: run colour-free tests in
-  [one theme](done/2026-11-08_run-colour-free-tests-in-one-theme.md),
-  each check only at the
-  [widths](done/2026-11-08_check-at-every-width-only-what-depends-on-it.md)
-  it depends on, the net's
-  [pages from the sitemap](done/2026-11-09_take-the-nets-pages-from-the-sitemap.md),
-  [accessibility](done/2026-11-09_check-accessibility-on-every-page-with-the-net.md)
-  and [layout](done/2026-11-09_check-the-layout-on-every-page-with-the-net.md)
-  on every page, the components checked once on a real article taken
-  as their worst case. Left: the components' test pages, not carded
-  yet, where the user's doubt on that worst case belongs.
-- [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
+- A round of the refactors left waiting, so the code moves too:
+  [give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
   article pages and the sitemap. The articles now read their title,
   description and date from the front matter
   ([card](done/2026-11-08_read-article-fields-from-front-matter.md)),
-  not published yet.
+  not published yet; and
+  [refactor the code's errors with thiserror](backlog/refactor-errors-with-thiserror.md),
+  instead of plain text, generic boxes and types written by hand.
+- [Build a design system](backlog/build-a-design-system.md), with
+  Holt or Storybook, starting with a timeboxed spike on Holt: each
+  component tested once in a catalogue, on cases written for the
+  purpose, so the two articles that serve as test pages today go back
+  to being content. It takes over the components' test pages of
+  [ADR-004](adr/ADR-004-test-components-once-and-pages-with-a-net.md),
+  whose other slices are done: 913 tests became 227.
 
 ## Next
 
-- [Build a design system](backlog/build-a-design-system.md), with
-  Holt or Storybook, so each component is tested once instead of on
-  every page; it takes over the components' test pages of ADR-004.
 - [Unify the model of the information pages](backlog/unify-the-information-pages-model.md),
   licence, about and curriculum, today three nearly identical modules;
   probably before reading their fields from the Markdown.
@@ -54,8 +47,6 @@ live since 2026-10-26
   the old one.
 - [Find the articles in the content folder](backlog/find-articles-in-content-folder.md)
   when the build runs, instead of a list of files wired into the code.
-- [Refactor the code's errors with thiserror](backlog/refactor-errors-with-thiserror.md),
-  instead of plain text, generic boxes and types written by hand.
 - [Check the pages' text in the build](backlog/check-page-bodies-in-the-build.md):
   not empty, without HTML and without empty table headers, with the
   same rule as a wrong field, instead of HTML checked by unit tests
