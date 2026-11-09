@@ -64,9 +64,9 @@ twice. The price: until then, the two articles stay test pages.
   ([card](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md)).
 - **A component check still run on every page:**
   `end2end/tests/tables.spec.ts` (single-value cells on one line) runs
-  on every page of the built site at the four phone widths, 40 runs,
-  most on pages with no table, although ADR-004's census classes it as
-  a component check.
+  on every page of the built site at the four phone widths, 28 runs,
+  20 of them on the five pages with no table, although ADR-004's
+  census classes it as a component check.
 - **The catalogue is not published:** the check on the live site keeps
   to the net, which takes its pages from the sitemap.
 
