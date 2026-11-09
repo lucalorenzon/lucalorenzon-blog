@@ -8,7 +8,7 @@ import { live } from './support';
 // exactly once, a rule of the project's CLAUDE.md. The agent keeps the README
 // in step with the tests; this check makes the report certain instead of
 // leaving it to someone remembering (card:
-// docs/wip/describe-the-browser-tests-in-a-readme.md).
+// docs/done/2026-11-09_describe-the-browser-tests-in-a-readme.md).
 //
 // How it works. Playwright itself lists the declarations (`playwright test
 // --list`): a declaration is one place in the code, a file and a line, even

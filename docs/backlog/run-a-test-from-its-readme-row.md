@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-09, by the user, while asking for the browser
   tests' README (card
-  [describe the browser tests in a README](../wip/describe-the-browser-tests-in-a-readme.md)),
+  [describe the browser tests in a README](../done/2026-11-09_describe-the-browser-tests-in-a-readme.md)),
   as a nice-to-have; in Later.
 - **Status:** noticed, not started.
 

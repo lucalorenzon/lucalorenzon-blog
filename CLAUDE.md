@@ -177,7 +177,7 @@ declaring line to find it in the code.
   agent's to watch, so when a test's behaviour changes, its row's text
   is reviewed too.
 
-Why: `docs/wip/describe-the-browser-tests-in-a-readme.md`.
+Why: `docs/done/2026-11-09_describe-the-browser-tests-in-a-readme.md`.
 
 ## Stack
 
