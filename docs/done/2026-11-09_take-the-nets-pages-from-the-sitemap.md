@@ -6,7 +6,7 @@
   first of its three parts, the other two being
   [check accessibility on every page with the net](2026-11-09_check-accessibility-on-every-page-with-the-net.md)
   and
-  [check the layout on every page with the net](../wip/check-the-layout-on-every-page-with-the-net.md).
+  [check the layout on every page with the net](2026-11-09_check-the-layout-on-every-page-with-the-net.md).
 - **Status:** done, 2026-11-09.
 
 ## Why

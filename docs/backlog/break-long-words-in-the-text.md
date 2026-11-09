@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-08, by the user and the agent, while deciding
   which checks make the net, in what became
-  [check the layout on every page with the net](../wip/check-the-layout-on-every-page-with-the-net.md)
+  [check the layout on every page with the net](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md)
   ([ADR-004](../adr/ADR-004-test-components-once-and-pages-with-a-net.md));
   in Later.
 - **Status:** noticed, not started.
@@ -25,6 +25,13 @@ components.
 
 ## Known from the start
 
+- **At 320 pixels, 26 letters are enough with the reader's spacing:**
+  a word of 26 "a" scrolls the page sideways once the letters are
+  spaced as WCAG 1.4.12 allows, while 24 do not (measured on
+  2026-11-09, in the card
+  [check the layout on every page with the net](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md)).
+  The net checks it on every page, so such a word stops the build
+  rather than reaching a reader.
 - **The rule exists already in two places,** in `style/input.css`: the
   code blocks, when the reader turns wrapping on
   (`overflow-wrap: anywhere`), and the labels and values of the record

@@ -11,7 +11,7 @@
   [take the net's pages from the sitemap](../done/2026-11-09_take-the-nets-pages-from-the-sitemap.md),
   [check accessibility on every page with the net](../done/2026-11-09_check-accessibility-on-every-page-with-the-net.md)
   and
-  [check the layout on every page with the net](../wip/check-the-layout-on-every-page-with-the-net.md);
+  [check the layout on every page with the net](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md);
   related: [build a design system](../backlog/build-a-design-system.md)
 
 ## Context
@@ -95,7 +95,7 @@ does not wait for the design system.
   scroll, with and without the reader's spacing, depends on the text,
   since the text breaks only at spaces, so both checks run in the net
   on every page:
-  [check the layout on every page with the net](../wip/check-the-layout-on-every-page-with-the-net.md).)
+  [check the layout on every page with the net](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md).)
 - The test pages may be built twice: by hand now, then in the design
   system.
 

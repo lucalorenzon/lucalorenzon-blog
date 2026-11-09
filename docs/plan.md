@@ -16,20 +16,18 @@ live since 2026-10-26
 
 - Make the browser tests check behaviour, not articles, so the suite
   stops growing by about 200 tests per article
-  ([ADR-004](adr/ADR-004-test-components-once-and-pages-with-a-net.md)),
-  in three slices, the first two done
-  ([themes](done/2026-11-08_run-colour-free-tests-in-one-theme.md),
-  [widths](done/2026-11-08_check-at-every-width-only-what-depends-on-it.md):
-  913 tests became 315; axe and the SEO check now bound the time).
-  The third, checking every page with tests written once, is split in
-  three: [take the net's pages from the sitemap](done/2026-11-09_take-the-nets-pages-from-the-sitemap.md)
-  (done: the canonical link and Open Graph tests run on the build's
-  sitemap), then
+  ([ADR-004](adr/ADR-004-test-components-once-and-pages-with-a-net.md)):
+  913 tests became 227. Done: run colour-free tests in
+  [one theme](done/2026-11-08_run-colour-free-tests-in-one-theme.md),
+  each check only at the
+  [widths](done/2026-11-08_check-at-every-width-only-what-depends-on-it.md)
+  it depends on, the net's
+  [pages from the sitemap](done/2026-11-09_take-the-nets-pages-from-the-sitemap.md),
   [accessibility](done/2026-11-09_check-accessibility-on-every-page-with-the-net.md)
-  on every page (done: 315 tests became 300, the components checked
-  once on their worst case), then
-  [layout](wip/check-the-layout-on-every-page-with-the-net.md)
-  on every page; then the components' test pages, carded after these.
+  and [layout](done/2026-11-09_check-the-layout-on-every-page-with-the-net.md)
+  on every page, the components checked once on a real article taken
+  as their worst case. Left: the components' test pages, not carded
+  yet, where the user's doubt on that worst case belongs.
 - [Give dates a module of their own](backlog/give-dates-a-module-of-their-own.md),
   or a widely used library, instead of two types of day buried in the
   article pages and the sitemap. The articles now read their title,
