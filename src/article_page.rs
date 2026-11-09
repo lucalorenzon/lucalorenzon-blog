@@ -150,22 +150,73 @@ pub enum FrontMatterError {
     /// The front matter has no closing line `---`.
     #[error("the front matter has no closing line `---`")]
     Unclosed,
-    /// The YAML reader's message: malformed YAML, a field missing, an unknown field, a field
+    /// The YAML reader's complaint: malformed YAML, a field missing, an unknown field, a field
     /// of the wrong kind, or a field whose value is not valid (`Title`, `Description`, `Date`).
-    #[error("front matter: {}", .0.lines().next().unwrap_or_default())]
-    Invalid(String),
+    /// Where it is and what it is are kept apart; [`ArticleError`] puts them together with the
+    /// file.
+    #[error("front matter: {message}")]
+    Invalid {
+        /// Where the reader found it, in the file's lines and columns; `None` when it does not
+        /// know.
+        position: Option<Position>,
+        /// What is wrong, as the reader says it: one line, with no position and no `error:`.
+        message: String,
+    },
     /// The title is valid as content but does not fit the frame's heading (too long).
     #[error("front matter: field `title`: {0}")]
     Heading(HeadingError),
 }
 
+/// A place in a file: line and column, both counted from 1.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct Position {
+    pub line: u64,
+    pub column: u64,
+}
+
+impl FrontMatterError {
+    /// Takes the reader's error apart: its position, if it knows one, and its bare message.
+    fn invalid(problem: &serde_saphyr::Error) -> Self {
+        use serde_saphyr::MessageFormatter as _;
+        let position = problem
+            .location()
+            .filter(|location| *location != serde_saphyr::Location::UNKNOWN)
+            .map(|location| Position {
+                line: location.line(),
+                column: location.column(),
+            });
+        // The formatter gives the message alone, as `Display` does, without the location the
+        // renderer adds after it and without the `error:` it puts before. It looks through the
+        // reader's wrappers (snippet, alias) itself.
+        let message = serde_saphyr::DefaultMessageFormatter.format_message(problem);
+        Self::Invalid {
+            position,
+            message: message.lines().next().unwrap_or_default().to_owned(),
+        }
+    }
+}
+
 /// Why an article's file cannot become an [`Article`]: which file, and what is wrong in its
 /// front matter.
 #[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
-#[error("{file}: {error}")]
+#[error("{}", self.text())]
 pub struct ArticleError {
     pub file: &'static str,
     pub error: FrontMatterError,
+}
+
+impl ArticleError {
+    /// The message: where, then what. A reader's position follows the file the way compilers
+    /// put it (`file:line:column: message`), which terminals and editors turn into a link.
+    fn text(&self) -> String {
+        match &self.error {
+            FrontMatterError::Invalid {
+                position: Some(Position { line, column }),
+                ..
+            } => format!("{}:{line}:{column}: {}", self.file, self.error),
+            other => format!("{}: {other}", self.file),
+        }
+    }
 }
 
 /// Splits a file into its front matter (with its opening `---` line) and its body. The front matter sits between a first line
@@ -216,7 +267,7 @@ impl TryFrom<&ArticleFile> for Article {
         };
         let (front_matter, body) = split_front_matter(file.text).map_err(error)?;
         let fields: FrontMatter = serde_saphyr::from_str(front_matter)
-            .map_err(|problem| error(FrontMatterError::Invalid(problem.to_string())))?;
+            .map_err(|problem| error(FrontMatterError::invalid(&problem)))?;
         let heading = Heading::try_from(fields.title.as_str())
             .map_err(|problem| error(FrontMatterError::Heading(problem)))?;
         Ok(Self {
@@ -737,8 +788,21 @@ mod tests {
         fn error_points_at_the_line_of_the_file() {
             // The date is on line 6 of the file, counting the opening `---` as line 1.
             let text = "---\ntitle: T\n\ndescription: D\n\ndate: 2023-02-30\n---\nB\n";
-            let message = error_of(text).to_string();
-            assert!(message.contains("line 6 column 7"), "{message}");
+            let error = error_of(text);
+            assert!(
+                matches!(
+                    error.error,
+                    FrontMatterError::Invalid {
+                        position: Some(Position { line: 6, column: 7 }),
+                        ..
+                    }
+                ),
+                "{error}"
+            );
+            assert!(
+                error.to_string().starts_with("content/articles/a.md:6:7: "),
+                "{error}"
+            );
         }
 
         #[test]
@@ -763,31 +827,89 @@ mod tests {
         #[test]
         fn malformed_yaml_is_an_error() {
             let error = error_of("---\ntitle: [unclosed\ndescription: D\n---\nBody\n");
-            assert!(matches!(error.error, FrontMatterError::Invalid(_)));
+            assert!(matches!(error.error, FrontMatterError::Invalid { .. }));
             assert!(error.to_string().contains("content/articles/a.md"));
         }
 
         #[test]
         fn a_missing_field_is_an_error_naming_it() {
             let error = error_of("---\ntitle: T\ndate: 2023-04-30\n---\nBody\n");
-            assert!(matches!(error.error, FrontMatterError::Invalid(_)));
+            assert!(matches!(error.error, FrontMatterError::Invalid { .. }));
             assert!(error.to_string().contains("description"), "{error}");
+        }
+
+        fn invalid_of(text: &'static str) -> (Option<Position>, String) {
+            match error_of(text).error {
+                FrontMatterError::Invalid { position, message } => (position, message),
+                other => panic!("not an Invalid: {other:?}"),
+            }
+        }
+
+        #[test]
+        fn a_missing_field_has_its_position_in_the_files_lines() {
+            // The opening `---` is line 1, so `date` is line 3: the reader counts the file's
+            // lines, not the front matter's.
+            let (position, message) = invalid_of("---\ntitle: T\ndate: 2023-04-30\n---\nBody\n");
+            assert_eq!(position, Some(Position { line: 3, column: 1 }));
+            assert_eq!(message, "missing field `description`");
+        }
+
+        #[test]
+        fn the_message_has_no_error_prefix_and_no_position() {
+            let (_, message) = invalid_of("---\ntitle: T\ndate: 2023-04-30\n---\nBody\n");
+            assert!(!message.contains("error:"), "{message}");
+            assert!(!message.contains("line 3"), "{message}");
+            let text = error_of("---\ntitle: T\ndate: 2023-04-30\n---\nBody\n").to_string();
+            assert!(!text.contains("error:"), "{text}");
+        }
+
+        #[test]
+        fn the_text_puts_the_position_after_the_file() {
+            let error = ArticleError {
+                file: "content/articles/a.md",
+                error: FrontMatterError::Invalid {
+                    position: Some(Position { line: 3, column: 1 }),
+                    message: "missing field `description`".to_owned(),
+                },
+            };
+            assert_eq!(
+                error.to_string(),
+                "content/articles/a.md:3:1: front matter: missing field `description`"
+            );
+        }
+
+        #[test]
+        fn the_text_without_a_position_has_only_the_file() {
+            let error = ArticleError {
+                file: "content/articles/a.md",
+                error: FrontMatterError::Invalid {
+                    position: None,
+                    message: "something".to_owned(),
+                },
+            };
+            assert_eq!(
+                error.to_string(),
+                "content/articles/a.md: front matter: something"
+            );
         }
 
         #[test]
         fn an_unknown_field_is_an_error_naming_it() {
             let error =
                 error_of("---\ntitle: T\ndescription: D\ndate: 2023-04-30\ntittle: x\n---\nBody\n");
-            assert!(matches!(error.error, FrontMatterError::Invalid(_)));
+            assert!(matches!(error.error, FrontMatterError::Invalid { .. }));
             assert!(error.to_string().contains("tittle"), "{error}");
         }
 
         #[test]
         fn a_wrong_title_names_the_file_the_field_and_the_reason() {
             let error = error_of("---\ntitle: \" \"\ndescription: D\ndate: 2023-04-30\n---\nB\n");
-            assert!(matches!(error.error, FrontMatterError::Invalid(_)));
+            assert!(matches!(error.error, FrontMatterError::Invalid { .. }));
             let message = error.to_string();
-            assert!(message.starts_with("content/articles/a.md: "), "{message}");
+            assert!(
+                message.starts_with("content/articles/a.md:2:8: front matter: "),
+                "{message}"
+            );
             assert!(message.contains("field `title` is empty"), "{message}");
         }
 
@@ -843,7 +965,7 @@ mod tests {
         fn a_wrong_description_names_the_reason() {
             let text = "---\ntitle: T\ndescription: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\ndate: 2023-04-30\n---\nB\n";
             let error = error_of(text);
-            assert!(matches!(error.error, FrontMatterError::Invalid(_)));
+            assert!(matches!(error.error, FrontMatterError::Invalid { .. }));
             let message = error.to_string();
             assert!(
                 message.contains("field `description` has 161 characters"),
@@ -855,7 +977,7 @@ mod tests {
         #[test]
         fn a_wrong_date_names_the_reason() {
             let error = error_of("---\ntitle: T\ndescription: D\ndate: 2023-02-30\n---\nB\n");
-            assert!(matches!(error.error, FrontMatterError::Invalid(_)));
+            assert!(matches!(error.error, FrontMatterError::Invalid { .. }));
             let message = error.to_string();
             // The reason is the date library's own message.
             assert!(message.contains("parameter 'day'"), "{message}");
@@ -865,7 +987,7 @@ mod tests {
         #[test]
         fn a_date_that_is_not_text_is_an_error() {
             let error = error_of("---\ntitle: T\ndescription: D\ndate: [1, 2]\n---\nB\n");
-            assert!(matches!(error.error, FrontMatterError::Invalid(_)));
+            assert!(matches!(error.error, FrontMatterError::Invalid { .. }));
         }
 
         #[test]
