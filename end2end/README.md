@@ -60,7 +60,10 @@ To run one test, give its file and words of its title:
 ## Keeping this file in step
 
 This file must list every test the code declares, once. It is a rule of
-the project (`CLAUDE.md`), and a check in the build enforces it.
+the project (`CLAUDE.md`, "The browser tests' README"), and a check in
+the build enforces it: `readme.spec.ts`, the last row of this file. The
+check sees only the first column; "Fails when?" and "Why" stay true only
+if they are reviewed whenever a test's behaviour changes.
 
 ## Barriers for disabled readers
 
@@ -209,3 +212,4 @@ being valid, so passing tests would no longer prove anything.
 | Find in files | File | Pages | Widths | Themes | Fails when? | Why |
 |---|---|---|---|---|---|---|
 | `the dark and the light theme differ only in colours` | `themes.spec.ts` | every built page (build only) | bands | both, compared in one test | any element has a different size or position in the dark theme than in the light one | Tests not about colours run in the light theme only; that is valid only while the themes differ in colours alone |
+| `the README lists every browser test once` | `readme.spec.ts` | none: it reads the code and this file (build only) | — | — | a test has no row in this file or more than one, a row's text is not found exactly once in `tests/`, in the file it names, on a line that declares a test | This file is useful only while it is true; a rule alone depends on someone remembering it |

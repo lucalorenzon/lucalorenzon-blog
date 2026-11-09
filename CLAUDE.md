@@ -161,6 +161,24 @@ commit back to its session. Why: as in Fedora's policy on AI-assisted
 contributions, the person stays the author and fully accountable, while
 `Co-Authored-By:` would put the agent on the same level.
 
+## The browser tests' README
+
+`end2end/README.md` lists every browser test once: what it protects from,
+its class, what makes it fail and why it exists, with a piece of its
+declaring line to find it in the code.
+
+- A commit that adds, removes, renames or changes a browser test updates
+  its row in the same commit.
+- The agent keeps the README in step and always reports a mismatch it
+  notices, also outside the task at hand.
+- `end2end/tests/readme.spec.ts` fails the build when a test has no row,
+  or a row leads nowhere or to more than one place. It sees only the
+  first column: whether "Fails when?" and "Why" are still true is the
+  agent's to watch, so when a test's behaviour changes, its row's text
+  is reviewed too.
+
+Why: `docs/wip/describe-the-browser-tests-in-a-readme.md`.
+
 ## Stack
 
 - [Leptos](https://github.com/leptos-rs/leptos) 0.8.23, used only to render
@@ -205,7 +223,7 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | `scripts/content-dates/` | The content dates step: `content_dates.py` writes the author date of the last commit of each Markdown file in `content/` (tab-separated file in `target/generated/content-dates.tsv`, read by the build through `CONTENT_DATES_FILE`), and its unit tests (`test_content_dates.py`); in the pipeline it runs in the `gather-inputs` job, on the full history |
 | `scripts/robots-list/` | The robots list step: `robots_list.py` reads the community list of AI robots from the copy committed at a pinned commit in `ai-robots-txt/` (`robots.json` and its MIT `LICENSE`; checksum checked, no download), filters it and writes the names of the robots to block (`target/generated/blocked-robots.txt`, read through `BLOCKED_ROBOTS_FILE`); with `--check-updates` (the only mode that uses the network) it shows what would change if the pin moved (`--json` prints it as one JSON object); its unit tests (`test_robots_list.py`); in the pipeline it runs in the `gather-inputs` job |
 | `scripts/version-check/` | The check for newer versions of what is pinned by hand: `version_check.py` asks GitHub for Tailwind's latest release and runs `robots_list.py --check-updates --json`, and turns a newer Tailwind, or a robots list that would change the blocked robots, into findings (title, Markdown body, hidden marker); by default it prints what it would do about each one (open an issue, update the open one, or nothing because an issue already covers it), and with `--apply` it does it, through GitHub's API, with the label `version-check`; its unit tests (`test_version_check.py`) |
-| `end2end/` | Playwright end-to-end test; in `end2end/tools/`, the script that measures Literata's character widths in Chromium and writes `src/literata_widths.rs`, and the on-demand check of axe's best practices on every built page (`check-axe-best-practices.mjs`) |
+| `end2end/` | Playwright end-to-end test, every test listed in `end2end/README.md` (see "The browser tests' README"); in `end2end/tools/`, the script that measures Literata's character widths in Chromium and writes `src/literata_widths.rs`, and the on-demand check of axe's best practices on every built page (`check-axe-best-practices.mjs`) |
 | `.zed/settings.json` | Editor settings for this project: CSS files are checked by Tailwind's CSS server, not the generic one, which does not know Tailwind 4's syntax |
 | `.github/workflows/build.yml` | Check, build and test the site on every push and pull request; on `main`, keep the tested site in the `snapshot` Release; the pinned Tailwind tool comes from the Actions cache or is downloaded, through the local action below; never publishes |
 | `.github/actions/get-tailwind/action.yml` | Local action: restore the pinned Tailwind from the Actions cache, or download it and save it in the cache; used by `build.yml` and `daily.yml` |

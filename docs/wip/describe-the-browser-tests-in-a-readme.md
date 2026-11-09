@@ -21,10 +21,14 @@ All decided by the user on 2026-11-09, on the agent's questions.
 - **Where a test is found: a unique string, not a line number.** Line
   numbers change whenever the code moves, and keeping them right would
   be endless work. Each row carries a string that, searched with "find
-  in files", leads to exactly one place: the test's declaration. It is
-  the fixed part of the test's title, up to its first variable part
-  (width, page, theme). A Playwright test has no function name: its
-  title is its name.
+  in files", leads to exactly one place: the test's declaration. A
+  Playwright test has no function name: its title is its name. The
+  string is a piece of the line that declares the test, copied as the
+  code writes it, `${...}` parts included, that appears only once in
+  the test files. (First proposed as the fixed part of the title, up
+  to its first variable part, and corrected by the agent on reading
+  the tests: `accessibility of ${title}` would have left only
+  "accessibility of", which three files share.)
 - **Kept in step by a project rule and by a check in the build.** The
   rule, in the project's `CLAUDE.md`: the agent keeps the README up to
   date and always reports when it is not. The check makes the report
@@ -44,17 +48,27 @@ All decided by the user on 2026-11-09, on the agent's questions.
   result. Columns: `Find in files` (the unique string), `File`,
   `Pages`, `Widths`, `Themes`, `Fails when?`, `Why`.
 
+- **The axe tests of the net and of the frame are declared apart**
+  (the agent's proposal, the user's decision). They were declared once,
+  inside a helper of `accessibility.spec.ts` called by both classes, so
+  one declaration served two tables. Each class now declares its own
+  tests, with the shared body in functions; titles and runs are
+  unchanged, checked by comparing Playwright's list of tests before
+  and after. Rejected: one row in the net's table with a note, the
+  only place where the grouping would not hold.
+
 ## How the check works
 
 The agent's choice, low in impact and easy to change: a test of its
 own in the suite, `end2end/tests/readme.spec.ts`, so it runs with the
 same command locally and in the pipeline, with no step to remember.
 It asks Playwright for the list of tests (`--list`, JSON reporter),
-groups them by the place they are declared, and fails when:
+groups them by the place they are declared, finds each row's string
+in the test files, and fails when:
 
-- a declared test has no row in the README, or more than one;
-- a row's string matches no declared test, or more than one;
-- a row's string appears more than once in the test files.
+- a row's string appears in the test files more than once, or never;
+- a row's string is not on a line where a test is declared;
+- a declared test has no row in the README, or more than one.
 
 ## Not in this card
 
