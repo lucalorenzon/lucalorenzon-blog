@@ -35,10 +35,6 @@ live since 2026-10-26
   ([card](done/2026-11-08_read-article-fields-from-front-matter.md)),
   not published yet.
 
-- [Start the SEO check first](wip/start-the-seo-check-first.md),
-  so its 30 seconds overlap the other browser tests instead of running
-  last and alone.
-
 ## Next
 
 - [Build a design system](backlog/build-a-design-system.md), with
