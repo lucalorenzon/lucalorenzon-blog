@@ -31,6 +31,10 @@ live since 2026-10-26
 
 ## Next
 
+- [Separate the domain from the adapters](backlog/separate-the-domain-from-the-adapters.md),
+  after the errors: a core of pure business that returns its errors,
+  and one adapter per concept the file system implements today
+  (content source, publication folder, configuration).
 - [Unify the model of the information pages](backlog/unify-the-information-pages-model.md),
   licence, about and curriculum, today three nearly identical modules;
   probably before reading their fields from the Markdown.
