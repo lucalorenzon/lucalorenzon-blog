@@ -20,19 +20,30 @@ const TRAINING_SIGNAL: &str = "__usage_ai-training";
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RobotName(String);
 
+/// Why a text is not a robot's name.
+#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
+pub enum RobotNameError {
+    #[error("it is empty")]
+    Empty,
+    #[error("it has spaces at its start or end")]
+    Spaces,
+    #[error("it has the character {0:?}")]
+    Character(char),
+}
+
 impl RobotName {
-    pub fn parse(text: &str) -> Result<Self, String> {
+    pub fn parse(text: &str) -> Result<Self, RobotNameError> {
         if text.is_empty() {
-            return Err("it is empty".to_owned());
+            return Err(RobotNameError::Empty);
         }
         if text != text.trim() {
-            return Err("it has spaces at its start or end".to_owned());
+            return Err(RobotNameError::Spaces);
         }
         if let Some(bad) = text
             .chars()
             .find(|c| c.is_control() || *c == '#' || *c == ':')
         {
-            return Err(format!("it has the character {bad:?}"));
+            return Err(RobotNameError::Character(bad));
         }
         Ok(Self(text.to_owned()))
     }
@@ -44,55 +55,33 @@ impl fmt::Display for RobotName {
     }
 }
 
+/// A line of the blocked robots file that is not a robot's name.
+#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
+#[error("malformed line {line} in the blocked robots file: `{text}` ({reason})")]
+pub struct MalformedRobotLine {
+    /// Counted from 1.
+    pub line: usize,
+    pub text: String,
+    pub reason: RobotNameError,
+}
+
 /// Reads the list: one robot name per line.
-pub fn parse_blocked_robots(text: &str) -> Result<Vec<RobotName>, String> {
+pub fn parse_blocked_robots(text: &str) -> Result<Vec<RobotName>, MalformedRobotLine> {
     text.lines()
         .enumerate()
         .map(|(index, line)| {
-            RobotName::parse(line).map_err(|reason| {
-                format!(
-                    "malformed line {} in the blocked robots file: `{line}` ({reason})",
-                    index + 1
-                )
+            RobotName::parse(line).map_err(|reason| MalformedRobotLine {
+                line: index + 1,
+                text: line.to_owned(),
+                reason,
             })
         })
         .collect()
 }
 
-/// The `robots.txt`, and the warnings to show the user.
-pub struct RobotsTxt {
-    pub text: String,
-    pub warnings: Vec<String>,
-}
-
-/// Writes the `robots.txt`.
-///
-/// `blocked_file` is the content of the blocked robots file, or why it could not be read. A
-/// missing file is an error in the pipeline (`is_ci`) and a warning anywhere else, with the
-/// blocked group left out. A malformed file is an error in both cases.
-pub fn build_robots_txt(
-    site: &SiteAddress,
-    blocked_file: Result<String, String>,
-    is_ci: bool,
-) -> Result<RobotsTxt, String> {
-    let mut warnings = Vec::new();
-    let blocked = match blocked_file {
-        Ok(text) => parse_blocked_robots(&text)?,
-        Err(problem) if is_ci => return Err(format!("no blocked robots list: {problem}")),
-        Err(problem) => {
-            warnings.push(format!(
-                "no blocked robots list ({problem}): the robots.txt blocks only the training signal"
-            ));
-            Vec::new()
-        }
-    };
-    Ok(RobotsTxt {
-        text: render(site, &blocked),
-        warnings,
-    })
-}
-
-fn render(site: &SiteAddress, blocked: &[RobotName]) -> String {
+/// The text of the `robots.txt`: the training signal group, the group of the blocked robots
+/// when there are any, and the sitemap's address.
+pub fn robots_txt(site: &SiteAddress, blocked: &[RobotName]) -> String {
     let mut text =
         String::from("# Search engines and assistants are welcome; AI training is not.\n\n");
     text.push_str(&format!("User-agent: {TRAINING_SIGNAL}\nDisallow: /\n\n"));
@@ -119,12 +108,15 @@ mod tests {
 
     const LIST: &str = "AI2Bot\nBrightbot 1.0\nSome/Bot-1.0_x\n";
 
+    fn list(text: &str) -> Vec<RobotName> {
+        parse_blocked_robots(text).unwrap()
+    }
+
     #[test]
     fn writes_the_exact_text() {
-        let robots = build_robots_txt(&site(), Ok(LIST.to_owned()), true).unwrap();
-        assert!(robots.warnings.is_empty());
+        let text = robots_txt(&site(), &list(LIST));
         assert_eq!(
-            robots.text,
+            text,
             "# Search engines and assistants are welcome; AI training is not.\n\
              \n\
              User-agent: __usage_ai-training\n\
@@ -142,8 +134,8 @@ mod tests {
     #[test]
     fn points_to_the_address_the_sitemap_has() {
         let site = site();
-        let robots = build_robots_txt(&site, Ok(LIST.to_owned()), true).unwrap();
-        let last = robots.text.lines().last().unwrap();
+        let text = robots_txt(&site, &list(LIST));
+        let last = text.lines().last().unwrap();
         assert_eq!(
             last,
             format!("Sitemap: {}", sitemap::sitemap_address(&site))
@@ -164,7 +156,7 @@ mod tests {
 
     #[test]
     fn blocks_only_the_names_it_is_given() {
-        let robots = build_robots_txt(&site(), Ok(LIST.to_owned()), true).unwrap();
+        let text = robots_txt(&site(), &list(LIST));
         for engine in [
             "Googlebot",
             "Bingbot",
@@ -172,11 +164,10 @@ mod tests {
             "Applebot",
             "YandexBot",
         ] {
-            assert!(!robots.text.contains(engine), "{engine}");
+            assert!(!text.contains(engine), "{engine}");
         }
-        assert!(!robots.text.contains("User-agent: *"));
-        let agents = robots
-            .text
+        assert!(!text.contains("User-agent: *"));
+        let agents = text
             .lines()
             .filter(|l| l.starts_with("User-agent:"))
             .count();
@@ -185,8 +176,8 @@ mod tests {
 
     #[test]
     fn a_search_engine_is_blocked_only_when_the_list_names_it() {
-        let robots = build_robots_txt(&site(), Ok("Googlebot\n".to_owned()), true).unwrap();
-        assert!(robots.text.contains("User-agent: Googlebot\n"));
+        let text = robots_txt(&site(), &list("Googlebot\n"));
+        assert!(text.contains("User-agent: Googlebot\n"));
     }
 
     /// The rule that lets robots through lives in `robots_list.py`; this module must not
@@ -216,47 +207,35 @@ mod tests {
     }
 
     #[test]
-    fn a_malformed_line_is_an_error_everywhere() {
-        for is_ci in [true, false] {
-            for (text, line) in [
-                ("A\n\nB\n", "2"),
-                ("A\n#B\n", "2"),
-                ("A:B\n", "1"),
-                ("A\u{7}B\n", "1"),
-                (" A\n", "1"),
-                ("A\t\n", "1"),
-            ] {
-                let error = build_robots_txt(&site(), Ok(text.to_owned()), is_ci)
-                    .err()
-                    .unwrap();
-                assert!(error.contains(&format!("malformed line {line}")), "{error}");
-            }
+    fn a_malformed_line_is_an_error() {
+        for (text, line, reason) in [
+            ("A\n\nB\n", 2, RobotNameError::Empty),
+            ("A\n#B\n", 2, RobotNameError::Character('#')),
+            ("A:B\n", 1, RobotNameError::Character(':')),
+            ("A\u{7}B\n", 1, RobotNameError::Character('\u{7}')),
+            (" A\n", 1, RobotNameError::Spaces),
+            ("A\t\n", 1, RobotNameError::Spaces),
+        ] {
+            let error = parse_blocked_robots(text).unwrap_err();
+            assert_eq!(error.line, line, "{text:?}");
+            assert_eq!(error.reason, reason, "{text:?}");
         }
     }
 
     #[test]
-    fn strict_in_the_pipeline_when_the_list_is_missing() {
-        let error = build_robots_txt(&site(), Err("not set".to_owned()), true)
-            .err()
-            .unwrap();
-        assert!(error.contains("not set"));
+    fn the_malformed_line_error_reads_as_before() {
+        let error = parse_blocked_robots("A\n#B\n").unwrap_err();
+        assert_eq!(
+            error.to_string(),
+            "malformed line 2 in the blocked robots file: `#B` (it has the character '#')"
+        );
     }
 
     #[test]
-    fn tolerant_locally_when_the_list_is_missing() {
-        let robots = build_robots_txt(&site(), Err("not set".to_owned()), false).unwrap();
-        assert_eq!(robots.warnings.len(), 1);
-        assert!(robots.warnings[0].contains("not set"));
-        assert!(
-            robots
-                .text
-                .contains("User-agent: __usage_ai-training\nDisallow: /\n")
-        );
-        assert!(
-            robots
-                .text
-                .ends_with("Sitemap: https://example.com/blog/sitemap.xml\n")
-        );
-        assert_eq!(robots.text.matches("User-agent:").count(), 1);
+    fn an_empty_list_leaves_only_the_training_signal() {
+        let text = robots_txt(&site(), &[]);
+        assert!(text.contains("User-agent: __usage_ai-training\nDisallow: /\n"));
+        assert!(text.ends_with("Sitemap: https://example.com/blog/sitemap.xml\n"));
+        assert_eq!(text.matches("User-agent:").count(), 1);
     }
 }
