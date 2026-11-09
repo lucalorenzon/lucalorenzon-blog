@@ -1,6 +1,5 @@
 use leptos::either::{Either, EitherOf3};
 use leptos::prelude::*;
-use std::fmt;
 use std::sync::LazyLock;
 use unicode_segmentation::UnicodeSegmentation;
 
@@ -118,25 +117,13 @@ pub fn heading_max_graphemes() -> usize {
 pub struct Heading(String);
 
 /// Why a text is not a [`Heading`].
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum HeadingError {
+    #[error("the title is empty")]
     Empty,
+    #[error("the title has {graphemes} characters, at most {max} fit in the page heading")]
     TooLong { graphemes: usize, max: usize },
 }
-
-impl fmt::Display for HeadingError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Empty => f.write_str("the title is empty"),
-            Self::TooLong { graphemes, max } => write!(
-                f,
-                "the title has {graphemes} characters, at most {max} fit in the page heading"
-            ),
-        }
-    }
-}
-
-impl std::error::Error for HeadingError {}
 
 impl TryFrom<&str> for Heading {
     type Error = HeadingError;

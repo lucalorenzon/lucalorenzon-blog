@@ -5,7 +5,6 @@ use crate::page_frame::{
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
 use serde::Deserialize;
-use std::fmt;
 
 /// The title of an article: the content's own name for it. Not empty. It has no length limit:
 /// the limit belongs to the page's heading ([`Heading`]), which an article builds from its
@@ -15,20 +14,11 @@ use std::fmt;
 pub struct Title(String);
 
 /// Why a text is not a [`Title`].
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum TitleError {
+    #[error("field `title` is empty")]
     Empty,
 }
-
-impl fmt::Display for TitleError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Empty => f.write_str("field `title` is empty"),
-        }
-    }
-}
-
-impl std::error::Error for TitleError {}
 
 impl TryFrom<String> for Title {
     type Error = TitleError;
@@ -71,25 +61,16 @@ pub const DESCRIPTION_MAX_CHARACTERS: usize = 160;
 pub struct Description(String);
 
 /// Why a text is not a [`Description`].
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum DescriptionError {
+    #[error("field `description` is empty")]
     Empty,
+    #[error(
+        "field `description` has {characters} characters, more than the {max} a search result shows",
+        max = DESCRIPTION_MAX_CHARACTERS
+    )]
     TooLong { characters: usize },
 }
-
-impl fmt::Display for DescriptionError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Empty => f.write_str("field `description` is empty"),
-            Self::TooLong { characters } => write!(
-                f,
-                "field `description` has {characters} characters, more than the {DESCRIPTION_MAX_CHARACTERS} a search result shows"
-            ),
-        }
-    }
-}
-
-impl std::error::Error for DescriptionError {}
 
 impl TryFrom<String> for Description {
     type Error = DescriptionError;
@@ -161,53 +142,31 @@ struct FrontMatter {
 }
 
 /// What is wrong in an article's front matter.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum FrontMatterError {
     /// The file does not start with a line `---`.
+    #[error("the file does not start with a front matter (a line `---`)")]
     Missing,
     /// The front matter has no closing line `---`.
+    #[error("the front matter has no closing line `---`")]
     Unclosed,
     /// The YAML reader's message: malformed YAML, a field missing, an unknown field, a field
     /// of the wrong kind, or a field whose value is not valid (`Title`, `Description`, `Date`).
+    #[error("front matter: {}", .0.lines().next().unwrap_or_default())]
     Invalid(String),
     /// The title is valid as content but does not fit the frame's heading (too long).
+    #[error("front matter: field `title`: {0}")]
     Heading(HeadingError),
 }
 
-impl fmt::Display for FrontMatterError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Missing => {
-                f.write_str("the file does not start with a front matter (a line `---`)")
-            }
-            Self::Unclosed => f.write_str("the front matter has no closing line `---`"),
-            Self::Invalid(problem) => write!(
-                f,
-                "front matter: {}",
-                problem.lines().next().unwrap_or_default()
-            ),
-            Self::Heading(problem) => write!(f, "front matter: field `title`: {problem}"),
-        }
-    }
-}
-
-impl std::error::Error for FrontMatterError {}
-
 /// Why an article's file cannot become an [`Article`]: which file, and what is wrong in its
 /// front matter.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
+#[error("{file}: {error}")]
 pub struct ArticleError {
-    pub source: &'static str,
+    pub file: &'static str,
     pub error: FrontMatterError,
 }
-
-impl fmt::Display for ArticleError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}: {}", self.source, self.error)
-    }
-}
-
-impl std::error::Error for ArticleError {}
 
 /// Splits a file into its front matter (with its opening `---` line) and its body. The front matter sits between a first line
 /// `---` and the next one.
@@ -252,7 +211,7 @@ impl TryFrom<&ArticleFile> for Article {
 
     fn try_from(file: &ArticleFile) -> Result<Self, ArticleError> {
         let error = |error| ArticleError {
-            source: file.source,
+            file: file.source,
             error,
         };
         let (front_matter, body) = split_front_matter(file.text).map_err(error)?;

@@ -1,5 +1,3 @@
-use std::fmt;
-
 /// The site's full address, such as `https://www.lucalorenzon.com/`.
 ///
 /// Built only through [`SiteAddress::parse`], so a value of this type is
@@ -13,20 +11,11 @@ pub struct SiteAddress {
 }
 
 /// Why a text was refused as the site's address.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
+#[error(
+    "invalid site address `{0}`: it must start with `https://`, have a host and end with `/` (for example `https://www.lucalorenzon.com/`)"
+)]
 pub struct InvalidSiteAddress(String);
-
-impl fmt::Display for InvalidSiteAddress {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "invalid site address `{}`: it must start with `https://`, have a host and end with `/` (for example `https://www.lucalorenzon.com/`)",
-            self.0
-        )
-    }
-}
-
-impl std::error::Error for InvalidSiteAddress {}
 
 impl SiteAddress {
     pub fn parse(text: &str) -> Result<Self, InvalidSiteAddress> {

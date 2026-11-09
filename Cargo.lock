@@ -954,6 +954,7 @@ dependencies = [
  "pulldown-cmark",
  "serde",
  "serde-saphyr",
+ "thiserror 2.0.21",
  "unicode-segmentation",
 ]
 
