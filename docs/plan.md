@@ -15,7 +15,7 @@ live since 2026-10-26
 ## Now
 
 - A round of the refactors left waiting, so the code moves too:
-  [refactor the code's errors with thiserror](backlog/refactor-errors-with-thiserror.md),
+  [refactor the code's errors with thiserror](wip/refactor-errors-with-thiserror.md),
   instead of plain text, generic boxes and types written by hand. The
   dates are already done: jiff's day instead of two types of day
   ([card](done/2026-11-09_give-dates-a-module-of-their-own.md)), not

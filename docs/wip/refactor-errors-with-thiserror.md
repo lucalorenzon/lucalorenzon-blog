@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-08, by the user, while choosing how the articles'
   front matter is checked
   ([card](../done/2026-11-08_read-article-fields-from-front-matter.md)).
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-09.
 
 ## Why
 

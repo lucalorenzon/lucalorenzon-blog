@@ -23,7 +23,7 @@ of the calendar. The user wanted dates handled by a widely used
 library or, if one was too heavy, by a module of their own, instead of
 being buried in the modules that use them. The card also took over a
 question first written in the
-[thiserror card](../backlog/refactor-errors-with-thiserror.md): whether
+[thiserror card](../wip/refactor-errors-with-thiserror.md): whether
 the two types of day become one.
 
 The user kept it out of the articles' card, so that each decision

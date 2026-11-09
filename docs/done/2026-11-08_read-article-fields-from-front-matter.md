@@ -139,7 +139,7 @@ file's path.
   unit test keeps it so.
 - **The error types are written by hand.** Moving them, and the rest of
   the code's errors, to [thiserror](https://crates.io/crates/thiserror)
-  is a [card of its own](../backlog/refactor-errors-with-thiserror.md),
+  is a [card of its own](../wip/refactor-errors-with-thiserror.md),
   as the user asked; it may also remove the doubled "error:" that comes
   from the reader's message.
 - **Rejected:** the first version, where the front matter was read into
