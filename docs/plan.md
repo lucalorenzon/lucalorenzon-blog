@@ -32,6 +32,9 @@ live since 2026-10-26
 
 ## Next
 
+- [Write an article on the style guide](backlog/write-an-article-on-the-style-guide.md),
+  told from the problem it solves, once the style guide's colour page
+  is live.
 - [Separate the domain from the adapters](backlog/separate-the-domain-from-the-adapters.md),
   after the errors: a core of pure business that returns its errors,
   and one adapter per concept the file system implements today
