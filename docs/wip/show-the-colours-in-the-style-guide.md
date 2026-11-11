@@ -155,13 +155,36 @@ Lvk@73r                  Style guide                   (the frame)
 [GEN] - Colours                        (one link per page)
 ```
 
-## Questions
+## How the samples are painted
 
-To be answered before the code:
+Decided by the user on 2026-11-11, after comparing two mock pages built
+with the site's real stylesheet, fonts and frame, on a phone and a
+laptop, with the browser in each scheme.
 
-- How the samples are painted with a fixed scheme, against
-  [ADR-001](../adr/ADR-001-name-styles-by-visual-variant.md), which
-  wants pages to use only named visual variants: the colour written on
-  the element from the module, or a variable generated for each colour
-  of each scheme.
-- Who writes the first text of the two Markdown files.
+- **Chosen: two named variants, `scheme-light` and `scheme-dark`,**
+  written by the build from the Rust module into
+  `target/generated/colours.css`, together with the rule that follows
+  the browser's preference. A box with one of them becomes a small page
+  in that scheme: what it holds uses the site's own variants, unchanged.
+  Why: the samples show the real components, not only a colour (the
+  code accent's sample is a sentence in the ink holding code in the
+  code font, as in the articles; the heading accent's is a real title),
+  and it keeps to
+  [ADR-001](../adr/ADR-001-name-styles-by-visual-variant.md). The same
+  mechanism may one day let the reader choose the scheme
+  ([card](../backlog/let-readers-adjust-font-and-spacing.md)).
+- **Rejected: the colour written on each box** (`style="..."`) from the
+  module. Simpler, but an exception to ADR-001, and the samples would
+  show a colour, not the site's style: in the mock, the code accent was
+  a whole sentence in amber in the text's font.
+
+The numbers under each sample are those of the colour shown: for the
+code accent, the code, not the ink of the sentence around it.
+
+## Who writes the texts
+
+The agent writes placeholder texts for `content/style-guide/index.md`
+and `content/style-guide/colours.md`, each telling the user what kind
+of text goes there; the user then writes the texts. The placeholders
+must not be published: snapshots on `main` are not, only a version tag
+publishes, so the texts are written before the next version tag.
