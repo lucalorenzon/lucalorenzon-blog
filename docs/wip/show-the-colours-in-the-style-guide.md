@@ -79,9 +79,89 @@ The allowed pairs today, from the comment in `style/input.css`:
 In the dark scheme the three accents have the same value, `#dd9911`; in
 the light scheme each use needs its own shade.
 
+## Answers
+
+Given by the user on 2026-11-11.
+
+- **What the samples say:** what their colour is for, such as "Running
+  text" for the ink or "Code in a sentence" for the code accent. The
+  line accent's sample is what the line does: a line that separates two
+  short sections, written in the ink of the same scheme and background.
+  The line accent cannot carry text (3:1 is below what text needs).
+- **Where the explanations live:** in `content/style-guide/colours.md`,
+  so the page reads as a text that explains the choices made. One
+  level-2 section for each of the four foreground colours, titled with
+  its role. The text says why, never the values: the codes and the
+  ratios are printed by the samples, from the Rust module, so they are
+  written once. The Markdown holds no HTML, like all the content, so
+  the page's generator places the samples after each section; the build
+  stops if a foreground colour has no section, or a section names no
+  colour, as it does for a wrong field of an article.
+- **No section for the backgrounds:** the page and the code surface are
+  not explained, because the scheme belongs to the reader; the page
+  shows how everything else behaves in each of the two. The
+  backgrounds appear only as the ground of the samples, with their code.
+- **The index:** an introduction in `content/style-guide/index.md`,
+  and under it the list of the style guide's pages, written by the
+  build; today only "Colours".
+- **A consequence:** both pages come from a Markdown file, so the
+  sitemap dates them as it does the other pages.
+
+The colours page, as agreed (**[MD]** from the Markdown file,
+**[GEN]** drawn by the generator from the Rust module; each box is
+painted with its real background, whatever scheme the reader has):
+
+```text
+Lvk@73r                  Colours                       (the frame)
+--------------------------------------------------------------
+[MD]  Introduction.
+
+[MD]  ## Ink
+[MD]  Why the ink is what it is.
+
+[GEN]  LIGHT                        DARK
+      +-----------------------+   +-----------------------+
+page  | Running text          |   | Running text          |
+      +-----------------------+   +-----------------------+
+       #1c1a17 on #fbfaf7          #e6e6e6 on #000000
+       16.63:1, needs 7:1          16.83:1, needs 7:1
+      +-----------------------+   +-----------------------+
+code  | Running text          |   | Running text          |
+      +-----------------------+   +-----------------------+
+       14.08:1, needs 7:1          13.94:1, needs 7:1
+
+[MD]  ## Line accent
+[MD]  Why lines have a shade of their own.
+
+[GEN]  LIGHT                        DARK
+      +-----------------------+   +-----------------------+
+page  | A section above       |   | A section above       |
+      | --------------------- |   | --------------------- |
+      | A section below       |   | A section below       |
+      +-----------------------+   +-----------------------+
+       3.7:1, needs 3:1            8.64:1, needs 3:1
+
+... the code accent and the heading accent in the same way
+(the heading accent on the page only, as large text).
+```
+
+The index page:
+
+```text
+Lvk@73r                  Style guide                   (the frame)
+--------------------------------------------------------------
+[MD]  What this guide is.
+
+[GEN] - Colours                        (one link per page)
+```
+
 ## Questions
 
-- Which made-up texts the samples use.
-- Whether the explanations of each colour leave the comments of
-  `style/input.css` for the Rust module, so the page can print them.
-- How the index page presents the style guide.
+To be answered before the code:
+
+- How the samples are painted with a fixed scheme, against
+  [ADR-001](../adr/ADR-001-name-styles-by-visual-variant.md), which
+  wants pages to use only named visual variants: the colour written on
+  the element from the module, or a variable generated for each colour
+  of each scheme.
+- Who writes the first text of the two Markdown files.
