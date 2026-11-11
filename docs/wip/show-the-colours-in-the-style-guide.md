@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-11, by the user, as the first page of the style
   guide in the card [build a design system](../wip/build-a-design-system.md);
   in Now.
-- **Status:** noticed, not started.
+- **Status:** being worked on, since 2026-11-11.
 
 ## Why
 
@@ -42,8 +42,8 @@ being agreed.
    sitemap and indexed, because they are written for the readers like
    the articles; so the net and the SEO check cover them already. No
    link from the site for now: the menu
-   ([card](add-site-menu.md)) and the article on the style guide
-   ([card](write-an-article-on-the-style-guide.md)) will add them.
+   ([card](../backlog/add-site-menu.md)) and the article on the style guide
+   ([card](../backlog/write-an-article-on-the-style-guide.md)) will add them.
 3. **Each foreground colour is shown on the two backgrounds,** the page
    and the code surface, in both schemes. Each sample shows what the
    colour is used for: the ink and the code accent as text of normal

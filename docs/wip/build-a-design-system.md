@@ -136,7 +136,7 @@ To be answered while the style guide is built:
 
 - Which component comes first: the colours, with the light and the
   dark scheme, decided by the user on 2026-11-10
-  ([card](../backlog/show-the-colours-in-the-style-guide.md)).
+  ([card](show-the-colours-in-the-style-guide.md)).
 - How the reader reaches the style guide, while the site has no menu
   yet.
 - Which cases each component needs, written for the purpose, so that
