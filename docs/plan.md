@@ -34,7 +34,9 @@ live since 2026-10-26
     defined once in the build, which writes the stylesheet's values
     and checks every allowed pair's contrast.
   - The pages left before publishing, in this order: the code block
-    with its wrap toggle, the table with its record viewer, the
+    with its wrap toggle
+    ([card](wip/show-the-code-block-in-the-style-guide.md), started),
+    the table with its record viewer, the
     typography with the elements of the text, the breakpoints.
 
 ## Next
