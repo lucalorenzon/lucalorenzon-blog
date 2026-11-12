@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-11
+Last updated: 2026-11-12
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -29,7 +29,8 @@ live since 2026-10-26
   test pages today go back to being content. It takes over the components' test pages of
   [ADR-004](adr/ADR-004-test-components-once-and-pages-with-a-net.md),
   whose other slices are done: 913 tests became 227.
-  - First page: [show the colours in the style guide](wip/show-the-colours-in-the-style-guide.md),
+  - First page done, not published yet:
+    [show the colours in the style guide](done/2026-11-12_show-the-colours-in-the-style-guide.md),
     defined once in the build, which writes the stylesheet's values
     and checks every allowed pair's contrast.
 
