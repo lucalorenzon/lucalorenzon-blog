@@ -11,8 +11,7 @@ use leptos::prelude::*;
 pub(crate) const INDEX: &str = include_str!("../../content/style-guide/index.md");
 
 /// What search engines and link previews show of the page.
-const DESCRIPTION: &str =
-    "Placeholder: say in one or two sentences what this style guide is and what it is for.";
+const DESCRIPTION: &str = "The style guide of this site: its design decisions, right or wrong, gathered in one place and each tested once.";
 
 /// The guide's pages: the title the reader sees and the file, in the guide's folder.
 const PAGES: [(&str, &str); 1] = [("Colours", colours_page::FILE)];
@@ -73,7 +72,9 @@ mod tests {
     #[test]
     fn shows_the_text_before_the_list() {
         let html = render_index_page();
-        let text = html.find("Placeholder, to be replaced").unwrap();
+        // Not tied to the wording: the text's first paragraph comes before the list.
+        let main = html.find("<main").unwrap();
+        let text = main + html[main..].find("<p>").unwrap();
         assert!(text < html.find("<ul>").unwrap());
     }
 
@@ -107,7 +108,6 @@ mod tests {
 
     #[test]
     fn description_fits_a_search_result() {
-        assert!(DESCRIPTION.starts_with("Placeholder:"));
         assert!(DESCRIPTION.chars().count() <= 160);
     }
 

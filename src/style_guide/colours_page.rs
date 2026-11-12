@@ -22,7 +22,7 @@ pub const FILE: &str = "colours.html";
 pub(crate) const COLOURS: &str = include_str!("../../content/style-guide/colours.md");
 
 /// What search engines and link previews show of the page.
-const DESCRIPTION: &str = "Placeholder: say in one or two sentences which colours the site uses, in the light and in the dark scheme, and why.";
+const DESCRIPTION: &str = "The colours of this site in the light and the dark scheme: what each one is for, and the contrast each pair reaches.";
 
 /// Why the page's text does not match the palette. The build stops with it: the text and the
 /// colours must say the same thing.
@@ -410,7 +410,6 @@ mod tests {
 
     #[test]
     fn description_fits_a_search_result() {
-        assert!(DESCRIPTION.starts_with("Placeholder:"));
         assert!(DESCRIPTION.chars().count() <= 160);
     }
 
