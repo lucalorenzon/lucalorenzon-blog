@@ -93,6 +93,8 @@ enum BuildError {
     MalformedRobotLine(#[from] robots_txt::MalformedRobotLine),
     #[error(transparent)]
     Colours(#[from] style_guide::colours::ContrastTooLow),
+    #[error(transparent)]
+    ColoursPage(#[from] style_guide::colours_page::SectionError),
     #[error("cannot create the folder `{}`: {reason}", path.display())]
     CreateFolder {
         path: PathBuf,
@@ -147,7 +149,7 @@ fn build() -> Result<(), BuildError> {
     }
 
     create_folder(&out_dir)?;
-    let pages = sitemap::pages(&address, &loaded.articles);
+    let pages = sitemap::pages(&address, &loaded.articles)?;
     for page in &pages {
         let path = out_dir.join(page.file);
         if let Some(folder) = path.parent() {

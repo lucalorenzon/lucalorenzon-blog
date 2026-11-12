@@ -7,6 +7,7 @@
 
 use crate::article_page::Article;
 use crate::site_address::SiteAddress;
+use crate::style_guide::{self, colours_page, index_page};
 use crate::{about_page, article_page, curriculum_page, home_page, licence_page, not_found_page};
 use jiff::civil::Date;
 use std::collections::BTreeMap;
@@ -33,8 +34,12 @@ pub struct Page {
     pub html: String,
 }
 
-/// Every page of the site, rendered.
-pub fn pages(site: &SiteAddress, articles: &[Article]) -> Vec<Page> {
+/// Every page of the site, rendered. The colours page can fail: its text must match the
+/// palette.
+pub fn pages(
+    site: &SiteAddress,
+    articles: &[Article],
+) -> Result<Vec<Page>, colours_page::SectionError> {
     let fixed = |file, source, html| Page {
         file,
         address: file,
@@ -65,6 +70,18 @@ pub fn pages(site: &SiteAddress, articles: &[Article]) -> Vec<Page> {
             "content/licence.md",
             licence_page::render_licence_page(site),
         ),
+        Page {
+            file: "style-guide/index.html",
+            address: style_guide::FOLDER,
+            source: Some("content/style-guide/index.md"),
+            indexed: true,
+            html: index_page::render_index_page(site),
+        },
+        fixed(
+            "style-guide/colours.html",
+            "content/style-guide/colours.md",
+            colours_page::render_colours_page(site)?,
+        ),
     ];
     for article in articles {
         pages.push(fixed(
@@ -80,7 +97,7 @@ pub fn pages(site: &SiteAddress, articles: &[Article]) -> Vec<Page> {
         indexed: false,
         html: not_found_page::render_not_found_page(site),
     });
-    pages
+    Ok(pages)
 }
 
 /// The date of the last change of each content file, by path from the repository's root.
@@ -228,7 +245,7 @@ mod tests {
     }
 
     fn sitemap_of(site: &SiteAddress) -> String {
-        let pages = pages(site, &real_articles());
+        let pages = pages(site, &real_articles()).unwrap();
         let dates = ContentDates::parse(&full_dates(&pages)).unwrap();
         build_sitemap(&pages, site, Some(&dates)).xml
     }
@@ -287,6 +304,8 @@ mod tests {
                 "https://www.lucalorenzon.com/articles/how-to-generate-hybris-pk-values-without-hybris.html",
                 "https://www.lucalorenzon.com/curriculum.html",
                 "https://www.lucalorenzon.com/licence.html",
+                "https://www.lucalorenzon.com/style-guide/",
+                "https://www.lucalorenzon.com/style-guide/colours.html",
             ]
         );
     }
@@ -321,7 +340,7 @@ mod tests {
 
     #[test]
     fn indexed_means_not_noindex() {
-        for page in pages(&site(), &real_articles()) {
+        for page in pages(&site(), &real_articles()).unwrap() {
             assert_eq!(
                 page.indexed,
                 !page.html.contains("noindex"),
@@ -334,7 +353,11 @@ mod tests {
     #[test]
     fn each_listed_page_has_its_address_as_canonical_link() {
         let site = site();
-        for page in pages(&site, &real_articles()).iter().filter(|p| p.indexed) {
+        for page in pages(&site, &real_articles())
+            .unwrap()
+            .iter()
+            .filter(|p| p.indexed)
+        {
             let canonical = format!(
                 "<link rel=\"canonical\" href=\"{}\"",
                 site.join(page.address)
@@ -361,7 +384,7 @@ mod tests {
         let root = Path::new(env!("CARGO_MANIFEST_DIR"));
         let mut files = Vec::new();
         walk(&root.join("content"), &mut files);
-        let pages = pages(&site(), &real_articles());
+        let pages = pages(&site(), &real_articles()).unwrap();
         for file in files {
             let relative = file
                 .strip_prefix(root)
@@ -384,7 +407,7 @@ mod tests {
     #[test]
     fn every_source_is_a_file_that_exists() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR"));
-        for page in pages(&site(), &real_articles()) {
+        for page in pages(&site(), &real_articles()).unwrap() {
             if let Some(source) = page.source {
                 assert!(root.join(source).is_file(), "{source}");
             }
@@ -396,11 +419,19 @@ mod tests {
     #[test]
     fn each_fixed_page_names_the_file_its_text_comes_from() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR"));
-        let pages = pages(&site(), &real_articles());
+        let pages = pages(&site(), &real_articles()).unwrap();
         for (file, text) in [
             ("curriculum.html", crate::curriculum_page::CURRICULUM),
             ("about.html", crate::about_page::ABOUT),
             ("licence.html", crate::licence_page::LICENCE),
+            (
+                "style-guide/index.html",
+                crate::style_guide::index_page::INDEX,
+            ),
+            (
+                "style-guide/colours.html",
+                crate::style_guide::colours_page::COLOURS,
+            ),
         ] {
             let page = pages.iter().find(|p| p.file == file).unwrap();
             let source = page.source.unwrap();
@@ -437,7 +468,7 @@ mod tests {
     #[test]
     fn without_dates_no_entry_has_lastmod_and_nothing_is_reported() {
         let site = site();
-        let pages = pages(&site, &real_articles());
+        let pages = pages(&site, &real_articles()).unwrap();
         let sitemap = build_sitemap(&pages, &site, None);
         assert!(!sitemap.xml.contains("lastmod"));
         assert_eq!(sitemap.missing, None);
@@ -446,7 +477,7 @@ mod tests {
     #[test]
     fn with_an_empty_dates_file_every_page_with_a_source_is_missing() {
         let site = site();
-        let pages = pages(&site, &real_articles());
+        let pages = pages(&site, &real_articles()).unwrap();
         let dates = ContentDates::parse("").unwrap();
         let sitemap = build_sitemap(&pages, &site, Some(&dates));
         assert!(!sitemap.xml.contains("lastmod"));
@@ -463,7 +494,7 @@ mod tests {
     #[test]
     fn a_page_without_a_date_is_reported_and_listed_without_lastmod() {
         let site = site();
-        let pages = pages(&site, &real_articles());
+        let pages = pages(&site, &real_articles()).unwrap();
         let dates = ContentDates::parse("content/about.md\t2026-11-06\n").unwrap();
         let sitemap = build_sitemap(&pages, &site, Some(&dates));
         let message = sitemap.missing.unwrap().to_string();
@@ -486,7 +517,7 @@ mod tests {
     #[test]
     fn nothing_is_reported_when_every_page_has_a_date() {
         let site = site();
-        let pages = pages(&site, &real_articles());
+        let pages = pages(&site, &real_articles()).unwrap();
         let dates = ContentDates::parse(&full_dates(&pages)).unwrap();
         assert_eq!(build_sitemap(&pages, &site, Some(&dates)).missing, None);
     }

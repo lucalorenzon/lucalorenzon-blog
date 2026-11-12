@@ -1,0 +1,1 @@
+Placeholder, to be replaced before the next version tag: write here, in two or three sentences, what this style guide is and what it is for, for a reader who arrives from an article or from the menu and knows nothing about the site's design.
