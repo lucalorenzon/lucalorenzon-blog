@@ -33,12 +33,16 @@ live since 2026-10-26
     [show the colours in the style guide](done/2026-11-12_show-the-colours-in-the-style-guide.md),
     defined once in the build, which writes the stylesheet's values
     and checks every allowed pair's contrast.
+  - The pages left before publishing, in this order: the code block
+    with its wrap toggle, the table with its record viewer, the
+    typography with the elements of the text, the breakpoints.
 
 ## Next
 
 - [Write an article on the style guide](backlog/write-an-article-on-the-style-guide.md),
-  told from the problem it solves, once the style guide's colour page
-  is live.
+  told from the problem it solves, once the style guide is complete:
+  published with it, as the third article, and the readers' way into
+  it.
 - [Separate the domain from the adapters](backlog/separate-the-domain-from-the-adapters.md),
   after the errors: a core of pure business that returns its errors,
   and one adapter per concept the file system implements today

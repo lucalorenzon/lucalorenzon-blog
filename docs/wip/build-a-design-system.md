@@ -12,6 +12,9 @@
   of our own, built with Leptos and published for the readers, instead
   of Holt or Storybook (see "Which catalogue"); the spike on Holt is no
   longer needed.
+- **Changed:** 2026-11-12, by the user: the style guide is published
+  only when it is complete, and the readers reach it through an
+  article (see "Known from the start").
 - **Status:** being worked on, since 2026-11-10.
 
 ## Why
@@ -75,6 +78,26 @@ twice. The price: until then, the two articles stay test pages.
   meant to stay out of the site): its pages go in the sitemap, pass the
   SEO check and are covered by the net on the live site too, like every
   other page.
+- **Published when complete** (decided by the user on 2026-11-12):
+  no version tag until the style guide has, besides the colours, a
+  page for each of these:
+  - the code block, with its wrap toggle;
+  - the table, with its record viewer on narrow screens;
+  - the typography: the fonts, and the elements of the text (headings
+    down to level 4, paragraphs, numbered and bulleted lists), so the
+    text checks leave the After Save Event article too;
+  - the breakpoints.
+
+  Why: the site's whole look is shown at once, and the article on it
+  ([card](../backlog/write-an-article-on-the-style-guide.md)) tells a
+  finished work. The commits are pushed meanwhile, without a tag.
+- **The readers reach it through an article** (decided by the user on
+  2026-11-12): the article on the style guide is the site's third
+  article, listed on the home page like the others, and leads into
+  `/style-guide/`. The style guide stays a section of its own, with
+  its cases written for the tests: if its pages were the article
+  itself, an edit made for the text could stop the build again, as
+  the two articles used as test pages do today.
 - **Cases written for the tests, pages written for the readers:** a
   case that stresses a component (a very long word, a six-column table
   on a narrow screen) can look odd next to the articles. Each case says
@@ -139,7 +162,8 @@ To be answered while the style guide is built:
   ([card](../done/2026-11-12_show-the-colours-in-the-style-guide.md));
   done on 2026-11-12, not published yet.
 - How the reader reaches the style guide, while the site has no menu
-  yet.
+  yet: through the article on it, decided by the user on 2026-11-12
+  (see "Known from the start").
 - Which cases each component needs, written for the purpose, so that
   the two articles stop being test pages and their guards go away.
 - Whether `tables.spec.ts` becomes a check of the table component, run

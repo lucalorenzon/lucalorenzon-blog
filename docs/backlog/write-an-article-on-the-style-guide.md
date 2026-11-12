@@ -4,6 +4,9 @@
   values of the style guide are defined, in the card
   [build a design system](../wip/build-a-design-system.md); in Next,
   after the style guide's colour page is live.
+- **Changed:** 2026-11-12, by the user: written once the whole style
+  guide is complete, and published with it as the site's third
+  article, the way the readers reach the style guide.
 - **Status:** noticed, not started.
 
 ## Why
@@ -23,7 +26,11 @@ size of the site.
 - **Not while the style guide is built:** in the session that opened
   this card, the catalogue went from Holt to a style guide of our own;
   an article written alongside would be rewritten at every turn. It is
-  written once the colour page is live.
+  written once the style guide is complete (colours, code block, table,
+  typography, breakpoints), and published in the same version.
+- **The way in:** the style guide has no link from the rest of the site
+  until the menu exists ([card](add-site-menu.md)); the article, listed
+  on the home page, leads the readers into it.
 - **The material is already recorded:** the card on the design system
   and the session minutes keep the decisions and their reasons, and are
   the article's outline.
@@ -32,5 +39,6 @@ size of the site.
 
 ## Questions
 
-- What the article covers: the colour page only, or the style guide as
-  a whole once more of it is built.
+- What the article covers: the style guide as a whole, since it is
+  written once the style guide is complete (decided by the user on
+  2026-11-12).
