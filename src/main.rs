@@ -10,6 +10,7 @@ mod page_frame;
 mod robots_txt;
 mod site_address;
 mod sitemap;
+mod style_guide;
 mod table_widths;
 
 use site_address::SiteAddress;
@@ -90,6 +91,8 @@ enum BuildError {
     BlockedRobots(#[from] MissingBlockedRobots),
     #[error(transparent)]
     MalformedRobotLine(#[from] robots_txt::MalformedRobotLine),
+    #[error(transparent)]
+    Colours(#[from] style_guide::colours::ContrastTooLow),
     #[error("cannot create the folder `{}`: {reason}", path.display())]
     CreateFolder {
         path: PathBuf,
@@ -127,6 +130,8 @@ fn build() -> Result<(), BuildError> {
     } else {
         &configured
     })?;
+
+    write_colours()?;
 
     let is_ci = env::var("CI").is_ok_and(|value| !value.is_empty());
     let loaded = article_page::load_articles(&article_page::ARTICLE_FILES);
@@ -211,6 +216,24 @@ fn write_code_classes() -> Result<(), BuildError> {
     list.push('\n');
     write_file(&path, list)?;
     Ok(())
+}
+
+/// Where the build writes the colours, for Tailwind (style/input.css). Outside the published
+/// site on purpose.
+const COLOURS_FILE: &str = "target/generated/colours.css";
+
+/// The colours are defined in `style_guide::colours`; the stylesheet imports this file. A
+/// palette with an unreadable pair stops the build before anything is written.
+fn write_colours() -> Result<(), BuildError> {
+    style_guide::colours::check(&style_guide::colours::PALETTE)?;
+    let path = PathBuf::from(COLOURS_FILE);
+    if let Some(folder) = path.parent() {
+        create_folder(folder)?;
+    }
+    write_file(
+        &path,
+        style_guide::colours::css(&style_guide::colours::PALETTE),
+    )
 }
 
 fn main() -> ExitCode {
