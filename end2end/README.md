@@ -83,9 +83,9 @@ or who sees colours poorly.
 
 | Find in files | File | Pages | Widths | Themes | Fails when? | Why |
 |---|---|---|---|---|---|---|
-| `accessibility of the code blocks` | `code-blocks.spec.ts` | hybris PK article | 320, 768 | light | axe, limited to the code blocks, finds a violation; or the page no longer shows a block with the wrap toggle and one without | The toggle exists only at some widths, so the net, at one width, does not see it |
-| `contrast of the code blocks` | `code-blocks.spec.ts` | hybris PK article | 320, 768 | light and dark | a text of the code blocks falls below the contrast required | As above, for colours |
-| `Tab reaches it and Space switches it` | `code-blocks.spec.ts` | both articles | 320 | light | Tab does not reach the wrap toggle, or Space does not switch it | A reader without a mouse must be able to wrap the code |
+| `accessibility of the code blocks` | `code-blocks.spec.ts` | style guide, code blocks | 320, 768 | light | axe, limited to the code blocks, finds a violation | The toggle exists only at some widths, so the net, at one width, does not see it; the page has blocks with and without it |
+| `contrast of the code blocks` | `code-blocks.spec.ts` | style guide, code blocks | 320, 768 | light and dark | a text of the code blocks falls below the contrast required | As above, for colours |
+| `Tab reaches it and Space switches it` | `code-blocks.spec.ts` | style guide, code blocks | 320 | light | Tab does not reach the wrap toggle, or Space does not switch it | A reader without a mouse must be able to wrap the code |
 | `accessibility of the tables` | `table-forms.spec.ts` | hybris PK article (build only) | 320, 768 | light | axe, limited to the tables, finds a violation in either form; or the page no longer shows both forms at 320 | The record viewer exists only on narrow screens |
 | `contrast of the tables` | `table-forms.spec.ts` | hybris PK article (build only) | 320, 768 | light and dark | a text of the tables falls below the contrast required | As above, for colours |
 | `the keyboard reaches the viewers` | `table-forms.spec.ts` | every built page with tables (build only) | 320 | light | Tab does not reach the record viewer, or the arrow key does not move it by one record | A reader without a mouse must be able to read every record |
@@ -119,8 +119,8 @@ presentation) and 1.4.12 (text spacing).
 | `heading colours of the worst case` | `content-layout.spec.ts` | After Save Event article | 1280 | light and dark | a section or role heading has the colour of the text | Headings stand apart from the text by colour, amber ([ADR-003](../docs/adr/ADR-003-readability-first-amber-as-accent.md)) |
 | `numbered list of the After Save Event page` | `content-layout.spec.ts` | After Save Event article | 1280 | light | a numbered list shows no numbers, or its indent or the space above it differs from a bulleted list | Both kinds of list must sit in the column the same way |
 | `list markers take the amber accent` | `content-layout.spec.ts` | After Save Event article | 1280 | light and dark | bullets or numbers are not amber, or the text of the items is | The markers guide the eye; the text must keep its own colour |
-| `continue 4 columns deeper than their indent` | `code-blocks.spec.ts` | both articles | 320 | light | a wrapped code line does not continue four columns deeper than its own indent | In wrapped code, the reader must tell a new line from a continued one |
-| `copying the code of ${articleName}` | `code-blocks.spec.ts` | both articles | 320 | light | copying a code block, wrapped or not, gives anything other than the code: the toggle's text, extra blank lines | Code copied from an article must run as written |
+| `continue 4 columns deeper than their indent` | `code-blocks.spec.ts` | style guide, code blocks | 320 | light | a wrapped code line, indented with spaces or with tabs, does not continue four columns deeper than its own indent; or the nested-indentation case or the tab case has no line that wraps at 320 | In wrapped code, the reader must tell a new line from a continued one; the code counts a tab up to the next multiple of 4 and only the browser can say whether it draws it so |
+| `copying the code of the cases` | `code-blocks.spec.ts` | style guide, code blocks | 320 | light | copying a code block, wrapped or not, tabs and blank line included, gives anything other than the code: the toggle's text, extra blank lines | Code copied from a page must run as written |
 | `single-value table cells of` | `tables.spec.ts` | every built page (build only) | 320, 393, 412, 767 | light | a table cell with no space in it, such as a range "63–44", is split over two lines | A single value broken in two reads as two values |
 
 ### Frame
@@ -144,7 +144,7 @@ component takes the wrong form, parts overlap.
 
 | Find in files | File | Pages | Widths | Themes | Fails when? | Why |
 |---|---|---|---|---|---|---|
-| `the toggle shows exactly when the code scrolls` | `code-blocks.spec.ts` | both articles | column widths | light | the wrap toggle shows on code that fits, or hides on code that scrolls; or wrapped code still scrolls | The toggle is offered only where it is needed, and must work |
+| `each one scrolls or fits as written` | `code-blocks.spec.ts` | style guide, code blocks | column widths | light | a case of the page does not do what is written for it in the test (the long line, the nested indentation and the tabs scroll and show the wrap toggle; the short block and the blank line fit and do not), or wrapped code still scrolls, or the page scrolls sideways; or a case's heading is renamed, and the test names the case it cannot find | The toggle is offered only where it is needed, and must work |
 | `exactly one form of each table` | `table-forms.spec.ts` | every built page with tables (build only) | column widths | light | both forms of a table show, or none; the table is wider than its column; the page scrolls sideways | A table shows as a table while its columns fit, as a record viewer below that |
 | `every record of the viewers` | `table-forms.spec.ts` | every built page with tables (build only) | column widths | light | a row of a record is not level with its label, or the number row does not read "k / n" | Each value must sit beside its column's name |
 | `is a table at 768x1024` | `table-forms.spec.ts` | hybris PK article (build only) | 768 | light | the six-column table is not shown as a table | The threshold the build computes for this table puts it in table form on a tablet |

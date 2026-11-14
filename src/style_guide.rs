@@ -1,6 +1,7 @@
 //! The style guide: the decisions about how the site looks, written once in Rust and
 //! written out for the stylesheet by the build, and the pages of the guide.
 
+pub mod code_page;
 pub mod colours;
 pub mod colours_page;
 pub mod index_page;
