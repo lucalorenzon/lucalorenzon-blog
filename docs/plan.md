@@ -90,6 +90,8 @@ live since 2026-10-26
 - [Add a menu for the site](backlog/add-site-menu.md), in the room the
   header keeps on the right: search, categories, subscribing,
   settings, after the list of articles is published.
+- [Add breadcrumbs and a way back to the top to the articles](backlog/add-breadcrumbs-and-back-to-top-to-articles.md),
+  reusing the ones the style guide gets first.
 - [Use the space beside the text on wide screens](backlog/use-space-beside-text-on-wide-screens.md),
   left empty by the narrower column of version 0.5.0.
 - [Check performance in the build](backlog/check-performance-in-the-build.md),
