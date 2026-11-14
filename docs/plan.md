@@ -35,7 +35,9 @@ live since 2026-10-26
     and checks every allowed pair's contrast.
   - The pages left before publishing, in this order: the code block
     with its wrap toggle
-    ([card](wip/show-the-code-block-in-the-style-guide.md), started),
+    ([card](wip/show-the-code-block-in-the-style-guide.md), page
+    done, texts to write; a link from each page back to the index
+    ([card](wip/link-the-style-guide-pages-to-its-index.md))),
     the table with its record viewer, the
     typography with the elements of the text, the breakpoints.
 
