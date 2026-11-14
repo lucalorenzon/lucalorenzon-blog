@@ -3,6 +3,8 @@
 - **Opened:** 2026-11-14, by the user, after seeing the code block page
   of the style guide
   ([card](../wip/show-the-code-block-in-the-style-guide.md)); in Next.
+- **Changed:** 2026-11-14, by the user: done before the style guide is
+  published, in a session of its own; in Now.
 - **Status:** noticed, not started.
 
 ## Why
@@ -45,4 +47,5 @@ word "wrap" above the code. The user wants an icon in its place.
 - Whether a word stays next to the icon, or a tooltip, for the readers
   who do not recognise it.
 - Whether it comes before the style guide is published, as part of the
-  code block's page, or after.
+  code block's page, or after. Answered by the user on 2026-11-14:
+  **before**, in a session of its own.

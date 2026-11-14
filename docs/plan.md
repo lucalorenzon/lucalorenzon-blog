@@ -38,15 +38,14 @@ live since 2026-10-26
     ([card](wip/show-the-code-block-in-the-style-guide.md), page
     done, texts to write; each page links to the index and back to
     its top, done
-    ([card](done/2026-11-14_link-the-style-guide-pages-to-its-index.md))),
+    ([card](done/2026-11-14_link-the-style-guide-pages-to-its-index.md)),
+    and the wrap toggle turned into an icon, in a session of its own
+    ([card](backlog/turn-the-code-wrap-toggle-into-an-icon.md))),
     the table with its record viewer, the
     typography with the elements of the text, the breakpoints.
 
 ## Next
 
-- [Turn the code wrap toggle into an icon](backlog/turn-the-code-wrap-toggle-into-an-icon.md),
-  keeping its name for screen readers, its state, its focus and its
-  working without JavaScript.
 - [Write an article on the style guide](backlog/write-an-article-on-the-style-guide.md),
   told from the problem it solves, once the style guide is complete:
   published with it, as the third article, and the readers' way into
