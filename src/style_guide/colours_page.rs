@@ -9,6 +9,7 @@
 
 use super::FOLDER;
 use super::colours::{ALLOWED_PAIRS, AllowedPair, PALETTE, Role, Scheme, contrast_ratio};
+use super::navigation::GuideMain;
 use crate::markdown;
 use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
@@ -196,7 +197,7 @@ pub fn ColoursPage(canonical: String, body: String) -> impl IntoView {
                 kind: PageKind::Website,
             })
         >
-            <main class="long-text-column md:long-text-large" inner_html=body></main>
+            <GuideMain title="Colours" body=body />
         </PageFrame>
     }
 }

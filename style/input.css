@@ -468,6 +468,32 @@ body {
   @apply underline;
 }
 
+/* The breadcrumb of the style guide's pages (src/style_guide/navigation.rs):
+   a quiet line above the text, one step smaller, not a second title. It sits
+   in the text column, whose rules for lists (marker, indent, space above)
+   must give way. As in sample-box, the selectors repeat :is(ol) and :is(li)
+   to outweigh the column's rules by specificity, not by order or by !. The
+   items may wrap on a narrow screen, never push the page sideways. The ink
+   has the text's contrast; the guide's link is underlined like the footer's
+   (WCAG 1.4.1). */
+@utility breadcrumb {
+  @apply mt-[1em] text-[0.875em];
+
+  & :is(ol):is(ol) {
+    @apply flex flex-wrap gap-x-[0.5em] m-0 p-0 list-none;
+  }
+
+  & :is(li):is(li) {
+    @apply m-0 wrap-anywhere;
+  }
+}
+
+/* The "›" between the items of the breadcrumb: the same ink, a little apart
+   from the link before it. */
+@utility breadcrumb-separator {
+  @apply ml-[0.5em];
+}
+
 /* The logo is a link to the home page, placed in the header grid where the
    logo was; it is as wide as the logo shown, and the logo inside keeps its
    own look. Visible focus ring (WCAG 2.4.7). */

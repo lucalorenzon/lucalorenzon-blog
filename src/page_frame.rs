@@ -223,7 +223,7 @@ pub fn PageFrame(
                 {indexing_tags}
             </head>
             <body>
-                <div class="page-fills-screen">
+                <div id="top" class="page-fills-screen">
                     <header class="header-two-rows xl:header-one-row">
                         <a
                             href=home_page
