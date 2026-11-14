@@ -44,6 +44,9 @@ live since 2026-10-26
 
 ## Next
 
+- [Turn the code wrap toggle into an icon](backlog/turn-the-code-wrap-toggle-into-an-icon.md),
+  keeping its name for screen readers, its state, its focus and its
+  working without JavaScript.
 - [Write an article on the style guide](backlog/write-an-article-on-the-style-guide.md),
   told from the problem it solves, once the style guide is complete:
   published with it, as the third article, and the readers' way into
