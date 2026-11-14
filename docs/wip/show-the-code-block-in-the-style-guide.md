@@ -48,9 +48,43 @@ guards removed) is settled on a small case first and then reused.
 
 - Where the cases live: in the page's Markdown, as fenced blocks the
   converter turns into components, or in the page's generator, as the
-  colour samples are.
+  colour samples are. Answered by the user on 2026-11-13: **in the
+  Markdown**, written for the purpose, so the component is shown the
+  way it works on every other page, through the same converter.
+  Rejected: the cases in the generator, which would keep them fixed
+  but show a code block that no author ever writes that way.
+- Whether the tests check that the cases are still what they were
+  written for. Answered by the user on 2026-11-13: **no test of the
+  test.** The page's Markdown is the tests' material, not content: only
+  someone changing the tests edits it, and that edit is reviewed as a
+  change to the tests. What follows, agreed with the agent: since the
+  cases are known, each test states what it expects of each case (the
+  block with the long line scrolls and shows the toggle, the short one
+  fits and does not), instead of today's general rule ("the toggle
+  shows if and only if the code scrolls"), which was needed on articles
+  the test did not know, and which a shortened line would pass without
+  checking anything.
+- Which cases the page needs. Answered by the user on 2026-11-13,
+  from the agent's proposal: **the cases the tests of today need, plus
+  a block indented with tabs and a blank line inside a block**, with no
+  new test: the tests of the toggle, of the wrapped indent and of the
+  copy run on every block of the page, so they cover the two new cases
+  too. The tab is the one behaviour that only the browser can check:
+  the code counts a tab up to the next multiple of four, the browser
+  draws it with Tailwind's base style (`tab-size: 4`), and if the two
+  disagree the toggle shows at the wrong width and a wrapped line
+  restarts from the wrong indent. Rejected: browser tests for the
+  escaping of `<` and `&` and for the language's class, already
+  checked by the unit tests in `src/markdown.rs` (`code_is_escaped`,
+  `fenced_code_becomes_the_component_with_its_language`); in the
+  browser they would test the browser, not the site.
 - Which cases the page needs, so that each test finds what it checks
   without a guard: a block that scrolls and one that fits, at every
   width tested; indented lines that wrap; what else.
 - What the page's text says about the component, and where it is
-  written.
+  written. Answered by the user on 2026-11-14: **the text for the
+  readers is the page's Markdown, cases included, and its author is
+  always the user**, so one file with one author holds no conflict
+  between text and tests. As for the colours page, the agent writes
+  the cases and a placeholder for each piece of text, saying what kind
+  of text goes there; the user writes the texts.
