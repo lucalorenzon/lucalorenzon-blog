@@ -36,8 +36,9 @@ live since 2026-10-26
   - The pages left before publishing, in this order: the code block
     with its wrap toggle
     ([card](wip/show-the-code-block-in-the-style-guide.md), page
-    done, texts to write; a link from each page back to the index
-    ([card](wip/link-the-style-guide-pages-to-its-index.md))),
+    done, texts to write; each page links to the index and back to
+    its top, done
+    ([card](done/2026-11-14_link-the-style-guide-pages-to-its-index.md))),
     the table with its record viewer, the
     typography with the elements of the text, the breakpoints.
 

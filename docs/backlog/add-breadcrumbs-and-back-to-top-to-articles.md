@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-14, by the user, while deciding the style guide's
   navigation in the card
-  [link the style guide's pages to its index](../wip/link-the-style-guide-pages-to-its-index.md);
+  [link the style guide's pages to its index](../done/2026-11-14_link-the-style-guide-pages-to-its-index.md);
   in Next.
 - **Status:** noticed, not started.
 

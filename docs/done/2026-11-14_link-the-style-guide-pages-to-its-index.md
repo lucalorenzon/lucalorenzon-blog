@@ -4,7 +4,8 @@
   page of the card
   [show the code block in the style guide](show-the-code-block-in-the-style-guide.md);
   in Now, part of [build a design system](build-a-design-system.md).
-- **Status:** being worked on, since 2026-11-14.
+- **Status:** done, 2026-11-14. Not published yet: the style guide goes
+  live when it is complete.
 
 ## Why
 
@@ -27,7 +28,7 @@ index, where the other pages are listed.
   block today, the table, typography and breakpoint pages when they
   come; the index does not link to itself.
 
-## Questions
+## Answers
 
 - Where the link goes on the page, and what it says. Answered by the
   user on 2026-11-14, from the agent's suggestion: **a breadcrumb at
@@ -55,3 +56,29 @@ index, where the other pages are listed.
   to lead to the index, like the breadcrumb; and a screen reader user
   listing the page's links would hear "Up" with no context, while a
   link's text should say where it leads.
+
+## Results
+
+Commit `c8b9c91`.
+
+- **One component for every page of the guide:** `GuideMain`
+  (`src/style_guide/navigation.rs`) writes the page's `<main>`: the
+  breadcrumb, the page's text, then "Back to top". The colours and code
+  block pages use it, and the pages to come get both by using it too.
+- **"Back to top" leads to `#top`,** an id on the frame's outer
+  element, so it is on every page of the site, with no visible effect.
+  Following it brings the keyboard's starting point back to the top as
+  well: the next Tab reaches the logo, the first focusable element of
+  the page (checked in Chromium by the browser test). The address bar
+  shows `#top` afterwards.
+- **The breadcrumb's look:** a line one step smaller than the text, in
+  the ink, the link underlined like the footer's. The text column's
+  rules for lists are outweighed by repeating the selector, as the
+  colour samples' boxes already do, not by `!important`: the agent
+  asked the sub-agent to align with that precedent before the commit;
+  the screenshots before and after were identical.
+- **Tests:** two browser tests at 320 and 1280, on the code block page
+  only, following ADR-004 (the breadcrumb leads to the index and marks
+  the current page; "Back to top" brings back the view and the
+  keyboard); 259 browser tests became 263. Six unit tests; 312 became
+  318.
