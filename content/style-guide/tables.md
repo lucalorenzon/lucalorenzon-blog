@@ -37,7 +37,7 @@ The record viewer shows every record with each field at the same height. To make
 
 ## A range with an en dash
 
-Placeholder, to be replaced before the next version tag: write here what this case shows and why it matters: a range such as 63–44, which the browser would break after the en dash if the column were narrow, and which the site keeps on one line.
+Here I dealt with unwanted line breaks in narrow columns, such as the one the browser makes after the en dash of a range: 63–44 would be split in two. A value with no space in it stays on one line, and the table gives its column the width it needs, taking it from the columns with room to spare. The tests check it at 320, 393, 412 and 767 pixels.
 
 | Pts | What happened in the match |
 |---|---|
