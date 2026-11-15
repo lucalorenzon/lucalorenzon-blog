@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-14, by the user, after seeing the code block page
   of the style guide
-  ([card](../wip/show-the-code-block-in-the-style-guide.md)); in Next.
+  ([card](../done/2026-11-15_show-the-code-block-in-the-style-guide.md)); in Next.
 - **Changed:** 2026-11-14, by the user: done before the style guide is
   published, in a session of its own; in Now.
 - **Status:** noticed, not started.

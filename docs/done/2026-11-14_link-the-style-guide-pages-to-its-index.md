@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-14, by the user, while looking at the code block
   page of the card
-  [show the code block in the style guide](show-the-code-block-in-the-style-guide.md);
+  [show the code block in the style guide](2026-11-15_show-the-code-block-in-the-style-guide.md);
   in Now, part of [build a design system](build-a-design-system.md).
 - **Status:** done, 2026-11-14. Not published yet: the style guide goes
   live when it is complete.

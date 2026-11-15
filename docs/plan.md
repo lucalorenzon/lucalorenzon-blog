@@ -35,8 +35,8 @@ live since 2026-10-26
     and checks every allowed pair's contrast.
   - The pages left before publishing, in this order: the code block
     with its wrap toggle
-    ([card](wip/show-the-code-block-in-the-style-guide.md), page
-    done, texts to write; each page links to the index and back to
+    ([card](done/2026-11-15_show-the-code-block-in-the-style-guide.md),
+    done; each page links to the index and back to
     its top, done
     ([card](done/2026-11-14_link-the-style-guide-pages-to-its-index.md)),
     and the wrap toggle turned into an icon, in a session of its own

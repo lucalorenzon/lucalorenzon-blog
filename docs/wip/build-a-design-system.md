@@ -61,7 +61,9 @@ twice. The price: until then, the two articles stay test pages.
     list markers, on the After Save Event article by name;
   - `end2end/tests/code-blocks.spec.ts`: the wrap toggle, on both
     articles by name (`ARTICLES`), and axe on the code blocks of the
-    hybris article (`AXE_ARTICLE`), with a guard of its own;
+    hybris article (`AXE_ARTICLE`), with a guard of its own; since
+    2026-11-15 on the style guide's code block page instead
+    ([card](../done/2026-11-15_show-the-code-block-in-the-style-guide.md));
   - `end2end/tests/table-forms.spec.ts`: the six-column table of the
     hybris article at the width where it turns into a record viewer,
     and axe on its tables (`AXE_PAGE`).

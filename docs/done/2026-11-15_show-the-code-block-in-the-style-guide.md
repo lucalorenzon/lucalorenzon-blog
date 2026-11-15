@@ -3,7 +3,8 @@
 - **Opened:** 2026-11-12, by the user, as the second page of the style
   guide in the card [build a design system](build-a-design-system.md),
   the first one about a component; in Now.
-- **Status:** being worked on, since 2026-11-12.
+- **Status:** done, 2026-11-15. Not published yet: the style guide goes
+  live when it is complete.
 
 ## Why
 
@@ -44,7 +45,7 @@ guards removed) is settled on a small case first and then reused.
 - **The page is covered by the net** with no test added, like the
   colours page: it is in the sitemap.
 
-## Questions
+## Answers
 
 - Where the cases live: in the page's Markdown, as fenced blocks the
   converter turns into components, or in the page's generator, as the
@@ -88,3 +89,42 @@ guards removed) is settled on a small case first and then reused.
   between text and tests. As for the colours page, the agent writes
   the cases and a placeholder for each piece of text, saying what kind
   of text goes there; the user writes the texts.
+
+## The texts
+
+The agent wrote the cases and a placeholder for each piece of text; the
+user wrote the texts on 2026-11-14 and 2026-11-15, in Italian, one at a
+time, and for each one the agent proposed an English version and the
+changes it suggested, each with its reason; the user chose which to
+apply. Changes made for accuracy, beyond the language:
+
+- the 80-character limit is said to be the guidelines' highest level
+  (WCAG 1.4.8, AAA), and counted in characters, the guidelines' word,
+  not in graphemes;
+- the toggle shows when the code does not fit the column, which changes
+  with the screen, not when it exceeds those 80 characters;
+- a tab is one character drawn as wide as the editor decides, not a
+  number of spaces; and it is the site that tells the browser its
+  width, four columns, and counts the same way;
+- the toggle is switched, not clicked, since the keyboard switches it
+  too.
+
+## Results
+
+- **The page and its tests** (commit `4f28717`): `style-guide/code.html`
+  with five cases in `content/style-guide/code.md`;
+  `end2end/tests/code-blocks.spec.ts` runs on it instead of the two
+  articles, with one expectation for each case, found by its section's
+  title, and without the guard on the hybris article. The cases measured
+  on the built page: the text column is 704 px wide from 768 px up, the
+  long line about 1,700 px. 254 browser tests became 259.
+- **The texts** (commit `255ce37`).
+- **What came out of it:** a breadcrumb and "Back to top" on every page
+  of the style guide
+  ([card](2026-11-14_link-the-style-guide-pages-to-its-index.md)), and
+  the wrap toggle to be turned into an icon before publishing
+  ([card](../backlog/turn-the-code-wrap-toggle-into-an-icon.md)).
+- **The articles are no longer test pages for the code block.** They
+  still are for the text and the tables, which the typography and table
+  pages will take over.
+
