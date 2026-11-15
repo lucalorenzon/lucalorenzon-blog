@@ -7,7 +7,7 @@
 
 use crate::article_page::Article;
 use crate::site_address::SiteAddress;
-use crate::style_guide::{self, code_page, colours_page, index_page};
+use crate::style_guide::{self, code_page, colours_page, index_page, tables_page};
 use crate::{about_page, article_page, curriculum_page, home_page, licence_page, not_found_page};
 use jiff::civil::Date;
 use std::collections::BTreeMap;
@@ -86,6 +86,11 @@ pub fn pages(
             "style-guide/code.html",
             "content/style-guide/code.md",
             code_page::render_code_page(site),
+        ),
+        fixed(
+            "style-guide/tables.html",
+            "content/style-guide/tables.md",
+            tables_page::render_tables_page(site),
         ),
     ];
     for article in articles {
@@ -312,6 +317,7 @@ mod tests {
                 "https://www.lucalorenzon.com/style-guide/",
                 "https://www.lucalorenzon.com/style-guide/code.html",
                 "https://www.lucalorenzon.com/style-guide/colours.html",
+                "https://www.lucalorenzon.com/style-guide/tables.html",
             ]
         );
     }
@@ -439,6 +445,10 @@ mod tests {
                 crate::style_guide::colours_page::COLOURS,
             ),
             ("style-guide/code.html", crate::style_guide::code_page::CODE),
+            (
+                "style-guide/tables.html",
+                crate::style_guide::tables_page::TABLES,
+            ),
         ] {
             let page = pages.iter().find(|p| p.file == file).unwrap();
             let source = page.source.unwrap();

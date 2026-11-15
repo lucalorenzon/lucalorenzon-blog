@@ -104,12 +104,6 @@ export function pagesOf(folder: string): string[] {
 
 export const ADDRESSES = pagesOf(SITE).map((path) => './' + relative(SITE, path));
 
-// The pages that have at least one table (every Markdown table is rendered
-// inside a wrapper holding the table and its record viewer).
-export const TABLE_ADDRESSES = ADDRESSES.filter((address) =>
-  readFileSync(resolve(SITE, address), 'utf8').includes('table-with-viewer'),
-);
-
 // The paths, on the server under test, of the pages a sitemap lists.
 export function pathsOfSitemap(xml: string): string[] {
   const addresses = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1].trim());
@@ -128,7 +122,7 @@ export function pathsOfSitemap(xml: string): string[] {
 // is the build's sitemap in both moments: locally and in the build the site is
 // in target/site; in the live check after a publication the pipeline puts only
 // the build's sitemap.xml there (see deploy.yml), so the tests that walk the
-// folder (ADDRESSES, TABLE_ADDRESSES) still find no pages and skip. It is read
+// folder (ADDRESSES) still find no pages and skip. It is read
 // synchronously, because Playwright builds the list of tests before running
 // any. A missing or empty sitemap throws: a net check with nothing to check
 // must not pass.

@@ -45,19 +45,20 @@ pub fn GuideMain(title: &'static str, body: String) -> impl IntoView {
 #[cfg(test)]
 mod tests {
     use crate::site_address::SiteAddress;
-    use crate::style_guide::{code_page, colours_page, index_page};
+    use crate::style_guide::{code_page, colours_page, index_page, tables_page};
 
     fn site() -> SiteAddress {
         SiteAddress::parse("https://www.lucalorenzon.com/").unwrap()
     }
 
-    fn pages() -> [(&'static str, String); 2] {
+    fn pages() -> [(&'static str, String); 3] {
         [
             (
                 "Colours",
                 colours_page::render_colours_page(&site()).unwrap(),
             ),
             ("Code blocks", code_page::render_code_page(&site())),
+            ("Tables", tables_page::render_tables_page(&site())),
         ]
     }
 

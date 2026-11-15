@@ -117,6 +117,30 @@ Slice 2, the texts:
 13. Every placeholder holds the user's text, and no table changed in
     this slice: review of the diff.
 
+## Results
+
+- **Measured on the built page** (acceptance test 11), on 2026-11-15:
+  - the text column's content box: 584 px at 767 (text 18 px), 704 px
+    at 768 (text 20 px);
+  - the six cases' estimated thresholds: the simple table 10.254 em,
+    the six-column table 33.904 em (inside its window of 32.444 to
+    35.2 em), the rows of different heights 33.643 em, the range
+    12.83 em, the hyphenated word 16.224 em, the limit table 32.292 em;
+  - the limit table at 767: estimate 581.3 px, real minimum width
+    569 px (the table set to `min-content`), column 584 px. The
+    estimate is 12 px above the real minimum (widths rounded up,
+    kerning ignored), so the test catches an estimate too low by more
+    than about 15 px. Proof that it bites: with the letter spacing of
+    its italic, code and bold widened by 0.05 em, in a throwaway run,
+    the table grows to 605 px, wider than its column;
+  - the range and the hyphenated word break at 320 without the
+    `one-line` rule (measured with the rule switched off in a throwaway
+    run); at 767 the ranges still break, and three words of four. The
+    range case needed a header shorter than its values ("Pts"), which
+    otherwise held the column open.
+- **The tests:** 267 browser tests became 228, the per-article runs of
+  the table tests now one run on the guide's page.
+
 ## Answers
 
 - Which cases the page needs (question 1), in part. Answered by the
@@ -187,6 +211,21 @@ Slice 2, the texts:
   widths, wrong only if the browser draws a different bold. Rejected:
   a character outside the measured set, counted as the widest of its
   weight, so always estimated too wide: it cannot fail the test.
+  **Every cell of the limit table is a single word**, headers included,
+  decided by the user on 2026-11-15 after the first version was
+  measured. In the first version the cells held several words: for such
+  a cell the build asks for a readable line, up to about 17 characters,
+  not for its longest word, so the estimate sat far above what the
+  browser cannot shrink (431 px of real minimum width in a 584 px
+  column), and a table in table form always fills its column: an
+  estimate too low would have been absorbed by that room, and the test
+  could not fail. The agent had designed the case wrongly and saw it
+  only on the measurement. The user first asked to remove the case,
+  since an estimate too low mostly leaves a table cramped but readable,
+  then chose to redo it, as a case at the limit shows the component's
+  behaviour. With single words, each column's need is its longest word,
+  which is also what the browser cannot shrink, so the estimate is
+  close to the real minimum width.
 - How the change of form is checked (question 3). Answered by the user
   on 2026-11-15: **at 767 and 768, for all three tests** (the change
   of form, the keyboard, axe with the contrast). At 768 the text grows
