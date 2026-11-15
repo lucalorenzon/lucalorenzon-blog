@@ -60,7 +60,7 @@ This case is like the previous one, with a word such as read-only, which the bro
 
 ## Texts at the limit
 
-Placeholder, to be replaced before the next version tag: write here what this case shows and why it matters: a table whose width the build estimates from the texts, written with italic, inline code and bold, so that it is a table at the width of a large phone, with very little room to spare.
+Here, instead, I put to the test the estimate of the width below which a table becomes a record viewer. Its words are in italic, inline code and bold, which the estimate measures each under an assumption of its own, and the table is estimated at 581 pixels, in a column of 584 at a screen width of 767 pixels: very little room. If the estimate is too low, the table overflows its column and the test fails.
 
 | Plain | Italic | Code | Bold |
 |---|---|---|---|
