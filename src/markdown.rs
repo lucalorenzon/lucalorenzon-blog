@@ -546,6 +546,7 @@ mod tests {
             include_str!("../content/style-guide/colours.md"),
             include_str!("../content/style-guide/code.md"),
             include_str!("../content/style-guide/tables.md"),
+            include_str!("../content/style-guide/text.md"),
         ] {
             let raw: Vec<Event> = Parser::new(source)
                 .filter(|e| matches!(e, Event::Html(_) | Event::InlineHtml(_)))

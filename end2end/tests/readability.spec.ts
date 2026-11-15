@@ -1,12 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
 import {
   COLUMN_WIDTHS,
-  expectWorstCaseStillWorst,
+  expectEveryCaseWraps,
   NET_PAGES,
   READER_SPACING,
   retryWhenLive,
+  TEXT_PAGE,
   VIEWPORTS,
-  WORST_CASE,
 } from './support';
 
 // Enforces the visual presentation of the text. It checks what the reader
@@ -23,11 +23,14 @@ import {
 // (The sideways scroll, without and with the reader's spacing, is the other
 // net check: see content-layout.spec.ts.)
 //
-// The COMPONENT checks run once, on the worst case (WORST_CASE in support.ts,
-// the After Save Event article), at the widths of the text column
-// (COLUMN_WIDTHS: it is all they depend on). Each test first checks the guard
-// (expectWorstCaseStillWorst): the article still has every kind of element the
-// checks look at.
+// The COMPONENT checks run once, on the style guide's text page (TEXT_PAGE in
+// support.ts), whose cases are written for them, at the widths of the text
+// column (COLUMN_WIDTHS: it is all they depend on). The text page's tests first
+// check the guard (expectEveryCaseWraps): every case takes at least two lines
+// at that width, so the checks have something to check. The text spacing check
+// also runs on the style guide's code blocks and tables pages, which hold the
+// two components (the code's scroller, the record viewer) it makes exceptions
+// for.
 //
 // WCAG 1.4.8 (visual presentation, level AAA):
 //   1. the line height of every paragraph and list item is at least 1.5
@@ -153,9 +156,11 @@ async function spacingProblems(page: Page): Promise<string[]> {
       const out: string[] = [];
       const label = (el: Element) => `<${el.tagName.toLowerCase()}> "${el.textContent?.slice(0, 30)}"`;
 
-      // Each block of the content against the next one in reading order.
+      // Each block of the content against the next one in reading order. The
+      // content is the text inside main; the breadcrumb above it lays its items
+      // side by side on purpose, so it is not one of the blocks.
       const main = document.querySelector('main')!;
-      const blocks = Array.from(main.querySelectorAll('h2, h3, h4, p, li'));
+      const blocks = Array.from(document.querySelectorAll('main > div :is(h2, h3, h4, p, li)'));
       for (let i = 0; i + 1 < blocks.length; i++) {
         if (blocks[i].contains(blocks[i + 1])) continue; // nested list
         const a = blocks[i].getBoundingClientRect();
@@ -197,7 +202,15 @@ async function spacingProblems(page: Page): Promise<string[]> {
       }
 
       // The end of the content clears the sticky footer.
-      const taking = Array.from(main.querySelectorAll('*')).filter((el) => el.getBoundingClientRect().height > 0);
+      // What the record viewer clips (the records that are not shown, the numbers outside the
+      // window) is not content the reader sees at the end of the page: only its box counts.
+      // The article this check used to run on never ended with a record viewer, so the end of
+      // the content was never inside one; the tables page does.
+      const taking = Array.from(main.querySelectorAll('*')).filter(
+        (el) =>
+          el.getBoundingClientRect().height > 0 &&
+          (el.matches('.viewer-box, .viewer-count-window') || !el.closest('.viewer-box, .viewer-count-window')),
+      );
       const lastBottom = Math.max(...taking.map((el) => el.getBoundingClientRect().bottom));
       const footerTop = document.querySelector('footer:not(main footer)')!.getBoundingClientRect().top;
       if (footerTop - lastBottom < minGap - 0.5) {
@@ -231,14 +244,14 @@ for (const { name: pageName, address } of NET_PAGES) {
   });
 }
 
-// Components, once, on the worst case.
+// Components, once, on the text page.
 for (const { name, width, height } of COLUMN_WIDTHS) {
-  test(`visual presentation (WCAG 1.4.8) of the worst case at ${width}x${height} (${name})`, async ({ page }) => {
+  test(`visual presentation (WCAG 1.4.8) of the style guide's text page at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
 
     await retryWhenLive(async () => {
-      await gotoReady(page, WORST_CASE);
-      await expectWorstCaseStillWorst(page);
+      await gotoReady(page, TEXT_PAGE);
+      await expectEveryCaseWraps(page);
 
       const tooSmall = await lineHeightsTooSmall(page);
       expect(tooSmall, `line height must be at least ${MIN_LINE_HEIGHT_RATIO} times the font size:\n${tooSmall.join('\n')}`).toEqual([]);
@@ -256,15 +269,23 @@ for (const { name, width, height } of COLUMN_WIDTHS) {
   });
 }
 
-for (const { name, width, height } of COLUMN_WIDTHS) {
-  test(`text spacing (WCAG 1.4.12) of the worst case at ${width}x${height} (${name})`, async ({ page }) => {
-    await page.setViewportSize({ width, height });
+const SPACING_PAGES = [
+  { name: 'text page', address: TEXT_PAGE },
+  { name: 'code blocks page', address: './style-guide/code.html' },
+  { name: 'tables page', address: './style-guide/tables.html' },
+];
 
-    await retryWhenLive(async () => {
-      await gotoReady(page, WORST_CASE);
-      await expectWorstCaseStillWorst(page);
-      const found = await spacingProblems(page);
-      expect(found, `with the reader's text spacing:\n${found.join('\n')}`).toEqual([]);
+for (const { name: pageName, address } of SPACING_PAGES) {
+  for (const { name, width, height } of COLUMN_WIDTHS) {
+    test(`text spacing (WCAG 1.4.12) of the style guide's ${pageName} at ${width}x${height} (${name})`, async ({ page }) => {
+      await page.setViewportSize({ width, height });
+
+      await retryWhenLive(async () => {
+        await gotoReady(page, address);
+        if (address === TEXT_PAGE) await expectEveryCaseWraps(page);
+        const found = await spacingProblems(page);
+        expect(found, `with the reader's text spacing:\n${found.join('\n')}`).toEqual([]);
+      });
     });
-  });
+  }
 }

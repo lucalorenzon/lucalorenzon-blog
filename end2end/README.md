@@ -34,9 +34,8 @@ says what makes it fail.
 | Fails when? | What the test rejects. |
 | Why | What a reader would lose if it were not checked. |
 
-The worst cases of the component tests are two real articles, After
-Save Event and hybris PK, until the components get a catalogue of
-their own: [build a design system](../docs/wip/build-a-design-system.md).
+The component tests run on the style guide's pages, whose cases are
+written for them: [build a design system](../docs/wip/build-a-design-system.md).
 
 ## When the tests run
 
@@ -117,12 +116,12 @@ presentation) and 1.4.12 (text spacing).
 
 | Find in files | File | Pages | Widths | Themes | Fails when? | Why |
 |---|---|---|---|---|---|---|
-| `visual presentation (WCAG 1.4.8)` | `readability.spec.ts` | After Save Event article | column widths | light | line height under 1.5 times the text size; paragraphs closer than 1.5 lines; justified text; or the article lacks a kind of element the check needs | WCAG 1.4.8: dense or justified text is hard to follow for readers with low vision or dyslexia |
-| `text spacing (WCAG 1.4.12) of the worst case` | `readability.spec.ts` | After Save Event article | column widths | light | with the reader's own spacing applied, blocks overlap, an element cuts off its content, or the text runs under the footer | WCAG 1.4.12: a reader may widen the spacing, and nothing may be lost |
-| `content layout of the worst case` | `content-layout.spec.ts` | After Save Event article | column widths | light | a section heading is not larger than the text; headings, paragraphs or list items overlap; the text ends less than 32 pixels above the footer | The structure of the text must show at a glance, and nothing may hide under the sticky footer |
-| `heading colours of the worst case` | `content-layout.spec.ts` | After Save Event article | 1280 | light and dark | a section or role heading has the colour of the text | Headings stand apart from the text by colour, amber ([ADR-003](../docs/adr/ADR-003-readability-first-amber-as-accent.md)) |
-| `numbered list of the After Save Event page` | `content-layout.spec.ts` | After Save Event article | 1280 | light | a numbered list shows no numbers, or its indent or the space above it differs from a bulleted list | Both kinds of list must sit in the column the same way |
-| `list markers take the amber accent` | `content-layout.spec.ts` | After Save Event article | 1280 | light and dark | bullets or numbers are not amber, or the text of the items is | The markers guide the eye; the text must keep its own colour |
+| `visual presentation (WCAG 1.4.8)` | `readability.spec.ts` | style guide, text | column widths | light | line height under 1.5 times the text size; paragraphs closer than 1.5 lines; justified text; or a case of the page takes one line at that width, so there is nothing to measure | WCAG 1.4.8: dense or justified text is hard to follow for readers with low vision or dyslexia |
+| `text spacing (WCAG 1.4.12) of the style guide's` | `readability.spec.ts` | style guide, text; style guide, code blocks; style guide, tables | column widths | light | with the reader's own spacing applied, blocks overlap, an element cuts off its content, or the text runs under the footer (the code's scroller and the record viewer may scroll or clip as designed); on the text page, also when a case takes one line at that width | WCAG 1.4.12: a reader may widen the spacing, and nothing may be lost. It runs on the pages of the components that have a place in the text |
+| `content layout of the style guide's text page` | `content-layout.spec.ts` | style guide, text | column widths | light | a section heading is not larger than the text; headings, paragraphs or list items overlap; the text ends less than 32 pixels above the footer; or a case takes one line at that width | The structure of the text must show at a glance, and nothing may hide under the sticky footer |
+| `heading colours and underline of the style guide's text page` | `content-layout.spec.ts` | style guide, text | 1280 | light and dark | a section or role heading has the colour of the text; the level-4 heading is not underlined; or the text of a paragraph is | Headings stand apart from the text by colour, amber ([ADR-003](../docs/adr/ADR-003-readability-first-amber-as-accent.md)), and the level-4 heading by its underline alone |
+| `numbered list of the style guide's text page` | `content-layout.spec.ts` | style guide, text | 1280 | light | a numbered list shows no numbers, or its indent or the space above it differs from a bulleted list | Both kinds of list must sit in the column the same way |
+| `list markers take the amber accent` | `content-layout.spec.ts` | style guide, text | 1280 | light and dark | bullets or numbers are not amber, or the text of the items is | The markers guide the eye; the text must keep its own colour |
 | `continue 4 columns deeper than their indent` | `code-blocks.spec.ts` | style guide, code blocks | 320 | light | a wrapped code line, indented with spaces or with tabs, does not continue four columns deeper than its own indent; or the nested-indentation case or the tab case has no line that wraps at 320 | In wrapped code, the reader must tell a new line from a continued one; the code counts a tab up to the next multiple of 4 and only the browser can say whether it draws it so |
 | `copying the code of the cases` | `code-blocks.spec.ts` | style guide, code blocks | 320 | light | copying a code block, wrapped or not, tabs and blank line included, gives anything other than the code: the toggle's name, extra blank lines | Code copied from a page must run as written |
 | `single-value table cells of` | `tables.spec.ts` | style guide, tables | 320, 393, 412, 767 | light | a table cell with no space in it, in the case of ranges with an en dash such as "63–44" or in the case of words with a hyphen such as "read-only", is split over two lines; or a case has no such cell, or is not a table, or its heading is renamed | A single value broken in two reads as two values; the cases are written so that, without the rule, the browser breaks them |

@@ -7,6 +7,7 @@ pub mod colours_page;
 pub mod index_page;
 pub mod navigation;
 pub mod tables_page;
+pub mod text_page;
 
 /// Where the guide's pages are written, relative to the site's root. The pages live in a
 /// folder, like the articles, so their own addresses are relative to it (ADR-002).

@@ -55,37 +55,80 @@ export const BANDS = [
 
 // The page the component checks of the text (readability.spec.ts and
 // content-layout.spec.ts) run on: per ADR-004 a component is checked once, on
-// the case that stresses it most. Today it is the After Save Event article: it
-// has every kind of text element those checks look at (consecutive paragraphs,
-// h2, h3, bulleted and numbered lists, a code block, a table) except level-4
-// headings, which are only in the curriculum and enter only the overlap check
-// (measured 2026-11-09). It moves to the components' test pages when they exist.
-export const WORST_CASE = './articles/after-save-event.html';
+// the cases written to stress it most. They are on the style guide's text
+// page (content/style-guide/text.md).
+export const TEXT_PAGE = './style-guide/text.html';
 
-// The guard of the component checks: fails when the worst case is no longer
-// the worst case, so that a check never passes with nothing to check.
-export async function expectWorstCaseStillWorst(page: Page): Promise<void> {
-  const missing = await page.evaluate(() => {
-    const main = document.querySelector('main')!;
-    const has = (selector: string) => main.querySelector(selector) !== null;
-    const consecutive = Array.from(main.querySelectorAll('p')).some((p) => p.nextElementSibling?.tagName === 'P');
-    const kinds: [string, boolean][] = [
-      ['two consecutive paragraphs', consecutive],
-      ['an h2', has('h2')],
-      ['an h3', has('h3')],
-      ['a bulleted list (ul)', has('ul')],
-      ['a numbered list (ol)', has('ol')],
-      ['a code block (.code-block)', has('.code-block')],
-      ['a table (.table-with-viewer)', has('.table-with-viewer')],
-    ];
-    return kinds.filter(([, ok]) => !ok).map(([what]) => what);
+// The guard of the text checks: before measuring, every case of the text page
+// takes at least two lines at the width under test, so that a check never
+// passes with nothing to check (a heading, a paragraph or a list item that
+// fits one line has nothing to overlap, nor to space).
+//
+// How the cases are found. The Markdown holds no HTML, so a case cannot carry
+// an attribute. The page's text is the <div> inside <main> (the breadcrumb and
+// the link back to the top are outside it), and it is built so that:
+//   - the introduction and the first paragraph after each heading explain the
+//     case to the reader (they are the author's, may be short, and are not
+//     cases);
+//   - every other piece of that text is a case: every heading (h2, h3, h4),
+//     every list item, and every paragraph that is not the first after a
+//     heading, that is the paragraphs of the section about paragraphs and the
+//     paragraph that shows the elements inside a line.
+// So a case added to the page is guarded without being listed, and a case
+// shortened for the sake of the text fails here and not silently.
+//
+// Returns the number of lines of each case at the current width, by name.
+export async function expectEveryCaseWraps(page: Page): Promise<{ name: string; lines: number }[]> {
+  const cases = await page.evaluate(() => {
+    const text = document.querySelector('main > div')!;
+    const linesOf = (el: Element) => {
+      // Lines as the browser breaks them: the boxes of the element's content,
+      // grouped by their vertical position.
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const rects = Array.from(range.getClientRects()).filter((r) => r.width > 0 && r.height > 0);
+      rects.sort((a, b) => a.top - b.top);
+      const lines: { top: number; bottom: number }[] = [];
+      for (const r of rects) {
+        const middle = (r.top + r.bottom) / 2;
+        const line = lines.find((l) => middle > l.top && middle < l.bottom);
+        if (line) {
+          line.top = Math.min(line.top, r.top);
+          line.bottom = Math.max(line.bottom, r.bottom);
+        } else {
+          lines.push({ top: r.top, bottom: r.bottom });
+        }
+      }
+      return lines.length;
+    };
+    const found: { name: string; lines: number }[] = [];
+    let afterHeading = false; // the next paragraph is the explanation of a case
+    let introduction = true; // the paragraphs before the first heading explain the page
+    for (const el of Array.from(text.querySelectorAll('h2, h3, h4, p, li'))) {
+      const tag = el.tagName.toLowerCase();
+      if (/^h[2-4]$/.test(tag)) {
+        introduction = false;
+        afterHeading = true;
+      } else if (tag === 'p') {
+        const explanation = introduction || afterHeading;
+        afterHeading = false;
+        if (explanation) continue;
+      }
+      found.push({ name: `<${tag}> "${el.textContent?.trim().slice(0, 40)}"`, lines: linesOf(el) });
+    }
+    return found;
   });
-  if (missing.length > 0) {
+  const width = page.viewportSize()!.width;
+  const short = cases.filter((c) => c.lines < 2);
+  if (cases.length === 0 || short.length > 0) {
     throw new Error(
-      `${WORST_CASE} is no longer the worst case: its main lacks ${missing.join(', ')}. ` +
-        'The component checks of the text would pass with nothing to check: a variant that has every kind of element must be found.',
+      cases.length === 0
+        ? `${TEXT_PAGE} holds no case: the text checks would pass with nothing to check.`
+        : `at ${width}px, these cases of ${TEXT_PAGE} take one line, at least two are needed so that the text checks have something to check:\n` +
+            short.map((c) => `  ${c.name}`).join('\n'),
     );
   }
+  return cases;
 }
 
 // The built site, and its pages, found by walking the folder: a new page is

@@ -1,12 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
 import {
   COLUMN_WIDTHS,
-  expectWorstCaseStillWorst,
+  expectEveryCaseWraps,
   NET_PAGES,
   READER_SPACING,
   retryWhenLive,
+  TEXT_PAGE,
   VIEWPORTS,
-  WORST_CASE,
 } from './support';
 
 // Enforces that the content (the text in <main>) is readable. It checks what the reader sees
@@ -24,20 +24,21 @@ import {
 //      in one test per page.
 // (The 80-character line is the other net check: see readability.spec.ts.)
 //
-// The COMPONENT checks run once, on the worst case (WORST_CASE in support.ts,
-// the After Save Event article), at the widths of the text column
-// (COLUMN_WIDTHS in support.ts: it is all they depend on). The first and the
-// colour tests check the guard (expectWorstCaseStillWorst) before measuring:
+// The COMPONENT checks run once, on the style guide's text page (TEXT_PAGE in
+// support.ts), whose cases are written for them, at the widths of the text column
+// (COLUMN_WIDTHS in support.ts: it is all they depend on). The first test checks the guard
+// (expectEveryCaseWraps: every case takes at least two lines at that width) before measuring:
 //   2. section headings (h2) are larger than body text
 //   3. at the end of the page the content ends at least 32px above the sticky footer
 //   4. consecutive headings, paragraphs and list items do not overlap
 //   5. section (h2) and role (h3) headings stand out from the body text by colour (amber); no line
-//      above them. This is a test of its own, tagged @colours so that the dark theme runs it too, at
+//      above them; the "main work" heading (h4) is underlined and the paragraphs' own text is not.
+//      This is a test of its own, tagged @colours so that the dark theme runs it too, at
 //      one width only: colours do not depend on the width. (This rule used to check the amber line
 //      above h2 and the inverse video of h3: the headings were changed to amber text, the intent
 //      "sections and roles stay apart from the text" holds)
 //   6. a numbered list (ol) shows its numbers and is indented and spaced like the bulleted
-//      lists of the same column (on the After Save Event article)
+//      lists of the same column (on the text page)
 //   7. the markers of lists take the amber accent while the item text keeps its colour: bullets in
 //      the tone of lines and frames, numbers in the tone of normal-size text (ADR-003)
 //   8. the home page's boxes (a component of the home page only)
@@ -71,8 +72,9 @@ async function snapshot(page: Page): Promise<Snapshot> {
     const lastBottom = Math.max(...all.map((el) => el.getBoundingClientRect().bottom));
     const footer = document.querySelector('footer:not(main footer)')!;
 
-    // Cheap overlap check: each block element against the next one in reading order.
-    const blocks = Array.from(main.querySelectorAll('h2, h3, h4, p, li'));
+    // Cheap overlap check: each block element against the next one in reading order. Only the
+    // text inside main: the breadcrumb above it lays its items side by side on purpose.
+    const blocks = Array.from(document.querySelectorAll('main > div :is(h2, h3, h4, p, li)'));
     const overlaps: string[] = [];
     for (let i = 0; i + 1 < blocks.length; i++) {
       const a = blocks[i].getBoundingClientRect();
@@ -165,15 +167,15 @@ for (const { name: pageName, address } of NET_PAGES) {
   });
 }
 
-// Components, once, on the worst case.
+// Components, once, on the text page.
 for (const { name, width, height } of COLUMN_WIDTHS) {
-  test(`content layout of the worst case at ${width}x${height} (${name})`, async ({ page }) => {
+  test(`content layout of the style guide's text page at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
 
     await retryWhenLive(async () => {
-      await page.goto(WORST_CASE);
+      await page.goto(TEXT_PAGE);
       await page.evaluate(() => document.fonts.ready);
-      await expectWorstCaseStillWorst(page);
+      await expectEveryCaseWraps(page);
       const found = violations(await snapshot(page));
       expect(found.length, `content rules broken:\n${found.join('\n')}`).toBe(0);
     });
@@ -183,21 +185,37 @@ for (const { name, width, height } of COLUMN_WIDTHS) {
 // Rule 5, at one width: colours do not depend on it. Tagged so that the dark theme runs it too.
 {
   const { name, width, height } = VIEWPORTS.find((v) => v.name === 'Laptop')!;
-  test(`heading colours of the worst case at ${width}x${height} (${name})`, { tag: '@colours' }, async ({ page }) => {
+  test(`heading colours and underline of the style guide's text page at ${width}x${height} (${name})`, { tag: '@colours' }, async ({ page }) => {
     await page.setViewportSize({ width, height });
 
     await retryWhenLive(async () => {
-      await page.goto(WORST_CASE);
+      await page.goto(TEXT_PAGE);
       await page.evaluate(() => document.fonts.ready);
-      await expectWorstCaseStillWorst(page);
       const seen = await page.evaluate(() => {
         const main = document.querySelector('main')!;
         const p = main.querySelector('p');
         const colours = (selector: string) =>
           Array.from(main.querySelectorAll(selector)).map((el) => getComputedStyle(el).color);
-        return { pColor: p ? getComputedStyle(p).color : '', h2: colours('h2'), h3: colours('h3') };
+        const underlined = (el: Element) => getComputedStyle(el).textDecorationLine.includes('underline');
+        return {
+          pColor: p ? getComputedStyle(p).color : '',
+          h2: colours('h2'),
+          h3: colours('h3'),
+          h4Underlined: Array.from(main.querySelectorAll('h4')).map(underlined),
+          pUnderlined: Array.from(main.querySelectorAll('main > div > p')).map(underlined),
+        };
       });
       const found: string[] = [];
+      expect(seen.h2.length, 'the text page must have an h2').toBeGreaterThan(0);
+      expect(seen.h3.length, 'the text page must have an h3').toBeGreaterThan(0);
+      expect(seen.h4Underlined.length, 'the text page must have an h4').toBeGreaterThan(0);
+      expect(seen.pUnderlined.length, 'the text page must have paragraphs').toBeGreaterThan(0);
+      seen.h4Underlined.forEach((u, i) => {
+        if (!u) found.push(`h4 number ${i + 1} must be underlined`);
+      });
+      seen.pUnderlined.forEach((u, i) => {
+        if (u) found.push(`the text of paragraph number ${i + 1} must not be underlined`);
+      });
       seen.h2.forEach((c, i) => {
         if (c === seen.pColor) found.push(`h2 number ${i + 1} must differ in colour from the body text (${seen.pColor}), has ${c}`);
       });
@@ -211,9 +229,9 @@ for (const { name, width, height } of COLUMN_WIDTHS) {
 
 // A numbered list must show its numbers and sit in the column like a bulleted one:
 // same indent on the left, same space above.
-test('numbered list of the After Save Event page is numbered and indented like a bulleted list', async ({ page }) => {
+test("numbered list of the style guide's text page is numbered and indented like a bulleted list", async ({ page }) => {
   await retryWhenLive(async () => {
-    await page.goto('./articles/after-save-event.html');
+    await page.goto(TEXT_PAGE);
     await page.evaluate(() => document.fonts.ready);
     const lists = await page.evaluate(() => {
       const main = document.querySelector('main')!;
@@ -226,12 +244,13 @@ test('numbered list of the After Save Event page is numbered and indented like a
           fontSize: parseFloat(style.fontSize),
         };
       };
-      const ol = main.querySelector('ol');
-      const ul = main.querySelector('ul');
+      // The text's lists: the breadcrumb is a list too, with no markers.
+      const ol = main.querySelector('main > div ol');
+      const ul = main.querySelector('main > div ul');
       return { ol: ol ? look(ol) : null, ul: ul ? look(ul) : null };
     });
-    expect(lists.ol, 'the article must have a numbered list').not.toBeNull();
-    expect(lists.ul, 'the article must have a bulleted list').not.toBeNull();
+    expect(lists.ol, 'the text page must have a numbered list').not.toBeNull();
+    expect(lists.ul, 'the text page must have a bulleted list').not.toBeNull();
     const { ol, ul } = lists;
     expect(ol!.listStyleType, 'the numbered list must show numbers').toBe('decimal');
     expect(ol!.paddingLeft, 'indent: 1.5em, as the bulleted lists').toBeCloseTo(1.5 * ol!.fontSize, 1);
@@ -245,7 +264,7 @@ test('numbered list of the After Save Event page is numbered and indented like a
 // Bullets are graphics (accent-line); numbers are text (accent-code, the contrast of normal text).
 test('list markers take the amber accent and the item text keeps its colour', { tag: '@colours' }, async ({ page }) => {
   await retryWhenLive(async () => {
-    await page.goto('./articles/after-save-event.html');
+    await page.goto(TEXT_PAGE);
     await page.evaluate(() => document.fonts.ready);
     const seen = await page.evaluate(() => {
       const main = document.querySelector('main')!;
@@ -261,14 +280,14 @@ test('list markers take the amber accent and the item text keeps its colour', { 
       const look = (li: Element | null) =>
         li ? { marker: getComputedStyle(li, '::marker').color, text: getComputedStyle(li).color } : null;
       return {
-        ol: look(main.querySelector('ol > li')),
-        ul: look(main.querySelector('ul > li')),
+        ol: look(main.querySelector('main > div ol > li')),
+        ul: look(main.querySelector('main > div ul > li')),
         accentCode: resolve('--color-accent-code'),
         accentLine: resolve('--color-accent-line'),
       };
     });
-    expect(seen.ol, 'the article must have a numbered list').not.toBeNull();
-    expect(seen.ul, 'the article must have a bulleted list').not.toBeNull();
+    expect(seen.ol, 'the text page must have a numbered list').not.toBeNull();
+    expect(seen.ul, 'the text page must have a bulleted list').not.toBeNull();
     expect(seen.ol!.marker, 'numbers use the tone of normal text').toBe(seen.accentCode);
     expect(seen.ul!.marker, 'bullets use the tone of lines and frames').toBe(seen.accentLine);
     expect(seen.ol!.text, 'the item text keeps its colour').not.toBe(seen.ol!.marker);
