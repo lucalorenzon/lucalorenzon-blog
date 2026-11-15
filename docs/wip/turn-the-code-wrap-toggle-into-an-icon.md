@@ -129,6 +129,25 @@ word "wrap" above the code. The user wants an icon in its place.
   (7.16 dark, 7.12 light), but `ALLOWED_PAIRS` in
   `src/style_guide/colours.rs` forbids every pair it does not list.
 
+## Found while building the second slice
+
+- **In Windows' forced colours mode the icon disappeared**, in both
+  states (checked by the agent on 2026-11-15, emulating the mode in
+  Playwright). The mode replaces the site's colours with a small
+  palette the user chose; the icon is a background cut by a mask, so
+  its background, and the label's fill that shows the state, took the
+  page's own background. The native checkbox, drawn by the system,
+  was visible: the icon was a step back for exactly these readers.
+  Answered by the user on 2026-11-15: **in that mode only
+  (`@media (forced-colors: active)`), the toggle takes the user's
+  system colours, kept by `forced-color-adjust: none`**: off, the icon
+  in `CanvasText`, with no fill; on, the label filled in `Highlight`
+  and the icon in `HighlightText`, the colours the user's theme gives
+  to what is selected; the focus outline as the browser recolours it.
+  The reader asked to see their own colours, and the toggle honours
+  it. Rejected: `ButtonText` for the icon when off, the colour of
+  buttons, which in some themes barely differs from the text.
+
 ## Slices
 
 Agreed with the user on 2026-11-15; one commit each, in this order.
@@ -185,12 +204,20 @@ Slice 2, the toggle as the icon:
 11. Copying a block, wrapped or not, gives the code and nothing else.
 12. An article with a long line shows the same icon, with no change
     outside the component.
-13. The screen reader check reads the toggle's name once (run by the
-    user, since it uses Docker).
-14. The rows of the browser tests' README are up to date, and every
+13. Moved on 2026-11-15 to the card
+    [update the screen reader check for an English site](../backlog/update-screen-reader-check-for-english-site.md):
+    the check opens the home page only, which has no code block, so it
+    cannot read the toggle until it reads more pages. The browser test
+    already checks, in Chromium's accessibility tree, that the name
+    comes once and with no description; whether Orca in Firefox reads
+    it so is left to that card.
+14. In forced colours mode the icon shows in both states, in the
+    user's system colours: off in `CanvasText`, on in `HighlightText`
+    on a label filled in `Highlight` (added on 2026-11-15).
+15. The rows of the browser tests' README are up to date, and every
     check of the pipeline passes.
 
 Slice 3, the section:
 
-15. The code block page has a section on the toggle's icon and its two
+16. The code block page has a section on the toggle's icon and its two
     states, with the text written by the user.

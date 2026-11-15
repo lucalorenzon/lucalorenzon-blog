@@ -25,7 +25,26 @@ premise no longer holds.
   transcript and the record in `docs/accessibility/` still speak of
   "Home Page", the page's heading, which did not change.
 
+- **Reading more pages than the home page**, added on 2026-11-15 by
+  the user, while the second slice of
+  [turn the code wrap toggle into an icon](../wip/turn-the-code-wrap-toggle-into-an-icon.md)
+  was being closed: the check opens `/site/index.html` only, which has
+  no code block, so it could not verify that card's acceptance test
+  13, moved here: **the screen reader reads the wrap toggle's name
+  once**, without its tooltip as a description. The user proposed the
+  article `how-to-generate-hybris-pk-values-without-hybris.html`, which
+  shows the toggle at the container's 1280 pixels and also has tables
+  with their record viewer. Reading more pages touches the container's
+  script, `check.py`, its unit tests, one reference transcript per page
+  and the record in `docs/accessibility/`.
+
 ## Questions
+
+- Which pages the check reads: the article above, the style guide's
+  code page (where
+  [ADR-004](../adr/ADR-004-test-components-once-and-pages-with-a-net.md)
+  tests the components), or both. To be decided with the user when
+  the card is taken up.
 
 - Run the check (it needs Docker, run by the user) and accept the new
   transcript as the reference, if it reads the page as intended.

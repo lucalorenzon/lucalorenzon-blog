@@ -43,6 +43,10 @@ live since 2026-10-26
     ([card](wip/turn-the-code-wrap-toggle-into-an-icon.md))),
     the table with its record viewer, the
     typography with the elements of the text, the breakpoints.
+- [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
+  since its reference still describes the Italian page, and let it
+  read more pages than the home page: it carries the wrap toggle
+  card's acceptance test on the screen reader; next after that card.
 
 ## Next
 
@@ -103,8 +107,6 @@ live since 2026-10-26
 - [Observe the visitors in production](backlog/observe-visitors-in-production.md):
   who reads the site, what they look for, where they interact; with
   the consent and the cookie policy it brings.
-- [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
-  since its reference still describes the Italian page.
 - [Check the declared languages in the build](backlog/check-declared-languages-in-the-build.md),
   the part of the screen reader check that depends on the site and the
   accessibility tree does not cover.
