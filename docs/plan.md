@@ -168,6 +168,9 @@ live since 2026-10-26
 - [Measure what a Leptos island weighs](backlog/measure-weight-of-a-leptos-island.md),
   the shared part and the component's, with the first island the site
   needs.
+- [Add a copy button to code blocks](backlog/add-a-copy-button-to-code-blocks.md),
+  the site's first script: an island with leptos-use's `use_clipboard`,
+  or plain JavaScript; probably the island above.
 - [Run a browser test from its row in the README](backlog/run-a-test-from-its-readme-row.md),
   on the last build, without writing the command by hand.
 - Further articles and everything around them, beyond the first two,
