@@ -1,8 +1,8 @@
-Placeholder, to be replaced before the next version tag: write here what this page shows, in a few sentences: the table, the component every Markdown table becomes, which is a table while its columns fit and a record viewer below that, and the cases below, each put to the test by the browser tests. Say that the tables on this page are the real component, written the way an article's author writes them.
+Like code, tables are a critical point for a site meant to be responsive and accessible. My answer is a component of my own, which takes the table's place when the column is too narrow to give each of its columns a readable width. It always has two columns: on the left, one row for each field of the original table; on the right, the records, shown one at a time as they scroll past. A line above it says which record is shown, out of how many. Below are the cases I have dealt with, each written the way I write a table in an article, and checked by the site's tests at every build.
 
 ## A table that always fits
 
-Placeholder, to be replaced before the next version tag: write here what this case shows and why it matters: a table of two short columns, which fits the text column at every width, so it is always a table and never a record viewer.
+This is the simple case, the reference for the others: two short columns, shown as a table at every screen width. The tests check it at 767 and 768 pixels, the two sides of the width where the text grows and the column widens. A wider table, such as the next one, becomes a record viewer at 767.
 
 | Tool | Use |
 |---|---|
@@ -14,7 +14,7 @@ Placeholder, to be replaced before the next version tag: write here what this ca
 
 ## Six columns
 
-Placeholder, to be replaced before the next version tag: write here what this case shows and why it matters: a table of six columns, wide enough to need the whole text column of a tablet but not that of a phone. Below the width the build estimated for it, the reader gets the record viewer instead.
+At 768 pixels this table is shown as a table; at 767 it becomes the record viewer. The width where it changes form is estimated when the site is built, from the words in the table. This case also puts the keyboard to the test: the Tab key reaches the record viewer, and the arrow keys move through the records one at a time.
 
 | Planet | Moons | Rings | Day | Year | Orbit |
 |---|---|---|---|---|---|
