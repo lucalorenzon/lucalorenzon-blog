@@ -2,6 +2,7 @@ mod about_page;
 mod article_page;
 mod curriculum_page;
 mod home_page;
+mod icons;
 mod licence_page;
 mod literata_widths;
 mod markdown;
@@ -134,6 +135,7 @@ fn build() -> Result<(), BuildError> {
     })?;
 
     write_colours()?;
+    write_icons()?;
 
     let is_ci = env::var("CI").is_ok_and(|value| !value.is_empty());
     let loaded = article_page::load_articles(&article_page::ARTICLE_FILES);
@@ -236,6 +238,19 @@ fn write_colours() -> Result<(), BuildError> {
         &path,
         style_guide::colours::css(&style_guide::colours::PALETTE),
     )
+}
+
+/// Where the build writes the icons' drawings, for Tailwind (style/input.css). Outside the
+/// published site on purpose.
+const ICONS_FILE: &str = "target/generated/icons.css";
+
+/// The icons are drawn from `icondata` by `icons`; the stylesheet imports this file.
+fn write_icons() -> Result<(), BuildError> {
+    let path = PathBuf::from(ICONS_FILE);
+    if let Some(folder) = path.parent() {
+        create_folder(folder)?;
+    }
+    write_file(&path, icons::css())
 }
 
 fn main() -> ExitCode {

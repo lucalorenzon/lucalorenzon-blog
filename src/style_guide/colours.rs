@@ -137,7 +137,7 @@ pub enum Role {
     Page,
     /// Running text, footer text, code block text.
     Ink,
-    /// Code blocks and odd table rows.
+    /// Code blocks and odd table rows; also the colour of a graphic on the code accent.
     CodeSurface,
     /// Every line and frame, focus outlines.
     AccentLine,
@@ -286,7 +286,7 @@ pub struct AllowedPair {
 /// Every pair that may appear on the site, the same in both schemes. A pair missing from the
 /// list is forbidden: for example the heading accent on the code surface, which the light
 /// scheme cannot make legible.
-pub const ALLOWED_PAIRS: [AllowedPair; 4] = [
+pub const ALLOWED_PAIRS: [AllowedPair; 5] = [
     AllowedPair {
         foreground: Role::Ink,
         backgrounds: &[Role::Page, Role::CodeSurface],
@@ -305,6 +305,11 @@ pub const ALLOWED_PAIRS: [AllowedPair; 4] = [
     AllowedPair {
         foreground: Role::AccentLine,
         backgrounds: &[Role::Page, Role::CodeSurface],
+        usage: Use::Graphics,
+    },
+    AllowedPair {
+        foreground: Role::CodeSurface,
+        backgrounds: &[Role::AccentCode],
         usage: Use::Graphics,
     },
 ];
@@ -438,6 +443,7 @@ mod tests {
         assert_eq!(dark(Ink, CodeSurface), "13.94");
         assert_eq!(dark(AccentCode, Page), "8.64");
         assert_eq!(dark(AccentCode, CodeSurface), "7.16");
+        assert_eq!(dark(CodeSurface, AccentCode), "7.16");
     }
 
     #[test]
@@ -451,6 +457,7 @@ mod tests {
         assert_eq!(light(AccentHeading, Page), "4.61");
         assert_eq!(light(AccentCode, Page), "8.42");
         assert_eq!(light(AccentCode, CodeSurface), "7.12");
+        assert_eq!(light(CodeSurface, AccentCode), "7.12");
     }
 
     #[test]
@@ -462,6 +469,16 @@ mod tests {
         assert!(!ALLOWED_PAIRS.iter().any(|pair| {
             pair.foreground == Role::AccentHeading && pair.backgrounds.contains(&Role::CodeSurface)
         }));
+    }
+
+    #[test]
+    fn the_code_surface_is_allowed_on_the_code_accent_for_graphics_only() {
+        let pair = ALLOWED_PAIRS
+            .iter()
+            .find(|pair| pair.foreground == Role::CodeSurface)
+            .unwrap();
+        assert_eq!(pair.backgrounds, [Role::AccentCode]);
+        assert_eq!(pair.usage, Use::Graphics);
     }
 
     #[test]

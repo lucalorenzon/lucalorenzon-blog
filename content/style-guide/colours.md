@@ -15,3 +15,7 @@ Headings are an accent too. They use a larger font, so a lighter shade is enough
 ## Line accent
 
 To keep the meaning of the accent, I have tried to keep it on lines too. Because lines are graphics, not text, a contrast of 3:1 is enough, and amber stays an accent because lines are thin.
+
+## Code surface
+
+*Placeholder, to be written by the author: why the code surface, a background everywhere else, becomes the colour of a graphic on the code accent, and where the site uses it: the wrap toggle's icon, when the lines wrap.*

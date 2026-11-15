@@ -19,7 +19,7 @@ use leptos::prelude::*;
 pub const FILE: &str = "colours.html";
 
 /// The text of the page, written in Markdown: an introduction, then one section for each
-/// foreground colour.
+/// foreground colour (a role used only as a background has none).
 pub(crate) const COLOURS: &str = include_str!("../../content/style-guide/colours.md");
 
 /// What search engines and link previews show of the page.
@@ -65,6 +65,10 @@ fn ground(background: Role) -> Ground {
             label: "On the code surface",
             class: "sample-on-code-surface",
         },
+        Role::AccentCode => Ground {
+            label: "On the code accent",
+            class: "sample-on-code-accent",
+        },
         other => unreachable!("{} is not a background", other.name()),
     }
 }
@@ -83,6 +87,16 @@ fn example(foreground: Role) -> AnyView {
             <p>"A section above"</p>
             <hr />
             <p>"A section below"</p>
+        }
+        .into_any(),
+        // A graphic, so no text: the pair is allowed for graphics only. It is an illustration,
+        // not a control, hence `role="img"`.
+        Role::CodeSurface => view! {
+            <span
+                class="icon-text-wrap sample-icon"
+                role="img"
+                aria-label="The wrap toggle's icon"
+            ></span>
         }
         .into_any(),
         other => unreachable!("{} is not a foreground", other.name()),
@@ -224,7 +238,7 @@ mod tests {
         super::render_colours_page(&site()).unwrap()
     }
 
-    /// A text with the four sections, in the order given by the titles.
+    /// A text with the sections, in the order given by the titles.
     fn text_with(titles: &[&str]) -> String {
         let mut text = String::from("Introduction.\n");
         for title in titles {
@@ -233,7 +247,13 @@ mod tests {
         text
     }
 
-    const ALL_TITLES: [&str; 4] = ["Ink", "Code accent", "Heading accent", "Line accent"];
+    const ALL_TITLES: [&str; 5] = [
+        "Ink",
+        "Code accent",
+        "Heading accent",
+        "Line accent",
+        "Code surface",
+    ];
 
     #[test]
     fn the_samples_follow_their_section_and_come_before_the_next_one() {
@@ -245,10 +265,12 @@ mod tests {
             assert!(at < section && section < samples, "{title}");
             at = samples;
         }
-        assert_eq!(html.matches("sample-stacked").count(), 4);
+        assert_eq!(html.matches("sample-stacked").count(), 5);
         let heading_accent = html.find("<h2>Heading accent</h2>").unwrap();
         let line_accent = html.find("<h2>Line accent</h2>").unwrap();
         assert!(html[heading_accent..line_accent].contains("sample-stacked"));
+        let code_surface = html.find("<h2>Code surface</h2>").unwrap();
+        assert!(html[line_accent..code_surface].contains("sample-stacked"));
     }
 
     #[test]
@@ -266,13 +288,19 @@ mod tests {
         assert_eq!(error, SectionError::UnknownColour("Page".to_owned()));
         assert_eq!(
             error.to_string(),
-            "content/style-guide/colours.md: the section `Page` names no foreground colour (the titles are Ink, Code accent, Heading accent, Line accent)"
+            "content/style-guide/colours.md: the section `Page` names no foreground colour (the titles are Ink, Code accent, Heading accent, Line accent, Code surface)"
         );
     }
 
     #[test]
     fn a_colour_without_a_section_is_an_error() {
-        let error = body(&text_with(&["Ink", "Code accent", "Line accent"])).unwrap_err();
+        let error = body(&text_with(&[
+            "Ink",
+            "Code accent",
+            "Line accent",
+            "Code surface",
+        ]))
+        .unwrap_err();
         assert_eq!(error, SectionError::MissingSection("Heading accent"));
         assert_eq!(
             error.to_string(),
@@ -302,9 +330,9 @@ mod tests {
     }
 
     #[test]
-    fn the_real_text_has_four_sections_and_no_values() {
+    fn the_real_text_has_five_sections_and_no_values() {
         let html = markdown::to_html(COLOURS);
-        assert_eq!(html.matches("<h2>").count(), 4);
+        assert_eq!(html.matches("<h2>").count(), 5);
         // The samples print the codes and the ratios, so the text does not repeat them.
         assert!(!html.contains("on #"));
     }
@@ -358,6 +386,20 @@ mod tests {
         let line = samples_of(Role::AccentLine);
         assert!(line.contains("#c06d0f on #fbfaf7 · 3.70:1, needs 3:1"));
         assert!(line.contains("#dd9911 on #1a1a1a · 7.16:1, needs 3:1"));
+    }
+
+    #[test]
+    fn the_code_surface_is_shown_as_the_wrap_icon_on_the_code_accent_only() {
+        let samples = samples_of(Role::CodeSurface);
+        assert!(samples.contains("sample-on-code-accent"));
+        assert!(samples.contains(">On the code accent<"));
+        assert!(!samples.contains("sample-on-page"));
+        assert!(!samples.contains("sample-on-code-surface"));
+        assert_eq!(samples.matches("icon-text-wrap sample-icon").count(), 2);
+        assert!(samples.contains("role=\"img\""));
+        assert!(samples.contains("aria-label=\"The wrap toggle's icon\""));
+        assert!(samples.contains("#ebe7df on #6f3f09 · 7.12:1, needs 3:1"));
+        assert!(samples.contains("#1a1a1a on #dd9911 · 7.16:1, needs 3:1"));
     }
 
     #[test]

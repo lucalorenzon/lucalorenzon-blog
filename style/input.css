@@ -11,6 +11,11 @@
    and written by the build into this file. */
 @import "../target/generated/colours.css";
 
+/* The icons' drawings come from the icondata crate (Bootstrap Icons' set only);
+   the build turns each into a mask utility, icon-<name>, and writes it into
+   this file (src/icons.rs). */
+@import "../target/generated/icons.css";
+
 @font-face {
   font-family: "IBM VGA 8x16";
   src: url("fonts/Web437_IBM_VGA_8x16.woff") format("woff");
@@ -363,6 +368,19 @@ body {
 
 @utility sample-on-code-surface {
   @apply bg-code-surface text-ink;
+}
+
+/* The box holds no text, only the graphic: ink on the code accent is not an
+   allowed pair. */
+@utility sample-on-code-accent {
+  @apply bg-accent-code;
+}
+
+/* A graphic in a sample: an icon of 24 by 24 CSS pixels, the size of a target
+   WCAG 2.5.8 asks. The shape is the icon's mask (icon-<name>); the colour is
+   the background, the code surface of the box's scheme. */
+@utility sample-icon {
+  @apply inline-block size-6 bg-code-surface;
 }
 
 /* The home page's list of articles, in the text column: no bullets and no

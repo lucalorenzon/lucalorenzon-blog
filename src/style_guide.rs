@@ -12,10 +12,10 @@ pub mod navigation;
 pub const FOLDER: &str = "style-guide/";
 
 /// ADR-001 for the guide's pages: every class of the page is an `@utility` of
-/// `style/input.css` or of the colours the build writes, with or without `md:` or `xl:`.
+/// `style/input.css` or of the colours and icons the build writes, with or without `md:` or `xl:`.
 #[cfg(test)]
 fn assert_only_named_variants(html: &str) {
-    let generated = colours::css(&colours::PALETTE);
+    let generated = colours::css(&colours::PALETTE) + &crate::icons::css();
     let defined: Vec<&str> = include_str!("../style/input.css")
         .lines()
         .chain(generated.lines())
