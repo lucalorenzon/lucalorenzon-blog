@@ -579,7 +579,7 @@ body {
    the label in Highlight and the icon in HighlightText. The outline, no longer
    recoloured by the browser, is CanvasText. */
 @utility code-wrap-toggle {
-  @apply hidden w-max font-sans sticky start-0 m-1 p-1;
+  @apply hidden w-max sticky start-0 m-1 p-1;
 
   & input {
     @apply icon-text-wrap block size-5 m-0 appearance-none bg-accent-code outline-none;
