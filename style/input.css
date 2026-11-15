@@ -132,15 +132,15 @@ body {
    overrides the font-mono of the header container), so it has the line
    height of a proportional font that may wrap on two lines. */
 @utility title-below-line {
-  @apply border-t border-accent-line pt-6 text-center text-2xl font-sans font-bold leading-[1.5] [grid-area:title];
+  @apply border-t border-accent-line pt-6 text-center text-2xl font-sans font-bold leading-normal [grid-area:title];
 }
 
 @utility title-below-line-large {
-  @apply border-t border-accent-line pt-6 text-center text-[32px] font-sans font-bold leading-[1.5] [grid-area:title];
+  @apply border-t border-accent-line pt-6 text-center text-[32px] font-sans font-bold leading-normal [grid-area:title];
 }
 
 @utility title-beside-logo {
-  @apply border-t-0 pt-0 text-center text-[32px] font-sans font-bold leading-[1.5] [grid-area:title];
+  @apply border-t-0 pt-0 text-center text-[32px] font-sans font-bold leading-normal [grid-area:title];
 }
 
 /* Content: one block column of text, centred, at most 60 characters wide
@@ -419,7 +419,7 @@ body {
 
   &:is(ul) > li {
     --bw: 2px;
-    @apply relative mt-[2.25em] rounded-[8px] border-solid border-accent-line;
+    @apply relative mt-[2.25em] rounded-lg border-solid border-accent-line;
     border-width: var(--bw);
     padding: calc(0.75em + 2px - var(--bw)) calc(0.75em + 2px - var(--bw))
       calc(0.75em + 4px + 2px - var(--bw));
@@ -476,7 +476,7 @@ body {
 
 /* Footer text from md: 18px instead of 16px, in proportion to the column. */
 @utility footer-text-large {
-  @apply text-[18px];
+  font-size: 18px;
 }
 
 /* The licence link in the footer: underlined, so it is told apart from the
@@ -509,7 +509,7 @@ body {
 /* The "›" between the items of the breadcrumb: the same ink, a little apart
    from the link before it. */
 @utility breadcrumb-separator {
-  @apply ml-[0.5em];
+  margin-left: 0.5em;
 }
 
 /* The logo is a link to the home page, placed in the header grid where the
