@@ -43,9 +43,6 @@ live since 2026-10-26
     ([card](wip/turn-the-code-wrap-toggle-into-an-icon.md))),
     the table with its record viewer, the
     typography with the elements of the text, the breakpoints.
-- [Write Tailwind classes in their canonical form](wip/write-tailwind-classes-in-their-canonical-form.md),
-  as the editor's Tailwind server suggests, in the same session as the
-  wrap toggle's first slice, which brought the warnings to light.
 
 ## Next
 
