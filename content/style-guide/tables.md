@@ -26,7 +26,7 @@ At 768 pixels this table is shown as a table; at 767 it becomes the record viewe
 
 ## Rows of different heights
 
-Placeholder, to be replaced before the next version tag: write here what this case shows and why it matters: a record viewer in which a value wraps over several lines in one record and is short in another, a label long enough to wrap, and an empty value. Each value must stay level with its label.
+The record viewer shows every record with each field at the same height. To make this possible, all the values of a field sit in the same place, hidden, so that its row is as tall as the tallest of them; long labels wrap, and so do the values. This way, moving to another record does not shift the labels. An empty value is shown as a dash. The tests check it at every width where this table is a record viewer.
 
 | Name | Support level | Estimated time to the first answer of the support team, in working hours | Notes about the contract and its renewal conditions |
 |---|---|---|---|
