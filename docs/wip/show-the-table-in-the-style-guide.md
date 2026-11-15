@@ -71,6 +71,52 @@ the card is cut.
    texts written by the user, as for the pages already made, or
    otherwise.
 
+## Acceptance tests
+
+Agreed with the user on 2026-11-15.
+
+Slice 1, the page and its tests:
+
+1. The build writes the style guide's tables page, linked from the
+   index and listed in the sitemap, with its heading, description and
+   canonical address: unit tests, as for the code blocks page.
+2. The page holds six cases, each in a section found by its title: the
+   simple table (two columns, five rows), the six-column table (five
+   rows), the rows of different heights, the range with an en dash, the
+   word with a hyphen, the texts at the limit (italic, inline code,
+   bold): unit test of the page.
+3. At 767 and 768: the simple table is a table; the six-column table
+   is a table at 768 and a record viewer at 767; the limit table is a
+   table, no wider than its column: browser test, one expectation per
+   case.
+4. At every column width, exactly one form of each table shows, no
+   table is wider than its column, and the page does not scroll
+   sideways: browser test on the guide's page.
+5. In the case of the rows of different heights, at every column width
+   where it is a record viewer, every row of every record is level with
+   its label and as tall, and the number row reads "k / n": browser
+   test.
+6. At 767, Tab reaches the six-column table's viewer, the down arrow
+   moves it by one record and Page Down by one more: browser test.
+7. At 767 and 768, axe limited to the tables finds no violation, and
+   the contrast holds in both schemes, with no guard: browser tests.
+8. At 320, 393, 412 and 767, the range and the hyphenated word each
+   stay on one line: `tables.spec.ts`, on the guide's page only.
+9. No table test names an article, and the guards on the hybris article
+   are gone: review of the diff.
+10. The rows of the moved tests in `end2end/README.md` say what they
+    now check and where; `readme.spec.ts` passes.
+11. The column's width at 767 and 768 and the limit table's threshold
+    are measured on the built page and written in the card; the
+    threshold falls just below the column at 767.
+12. The checks of `build.yml` pass: format, lint, unit tests, type
+    check, browser tests.
+
+Slice 2, the texts:
+
+13. Every placeholder holds the user's text, and no table changed in
+    this slice: review of the diff.
+
 ## Answers
 
 - Which cases the page needs (question 1), in part. Answered by the
