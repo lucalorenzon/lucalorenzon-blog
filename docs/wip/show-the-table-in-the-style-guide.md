@@ -190,10 +190,13 @@ Slice 2, the texts:
 - How the change of form is checked (question 3). Answered by the user
   on 2026-11-15: **at 767 and 768, for all three tests** (the change
   of form, the keyboard, axe with the contrast). At 768 the text grows
-  from 18 to 20 px and the column widens, from about 632 px at 767
-  (computed from the 704 px measured at 768, to be measured on the
-  built page) to 704 px: the six-column case's threshold must fall in
-  that window of about 70 px, not on one pixel. So the tests still
+  from 18 to 20 px and the column widens, from 584 px at 767 to 704 px
+  (measured on the built page on 2026-11-15, the content box of the
+  text column; 632 px had been computed beforehand, wrongly). The
+  threshold is in em of the table's own text, so the window is between
+  32.444 em (584 / 18) and 35.2 em (704 / 20): 2.756 em, about 50 px of
+  the text at 767. The six-column case's threshold must fall in that
+  window, not on one pixel. So the tests still
   check where the form changes, that is that the browser agrees with
   the build's estimate where the column widens. Rejected: 320 and 768,
   proposed first by the user, which made the case sturdier but no
