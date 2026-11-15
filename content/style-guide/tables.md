@@ -49,7 +49,7 @@ Here I dealt with unwanted line breaks in narrow columns, such as the one the br
 
 ## A word with a hyphen
 
-Placeholder, to be replaced before the next version tag: write here what this case shows and why it matters: a word such as read-only, which the browser would break after the hyphen if the column were narrow, and which the site keeps on one line.
+This case is like the previous one, with a word such as read-only, which the browser would split after the hyphen, since a letter follows it; it does not split a date such as 2026-11-15, where a digit follows. The word stays on one line in the same way, and the tests check it at the same four widths.
 
 | Mode | What it allows the reader of the file to do with the file |
 |---|---|
