@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-12
+Last updated: 2026-11-15
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -40,7 +40,7 @@ live since 2026-10-26
     its top, done
     ([card](done/2026-11-14_link-the-style-guide-pages-to-its-index.md)),
     and the wrap toggle turned into an icon, in a session of its own
-    ([card](backlog/turn-the-code-wrap-toggle-into-an-icon.md))),
+    ([card](wip/turn-the-code-wrap-toggle-into-an-icon.md))),
     the table with its record viewer, the
     typography with the elements of the text, the breakpoints.
 

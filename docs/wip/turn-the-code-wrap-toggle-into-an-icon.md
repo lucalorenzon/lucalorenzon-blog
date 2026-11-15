@@ -5,7 +5,7 @@
   ([card](../done/2026-11-15_show-the-code-block-in-the-style-guide.md)); in Next.
 - **Changed:** 2026-11-14, by the user: done before the style guide is
   published, in a session of its own; in Now.
-- **Status:** noticed, not started.
+- **Status:** in progress since 2026-11-15.
 
 ## Why
 
@@ -40,12 +40,30 @@ word "wrap" above the code. The user wants an icon in its place.
 
 ## Questions
 
-- Which icon, and drawn how: a character of a font, an SVG in the
-  page, a file.
-- Whether the checkbox stays, hidden behind the icon, so the toggle
-  keeps working without JavaScript.
-- Whether a word stays next to the icon, or a tooltip, for the readers
-  who do not recognise it.
 - Whether it comes before the style guide is published, as part of the
   code block's page, or after. Answered by the user on 2026-11-14:
   **before**, in a session of its own.
+- Whether the checkbox stays, hidden behind the icon, so the toggle
+  keeps working without JavaScript. Answered by the user on
+  2026-11-15: **the checkbox stays, and the stylesheet draws it as an
+  icon with two states.** It keeps its name for screen readers, its
+  place in the Tab order and its state, and the site still needs no
+  JavaScript.
+- How the stylesheet draws it. Answered by the user on 2026-11-15,
+  from the agent's explanation: **the checkbox loses its native look
+  and the icon is its mask**, so the icon takes the site's colours,
+  follows the light and dark schemes, and its contrast is that of a
+  pair the build already checks.
+- Where the icon's drawing comes from. Answered by the user on
+  2026-11-15: **the build writes it**, as it writes the colours
+  (`target/generated/colours.css`), reading it from `icondata`, the
+  data crate of `leptos_icons`, limited to the one set the icon comes
+  from. Rejected: `leptos_icons`' components, which write an `<svg>`
+  into the page, not into the stylesheet; and the drawing copied by
+  hand into `style/input.css`, which needs no dependency but leaves
+  the drawing's origin and version to a comment. The set's own licence
+  applies, not the crate's, since the drawing is served with the page:
+  it is recorded with its attribution, as the fonts' are.
+- Which icon, and what tells its two states apart.
+- Whether a word stays next to the icon, or a tooltip, for the readers
+  who do not recognise it.
