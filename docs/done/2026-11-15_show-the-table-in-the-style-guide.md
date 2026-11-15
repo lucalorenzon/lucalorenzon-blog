@@ -1,11 +1,12 @@
 # Show the table in the style guide
 
 - **Opened:** 2026-11-15, by the user, as the third page of the style
-  guide in the card [build a design system](build-a-design-system.md),
+  guide in the card [build a design system](../wip/build-a-design-system.md),
   the second one about a component, after
-  [the code block](../done/2026-11-15_show-the-code-block-in-the-style-guide.md);
+  [the code block](2026-11-15_show-the-code-block-in-the-style-guide.md);
   in Now.
-- **Status:** being worked on, since 2026-11-15.
+- **Status:** done, 2026-11-15. Not published yet: the style guide goes
+  live when it is complete.
 
 ## Why
 
@@ -53,27 +54,9 @@ pages the style guide needs before it is published.
 - **The page is covered by the net** with no test added, like the other
   pages of the style guide: it is in the sitemap.
 
-## Questions
-
-To be discussed one at a time; if they turn out too many for one card,
-the card is cut.
-
-1. Which cases the page needs, written for the purpose, so that each
-   test finds what it checks without a guard.
-2. Where the general tests run: on the style guide's page only, as for
-   the code block, or on the articles too.
-3. How the change of form at a given width is checked without the
-   hybris article, given that the threshold is an estimate.
-4. Whether `tables.spec.ts` becomes a check of the table component, run
-   once on its cases (the question left open by the card
-   [build a design system](build-a-design-system.md)).
-5. The texts for the readers: placeholders written by the agent and
-   texts written by the user, as for the pages already made, or
-   otherwise.
-
 ## Acceptance tests
 
-Agreed with the user on 2026-11-15.
+Agreed with the user on 2026-11-15; all thirteen pass, on 2026-11-15.
 
 Slice 1, the page and its tests:
 
@@ -119,6 +102,23 @@ Slice 2, the texts:
 
 ## Results
 
+- **The page and its tests** (commit `504e488`):
+  `style-guide/tables.html` with six cases in
+  `content/style-guide/tables.md`; `table-forms.spec.ts` and
+  `tables.spec.ts` run on it instead of the articles, with one
+  expectation for each case, found by its section's title, and without
+  the guards on the hybris article.
+- **The texts** (commits `fa0051a`, `79e8d1e`, `5e94f2d`, `92cb8f7`,
+  `c3b25a7`), and no table changed while they were written.
+- **The checks of `build.yml`**, run locally on 2026-11-15 after the
+  last text: format, lint, 334 unit tests, type check, 228 browser
+  tests passed, one skipped (the "page not found" test that runs on
+  the live site only).
+- **The articles are no longer test pages for the tables**, except in
+  one place: `end2end/tests/content-layout.spec.ts` and a guard in
+  `end2end/tests/support.ts` still need the After Save Event article to
+  show a table, for the text checks; left to the typography page of the
+  card [build a design system](../wip/build-a-design-system.md).
 - **Measured on the built page** (acceptance test 11), on 2026-11-15:
   - the text column's content box: 584 px at 767 (text 18 px), 704 px
     at 768 (text 20 px);
@@ -143,8 +143,8 @@ Slice 2, the texts:
 
 ## Answers
 
-- Which cases the page needs (question 1), in part. Answered by the
-  user on 2026-11-15:
+- Which cases the page needs (question 1). Answered by the user on
+  2026-11-15:
   - **Two tables serve the change of form, the keyboard and axe**: a
     simple one, two columns and five rows, which is a table at every
     width; and one of six columns and five rows, which is a table at
@@ -260,3 +260,21 @@ Slice 2, the texts:
   break); a word changed in a table for style could move a case
   unnoticed, so the tables are part of the tests and the user's texts
   sit around them.
+
+## The texts
+
+The user wrote the seven texts on 2026-11-15, in Italian, one at a
+time; for each one the agent proposed an English version and the
+changes it suggested, each with its reason, and the user chose which to
+apply: all of them. Changes made for accuracy, beyond the language:
+
+- the record viewer comes when the columns would be too narrow to read,
+  not when the table overflows its column;
+- the width where a table changes form is estimated, not computed;
+- nothing computes the rows' heights: the values of a field sit in the
+  same cell, hidden, and the browser makes the row as tall as the
+  tallest of them;
+- the range is written with an en dash, as in the case: a hyphen
+  followed by a digit is not a place where the browser breaks the line;
+- the limit table is estimated at 581 px, not 681, which would not fit
+  its column, and the estimate is not the table's real width.

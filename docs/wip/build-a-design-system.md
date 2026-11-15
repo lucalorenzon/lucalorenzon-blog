@@ -66,7 +66,9 @@ twice. The price: until then, the two articles stay test pages.
     ([card](../done/2026-11-15_show-the-code-block-in-the-style-guide.md));
   - `end2end/tests/table-forms.spec.ts`: the six-column table of the
     hybris article at the width where it turns into a record viewer,
-    and axe on its tables (`AXE_PAGE`).
+    and axe on its tables (`AXE_PAGE`); since 2026-11-15 on the style
+    guide's tables page instead
+    ([card](../done/2026-11-15_show-the-table-in-the-style-guide.md)).
 - **A gap of the worst case:** level-4 headings are only in the
   curriculum, so the text checks do not see them; they enter only the
   overlap check of the net
@@ -75,7 +77,8 @@ twice. The price: until then, the two articles stay test pages.
   `end2end/tests/tables.spec.ts` (single-value cells on one line) runs
   on every page of the built site at the four phone widths, 28 runs,
   20 of them on the five pages with no table, although ADR-004's
-  census classes it as a component check.
+  census classes it as a component check; since 2026-11-15 on the
+  style guide's tables page only, at the same four widths.
 - **The catalogue is published** (since 2026-11-10; until then it was
   meant to stay out of the site): its pages go in the sitemap, pass the
   SEO check and are covered by the net on the live site too, like every
@@ -169,4 +172,5 @@ To be answered while the style guide is built:
 - Which cases each component needs, written for the purpose, so that
   the two articles stop being test pages and their guards go away.
 - Whether `tables.spec.ts` becomes a check of the table component, run
-  once on its cases.
+  once on its cases: yes, decided by the user on 2026-11-15
+  ([card](../done/2026-11-15_show-the-table-in-the-style-guide.md)).
