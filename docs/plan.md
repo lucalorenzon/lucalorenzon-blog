@@ -43,7 +43,12 @@ live since 2026-10-26
     ([card](done/2026-11-15_turn-the-code-wrap-toggle-into-an-icon.md))),
     the table with its record viewer, done
     ([card](done/2026-11-15_show-the-table-in-the-style-guide.md)),
-    the typography with the elements of the text, the breakpoints.
+    the typography, cut in two: the elements of the text, being
+    worked on
+    ([card](wip/show-the-text-elements-in-the-style-guide.md)), and
+    the fonts
+    ([card](backlog/show-the-fonts-in-the-style-guide.md)); the
+    breakpoints.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle

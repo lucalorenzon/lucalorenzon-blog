@@ -90,7 +90,10 @@ twice. The price: until then, the two articles stay test pages.
   - the table, with its record viewer on narrow screens;
   - the typography: the fonts, and the elements of the text (headings
     down to level 4, paragraphs, numbered and bulleted lists), so the
-    text checks leave the After Save Event article too;
+    text checks leave the After Save Event article too; cut in two
+    pages by the user on 2026-11-15, the elements of the text first
+    ([card](show-the-text-elements-in-the-style-guide.md)), then the
+    fonts ([card](../backlog/show-the-fonts-in-the-style-guide.md));
   - the breakpoints.
 
   Why: the site's whole look is shown at once, and the article on it
