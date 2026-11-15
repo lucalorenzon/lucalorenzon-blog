@@ -8,11 +8,18 @@ import { axeReport, COLUMN_WIDTHS, CONTRAST_RULES, VIEWPORTS, runAxe } from './s
 //     column width: the long line and the indented cases scroll sideways and
 //     show it, the short block and the block with a blank line fit and do not;
 //     checking it wraps the lines, so nothing scrolls any more
-//   - the toggle is reached with Tab and switched with Space
+//   - the toggle is reached with Tab and switched with Space, and its focus
+//     outline is whole, not cut by the scroller's edge or the page's
+//   - the toggle is an icon with no visible text, at least 24 by 24 px, with
+//     the browser's tooltip on the label; to assistive technologies it stays a
+//     checkbox named "Wrap long lines of code", with no description; off it is
+//     the icon in the code accent, on the label is filled in the code accent
+//     and the icon takes the code surface's colour (both themes)
 //   - a wrapped line continues 4 columns deeper than its own indent, spaces
 //     or tabs (the tab case must really wrap at 320)
-//   - copying the code gives the block's code, without the toggle's text,
-//     whatever the case: tabs and the blank line included
+//   - in forced colours mode the toggle is drawn in the reader's system colours
+//   - copying the code gives the block's code, without anything of the
+//     toggle (its name, its tooltip), whatever the case: tabs and the blank line included
 //   - axe finds no accessibility violation inside the code blocks, and the
 //     contrast holds (at two widths, see the end of the file)
 // It checks what the reader sees, never how the page is built. A case is found
@@ -101,6 +108,154 @@ test('toggle of the code cases: Tab reaches it and Space switches it', async ({ 
   expect(await input.isChecked()).toBe(false);
 });
 
+// Tab from the start of the page until the checkbox has focus.
+async function tabTo(page: Page, input: Locator): Promise<boolean> {
+  await input.scrollIntoViewIfNeeded();
+  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+  for (let i = 0; i < 200; i++) {
+    await page.keyboard.press('Tab');
+    if (await input.evaluate((el) => el === document.activeElement)) return true;
+  }
+  return false;
+}
+
+test('the focus outline of the wrap toggle is whole, not cut by the block or the page', async ({ page }) => {
+  for (const { width, height } of [{ width: 320, height: 568 }, { width: 1280, height: 720 }]) {
+    await page.setViewportSize({ width, height });
+    await open(page, PAGE);
+    const block = await blockOf(page, CASES[0]);
+    const input = block.locator('input');
+    expect(await tabTo(page, input), `${width}: Tab reaches the toggle`).toBe(true);
+
+    const { outline, scroller, viewport } = await block.locator('label').evaluate((label) => {
+      const style = getComputedStyle(label);
+      const box = label.getBoundingClientRect();
+      const grow = parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset);
+      const scrollerBox = label.closest('.code-scroller')!.getBoundingClientRect();
+      return {
+        outline: {
+          drawn: style.outlineStyle !== 'none' && parseFloat(style.outlineWidth) > 0,
+          left: box.left - grow,
+          top: box.top - grow,
+          right: box.right + grow,
+          bottom: box.bottom + grow,
+        },
+        scroller: { left: scrollerBox.left, top: scrollerBox.top, right: scrollerBox.right, bottom: scrollerBox.bottom },
+        viewport: { width: window.innerWidth, height: window.innerHeight },
+      };
+    });
+    expect(outline.drawn, `${width}: the label draws the outline`).toBe(true);
+    expect(outline.left, `${width}: outline inside the scroller, left`).toBeGreaterThanOrEqual(scroller.left);
+    expect(outline.top, `${width}: outline inside the scroller, top`).toBeGreaterThanOrEqual(scroller.top);
+    expect(outline.right, `${width}: outline inside the scroller, right`).toBeLessThanOrEqual(scroller.right);
+    expect(outline.bottom, `${width}: outline inside the scroller, bottom`).toBeLessThanOrEqual(scroller.bottom);
+    expect(outline.left, `${width}: outline inside the page, left`).toBeGreaterThanOrEqual(0);
+    expect(outline.right, `${width}: outline inside the page, right`).toBeLessThanOrEqual(viewport.width);
+    // The checkbox itself draws none: its own outline would be cut by the mask.
+    expect(await input.evaluate((el) => getComputedStyle(el).outlineStyle)).toBe('none');
+  }
+});
+
+test('the wrap toggle is an icon: no text, 24 px at least, a tooltip, still a named checkbox', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await open(page, PAGE);
+
+  for (const c of CASES) {
+    const block = await blockOf(page, c);
+    const label = block.locator('label');
+    if (!c.scrollsAt(320)) {
+      await expect(label, `${c.name}: no toggle on a block that fits`).toBeHidden();
+      continue;
+    }
+    await expect(label).toBeVisible();
+    // No visible text: the label holds only the checkbox.
+    expect((await label.innerText()).trim(), `${c.name}: no visible text`).toBe('');
+    const box = (await label.boundingBox())!;
+    expect(box.width, `${c.name}: width`).toBeGreaterThanOrEqual(24);
+    expect(box.height, `${c.name}: height`).toBeGreaterThanOrEqual(24);
+    // The tooltip is on the label, so the name is not read twice.
+    await expect(label).toHaveAttribute('title', 'Wrap long lines of code');
+    await expect(block.locator('input')).not.toHaveAttribute('title', /.*/);
+  }
+
+  const input = (await blockOf(page, CASES[0])).locator('input');
+  const checkbox = (await blockOf(page, CASES[0])).getByRole('checkbox', { name: 'Wrap long lines of code', exact: true });
+  await expect(checkbox).toHaveCount(1);
+  await expect(input).not.toBeChecked();
+  await expect(checkbox).toHaveAccessibleDescription('');
+  await expect(checkbox).toHaveAccessibleName('Wrap long lines of code');
+  await input.check();
+  await expect(checkbox).toBeChecked();
+  await expect(checkbox).toHaveAccessibleDescription('');
+});
+
+test('the wrap toggle off is the icon in the code accent; on, the label is filled and the icon takes the code surface', { tag: '@colours' }, async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await open(page, PAGE);
+  const block = await blockOf(page, CASES[0]);
+  const input = block.locator('input');
+  const label = block.locator('label');
+  const background = (el: Locator) => el.evaluate((node) => getComputedStyle(node).backgroundColor);
+  // The theme's own colours, resolved by the browser.
+  const colour = (name: string) =>
+    page.evaluate((variable) => {
+      const probe = document.createElement('span');
+      probe.style.backgroundColor = `var(${variable})`;
+      document.body.appendChild(probe);
+      const resolved = getComputedStyle(probe).backgroundColor;
+      probe.remove();
+      return resolved;
+    }, name);
+  const accent = await colour('--color-accent-code');
+  const surface = await colour('--color-code-surface');
+  expect(accent).not.toBe(surface);
+
+  expect(await background(input), 'off: the icon is in the code accent').toBe(accent);
+  expect(await background(label), 'off: the label has no fill').toBe('rgba(0, 0, 0, 0)');
+
+  await input.check();
+  expect(await background(label), 'on: the label is filled in the code accent').toBe(accent);
+  expect(await background(input), 'on: the icon takes the code surface').toBe(surface);
+});
+
+test('the wrap toggle in forced colours mode is drawn in the reader\'s system colours', async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.emulateMedia({ forcedColors: 'active' });
+  await open(page, PAGE);
+  const block = await blockOf(page, CASES[0]);
+  const input = block.locator('input');
+  const label = block.locator('label');
+  const read = (el: Locator) =>
+    el.evaluate((node) => ({
+      background: getComputedStyle(node).backgroundColor,
+      adjust: getComputedStyle(node).getPropertyValue('forced-color-adjust'),
+    }));
+  // The system colours as the browser resolves them in this mode.
+  const system = (name: string) =>
+    page.evaluate((keyword) => {
+      const probe = document.createElement('span');
+      probe.style.color = keyword;
+      document.body.appendChild(probe);
+      const resolved = getComputedStyle(probe).color;
+      probe.remove();
+      return resolved;
+    }, name);
+  const canvasText = await system('CanvasText');
+  const highlight = await system('Highlight');
+  const highlightText = await system('HighlightText');
+
+  const off = { input: await read(input), label: await read(label) };
+  expect(off.input.adjust, 'the checkbox keeps its own drawing').toBe('none');
+  expect(off.label.adjust, 'the label keeps its own drawing').toBe('none');
+  expect(off.input.background, 'off: the icon is in CanvasText').toBe(canvasText);
+  expect(off.label.background, 'off: the label has no fill').toBe('rgba(0, 0, 0, 0)');
+
+  await input.check();
+  const on = { input: await read(input), label: await read(label) };
+  expect(on.input.background, 'on: the icon is in HighlightText').toBe(highlightText);
+  expect(on.label.background, 'on: the label is filled in Highlight').toBe(highlight);
+});
+
 test('wrapped lines of the code cases continue 4 columns deeper than their indent', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   await open(page, PAGE);
@@ -182,7 +337,8 @@ test('copying the code of the cases gives the code as written', async ({ page })
       // line. Chromium leaves out the last line break of the selection and WebKit
       // keeps it: only that one is allowed to differ.
       expect(selected.replace(/\n$/, ''), `${c.name}${wrapped ? ' (wrapped)' : ''}`).toBe(source.replace(/\n$/, ''));
-      expect(selected).not.toContain('wrap');
+      // Nothing of the toggle leaks into the copy: not its name, not its tooltip.
+      expect(selected).not.toContain('Wrap long lines of code');
       expect(selected).not.toMatch(/\n\n\n/);
     }
   }

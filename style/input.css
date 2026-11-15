@@ -561,12 +561,61 @@ body {
   @apply overflow-x-auto;
 }
 
+/* The wrap toggle: the checkbox, drawn as the wrap icon (icon-text-wrap, from
+   target/generated/icons.css). The checkbox loses its native look and the icon
+   is its mask; the icon's colour is the checkbox's own background. Off: the icon
+   in the code accent, the label with no fill. On: the label filled in the code
+   accent and the icon in the code surface's colour, like a pressed button.
+   The label is 28 by 28 CSS pixels (WCAG 2.5.8 asks 24).
+   The focus outline cannot be the checkbox's own, since the mask clips it, so it
+   is the label's, for keyboard focus only. The scroller's edge would cut it at
+   the top and the left, so the label keeps a 4 px margin all round, as wide as
+   the outline (2 px) and its offset (2 px) together: the outline sits in the
+   margin and is whole. The label is sticky at the start of the scroller.
+   In forced colours mode the browser forces the backgrounds of the checkbox and
+   of the label to the page's, so the icon and the fill would vanish: there, and
+   only there, the toggle keeps its own drawing (forced-color-adjust: none) in
+   the reader's system colours: off, the icon in CanvasText with no fill; on,
+   the label in Highlight and the icon in HighlightText. The outline, no longer
+   recoloured by the browser, is CanvasText. */
 @utility code-wrap-toggle {
-  @apply hidden w-max font-sans sticky start-0 text-accent-code;
+  @apply hidden w-max font-sans sticky start-0 m-1 p-1;
 
   & input {
-    accent-color: var(--color-accent-line);
-    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-line;
+    @apply icon-text-wrap block size-5 m-0 appearance-none bg-accent-code outline-none;
+  }
+
+  &:has(input:checked) {
+    @apply bg-accent-code;
+
+    & input {
+      @apply bg-code-surface;
+    }
+  }
+
+  &:has(input:focus-visible) {
+    @apply outline-2 outline-offset-2 outline-accent-line;
+  }
+
+  @media (forced-colors: active) {
+    forced-color-adjust: none;
+
+    & input {
+      forced-color-adjust: none;
+      background-color: CanvasText;
+    }
+
+    &:has(input:checked) {
+      background-color: Highlight;
+
+      & input {
+        background-color: HighlightText;
+      }
+    }
+
+    &:has(input:focus-visible) {
+      outline-color: CanvasText;
+    }
   }
 }
 

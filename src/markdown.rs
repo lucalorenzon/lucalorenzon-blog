@@ -390,7 +390,7 @@ fn code_component(language: Option<&str>, code: &str) -> String {
     };
     format!(
         "<div class=\"{block_class}\"><div class=\"code-scroller\">\
-<label class=\"code-wrap-toggle\"><input type=\"checkbox\" aria-label=\"Wrap long lines of code\"> wrap</label>\
+<label class=\"code-wrap-toggle\" title=\"Wrap long lines of code\"><input type=\"checkbox\" aria-label=\"Wrap long lines of code\"></label>\
 <pre class=\"code-text\"><code{language_class}>{lines}</code></pre></div></div>\n"
     )
 }
@@ -576,8 +576,8 @@ mod tests {
     fn fenced_code_becomes_the_component_with_its_language() {
         let html = to_html("```java\nint a;\n```\n");
         assert!(html.contains("<div class=\"code-block @max-[3.613em]/code:wrap-shown\">"));
-        assert!(html.contains("<div class=\"code-scroller\"><label class=\"code-wrap-toggle\">"));
-        assert!(html.contains("<input type=\"checkbox\" aria-label=\"Wrap long lines of code\"> wrap</label><pre class=\"code-text\"><code class=\"language-java\">"));
+        assert!(html.contains("<div class=\"code-scroller\"><label class=\"code-wrap-toggle\" title=\"Wrap long lines of code\">"));
+        assert!(html.contains("<input type=\"checkbox\" aria-label=\"Wrap long lines of code\"></label><pre class=\"code-text\"><code class=\"language-java\">"));
         assert!(html.contains("<span class=\"code-line code-line-indent-0\">int a;\n</span>"));
     }
 
@@ -616,7 +616,7 @@ mod tests {
         let block = "line <one> & \"two\"\n    indented\n\n  last\n";
         let html = to_html(&format!("```xml\n{block}```\n"));
         assert_eq!(code_text(&html), block);
-        assert!(!code_text(&html).contains("wrap"));
+        assert!(!code_text(&html).contains("Wrap"));
     }
 
     /// Two columns of "a" (bold a 0.578em, regular 0.539em): threshold 3.212em, label 1.7em
