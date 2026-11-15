@@ -61,3 +61,7 @@ def load(path):
 
     return text.splitlines()
 ```
+
+## The wrap toggle's icon
+
+To my eye, the checkbox for wrapping looked like it belonged to an unpolished site. It also took more room across than it needed. So I decided to put in its place an icon with two states, on and off, with the same meaning as the checkbox. The browser's tooltip is still there for whoever does not recognise the sign, and I added the styles needed by whoever chooses high contrast.
