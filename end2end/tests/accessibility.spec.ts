@@ -61,11 +61,19 @@ const LAPTOP = VIEWPORTS.find(({ name }) => name === 'Laptop')!;
 // tagged, and every other rule stays in the untagged one that runs once.
 type Run = (page: Page) => Promise<AxeResults>;
 
-// Opens the page and runs axe; returns the violations, with the drawn logo
-// dropped from the contrast rules, and the ids of the rules that passed.
+// Opens the page, scrolls to its end and runs axe; returns the violations,
+// with the drawn logo dropped from the contrast rules, and the ids of the
+// rules that passed. The scroll is for the footer, which is sticky: at the
+// top of the page it covers a band at the bottom of the window, and a link
+// that falls there is reported by axe's target-size as too small, although
+// a reader scrolls to it and finds it whole. At the end the content stops
+// at least 32 px above the footer (a check in force, see snapshot in
+// content-layout.spec.ts), so nothing is covered; axe still judges every
+// element, also those out of the window.
 async function look(page: Page, address: string, run: Run) {
   await page.goto(address);
   await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
 
   const results = await run(page);
 
