@@ -41,7 +41,8 @@ live since 2026-10-26
     ([card](done/2026-11-14_link-the-style-guide-pages-to-its-index.md)),
     and the wrap toggle turned into an icon, done
     ([card](done/2026-11-15_turn-the-code-wrap-toggle-into-an-icon.md))),
-    the table with its record viewer, being worked on
+    the table with its record viewer, page and tests done, four of
+    its seven texts left
     ([card](wip/show-the-table-in-the-style-guide.md)), the
     typography with the elements of the text, the breakpoints.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
