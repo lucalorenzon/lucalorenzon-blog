@@ -70,9 +70,13 @@ twice. The price: until then, the two articles stay test pages.
     guide's tables page instead
     ([card](../done/2026-11-15_show-the-table-in-the-style-guide.md)).
 - **A gap of the worst case:** level-4 headings are only in the
-  curriculum, so the text checks do not see them; they enter only the
-  overlap check of the net
+  curriculum, so the text checks do not see them
   ([card](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md)).
+  Corrected on 2026-11-16: this line used to say they enter the
+  overlap check of the net, but the net has no overlap check; the
+  overlap check runs on the worst case only, which has no level-4
+  heading, so they are checked nowhere. Closed by the text elements'
+  page ([card](show-the-text-elements-in-the-style-guide.md)).
 - **A component check still run on every page:**
   `end2end/tests/tables.spec.ts` (single-value cells on one line) runs
   on every page of the built site at the four phone widths, 28 runs,

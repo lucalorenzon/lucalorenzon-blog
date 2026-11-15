@@ -49,9 +49,13 @@ article; the fonts are mostly to be shown and move few tests.
   also a code block and a table. The check that nothing cuts off its
   content makes exceptions for the code's scroller and for the record
   viewer, which exist because the article has both.
-- **A gap:** level-4 headings are only in the curriculum, so the text
-  checks do not see them; they enter only the overlap check of the
-  net.
+- **A gap:** level-4 headings are only in the curriculum, so no text
+  check sees them: the net has no overlap check, and the worst case has
+  no level-4 heading.
+- **How the headings stand out from the text** (`style/input.css`):
+  level 2 larger, bold, in the heading accent; level 3 a little larger,
+  bold italic, in the heading accent; level 4 of the text's size and
+  colour, underlined only, like the links in the text.
 - **Not part of this card:** the net's checks (the 80-character line,
   no sideways scroll), which run on every page and stay there; the
   home page's boxes test, in `content-layout.spec.ts`, which is about
@@ -67,21 +71,91 @@ article; the fonts are mostly to be shown and move few tests.
 - **The page is covered by the net** with no test added, like the other
   pages of the style guide: it is in the sitemap.
 
-## Questions
+## Acceptance tests
 
-To be discussed one at a time; if they turn out too many for one card,
-the card is cut.
+Agreed with the user on 2026-11-16.
 
-1. Which cases the page needs, written for the purpose, so that each
-   test finds what it checks without a guard; level-4 headings
-   included.
-2. Whether the text checks still need a code block and a table beside
-   the text, or the code block's and the table's pages already cover
-   what they check there.
-3. Whether the elements inside a line (bold, italic, inline code,
-   links) belong to this page.
-4. Where the text checks run: on the style guide's page only, as for
-   the code block and the table, or on the articles too.
-5. The texts for the readers: placeholders written by the agent and
-   texts written by the user, as for the pages already made, or
-   otherwise.
+Slice 1, the page and its tests:
+
+1. The build writes the style guide's text page,
+   `style-guide/text.html`, titled "Text", linked from the index and
+   listed in the sitemap, with its heading, description and canonical
+   address: unit tests, as for the code blocks and tables pages.
+2. The page holds the cases: headings of levels 2, 3 and 4 that wrap,
+   two consecutive paragraphs, a bulleted and a numbered list whose
+   items wrap; and bold, italic, inline code and a link, which the page
+   says are shown only. It holds no code block and no table: unit test
+   of the page.
+3. The guard: before measuring, every case takes at least two lines at
+   every column width, or the test fails naming the case: browser
+   test. Proof that it bites: a case shortened in a throwaway run.
+4. On the guide's page, at every column width, the checks that ran on
+   the article pass: visual presentation (WCAG 1.4.8: line height,
+   space between paragraphs, no justified text); text spacing (WCAG
+   1.4.12); level-2 headings larger than the text, no overlap, the gap
+   above the footer.
+5. The text spacing check (WCAG 1.4.12) also runs on the code blocks
+   and tables pages, at the same widths, with its exceptions for the
+   code's scroller and the record viewer kept.
+6. At one width, in both schemes: level-2 and level-3 headings differ
+   in colour from the text; the level-4 heading is underlined, and the
+   paragraphs' text is not.
+7. On the guide's page: the numbered list shows its numbers and is
+   indented and spaced like the bulleted list; the list markers take
+   the amber accent while the items' text keeps its colour.
+8. No text test names an article; `WORST_CASE` and
+   `expectWorstCaseStillWorst` are gone: review of the diff.
+9. The rows of the moved tests in `end2end/README.md` say what they
+   now check and where; `readme.spec.ts` passes.
+10. The checks of `build.yml` pass: format, lint, unit tests, type
+    check, browser tests.
+
+Slice 2, the texts:
+
+11. Every placeholder of the explanations holds the user's text, and
+    no case changed in this slice: review of the diff.
+
+## Answers
+
+All answered by the user on 2026-11-16.
+
+- **Which cases the page needs** (question 1): the kinds of element
+  the text checks look at on the article today, plus the level-4
+  heading. **Written on purpose to put the checks to the test**, with
+  headings and list items that wrap: on the article some of that
+  happens by chance, and the old guard only counted the elements.
+  Rejected: short cases, with the elements merely present, which would
+  let the overlap checks pass with nothing to check.
+- **A guard aimed at the guide's cases:** every case still wraps at
+  every column width, checked by the tests before they measure.
+  Rejected: wrapping cases with their measures written in the card
+  only, as for the tables page, since a case shortened for the text
+  would leave its check with nothing to check unnoticed. This is not
+  the guard ADR-004's cards removed: that one stopped the build for an
+  edit made to an article for its readers; this one guards cases that
+  exist for the tests.
+- **No code block and no table beside the text** (question 2): the
+  text spacing check, which today meets them only on the article,
+  moves to the code blocks and tables pages too, so each component is
+  checked once, on its own page. Rejected: a code block and a table on
+  the text page, which would make it depend on two components that
+  have pages of their own.
+- **The elements inside a line** (question 3), bold, italic, inline
+  code and links, are on the page **to be shown only**, without checks
+  of their own, and the page says so, since every other case says what
+  it puts to the test. Rejected: checks of their own, new decisions no
+  text check needs today.
+- **How the level-4 heading stands out:** a check of its own, on the
+  underline as it is today. Accepted: the check also fixes its
+  likeness to the links in the text, which are underlined too.
+  Rejected: a check that it differs from the text in anything, which
+  would accept any difference however small; redesigning it, which
+  would be a card of its own.
+- **Where the text checks run** (question 4): on the guide's page
+  only, as for the code block and the table. Already today they ran on
+  one page, so the other pages lose nothing; what goes is what the
+  article put to the test by chance.
+- **The texts** (question 5): the cases are written by the agent, for
+  the tests; the explanations are written by the user. Why: the guard
+  makes a case's text part of the test, so rewriting it shorter would
+  stop the build.
