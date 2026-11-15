@@ -5,7 +5,8 @@
   ([card](../done/2026-11-15_show-the-code-block-in-the-style-guide.md)); in Next.
 - **Changed:** 2026-11-14, by the user: done before the style guide is
   published, in a session of its own; in Now.
-- **Status:** in progress since 2026-11-15.
+- **Status:** done, 2026-11-15. Not published yet: the articles get
+  the icon with the next version, the style guide when it is complete.
 
 ## Why
 
@@ -38,7 +39,7 @@ word "wrap" above the code. The user wants an icon in its place.
   the card above; the icon is a change of the component, so it shows
   there first.
 
-## Questions
+## Answers
 
 - Whether it comes before the style guide is published, as part of the
   code block's page, or after. Answered by the user on 2026-11-14:
@@ -148,76 +149,84 @@ word "wrap" above the code. The user wants an icon in its place.
   it. Rejected: `ButtonText` for the icon when off, the colour of
   buttons, which in some themes barely differs from the text.
 
-## Slices
+## How it was done
 
-Agreed with the user on 2026-11-15; one commit each, in this order.
-Cut again the same day: the icon's drawing moved to the first slice,
-so the colours page shows the new pair with the real icon.
+Three slices, one commit each, agreed with the user on 2026-11-15 and
+cut again the same day, so the colours page could show the new pair
+with the real icon:
 
-1. **Allow the code surface on the code accent, for graphics, with the
-   icon's drawing**: the colours module, its tests, the colours page
-   with a sample of the wrap icon on the code accent; the build writes
-   the icon's drawing from `icondata`; Bootstrap Icons' licence with
-   its attribution.
-2. **The toggle as the icon**: the checkbox becomes Bootstrap's icon,
-   through the drawing the first slice writes, filled when on, with the
-   tooltip on the label and the focus outline whole; the browser tests
-   and their README rows.
-3. **The section on the icon** in the code block page, with a
-   placeholder the user then writes.
+1. **The pair of colours and the icon's drawing** (`323422b`): the code
+   surface on the code accent allowed for graphics, with its sample on
+   the colours page; the build writes the drawing from `icondata` 0.7.0
+   (Bootstrap Icons 1.13.1 only) into `target/generated/icons.css`, as
+   a mask utility, `icon-text-wrap`, that sets the shape and leaves the
+   colour to the element's background; Bootstrap Icons' MIT licence,
+   read at source, with its attribution in `assets/icons/`.
+2. **The toggle as the icon** (`2e5de5e`): the checkbox without its
+   native look, 20 pixels, masked by the icon, in a label of 28 by 28
+   pixels; the focus outline is the label's, for keyboard focus only,
+   and a 4 pixel margin around the label, as wide as the outline and
+   its offset together, keeps the scroller's edge from cutting it. An
+   outline drawn inside the label was set aside by the sub-agent: when
+   on, it would sit on the code accent's fill, a pair the build does
+   not check. The forced colours styles came in the same slice.
+3. **The section on the icon** (`c4721ef`), with the user's text.
 
-## Acceptance tests
+## Results
 
-Agreed with the user on 2026-11-15. The card is done when all hold.
-
-Cut again on 2026-11-15, with the slices: the tests on the icon's
-drawing and its licence moved to the first slice, the sample's test
-says what it shows, and the tests are numbered again in the new order.
+Every acceptance test, agreed with the user on 2026-11-15 and
+renumbered when the slices were cut again, passed on 2026-11-15, but
+one, moved to another card.
 
 Slice 1, the pair of colours and the icon's drawing:
 
 1. The code surface on the code accent is an allowed pair for
-   graphics, and the build checks it reaches 3:1 in both schemes.
-2. The style guide's colours page shows the new pair with the others:
-   the wrap icon in the code surface's colour, on a box filled in the
-   code accent, in both schemes.
-3. The build writes the icon's drawing from `icondata`, at a pinned
-   version and with Bootstrap's set only; the stylesheet holds no
-   drawing written by hand.
-4. Bootstrap Icons' licence is read at source and recorded with its
-   attribution.
+   graphics, and the build checks it reaches 3:1 in both schemes
+   (7.12 light, 7.16 dark): unit tests of the colours module.
+2. The colours page shows the wrap icon in the code surface's colour
+   on a box filled in the code accent, in both schemes: unit test of
+   the sample, and screenshots checked by the user.
+3. The build writes the drawing from `icondata` at a pinned version,
+   with Bootstrap's set only; a unit test fails if the stylesheet holds
+   a drawing written by hand.
+4. Bootstrap Icons' licence was read at source and is served with its
+   attribution in `assets/icons/`.
 
-Slice 2, the toggle as the icon:
+Slice 2, the toggle as the icon; browser tests on the style guide's
+code page, listed in `end2end/README.md`:
 
-5. On the code block page, the block with the long line shows the
-   toggle as the icon, with no word; the block that fits shows none.
+5. The block with the long line shows the icon with no word, the block
+   that fits shows none.
 6. Off, the icon is in the code accent with no fill; on, the label is
-   filled in the code accent and the icon takes the code surface's
-   colour; in both schemes.
-7. The target is at least 24 by 24 CSS pixels.
-8. Tab reaches the toggle and Space switches it; its focus outline is
-   visible whole, not cut by the block's edge.
-9. To assistive technologies the checkbox stays a checkbox, named
-   "Wrap long lines of code", its state following the check; the name
-   does not come again as a description.
-10. The label carries the browser's tooltip "Wrap long lines of code".
+   filled in the code accent and the icon in the code surface's colour;
+   in both schemes.
+7. The target is 28 by 28 CSS pixels.
+8. Tab reaches the toggle and Space switches it; the focus outline lies
+   whole inside the scroller and the page, at 320 and 1280 pixels.
+9. The checkbox is a checkbox named "Wrap long lines of code", its
+   state following the check, with no accessible description.
+10. The label carries the tooltip "Wrap long lines of code", the
+    checkbox none.
 11. Copying a block, wrapped or not, gives the code and nothing else.
 12. An article with a long line shows the same icon, with no change
-    outside the component.
+    outside the component: screenshots of the After Save Event
+    article, off and on.
 13. Moved on 2026-11-15 to the card
     [update the screen reader check for an English site](../backlog/update-screen-reader-check-for-english-site.md):
     the check opens the home page only, which has no code block, so it
     cannot read the toggle until it reads more pages. The browser test
-    already checks, in Chromium's accessibility tree, that the name
-    comes once and with no description; whether Orca in Firefox reads
-    it so is left to that card.
-14. In forced colours mode the icon shows in both states, in the
-    user's system colours: off in `CanvasText`, on in `HighlightText`
-    on a label filled in `Highlight` (added on 2026-11-15).
+    of 9 already checks, in Chromium's accessibility tree, that the
+    name comes once and with no description; whether Orca in Firefox
+    reads it so is left to that card.
+14. In forced colours mode, emulated, the icon shows in both states in
+    the user's system colours: off in `CanvasText`, on in
+    `HighlightText` on a label filled in `Highlight`; the focus outline
+    in `CanvasText`.
 15. The rows of the browser tests' README are up to date, and every
-    check of the pipeline passes.
+    check of the pipeline passes: 325 unit tests, 267 browser tests
+    passed and 1 skipped, the one that runs on the live site only.
 
 Slice 3, the section:
 
-16. The code block page has a section on the toggle's icon and its two
-    states, with the text written by the user.
+16. The code block page has a section on the toggle's icon, with the
+    text written by the user.

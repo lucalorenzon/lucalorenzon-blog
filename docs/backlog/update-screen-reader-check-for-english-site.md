@@ -27,7 +27,7 @@ premise no longer holds.
 
 - **Reading more pages than the home page**, added on 2026-11-15 by
   the user, while the second slice of
-  [turn the code wrap toggle into an icon](../wip/turn-the-code-wrap-toggle-into-an-icon.md)
+  [turn the code wrap toggle into an icon](../done/2026-11-15_turn-the-code-wrap-toggle-into-an-icon.md)
   was being closed: the check opens `/site/index.html` only, which has
   no code block, so it could not verify that card's acceptance test
   13, moved here: **the screen reader reads the wrap toggle's name

@@ -201,7 +201,7 @@ Why: `docs/done/2026-11-09_describe-the-browser-tests-in-a-readme.md`.
   the site's icons, with Bootstrap Icons' set only; the build turns each
   into a CSS mask (`src/icons.rs`), so no drawing is written by hand in
   the stylesheet (why:
-  `docs/wip/turn-the-code-wrap-toggle-into-an-icon.md`)
+  `docs/done/2026-11-15_turn-the-code-wrap-toggle-into-an-icon.md`)
 - [Tailwind CSS](https://tailwindcss.com/) v4, standalone command-line tool
   pinned by version and checksum in `scripts/get-tailwind.sh`
 - Hosting on GitHub Pages, published by GitHub Actions only when a version

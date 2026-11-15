@@ -39,14 +39,14 @@ live since 2026-10-26
     done; each page links to the index and back to
     its top, done
     ([card](done/2026-11-14_link-the-style-guide-pages-to-its-index.md)),
-    and the wrap toggle turned into an icon, in a session of its own
-    ([card](wip/turn-the-code-wrap-toggle-into-an-icon.md))),
+    and the wrap toggle turned into an icon, done
+    ([card](done/2026-11-15_turn-the-code-wrap-toggle-into-an-icon.md))),
     the table with its record viewer, the
     typography with the elements of the text, the breakpoints.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle
-  card's acceptance test on the screen reader; next after that card.
+  card's acceptance test on the screen reader; next.
 
 ## Next
 

@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-15, by the user, after choosing the wrap toggle's
   icon in the card
-  [turn the code wrap toggle into an icon](../wip/turn-the-code-wrap-toggle-into-an-icon.md);
+  [turn the code wrap toggle into an icon](../done/2026-11-15_turn-the-code-wrap-toggle-into-an-icon.md);
   in Later.
 - **Status:** noticed, not started.
 
