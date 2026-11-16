@@ -51,8 +51,74 @@ so that a change of font, one day, is seen in one place.
   `content/style-guide/`), listed by the index and the sitemap; tests
   depending on the answers below.
 
-## Questions
+## Acceptance tests
 
-1. What the page shows of each font: names, weights, styles, the
-   characters, the licence.
-2. Which tests, if any, belong to the fonts.
+Agreed with the user on 2026-11-16. One slice: the page, its texts and
+its tests.
+
+1. The build writes the style guide's fonts page,
+   `style-guide/fonts.html`, titled "Fonts", linked from the index and
+   listed in the sitemap, with its heading, description and canonical
+   address: unit tests, as for the other pages of the style guide.
+2. The page holds an introduction and one section for each font,
+   Literata, Hack and IBM VGA 8x16, each with its explanation followed
+   by its samples: Literata regular, italic, bold and bold italic;
+   Hack regular; IBM VGA 8x16 regular. Six samples, each named by its
+   style: unit test of the page.
+3. Every sample is drawn with the stylesheet's classes (`font-sans`,
+   `font-code`, `font-mono`, with italic and bold) and never names a
+   font, so a change to the stylesheet shows in the samples too: unit
+   test.
+4. Every sample shows the same English text, written by the agent.
+   Literata and Hack at the size of the page's text; IBM VGA 8x16 at
+   16 px, its native size and the drawn logo's, since a pixel font
+   blurs at other sizes.
+5. The explanations are the user's, translated by the agent and
+   approved by the user in the chat before the commit.
+6. No browser test is added: the page is covered by the net. The
+   browser tests' README does not change, and `readme.spec.ts` passes.
+7. The checks of `build.yml` pass: format, lint, unit tests, type
+   check, browser tests.
+8. Before the commit, the user has seen the page on a small phone and
+   on a laptop.
+
+## Answers
+
+All answered by the user on 2026-11-16.
+
+- **What the page shows** (question 1): a sample for each style the
+  site serves, six in all, with the user's explanation of each font:
+  Literata chosen for its readability; Hack, the lightest font the
+  user found to show code in the style of Meslo LG, its close
+  relative, Meslo LG itself being left out because of its licence; IBM
+  VGA 8x16, the first choice, for the look of the old BBS, a wrong
+  choice left for readability, kept today by the logo only and going
+  when the logo becomes an image. Rejected: a sample for each element
+  of the page that uses a font (heading, paragraph, code, logo), which
+  would repeat the text elements' page.
+- **The samples' text:** plain English, neutral and without a message,
+  written by the agent, the same in every sample so that only the font
+  changes. Rejected: Lorem ipsum, which a screen reader reads with the
+  page's English voice as meaningless sounds; text from
+  nietzsche-ipsum.com, whose source has no licence and whose word list
+  can put words together that read, on the author's site, as a
+  statement.
+- **No tests about the fonts** (question 2): the page is only to be
+  shown. The page's own unit tests stay, as for every page of the
+  style guide.
+- **Not noted in the backlog:** three things no test protects, found
+  while opening the card: characters outside the subsets, which file
+  is actually loaded, inline code inside bold or italic text, which
+  the browser would thicken or slant from Hack's regular. Hypothetical
+  today, none of them a real problem; if inline code reads badly one
+  day, the text is changed where it happens.
+- **The page and the stylesheet:** the samples use the stylesheet's
+  classes, so a change of font in the stylesheet shows on the page;
+  the names and the explanations are written by hand. Defining the
+  fonts once in the build, as the colours are, so that a change made
+  for the style guide is a change of the whole site, is left to a card
+  of its own, opened when this one closes: otherwise the style guide
+  loses its purpose. Its known bond: the table widths are estimated
+  from Literata's character widths, measured by a tool of their own
+  (`src/literata_widths.rs`), which a change of the text font would
+  need measured again.
