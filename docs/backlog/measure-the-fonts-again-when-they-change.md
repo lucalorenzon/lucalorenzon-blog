@@ -1,7 +1,7 @@
 # Measure the fonts again when they change
 
 - **Opened:** 2026-11-16, by the user, cutting the card
-  [link the fonts to the build](../wip/link-the-fonts-to-the-build.md). In
+  [link the fonts to the build](../done/2026-11-16_link-the-fonts-to-the-build.md). In
   Next, after the fonts page.
 
 ## Why

@@ -3,6 +3,7 @@
 - **Opened:** 2026-11-16, by the user, closing the card
   [show the fonts in the style guide](../done/2026-11-16_show-the-fonts-in-the-style-guide.md).
   In Next; in Now from 2026-11-16.
+- **Status:** done, 2026-11-16 (`f2640ca`, `eb44029`).
 - **Cut:** 2026-11-16, by the user. The stylesheet is made parametric
   first, in the card
   [give the fonts three roles in the stylesheet](../done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md);
@@ -134,7 +135,36 @@ Agreed with the user on 2026-11-16.
 
 ## Results
 
-**Second slice, acceptance test 7 (2026-11-16).** The computed font
+All eight acceptance tests pass.
+
+**First slice (`f2640ca`).** The pixel font is in
+`assets/fonts/ibm-vga-8x16/`. No test checked that the font files
+load: the role tests compare family names, which stay the same when a
+file is missing. A browser test now loads every font face the
+stylesheet declares and fails on any that does not load; broken on
+purpose, it failed on the pixel font. Screenshots of the home page
+byte-identical before and after.
+
+**Second slice (`eb44029`).** The build reads `config/fonts.txt` and
+`config/fonts/`, refuses a configuration that does not hold together
+(each refusal with its unit test, with a few more than agreed: two
+files of one font with the same style and weight, names that could
+point outside `assets/fonts/`, a family name with a quote) and writes
+`target/generated/fonts.css`. Two things learned on the way:
+
+- `--font-*: initial` clears only what was defined before it, so it
+  moved into the generated `@theme`, before the roles: left in
+  `style/input.css`, after the import, it wiped them.
+- Tailwind reads every word of `src/`: a first error message with the
+  word "lowercase" became a stray utility in the stylesheet, and was
+  reworded. The card
+  [let Tailwind read only the presentation](../backlog/let-tailwind-read-only-the-presentation.md)
+  is about this.
+
+Checks of `build.yml`: 392 unit tests; 270 browser tests passed, one
+skipped (the "page not found" test that runs on the live site only).
+
+**Acceptance test 7, second slice.** The computed font
 family, style and weight of every element of every page of the sitemap
 (12 pages, 3638 elements, Chromium at 1366x768, light scheme), captured
 before and after the configuration: no difference. Screenshots of the

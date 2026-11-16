@@ -56,9 +56,9 @@ live since 2026-10-26
     stylesheet, done
     ([card](done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md)):
     three roles, text, code and logo, so a change of font there is a
-    change of every page; next, the build writes them from a
-    configuration file
-    ([card](wip/link-the-fonts-to-the-build.md)).
+    change of every page; then written by the build from a
+    configuration file, done
+    ([card](done/2026-11-16_link-the-fonts-to-the-build.md)).
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle
@@ -66,7 +66,7 @@ live since 2026-10-26
 
 ## Next
 
-- After the fonts' link to the build, in Now:
+- After the fonts' link to the build:
   [the fonts page built from the configuration](backlog/build-the-fonts-page-from-the-configuration.md),
   then [the fonts measured again when they change](backlog/measure-the-fonts-again-when-they-change.md).
 - [Write an article on the style guide](backlog/write-an-article-on-the-style-guide.md),

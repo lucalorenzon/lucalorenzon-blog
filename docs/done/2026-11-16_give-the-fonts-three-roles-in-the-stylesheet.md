@@ -1,7 +1,7 @@
 # Give the fonts three roles in the stylesheet
 
 - **Opened:** 2026-11-16, by the user, cutting the card
-  [link the fonts to the build](../wip/link-the-fonts-to-the-build.md):
+  [link the fonts to the build](2026-11-16_link-the-fonts-to-the-build.md):
   the stylesheet is made parametric first, the build and the fonts
   page follow. In Now.
 - **Status:** done, 2026-11-16 (`efb5e57`).
@@ -28,7 +28,7 @@ would show a font the site does not use.
    `@theme` block and in the `@font-face` rules, the only places that
    name a font. A configuration file comes later: the stylesheet cannot
    read one, so it arrives with the build that writes the CSS from it
-   (the card [link the fonts to the build](../wip/link-the-fonts-to-the-build.md)).
+   (the card [link the fonts to the build](2026-11-16_link-the-fonts-to-the-build.md)).
 3. **The order of what follows**, chosen by the user: the build reads
    the fonts from a configuration file; then the fonts page is built
    from the same configuration
