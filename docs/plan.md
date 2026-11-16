@@ -70,6 +70,9 @@ live since 2026-10-26
 
 ## Next
 
+- [Use a structured configuration file](backlog/use-a-structured-configuration-file.md),
+  now that `config/` holds a second setting, the fonts, read by the
+  build only; the heading limit is read by the tests too.
 - [Write an article on the style guide](backlog/write-an-article-on-the-style-guide.md),
   told from the problem it solves, once the style guide is complete:
   published with it, as the third article, and the readers' way into
@@ -156,8 +159,6 @@ live since 2026-10-26
   net for a component test.
 - [Refresh the stylesheet after a new version](backlog/refresh-stylesheet-after-a-new-version.md),
   so a returning visitor does not keep the old look.
-- [Use a structured configuration file](backlog/use-a-structured-configuration-file.md)
-  shared by the build and the tests, once a second setting needs it.
 - [Check the workflows with actionlint](backlog/lint-workflows-with-actionlint.md),
   in the pipeline rather than on one machine.
 - [Refer to cards by name in frozen documents](backlog/refer-to-cards-by-name-in-frozen-documents.md),

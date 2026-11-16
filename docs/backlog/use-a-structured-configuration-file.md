@@ -4,8 +4,10 @@
   a page heading lives, in the card
   [enforce the title length limit in the build](../done/2026-11-08_enforce-the-title-length-limit-in-the-build.md);
   in Later.
-- **Status:** noticed, not started. To be picked up when a second
-  setting is shared by the build and the tests.
+- **Moved:** 2026-11-16, by the user, to Next, now that `config/`
+  holds a second setting, the fonts (`config/fonts.txt` and
+  `config/fonts/`), although only the build reads them.
+- **Status:** noticed, not started.
 
 ## Why
 
