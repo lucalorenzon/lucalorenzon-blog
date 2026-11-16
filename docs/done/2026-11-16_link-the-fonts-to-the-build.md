@@ -77,7 +77,7 @@ the colours page and the stylesheet's colours.
    inferred from the prefix, so a new weight needs no change to the
    build. `.name` is the label the fonts page shows under the sample,
    for the card
-   [build the fonts page from the configuration](../backlog/build-the-fonts-page-from-the-configuration.md).
+   [build the fonts page from the configuration](../wip/build-the-fonts-page-from-the-configuration.md).
 
    ```
    family=Literata

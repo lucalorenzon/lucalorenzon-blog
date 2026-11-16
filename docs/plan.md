@@ -60,7 +60,7 @@ live since 2026-10-26
     configuration file, done
     ([card](done/2026-11-16_link-the-fonts-to-the-build.md)). Still to
     do before publishing, in this order:
-    [the fonts page built from the configuration](backlog/build-the-fonts-page-from-the-configuration.md),
+    [the fonts page built from the configuration](wip/build-the-fonts-page-from-the-configuration.md),
     then
     [the fonts measured again when they change](backlog/measure-the-fonts-again-when-they-change.md).
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),

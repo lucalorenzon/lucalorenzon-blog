@@ -110,7 +110,7 @@ twice. The price: until then, the two articles stay test pages.
     the build, done
     ([card](../done/2026-11-16_link-the-fonts-to-the-build.md)), still
     to do the fonts page
-    ([card](../backlog/build-the-fonts-page-from-the-configuration.md))
+    ([card](../wip/build-the-fonts-page-from-the-configuration.md))
     and the measures
     ([card](../backlog/measure-the-fonts-again-when-they-change.md));
   - the breakpoints.
