@@ -1,17 +1,20 @@
 //! The fonts page of the style guide: the text of `content/style-guide/fonts.md`, and after each
-//! of its sections the samples of that font, one for each style the site serves.
+//! of its sections the samples of that font, one for each file the site serves.
 //!
-//! Every sample shows the same text, so that only the font changes from one to the next. A
-//! sample never names a font: it carries a variant of the stylesheet (`style/input.css`) that
-//! takes the font from Tailwind's `font-text`, `font-code` or `font-logo`, so a change of font
-//! in the stylesheet shows here too. The variants' names are written out in full in this file
-//! on purpose: Tailwind finds the classes it must emit by scanning the sources.
+//! The fonts, their names and their samples come from the configuration (`config/`, read by
+//! `fonts.rs`): a section of the text is matched to a font by its family name, and the font's
+//! files give the samples, each labelled with its `name`. Every sample shows the same text, so
+//! that only the font changes from one to the next. A sample never names a font: it carries a
+//! variant the build writes in `target/generated/fonts.css` (`sample-<role>-<style>-<weight>`),
+//! which takes the font from the role's variable, so a change of font in the configuration
+//! shows here too, and a file added to it gets its sample with nothing written by hand.
 
 use super::FOLDER;
 use super::navigation::GuideMain;
 use crate::markdown;
 use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
+use crate::style_guide::fonts::{Fonts, ShownFont};
 use leptos::prelude::*;
 
 /// The page's file in the guide's folder, as the index links to it.
@@ -28,66 +31,38 @@ const DESCRIPTION: &str =
 const SAMPLE_TEXT: &str =
     "The quick brown fox jumps over the lazy dog. Sphinx of black quartz, judge my vow. 0123456789";
 
-/// A font of the site: the title of its section and its samples, each a label and the variant
-/// of the stylesheet that draws it.
-struct Font {
-    title: &'static str,
-    samples: &'static [(&'static str, &'static str)],
-}
-
-const FONTS_SHOWN: [Font; 3] = [
-    Font {
-        title: "Literata",
-        samples: &[
-            ("Regular", "sample-literata"),
-            ("Italic", "sample-literata-italic"),
-            ("Bold", "sample-literata-bold"),
-            ("Bold italic", "sample-literata-bold-italic"),
-        ],
-    },
-    Font {
-        title: "Hack",
-        samples: &[("Regular", "sample-hack")],
-    },
-    Font {
-        title: "IBM VGA 8x16",
-        samples: &[("Regular", "sample-pixel")],
-    },
-];
-
 /// Why the page's text does not match the fonts. The build stops with it: the text and the
 /// fonts must say the same thing.
 #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
 pub enum SectionError {
     #[error(
-        "content/style-guide/fonts.md: the section `{0}` names no font (the titles are {titles})",
-        titles = titles()
+        "content/style-guide/fonts.md: the section `{title}` names no font (the titles are {titles})"
     )]
-    UnknownFont(String),
+    UnknownFont { title: String, titles: String },
     #[error("content/style-guide/fonts.md: the section `{0}` appears more than once")]
-    Duplicate(&'static str),
+    Duplicate(String),
     #[error("content/style-guide/fonts.md: the font `{0}` has no section")]
-    MissingSection(&'static str),
+    MissingSection(String),
 }
 
-fn titles() -> String {
-    FONTS_SHOWN
+fn titles(fonts: &[ShownFont]) -> String {
+    fonts
         .iter()
-        .map(|font| font.title)
+        .map(|font| font.family.as_str())
         .collect::<Vec<_>>()
         .join(", ")
 }
 
-/// The samples of one font: for each style, the text drawn in it and, under it as a caption,
-/// the style's name (above the text it would read as the caption of the paragraph before).
+/// The samples of one font: for each file, the text drawn with it and, under it as a caption,
+/// the file's name (above the text it would read as the caption of the paragraph before).
 #[component]
-fn Samples(font: &'static Font) -> impl IntoView {
+fn Samples(font: ShownFont) -> impl IntoView {
     font.samples
-        .iter()
-        .map(|&(label, class)| {
+        .into_iter()
+        .map(|sample| {
             view! {
-                <p class=class>{SAMPLE_TEXT}</p>
-                <div class="sample-label">{label}</div>
+                <p class=sample.class>{SAMPLE_TEXT}</p>
+                <div class="sample-label">{sample.name}</div>
             }
         })
         .collect_view()
@@ -98,36 +73,43 @@ fn Samples(font: &'static Font) -> impl IntoView {
 /// (the same characters in a code block are escaped).
 fn with_samples(
     html: &str,
-    samples: impl Fn(&'static Font) -> String,
+    fonts: &[ShownFont],
+    samples: impl Fn(&ShownFont) -> String,
 ) -> Result<String, SectionError> {
     let mut sections = html.split("<h2>");
     let mut out = sections.next().unwrap_or_default().to_owned();
     let mut seen: Vec<&str> = Vec::new();
     for section in sections {
         let title = section.split("</h2>").next().unwrap_or_default();
-        let font = FONTS_SHOWN
+        let font = fonts
             .iter()
-            .find(|font| font.title == title)
-            .ok_or_else(|| SectionError::UnknownFont(title.to_owned()))?;
-        if seen.contains(&font.title) {
-            return Err(SectionError::Duplicate(font.title));
+            .find(|font| font.family == title)
+            .ok_or_else(|| SectionError::UnknownFont {
+                title: title.to_owned(),
+                titles: titles(fonts),
+            })?;
+        if seen.contains(&font.family.as_str()) {
+            return Err(SectionError::Duplicate(font.family.clone()));
         }
-        seen.push(font.title);
+        seen.push(&font.family);
         out.push_str("<h2>");
         out.push_str(section);
         out.push_str(&samples(font));
     }
-    if let Some(font) = FONTS_SHOWN.iter().find(|font| !seen.contains(&font.title)) {
-        return Err(SectionError::MissingSection(font.title));
+    if let Some(font) = fonts
+        .iter()
+        .find(|font| !seen.contains(&font.family.as_str()))
+    {
+        return Err(SectionError::MissingSection(font.family.clone()));
     }
     Ok(out)
 }
 
 /// The page's main content: the converted Markdown with the samples placed in it.
-fn body(markdown: &str) -> Result<String, SectionError> {
+fn body(markdown: &str, fonts: &Fonts) -> Result<String, SectionError> {
     let owner = Owner::new();
-    with_samples(&markdown::to_html(markdown), |font| {
-        owner.with(|| view! { <Samples font=font /> }.to_html())
+    with_samples(&markdown::to_html(markdown), &fonts.shown(), |font| {
+        owner.with(|| view! { <Samples font=font.clone() /> }.to_html())
     })
 }
 
@@ -152,8 +134,8 @@ pub fn FontsPage(canonical: String, body: String) -> impl IntoView {
 
 /// Renders the fonts page to a complete HTML document string, or says why the text does not
 /// match the fonts.
-pub fn render_fonts_page(site: &SiteAddress) -> Result<String, SectionError> {
-    let body = body(FONTS)?;
+pub fn render_fonts_page(site: &SiteAddress, fonts: &Fonts) -> Result<String, SectionError> {
+    let body = body(FONTS, fonts)?;
     let owner = Owner::new();
     let canonical = site.join(&format!("{FOLDER}{FILE}"));
     let page = owner.with(|| view! { <FontsPage canonical=canonical body=body /> }.to_html());
@@ -168,8 +150,12 @@ mod tests {
         SiteAddress::parse("https://www.lucalorenzon.com/").unwrap()
     }
 
+    fn fonts() -> Fonts {
+        crate::style_guide::fonts::real()
+    }
+
     fn render_fonts_page() -> String {
-        super::render_fonts_page(&site()).unwrap()
+        super::render_fonts_page(&site(), &fonts()).unwrap()
     }
 
     /// A text with the sections, in the order given by the titles.
@@ -187,8 +173,14 @@ mod tests {
     fn a_section_that_names_no_font_is_an_error() {
         let mut titles = ALL_TITLES.to_vec();
         titles.push("Meslo LG");
-        let error = body(&text_with(&titles)).unwrap_err();
-        assert_eq!(error, SectionError::UnknownFont("Meslo LG".to_owned()));
+        let error = body(&text_with(&titles), &fonts()).unwrap_err();
+        assert_eq!(
+            error,
+            SectionError::UnknownFont {
+                title: "Meslo LG".to_owned(),
+                titles: "Literata, Hack, IBM VGA 8x16".to_owned()
+            }
+        );
         assert_eq!(
             error.to_string(),
             "content/style-guide/fonts.md: the section `Meslo LG` names no font (the titles are Literata, Hack, IBM VGA 8x16)"
@@ -197,8 +189,8 @@ mod tests {
 
     #[test]
     fn a_font_without_a_section_is_an_error() {
-        let error = body(&text_with(&["Literata", "IBM VGA 8x16"])).unwrap_err();
-        assert_eq!(error, SectionError::MissingSection("Hack"));
+        let error = body(&text_with(&["Literata", "IBM VGA 8x16"]), &fonts()).unwrap_err();
+        assert_eq!(error, SectionError::MissingSection("Hack".to_owned()));
         assert_eq!(
             error.to_string(),
             "content/style-guide/fonts.md: the font `Hack` has no section"
@@ -210,20 +202,20 @@ mod tests {
         let mut titles = ALL_TITLES.to_vec();
         titles.push("Hack");
         assert_eq!(
-            body(&text_with(&titles)).unwrap_err(),
-            SectionError::Duplicate("Hack")
+            body(&text_with(&titles), &fonts()).unwrap_err(),
+            SectionError::Duplicate("Hack".to_owned())
         );
     }
 
     #[test]
     fn the_real_text_matches_the_fonts() {
-        assert!(body(FONTS).is_ok());
+        assert!(body(FONTS, &fonts()).is_ok());
     }
 
     /// The page's main content, as rendered: the introduction, then each section with its
     /// samples.
     fn main_html() -> String {
-        body(FONTS).unwrap()
+        body(FONTS, &fonts()).unwrap()
     }
 
     #[test]
@@ -242,8 +234,7 @@ mod tests {
     }
 
     /// The samples of a font: what the page holds between its section and the next.
-    fn samples_of(title: &str) -> String {
-        let html = main_html();
+    fn samples_in(html: &str, title: &str) -> String {
         let start = html.find(&format!("<h2>{title}</h2>")).unwrap();
         let end = html[start + 1..]
             .find("<h2>")
@@ -251,9 +242,13 @@ mod tests {
         html[start..end].to_owned()
     }
 
+    fn samples_of(title: &str) -> String {
+        samples_in(&main_html(), title)
+    }
+
     /// The labels and the classes of the samples of a font, in order.
-    fn labelled_samples(title: &str) -> Vec<(String, String)> {
-        let samples = samples_of(title);
+    fn labelled_samples_in(html: &str, title: &str) -> Vec<(String, String)> {
+        let samples = samples_in(html, title);
         let mut found = Vec::new();
         for part in samples.split("<p class=\"").skip(1) {
             let class = part.split('"').next().unwrap().to_owned();
@@ -270,6 +265,10 @@ mod tests {
         found
     }
 
+    fn labelled_samples(title: &str) -> Vec<(String, String)> {
+        labelled_samples_in(&main_html(), title)
+    }
+
     fn expected(samples: &[(&str, &str)]) -> Vec<(String, String)> {
         samples
             .iter()
@@ -277,26 +276,64 @@ mod tests {
             .collect()
     }
 
+    /// Acceptance test 6: each file of a font has a sample, labelled with the file's name and
+    /// drawn by the variant the build writes from the role, the style and the weight.
     #[test]
-    fn each_font_is_followed_by_its_samples_named_by_their_style() {
+    fn each_font_is_followed_by_one_sample_for_each_of_its_files() {
         assert_eq!(
             labelled_samples("Literata"),
             expected(&[
-                ("Regular", "sample-literata"),
-                ("Italic", "sample-literata-italic"),
-                ("Bold", "sample-literata-bold"),
-                ("Bold italic", "sample-literata-bold-italic"),
+                ("Regular", "sample-text-normal-400"),
+                ("Italic", "sample-text-italic-400"),
+                ("Bold", "sample-text-normal-700"),
+                ("Bold italic", "sample-text-italic-700"),
             ])
         );
         assert_eq!(
             labelled_samples("Hack"),
-            expected(&[("Regular", "sample-hack")])
+            expected(&[("Regular", "sample-code-normal-400")])
         );
         assert_eq!(
             labelled_samples("IBM VGA 8x16"),
-            expected(&[("Regular", "sample-pixel")])
+            expected(&[("Regular", "sample-logo-normal-400")])
         );
         assert_eq!(main_html().matches("sample-label").count(), 6);
+    }
+
+    /// Acceptance test 6: a file added to the configuration gets its sample, with no other
+    /// change, and the variant the build writes for it is the one the sample carries.
+    #[test]
+    fn a_file_added_to_the_configuration_gets_its_sample() {
+        let literata = include_str!("../../config/fonts/literata.txt");
+        let more = format!(
+            "{literata}semibold.file=literata-latin-600-normal.woff2\nsemibold.name=Semibold\n\
+             semibold.style=normal\nsemibold.weight=600\n"
+        );
+        let describe = |folder: &str| {
+            let path = format!("{}/config/fonts/{folder}.txt", env!("CARGO_MANIFEST_DIR"));
+            if folder == "literata" {
+                Some(more.clone())
+            } else {
+                std::fs::read_to_string(path).ok()
+            }
+        };
+        let fonts = crate::style_guide::fonts::load(
+            "text=literata\ncode=hack\nlogo=ibm-vga-8x16\n",
+            &describe,
+            &|_, _| true,
+        )
+        .unwrap();
+        let html = body(FONTS, &fonts).unwrap();
+        let samples = labelled_samples_in(&html, "Literata");
+        assert_eq!(samples.len(), 5);
+        assert_eq!(
+            samples[4],
+            ("Semibold".to_owned(), "sample-text-normal-600".to_owned())
+        );
+        assert!(
+            crate::style_guide::fonts::css(&fonts).contains("@utility sample-text-normal-600 {")
+        );
+        assert_eq!(html.matches("sample-label").count(), 7);
     }
 
     #[test]
@@ -311,48 +348,17 @@ mod tests {
         assert_eq!(html.matches(&format!(">{SAMPLE_TEXT}</p>")).count(), 6);
     }
 
-    /// Acceptance test 3: a sample never names a font. The stylesheet's variants take it from
-    /// the font variables, which this test reads, so a change of font there shows on the page.
+    /// A sample never names a font: its variant takes it from the role's variable (the variants
+    /// are written by `fonts.rs`, whose tests check their rules), so a change of font in the
+    /// configuration shows on the page.
     #[test]
-    fn no_sample_names_a_font_and_each_uses_its_fonts_variable_in_the_stylesheet() {
+    fn no_sample_names_a_font() {
         let html = render_fonts_page();
+        let body = &html[html.find("<main").unwrap()..html.find("</main>").unwrap()];
+        let body = body.replace("IBM VGA 8x16", "");
         for family in ["font-family", "Literata\"", "Hack\"", "VGA", "style=\""] {
-            let body = &html[html.find("<main").unwrap()..html.find("</main>").unwrap()];
-            let body = body.replace("IBM VGA 8x16", "");
             assert!(!body.contains(family), "{family}");
         }
-        let css = include_str!("../../style/input.css");
-        let variant = |name: &str| {
-            let start = css.find(&format!("@utility {name} {{")).unwrap();
-            let rule = &css[start..];
-            rule[..rule.find('}').unwrap()].to_owned()
-        };
-        for (name, classes) in [
-            ("sample-literata", ["font-text"].as_slice()),
-            ("sample-literata-italic", ["font-text", "italic"].as_slice()),
-            (
-                "sample-literata-bold",
-                ["font-text", "font-bold"].as_slice(),
-            ),
-            (
-                "sample-literata-bold-italic",
-                ["font-text", "font-bold", "italic"].as_slice(),
-            ),
-            ("sample-hack", ["font-code"].as_slice()),
-            (
-                "sample-pixel",
-                ["font-logo", "text-[16px]", "max-w-[80ch]"].as_slice(),
-            ),
-        ] {
-            let rule = variant(name);
-            assert!(!rule.contains("font-family"), "{name}");
-            for class in classes {
-                assert!(rule.contains(class), "{name} lacks {class}");
-            }
-        }
-        // Literata and Hack keep the page's size.
-        assert!(!variant("sample-hack").contains("text-"));
-        assert!(!variant("sample-literata").contains("text-"));
     }
 
     /// ADR-001: the page carries only named variants, of the stylesheet or of the colours the

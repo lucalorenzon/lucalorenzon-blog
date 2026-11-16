@@ -1,4 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { retryWhenLive } from './support';
 
 // The site has three fonts, named by role in the stylesheet (the @theme block the
@@ -72,7 +74,7 @@ const ROLES: { role: Role; page: string; width: number; cases: [string, string][
     role: '--font-text',
     page: './style-guide/fonts.html',
     width: 1280,
-    cases: [['the Literata sample', '.sample-literata']],
+    cases: [['the Literata sample', '.sample-text-normal-400']],
   },
   {
     role: '--font-code',
@@ -90,14 +92,14 @@ const ROLES: { role: Role; page: string; width: number; cases: [string, string][
     role: '--font-code',
     page: './style-guide/fonts.html',
     width: 1280,
-    cases: [['the Hack sample', '.sample-hack']],
+    cases: [['the Hack sample', '.sample-code-normal-400']],
   },
   {
     role: '--font-logo',
     page: './style-guide/fonts.html',
     width: 1280,
     cases: [
-      ['the pixel sample', '.sample-pixel'],
+      ['the pixel sample', '.sample-logo-normal-400'],
       ['the logo drawn in characters', '[data-testid="ascii-logo"]'],
     ],
   },
@@ -162,5 +164,75 @@ test('every font file the stylesheet declares loads', async ({ page }) => {
     });
     expect(faces, 'a font face is declared for each @font-face rule').toHaveLength(declared);
     expect(faces.filter((face) => face.status !== 'loaded'), 'font faces not loaded').toEqual([]);
+  });
+});
+
+// Each sample of the fonts page stands for one file of a font in the configuration
+// (config/fonts.txt and config/fonts/<folder>.txt). Its variant is named
+// sample-<role>-<style>-<weight>, written by the build; this checks what the browser draws:
+// the family of the sample's role and the style and weight of the file whose name is the
+// sample's label. The expected values are read from the configuration, so a font or a file
+// added there is checked with no change here.
+// Card: docs/wip/build-the-fonts-page-from-the-configuration.md.
+const CONFIG = join(__dirname, '..', '..', 'config');
+
+function settings(path: string): [string, string][] {
+  return readFileSync(path, 'utf8')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line !== '' && !line.startsWith('#'))
+    .map((line) => {
+      const at = line.indexOf('=');
+      return [line.slice(0, at).trim(), line.slice(at + 1).trim()];
+    });
+}
+
+// The files of the font of each role: name (the label), style and weight.
+function configuredFiles(): Map<string, { name: string; style: string; weight: string }[]> {
+  const byRole = new Map<string, { name: string; style: string; weight: string }[]>();
+  for (const [role, folder] of settings(join(CONFIG, 'fonts.txt'))) {
+    const files = new Map<string, Record<string, string>>();
+    for (const [key, value] of settings(join(CONFIG, 'fonts', `${folder}.txt`))) {
+      const [label, field] = key.split('.');
+      if (field === undefined) continue;
+      files.set(label, { ...files.get(label), [field]: value });
+    }
+    byRole.set(
+      role,
+      [...files.values()].map((file) => ({ name: file.name, style: file.style, weight: file.weight })),
+    );
+  }
+  return byRole;
+}
+
+test('each sample of the fonts page is drawn with the family, style and weight of its file', async ({
+  page,
+}) => {
+  const configured = configuredFiles();
+  await retryWhenLive(async () => {
+    await page.goto('./style-guide/fonts.html');
+    await page.evaluate(() => document.fonts.ready);
+    const samples = await page.evaluate(() =>
+      [...document.querySelectorAll('main p[class^="sample-"]')].map((p) => {
+        const style = getComputedStyle(p);
+        return {
+          cls: p.className,
+          label: p.nextElementSibling?.textContent ?? '',
+          family: style.fontFamily,
+          style: style.fontStyle,
+          weight: style.fontWeight,
+        };
+      }),
+    );
+    expect(samples.length, 'the page has samples').toBeGreaterThan(0);
+    for (const sample of samples) {
+      const role = /^sample-(text|code|logo)-/.exec(sample.cls)?.[1];
+      expect(role, `${sample.cls} is named from a role`).toBeDefined();
+      const file = configured.get(role!)?.find((f) => f.name === sample.label);
+      expect(file, `${sample.cls} stands for the file labelled ${sample.label}`).toBeDefined();
+      expect(sample.family, `${sample.cls} family`).toBe(await fontOfRole(page, `--font-${role}` as Role));
+      expect(sample.style, `${sample.cls} style`).toBe(file!.style);
+      expect(sample.weight, `${sample.cls} weight`).toBe(file!.weight);
+    }
   });
 });

@@ -1,6 +1,7 @@
 family=IBM VGA 8x16
 fallback=monospace
 display=block
+size=16
 regular.file=Web437_IBM_VGA_8x16.woff
 regular.name=Regular
 regular.style=normal

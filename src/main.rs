@@ -142,7 +142,7 @@ fn build() -> Result<(), BuildError> {
     })?;
 
     write_colours()?;
-    write_fonts()?;
+    let fonts = write_fonts()?;
     write_icons()?;
 
     let is_ci = env::var("CI").is_ok_and(|value| !value.is_empty());
@@ -159,7 +159,7 @@ fn build() -> Result<(), BuildError> {
     }
 
     create_folder(&out_dir)?;
-    let pages = sitemap::pages(&address, &loaded.articles)?;
+    let pages = sitemap::pages(&address, &loaded.articles, &fonts)?;
     for page in &pages {
         let path = out_dir.join(page.file);
         if let Some(folder) = path.parent() {
@@ -255,8 +255,8 @@ const FONTS_FILE: &str = "target/generated/fonts.css";
 /// The fonts are described in `config/fonts.txt` and `config/fonts/`, read by
 /// `style_guide::fonts`; the stylesheet imports this file. A configuration that does not hold
 /// together (a font without description, a file not in its folder...) stops the build before
-/// anything is written. The disk is read here so that the parsing can be tested without it.
-fn write_fonts() -> Result<(), BuildError> {
+/// anything is written. The fonts are returned for the fonts page. The disk is read here so that the parsing can be tested without it.
+fn write_fonts() -> Result<style_guide::fonts::Fonts, BuildError> {
     let roles = fs::read_to_string(style_guide::fonts::ROLES_FILE).map_err(|reason| {
         BuildError::ReadConfiguration {
             path: style_guide::fonts::ROLES_FILE.to_owned(),
@@ -272,7 +272,8 @@ fn write_fonts() -> Result<(), BuildError> {
     if let Some(folder) = path.parent() {
         create_folder(folder)?;
     }
-    write_file(&path, style_guide::fonts::css(&fonts))
+    write_file(&path, style_guide::fonts::css(&fonts))?;
+    Ok(fonts)
 }
 
 /// Where the build writes the icons' drawings, for Tailwind (style/input.css). Outside the

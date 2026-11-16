@@ -62,7 +62,10 @@ mod tests {
             ("Code blocks", code_page::render_code_page(&site())),
             ("Tables", tables_page::render_tables_page(&site())),
             ("Text", text_page::render_text_page(&site())),
-            ("Fonts", fonts_page::render_fonts_page(&site()).unwrap()),
+            (
+                "Fonts",
+                fonts_page::render_fonts_page(&site(), &crate::style_guide::fonts::real()).unwrap(),
+            ),
         ]
     }
 

@@ -7,6 +7,7 @@
 
 use crate::article_page::Article;
 use crate::site_address::SiteAddress;
+use crate::style_guide::fonts::Fonts;
 use crate::style_guide::{
     self, code_page, colours_page, fonts_page, index_page, tables_page, text_page,
 };
@@ -48,7 +49,11 @@ pub enum PageError {
 
 /// Every page of the site, rendered. The colours and fonts pages can fail: their texts must
 /// match the palette and the fonts.
-pub fn pages(site: &SiteAddress, articles: &[Article]) -> Result<Vec<Page>, PageError> {
+pub fn pages(
+    site: &SiteAddress,
+    articles: &[Article],
+    fonts: &Fonts,
+) -> Result<Vec<Page>, PageError> {
     let fixed = |file, source, html| Page {
         file,
         address: file,
@@ -109,7 +114,7 @@ pub fn pages(site: &SiteAddress, articles: &[Article]) -> Result<Vec<Page>, Page
         fixed(
             "style-guide/fonts.html",
             "content/style-guide/fonts.md",
-            fonts_page::render_fonts_page(site)?,
+            fonts_page::render_fonts_page(site, fonts)?,
         ),
     ];
     for article in articles {
@@ -274,7 +279,7 @@ mod tests {
     }
 
     fn sitemap_of(site: &SiteAddress) -> String {
-        let pages = pages(site, &real_articles()).unwrap();
+        let pages = pages(site, &real_articles(), &crate::style_guide::fonts::real()).unwrap();
         let dates = ContentDates::parse(&full_dates(&pages)).unwrap();
         build_sitemap(&pages, site, Some(&dates)).xml
     }
@@ -373,7 +378,13 @@ mod tests {
 
     #[test]
     fn indexed_means_not_noindex() {
-        for page in pages(&site(), &real_articles()).unwrap() {
+        for page in pages(
+            &site(),
+            &real_articles(),
+            &crate::style_guide::fonts::real(),
+        )
+        .unwrap()
+        {
             assert_eq!(
                 page.indexed,
                 !page.html.contains("noindex"),
@@ -386,7 +397,7 @@ mod tests {
     #[test]
     fn each_listed_page_has_its_address_as_canonical_link() {
         let site = site();
-        for page in pages(&site, &real_articles())
+        for page in pages(&site, &real_articles(), &crate::style_guide::fonts::real())
             .unwrap()
             .iter()
             .filter(|p| p.indexed)
@@ -417,7 +428,12 @@ mod tests {
         let root = Path::new(env!("CARGO_MANIFEST_DIR"));
         let mut files = Vec::new();
         walk(&root.join("content"), &mut files);
-        let pages = pages(&site(), &real_articles()).unwrap();
+        let pages = pages(
+            &site(),
+            &real_articles(),
+            &crate::style_guide::fonts::real(),
+        )
+        .unwrap();
         for file in files {
             let relative = file
                 .strip_prefix(root)
@@ -440,7 +456,13 @@ mod tests {
     #[test]
     fn every_source_is_a_file_that_exists() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR"));
-        for page in pages(&site(), &real_articles()).unwrap() {
+        for page in pages(
+            &site(),
+            &real_articles(),
+            &crate::style_guide::fonts::real(),
+        )
+        .unwrap()
+        {
             if let Some(source) = page.source {
                 assert!(root.join(source).is_file(), "{source}");
             }
@@ -452,7 +474,12 @@ mod tests {
     #[test]
     fn each_fixed_page_names_the_file_its_text_comes_from() {
         let root = Path::new(env!("CARGO_MANIFEST_DIR"));
-        let pages = pages(&site(), &real_articles()).unwrap();
+        let pages = pages(
+            &site(),
+            &real_articles(),
+            &crate::style_guide::fonts::real(),
+        )
+        .unwrap();
         for (file, text) in [
             ("curriculum.html", crate::curriculum_page::CURRICULUM),
             ("about.html", crate::about_page::ABOUT),
@@ -511,7 +538,7 @@ mod tests {
     #[test]
     fn without_dates_no_entry_has_lastmod_and_nothing_is_reported() {
         let site = site();
-        let pages = pages(&site, &real_articles()).unwrap();
+        let pages = pages(&site, &real_articles(), &crate::style_guide::fonts::real()).unwrap();
         let sitemap = build_sitemap(&pages, &site, None);
         assert!(!sitemap.xml.contains("lastmod"));
         assert_eq!(sitemap.missing, None);
@@ -520,7 +547,7 @@ mod tests {
     #[test]
     fn with_an_empty_dates_file_every_page_with_a_source_is_missing() {
         let site = site();
-        let pages = pages(&site, &real_articles()).unwrap();
+        let pages = pages(&site, &real_articles(), &crate::style_guide::fonts::real()).unwrap();
         let dates = ContentDates::parse("").unwrap();
         let sitemap = build_sitemap(&pages, &site, Some(&dates));
         assert!(!sitemap.xml.contains("lastmod"));
@@ -537,7 +564,7 @@ mod tests {
     #[test]
     fn a_page_without_a_date_is_reported_and_listed_without_lastmod() {
         let site = site();
-        let pages = pages(&site, &real_articles()).unwrap();
+        let pages = pages(&site, &real_articles(), &crate::style_guide::fonts::real()).unwrap();
         let dates = ContentDates::parse("content/about.md\t2026-11-06\n").unwrap();
         let sitemap = build_sitemap(&pages, &site, Some(&dates));
         let message = sitemap.missing.unwrap().to_string();
@@ -560,7 +587,7 @@ mod tests {
     #[test]
     fn nothing_is_reported_when_every_page_has_a_date() {
         let site = site();
-        let pages = pages(&site, &real_articles()).unwrap();
+        let pages = pages(&site, &real_articles(), &crate::style_guide::fonts::real()).unwrap();
         let dates = ContentDates::parse(&full_dates(&pages)).unwrap();
         assert_eq!(build_sitemap(&pages, &site, Some(&dates)).missing, None);
     }

@@ -285,34 +285,10 @@ body {
   @apply mt-[0.75em] mb-[0.25em] text-[0.75em] italic;
 }
 
-/* The style guide's font samples (src/style_guide/fonts_page.rs). Each draws
-   the text in one style of one font, with the font's name from @theme, so a
-   change of font there shows in the samples. Literata and Hack keep the size of
-   the page's text; the pixel font is drawn at 16px, its native size, where it
-   does not blur, and no wider than 80 characters, as every line of the site. */
-@utility sample-literata {
-  @apply font-text;
-}
-
-@utility sample-literata-italic {
-  @apply font-text italic;
-}
-
-@utility sample-literata-bold {
-  @apply font-text font-bold;
-}
-
-@utility sample-literata-bold-italic {
-  @apply font-text font-bold italic;
-}
-
-@utility sample-hack {
-  @apply font-code;
-}
-
-@utility sample-pixel {
-  @apply font-logo text-[16px] max-w-[80ch];
-}
+/* The style guide's font samples (src/style_guide/fonts_page.rs) are drawn by
+   variants the build writes, one for each file of each role's font
+   (sample-<role>-<style>-<weight>, in target/generated/fonts.css), so none is
+   written here. */
 
 /* The frame is outside the box and has no scheme: it takes the reader's line
    accent, so a light box on a light page and a dark box on a dark page still

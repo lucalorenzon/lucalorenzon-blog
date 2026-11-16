@@ -11,11 +11,18 @@
 //!   `folder` being the font's folder in `assets/fonts/`.
 //! - `config/fonts/<folder>.txt` describes that font, one `key=value` per line. The keys
 //!   without a prefix are for the whole font: `family` (the CSS family name), `fallback` (a
-//!   generic family) and `display` (`font-display`). The keys with a prefix `<label>.` describe
+//!   generic family), `display` (`font-display`) and, optional, `size` (the font's native size
+//!   in pixels, a positive whole number: the fonts page draws its samples at that size, and a
+//!   font without one keeps the page's size). The keys with a prefix `<label>.` describe
 //!   one file, all four required: `file`, `name` (the label the fonts page will show), `style`
 //!   and `weight`. Style and weight are written, not guessed from the label, so a new weight
 //!   needs no change to the build.
 //! - Blank lines and lines that start with `#` are ignored.
+//!
+//! The fonts page shows one sample for each file of each font. The build writes, for each file
+//! of each role's font, the variant that draws it (`sample-<role>-<style>-<weight>`, for example
+//! `sample-text-italic-700`), and lists the names for Tailwind with `@source inline(...)`, since
+//! the page's HTML is generated and Tailwind could not find them by scanning the sources.
 //!
 //! The parsing is pure (text in, value or error out) so every refusal has a test that needs no
 //! disk; the build program reads the files and passes their text in.
@@ -330,6 +337,8 @@ pub struct Font {
     pub family: String,
     pub fallback: Fallback,
     pub display: Display,
+    /// The font's native size in pixels, if the description gives one.
+    pub size: Option<u16>,
     pub files: Vec<FontFile>,
 }
 
@@ -378,6 +387,7 @@ pub fn parse_font(
     let mut family: Option<(usize, &str)> = None;
     let mut fallback: Option<(usize, &str)> = None;
     let mut display: Option<(usize, &str)> = None;
+    let mut size: Option<(usize, &str)> = None;
     // In order of first appearance, so the files keep the order they are written in.
     let mut labels: Vec<(&str, FileLines)> = Vec::new();
 
@@ -388,6 +398,7 @@ pub fn parse_font(
             "family" => Some(&mut family),
             "fallback" => Some(&mut fallback),
             "display" => Some(&mut display),
+            "size" => Some(&mut size),
             _ => None,
         };
         if let Some(slot) = whole {
@@ -451,6 +462,16 @@ pub fn parse_font(
         .find(|(name, _)| *name == display)
         .map(|(_, value)| *value)
         .ok_or_else(|| not_allowed(display_line, "display", display, Display::NAMES))?;
+
+    let size = size
+        .map(|(line, value)| {
+            value
+                .parse::<u16>()
+                .ok()
+                .filter(|size| *size > 0)
+                .ok_or_else(|| not_allowed(line, "size", value, "a positive whole number"))
+        })
+        .transpose()?;
 
     if labels.is_empty() {
         return Err(fail(None, Problem::NoFiles));
@@ -555,6 +576,7 @@ pub fn parse_font(
         family: family.to_owned(),
         fallback,
         display,
+        size,
         files,
     })
 }
@@ -608,6 +630,62 @@ pub fn load(
     })
 }
 
+/// One sample of the fonts page: the label shown under it and the variant that draws it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Sample {
+    pub name: String,
+    pub class: String,
+}
+
+/// A font as the fonts page shows it: once, with the roles it plays and a sample for each file.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ShownFont {
+    pub family: String,
+    pub folder: String,
+    /// In the roles' order (text, code, logo); never empty.
+    pub roles: Vec<Role>,
+    pub samples: Vec<Sample>,
+}
+
+/// The variant that draws a file in a role: `sample-<role>-<style>-<weight>`.
+fn variant(role: Role, file: &FontFile) -> String {
+    format!(
+        "sample-{}-{}-{}",
+        role.name(),
+        file.style.css(),
+        file.weight
+    )
+}
+
+impl Fonts {
+    /// The distinct fonts, in the order of their first role. A font that plays two roles is
+    /// listed once, its samples drawn with the variants of its first role.
+    pub fn shown(&self) -> Vec<ShownFont> {
+        let mut shown: Vec<ShownFont> = Vec::new();
+        for role in Role::ALL {
+            let font = self.of(role);
+            if let Some(known) = shown.iter_mut().find(|known| known.folder == font.folder) {
+                known.roles.push(role);
+                continue;
+            }
+            shown.push(ShownFont {
+                family: font.family.clone(),
+                folder: font.folder.clone(),
+                roles: vec![role],
+                samples: font
+                    .files
+                    .iter()
+                    .map(|file| Sample {
+                        name: file.name.clone(),
+                        class: variant(role, file),
+                    })
+                    .collect(),
+            });
+        }
+        shown
+    }
+}
+
 /// The stylesheet's fonts: the three roles in `@theme`, then one `@font-face` rule for each
 /// file of each font that plays a role (a font that plays two roles is declared once).
 ///
@@ -651,7 +729,42 @@ pub fn css(fonts: &Fonts) -> String {
             );
         }
     }
+    // One variant for each file of each role's font, for the samples of the fonts page: the
+    // font comes from the role's variable, the browser picks the file from the @font-face rules.
+    let mut names: Vec<String> = Vec::new();
+    for role in Role::ALL {
+        let font = fonts.of(role);
+        for file in &font.files {
+            let name = variant(role, file);
+            let _ = write!(
+                out,
+                "\n@utility {name} {{\n  @apply font-{role};\n  font-style: {style};\n  font-weight: {weight};\n",
+                role = role.name(),
+                style = file.style.css(),
+                weight = file.weight,
+            );
+            if let Some(size) = font.size {
+                let _ = writeln!(out, "  font-size: {size}px;\n  max-width: 80ch;");
+            }
+            out.push_str("}\n");
+            names.push(name);
+        }
+    }
+    // The names are in no scanned file (the page's HTML is generated), so Tailwind is told.
+    let _ = writeln!(out, "\n@source inline(\"{}\");", names.join(" "));
     out
+}
+
+/// The configuration in the repository, read from the disk as the build reads it.
+#[cfg(test)]
+pub fn real() -> Fonts {
+    let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"));
+    load(
+        &std::fs::read_to_string(root.join(ROLES_FILE)).unwrap(),
+        &|folder| std::fs::read_to_string(root.join(description_path(folder))).ok(),
+        &|folder, file| root.join("assets/fonts").join(folder).join(file).is_file(),
+    )
+    .unwrap()
 }
 
 #[cfg(test)]
@@ -963,10 +1076,169 @@ mod tests {
         assert!(parse_font("x", &italic, &everything_exists).is_ok());
     }
 
+    // The size.
+
+    #[test]
+    fn the_size_is_optional_and_read_as_pixels() {
+        assert_eq!(
+            parse_font("x", SMALL, &everything_exists).unwrap().size,
+            None
+        );
+        assert_eq!(
+            parse_font("x", &with_size("16"), &everything_exists)
+                .unwrap()
+                .size,
+            Some(16)
+        );
+        assert_eq!(real().logo.size, Some(16));
+        assert_eq!(real().text.size, None);
+        assert_eq!(real().code.size, None);
+    }
+
+    #[test]
+    fn a_size_that_is_not_a_positive_whole_number_stops_the_build() {
+        for size in ["0", "-3", "16.5", "big", "", "70000"] {
+            assert_eq!(
+                font_error(&with_size(size)),
+                format!(
+                    "config/fonts/x.txt:8: `size` is `{size}`, which is not allowed: a positive whole number"
+                )
+            );
+        }
+    }
+
+    #[test]
+    fn a_repeated_size_stops_the_build() {
+        assert_eq!(
+            font_error(&format!("{}size=8\n", with_size("16"))),
+            "config/fonts/x.txt:9: the key `size` is given more than once"
+        );
+    }
+
+    // The samples.
+
+    #[test]
+    fn each_file_of_the_real_fonts_gets_a_variant_named_from_its_role_style_and_weight() {
+        let shown = real().shown();
+        let classes = |at: usize| -> Vec<&str> {
+            shown[at].samples.iter().map(|s| s.class.as_str()).collect()
+        };
+        assert_eq!(
+            classes(0),
+            [
+                "sample-text-normal-400",
+                "sample-text-italic-400",
+                "sample-text-normal-700",
+                "sample-text-italic-700"
+            ]
+        );
+        assert_eq!(classes(1), ["sample-code-normal-400"]);
+        assert_eq!(classes(2), ["sample-logo-normal-400"]);
+        let names: Vec<&str> = shown[0].samples.iter().map(|s| s.name.as_str()).collect();
+        assert_eq!(names, ["Regular", "Italic", "Bold", "Bold italic"]);
+        assert_eq!(shown[0].family, "Literata");
+        assert_eq!(shown[2].family, "IBM VGA 8x16");
+    }
+
+    #[test]
+    fn a_font_that_plays_two_roles_is_shown_once_with_both_roles() {
+        let fonts = load(
+            "text=literata\ncode=hack\nlogo=hack\n",
+            &describe,
+            &everything_exists,
+        )
+        .unwrap();
+        let shown = fonts.shown();
+        assert_eq!(shown.len(), 2);
+        assert_eq!(shown[1].family, "Hack");
+        assert_eq!(shown[1].roles, [Role::Code, Role::Logo]);
+        assert_eq!(shown[1].samples[0].class, "sample-code-normal-400");
+    }
+
+    #[test]
+    fn a_file_added_to_the_configuration_gets_its_sample_and_its_variant() {
+        let more = format!(
+            "{LITERATA}semibold.file=literata-latin-600-normal.woff2\nsemibold.name=Semibold\n\
+             semibold.style=normal\nsemibold.weight=600\n"
+        );
+        let describe = |folder: &str| match folder {
+            "literata" => Some(more.clone()),
+            other => describe(other),
+        };
+        let fonts = load(ROLES, &describe, &everything_exists).unwrap();
+        let samples = &fonts.shown()[0].samples;
+        assert_eq!(samples.len(), 5);
+        assert_eq!(samples[4].name, "Semibold");
+        assert_eq!(samples[4].class, "sample-text-normal-600");
+        let css = css(&fonts);
+        assert!(css.contains("@utility sample-text-normal-600 {"));
+        assert!(css.contains("sample-text-italic-700 sample-text-normal-600"));
+    }
+
+    fn rule<'a>(css: &'a str, name: &str) -> &'a str {
+        let start = css.find(&format!("@utility {name} {{")).unwrap();
+        let rule = &css[start..];
+        &rule[..rule.find("}\n").unwrap()]
+    }
+
+    #[test]
+    fn the_variants_take_the_font_from_the_role_and_never_name_one() {
+        let css = css(&real());
+        assert_eq!(
+            rule(&css, "sample-text-italic-700"),
+            "@utility sample-text-italic-700 {\n  @apply font-text;\n  font-style: italic;\n  font-weight: 700;\n"
+        );
+        assert!(rule(&css, "sample-code-normal-400").contains("@apply font-code;"));
+        assert!(rule(&css, "sample-logo-normal-400").contains("@apply font-logo;"));
+        for name in [
+            "sample-text-normal-400",
+            "sample-code-normal-400",
+            "sample-logo-normal-400",
+        ] {
+            assert!(!rule(&css, name).contains("font-family"), "{name}");
+        }
+    }
+
+    #[test]
+    fn a_font_with_a_size_is_drawn_at_it_and_no_wider_than_80_characters() {
+        let css = css(&real());
+        let pixel = rule(&css, "sample-logo-normal-400");
+        assert!(pixel.contains("  font-size: 16px;\n"));
+        assert!(pixel.contains("  max-width: 80ch;\n"));
+        // Without a size the page's size and width are kept.
+        for name in ["sample-text-normal-400", "sample-code-normal-400"] {
+            assert!(!rule(&css, name).contains("font-size"), "{name}");
+            assert!(!rule(&css, name).contains("max-width"), "{name}");
+        }
+    }
+
+    #[test]
+    fn tailwind_is_told_every_variant() {
+        let css = css(&real());
+        let line = css
+            .lines()
+            .find(|l| l.starts_with("@source inline("))
+            .unwrap();
+        for name in [
+            "sample-text-normal-400",
+            "sample-text-italic-400",
+            "sample-text-normal-700",
+            "sample-text-italic-700",
+            "sample-code-normal-400",
+            "sample-logo-normal-400",
+        ] {
+            assert!(line.contains(name), "{name}");
+        }
+    }
+
     // The CSS.
 
     fn real() -> Fonts {
         load(ROLES, &describe, &everything_exists).unwrap()
+    }
+
+    fn with_size(value: &str) -> String {
+        format!("{SMALL}size={value}\n")
     }
 
     #[test]
@@ -1101,7 +1373,7 @@ mod tests {
         let families: Vec<&str> = families.iter().map(String::as_str).collect();
         let css = without_comments(STYLESHEET);
         assert!(
-            css.contains("@utility sample-literata"),
+            css.contains("@utility sample-label"),
             "the comments were cut wrong"
         );
         assert!(
