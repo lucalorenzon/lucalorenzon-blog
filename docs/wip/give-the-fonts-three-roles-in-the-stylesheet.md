@@ -53,3 +53,24 @@ would show a font the site does not use.
 - **A CSS limit:** a `@font-face` rule accepts no variable, neither in
   its family name nor in its file; the name stays in each rule of its
   font until the build writes them.
+
+## Acceptance tests
+
+Agreed with the user on 2026-11-16.
+
+1. The theme defines exactly three fonts, `font-text`, `font-code` and
+   `font-logo`; the built stylesheet has no `font-sans`, `font-serif`
+   or `font-mono`, neither as variables nor as classes.
+2. A browser test checks that each role reaches its elements, comparing
+   the font the browser computes with the variable's value: the running
+   text (paragraphs, lists, tables), the page titles and the Literata
+   samples take `font-text`; the code blocks, the code inside a line
+   and the Hack sample take `font-code`; the logo and the pixel sample
+   take `font-logo`.
+3. Outside the `@theme` block and the `@font-face` rules,
+   `style/input.css` names no font; an automatic test checks it.
+4. Nothing visible changes: on every page of the sitemap, every element
+   has the same computed font before and after the change, checked once
+   and reported here; and screenshots on a small phone and a laptop.
+5. Every check of `build.yml` passes, and the browser tests' README is
+   up to date.
