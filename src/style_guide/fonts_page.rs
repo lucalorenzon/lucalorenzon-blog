@@ -3,7 +3,7 @@
 //!
 //! Every sample shows the same text, so that only the font changes from one to the next. A
 //! sample never names a font: it carries a variant of the stylesheet (`style/input.css`) that
-//! takes the font from Tailwind's `font-sans`, `font-code` or `font-mono`, so a change of font
+//! takes the font from Tailwind's `font-text`, `font-code` or `font-logo`, so a change of font
 //! in the stylesheet shows here too. The variants' names are written out in full in this file
 //! on purpose: Tailwind finds the classes it must emit by scanning the sources.
 
@@ -328,20 +328,20 @@ mod tests {
             rule[..rule.find('}').unwrap()].to_owned()
         };
         for (name, classes) in [
-            ("sample-literata", ["font-sans"].as_slice()),
-            ("sample-literata-italic", ["font-sans", "italic"].as_slice()),
+            ("sample-literata", ["font-text"].as_slice()),
+            ("sample-literata-italic", ["font-text", "italic"].as_slice()),
             (
                 "sample-literata-bold",
-                ["font-sans", "font-bold"].as_slice(),
+                ["font-text", "font-bold"].as_slice(),
             ),
             (
                 "sample-literata-bold-italic",
-                ["font-sans", "font-bold", "italic"].as_slice(),
+                ["font-text", "font-bold", "italic"].as_slice(),
             ),
             ("sample-hack", ["font-code"].as_slice()),
             (
                 "sample-pixel",
-                ["font-mono", "text-[16px]", "max-w-[80ch]"].as_slice(),
+                ["font-logo", "text-[16px]", "max-w-[80ch]"].as_slice(),
             ),
         ] {
             let rule = variant(name);
@@ -353,6 +353,105 @@ mod tests {
         // Literata and Hack keep the page's size.
         assert!(!variant("sample-hack").contains("text-"));
         assert!(!variant("sample-literata").contains("text-"));
+    }
+
+    /// The stylesheet's text without its comments, and without the `@theme` block and the
+    /// `@font-face` rules, the only places that may name a font.
+    fn stylesheet_outside_the_fonts_places(css: &str) -> String {
+        let mut without_comments = String::new();
+        let mut rest = css;
+        while let Some(start) = rest.find("/*") {
+            without_comments.push_str(&rest[..start]);
+            rest = &rest[start + 2..];
+            rest = &rest[rest.find("*/").map_or(rest.len(), |end| end + 2)..];
+        }
+        without_comments.push_str(rest);
+
+        let mut kept = String::new();
+        let mut rest = without_comments.as_str();
+        while !rest.is_empty() {
+            let next = ["@theme", "@font-face"]
+                .iter()
+                .filter_map(|at| rest.find(at))
+                .min();
+            let Some(start) = next else {
+                kept.push_str(rest);
+                break;
+            };
+            kept.push_str(&rest[..start]);
+            rest = &rest[start..];
+            let open = rest.find('{').expect("an at-rule without a block");
+            let mut depth = 0;
+            let mut end = rest.len();
+            for (index, character) in rest[open..].char_indices() {
+                match character {
+                    '{' => depth += 1,
+                    '}' => {
+                        depth -= 1;
+                        if depth == 0 {
+                            end = open + index + 1;
+                            break;
+                        }
+                    }
+                    _ => {}
+                }
+            }
+            rest = &rest[end..];
+        }
+        kept
+    }
+
+    /// What names a font in the text given: a `font-family` whose value is not one of the
+    /// fonts' variables, or the name of one of the three fonts.
+    fn font_names_in(text: &str) -> Vec<String> {
+        let mut found = Vec::new();
+        for declaration in text.split("font-family:").skip(1) {
+            let value = declaration.split(';').next().unwrap().trim();
+            if !value.starts_with("var(--font-") {
+                found.push(format!("font-family: {value}"));
+            }
+        }
+        for name in ["Literata", "Hack", "IBM VGA"] {
+            if text.contains(name) {
+                found.push(name.to_owned());
+            }
+        }
+        found
+    }
+
+    /// Acceptance test 3 of the card on the fonts' three roles: outside `@theme` and
+    /// `@font-face`, the stylesheet names no font, so changing a role's value changes the site.
+    #[test]
+    fn the_stylesheet_names_no_font_outside_the_theme_and_the_font_face_rules() {
+        let css = include_str!("../../style/input.css");
+        let outside = stylesheet_outside_the_fonts_places(css);
+        assert!(
+            outside.contains("@utility sample-literata"),
+            "the helper cut too much"
+        );
+        assert!(
+            outside.contains("font-family: var(--font-text)"),
+            "html and body"
+        );
+        assert_eq!(font_names_in(&outside), Vec::<String>::new());
+    }
+
+    #[test]
+    fn a_font_written_by_hand_outside_the_theme_is_found() {
+        let css = include_str!("../../style/input.css");
+        let by_hand = css.replace(
+            "font-family: var(--font-text);",
+            "font-family: \"Literata\", serif;",
+        );
+        assert_ne!(
+            by_hand, css,
+            "html and body no longer set font-family: var(--font-text)"
+        );
+        let found = font_names_in(&stylesheet_outside_the_fonts_places(&by_hand));
+        assert_eq!(found, ["font-family: \"Literata\", serif", "Literata"]);
+        // A name in a comment, in the theme or in a font face is no violation.
+        let outside = stylesheet_outside_the_fonts_places(css);
+        assert!(css.contains("\"Hack\"") && !outside.contains("Hack"));
     }
 
     /// ADR-001: the page carries only named variants, of the stylesheet or of the colours the

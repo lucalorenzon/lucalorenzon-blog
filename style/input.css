@@ -71,9 +71,15 @@
   --breakpoint-*: initial;
   --breakpoint-md: 48rem; /* 768px */
   --breakpoint-xl: 80rem; /* 1280px */
-  --font-sans: "Literata", serif;
-  --font-mono: "IBM VGA 8x16", monospace;
+  /* The three fonts of the site, named by role. This block and the @font-face
+     rules are the only places that name a font; everything else uses the roles. */
+  --font-*: initial;
+  --font-text: "Literata", serif;
   --font-code: "Hack", monospace;
+  --font-logo: "IBM VGA 8x16", monospace;
+  /* Tailwind's base layer draws the page with these two. */
+  --default-font-family: var(--font-text);
+  --default-mono-font-family: var(--font-code);
 }
 
 /* The heading accent is the page's base colour: the header (logo and title)
@@ -82,7 +88,7 @@ html,
 body {
   background-color: var(--color-page);
   color: var(--color-accent-heading);
-  font-family: "Literata", serif;
+  font-family: var(--font-text);
   font-size: 16px;
   line-height: 1.5;
 }
@@ -100,9 +106,9 @@ body {
 }
 
 /* Header: two rows below xl (logo and menu, then the title under the line).
-   The header keeps the pixel font (font-mono) and its own line heights. */
+   The header keeps the pixel font (font-logo) and its own line heights. */
 @utility header-two-rows {
-  @apply font-mono grid items-center grid-cols-[1fr_auto] [grid-template-areas:'logo_menu''title_title'];
+  @apply font-logo grid items-center grid-cols-[1fr_auto] [grid-template-areas:'logo_menu''title_title'];
 }
 
 /* Header: one row from xl. The outer columns are as wide as their content
@@ -112,7 +118,7 @@ body {
    follow the real width of their content, so they also grow with the
    reader's own text spacing instead of letting the title run into the logo. */
 @utility header-one-row {
-  @apply font-mono grid items-center gap-x-6 border-b border-accent-line grid-cols-[minmax(max-content,1fr)_minmax(0,max-content)_minmax(max-content,1fr)] [grid-template-areas:'logo_title_menu'];
+  @apply font-logo grid items-center gap-x-6 border-b border-accent-line grid-cols-[minmax(max-content,1fr)_minmax(0,max-content)_minmax(max-content,1fr)] [grid-template-areas:'logo_title_menu'];
 }
 
 @utility text-logo-large {
@@ -128,19 +134,19 @@ body {
 }
 
 /* Title under the header line: the line is its top border, edge to edge.
-   The title is in Literata bold, not the pixel font of the header (font-sans
-   overrides the font-mono of the header container), so it has the line
+   The title is in Literata bold, not the pixel font of the header (font-text
+   overrides the font-logo of the header container), so it has the line
    height of a proportional font that may wrap on two lines. */
 @utility title-below-line {
-  @apply border-t border-accent-line pt-6 text-center text-2xl font-sans font-bold leading-normal [grid-area:title];
+  @apply border-t border-accent-line pt-6 text-center text-2xl font-text font-bold leading-normal [grid-area:title];
 }
 
 @utility title-below-line-large {
-  @apply border-t border-accent-line pt-6 text-center text-[32px] font-sans font-bold leading-normal [grid-area:title];
+  @apply border-t border-accent-line pt-6 text-center text-[32px] font-text font-bold leading-normal [grid-area:title];
 }
 
 @utility title-beside-logo {
-  @apply border-t-0 pt-0 text-center text-[32px] font-sans font-bold leading-normal [grid-area:title];
+  @apply border-t-0 pt-0 text-center text-[32px] font-text font-bold leading-normal [grid-area:title];
 }
 
 /* Content: one block column of text, centred, at most 60 characters wide
@@ -334,19 +340,19 @@ body {
    the page's text; the pixel font is drawn at 16px, its native size, where it
    does not blur, and no wider than 80 characters, as every line of the site. */
 @utility sample-literata {
-  @apply font-sans;
+  @apply font-text;
 }
 
 @utility sample-literata-italic {
-  @apply font-sans italic;
+  @apply font-text italic;
 }
 
 @utility sample-literata-bold {
-  @apply font-sans font-bold;
+  @apply font-text font-bold;
 }
 
 @utility sample-literata-bold-italic {
-  @apply font-sans font-bold italic;
+  @apply font-text font-bold italic;
 }
 
 @utility sample-hack {
@@ -354,7 +360,7 @@ body {
 }
 
 @utility sample-pixel {
-  @apply font-mono text-[16px] max-w-[80ch];
+  @apply font-logo text-[16px] max-w-[80ch];
 }
 
 /* The frame is outside the box and has no scheme: it takes the reader's line

@@ -206,6 +206,20 @@ shared.
 | `asks not to be indexed and has no canonical link` | `canonical-link.spec.ts` | "page not found" | 1280 | light | the page does not ask not to be indexed, or has a canonical link | An error page must not end up in search results |
 | `has no description and no Open Graph tags` | `open-graph.spec.ts` | "page not found" | 1280 | light | the page has a description or an Open Graph tag | An error page has nothing to share |
 
+## A change of font that does not reach the whole site
+
+The stylesheet names the site's fonts by role (text, code, logo) in one
+place; everything else refers to the role. Card:
+[give the fonts three roles in the stylesheet](../docs/wip/give-the-fonts-three-roles-in-the-stylesheet.md).
+
+### Component
+
+| Find in files | File | Pages | Widths | Themes | Fails when? | Why |
+|---|---|---|---|---|---|---|
+| `the stylesheet defines the three font roles and no other font` | `font-roles.spec.ts` | the built stylesheet | none | none | `style.css` has a variable or a class of Tailwind's own fonts (sans, serif, mono), or its font variables are not exactly text, code and logo | A font left in the stylesheet outside the roles would not change when a role's font changes |
+| `takes the font of ${role}` | `font-roles.spec.ts` | style guide: text, tables, code blocks, fonts | 1280; 393 for the text logo | light | the font the browser computes for a paragraph, a list item, a table cell, the page title or the Literata sample differs from the one of `--font-text`; for a code block, code inside a line or the Hack sample, from `--font-code`; for the logo (characters or text) or the pixel sample, from `--font-logo` | A role that does not reach an element leaves it in another font when the font of the role changes: the style guide would show a font the site does not use |
+| `the three font roles are three different fonts` | `font-roles.spec.ts` | style guide, fonts | 1280 | light | two roles compute to the same font | The comparisons above would pass vacuously if two roles were the same font |
+
 ## Tests that would say nothing
 
 Faults in the tests themselves: a shortcut the suite takes that stops

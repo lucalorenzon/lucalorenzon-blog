@@ -74,3 +74,12 @@ Agreed with the user on 2026-11-16.
    and reported here; and screenshots on a small phone and a laptop.
 5. Every check of `build.yml` passes, and the browser tests' README is
    up to date.
+
+## Results
+
+- **Acceptance test 4, computed fonts:** on the 12 pages of the sitemap
+  (3 638 elements, at 1366x768, light theme), `font-family`, `font-style`
+  and `font-weight` of every element were captured before and after the
+  change: 0 differences, not even in the family strings. Screenshots of the
+  home page, an article and the style guide's fonts and code pages, at
+  320x568 and 1366x768, were taken before and after.
