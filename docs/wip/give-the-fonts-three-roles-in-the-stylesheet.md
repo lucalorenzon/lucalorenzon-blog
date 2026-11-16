@@ -1,0 +1,55 @@
+# Give the fonts three roles in the stylesheet
+
+- **Opened:** 2026-11-16, by the user, cutting the card
+  [link the fonts to the build](../backlog/link-the-fonts-to-the-build.md):
+  the stylesheet is made parametric first, the build and the fonts
+  page follow. In Now.
+
+## Why
+
+A change of font made for the style guide must be a change of the whole
+site. Today it is not, even inside the stylesheet: the running text of
+every page (paragraphs, lists, tables) takes its font from
+`html, body`, where `"Literata", serif` is written by hand
+(`style/input.css`), while only the page titles and the fonts page's
+samples use `font-sans`. Changing `--font-sans` would change the
+samples and the titles, and leave the text in Literata: the style guide
+would show a font the site does not use.
+
+## Answers
+
+1. **Three fonts, named by role.** The theme defines `font-text`,
+   `font-code` and `font-logo`, today Literata, Hack and IBM VGA 8x16;
+   everything else (the stylesheet, later the build and the fonts page)
+   refers to the three roles, never to a font's name. Chosen by the
+   user: a font is what it does in the site.
+2. **The stylesheet first, alone.** The values are written in the
+   `@theme` block and in the `@font-face` rules, the only places that
+   name a font. A configuration file comes later: the stylesheet cannot
+   read one, so it arrives with the build that writes the CSS from it
+   (the card [link the fonts to the build](../backlog/link-the-fonts-to-the-build.md)).
+3. **The order of what follows**, chosen by the user: the build reads
+   the fonts from a configuration file; then the fonts page is built
+   from the same configuration
+   ([card](../backlog/build-the-fonts-page-from-the-configuration.md));
+   then what is measured on a font
+   ([card](../backlog/measure-the-fonts-again-when-they-change.md)).
+
+## Known from the start
+
+- **Tailwind's own fonts:** `font-sans`, `font-serif` and `font-mono`
+  exist unless the theme clears them with `--font-*: initial`, as it
+  already does for the breakpoints. Cleared, no rule can use a font
+  outside the three roles by mistake.
+- **Tailwind's default fonts:** its base layer draws `html` with
+  `--default-font-family` and `code`, `kbd`, `samp` and `pre` with
+  `--default-mono-font-family`, which point today to `--font-sans` and
+  `--font-mono`. So the elements of code fall back to the pixel font
+  wherever no rule of ours sets `font-code`. With the roles they point
+  to `--font-text` and `--font-code`.
+- **The variants' names** of the fonts page (`sample-literata`,
+  `sample-hack`, `sample-pixel`) still carry the fonts' names: they
+  change with the fonts page's card, not here.
+- **A CSS limit:** a `@font-face` rule accepts no variable, neither in
+  its family name nor in its file; the name stays in each rule of its
+  font until the build writes them.

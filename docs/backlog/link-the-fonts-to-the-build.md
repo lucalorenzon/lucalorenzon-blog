@@ -3,6 +3,13 @@
 - **Opened:** 2026-11-16, by the user, closing the card
   [show the fonts in the style guide](../done/2026-11-16_show-the-fonts-in-the-style-guide.md).
   In Next.
+- **Cut:** 2026-11-16, by the user. The stylesheet is made parametric
+  first, in the card
+  [give the fonts three roles in the stylesheet](../wip/give-the-fonts-three-roles-in-the-stylesheet.md);
+  this card keeps the build. The fonts page and the measures on a font
+  follow in cards of their own
+  ([fonts page](build-the-fonts-page-from-the-configuration.md),
+  [measures](measure-the-fonts-again-when-they-change.md)).
 
 ## Why
 
@@ -19,24 +26,25 @@ the colours page and the stylesheet's colours.
 
 ## Known from the start
 
+- **The three roles:** after the stylesheet's card, the theme has three
+  fonts, `font-text`, `font-code` and `font-logo`, and nothing else
+  names a font but the `@theme` block and the `@font-face` rules. This
+  card moves their values into a configuration file, read by the build,
+  which writes both (the user's choice: the stylesheet cannot read a
+  configuration file by itself).
 - **The model to follow:** the colours, defined once in the build,
-  which writes `target/generated/colours.css` for the stylesheet and
-  the samples of the colours page.
+  which writes `target/generated/colours.css` for the stylesheet.
 - **What the fonts are made of** (`style/input.css`, `assets/fonts/`):
   three fonts, six files, each with its style, weight and
-  `font-display`, and the three `@theme` variables `font-sans`,
-  `font-code`, `font-mono`; the six named variants of the samples.
-- **A bond that would not follow by itself:** the table widths are
-  estimated from Literata's character widths (`src/literata_widths.rs`),
-  measured in Chromium by a tool in `end2end/tools/`; a change of the
-  text font would need them measured again.
+  `font-display`.
+- **A configuration file already planned:** the card
+  [use a structured configuration file](use-a-structured-configuration-file.md)
+  waits for a second setting shared by the build and the tests; the
+  fonts may be that setting, and a structured one (several files per
+  font).
 - **IBM VGA 8x16 is going:** the user means to replace the logo with an
-  image, the font's only use today; it may not need a definition of
-  its own.
+  image, the font's only use today; the logo's role may go with it.
 
 ## Questions
 
-1. What the definition holds for each font, and what the build writes
-   from it.
-2. Whether a change of the text font should stop the build until
-   Literata's widths are measured again for the new font.
+1. What the configuration holds for each role, and in which file.
