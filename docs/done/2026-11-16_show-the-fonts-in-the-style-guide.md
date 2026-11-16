@@ -1,11 +1,12 @@
 # Show the fonts in the style guide
 
 - **Opened:** 2026-11-15, by the user, cutting the typography page of
-  the card [build a design system](build-a-design-system.md) in
+  the card [build a design system](../wip/build-a-design-system.md) in
   two: the elements of the text come first
-  ([card](../done/2026-11-16_show-the-text-elements-in-the-style-guide.md)),
+  ([card](2026-11-16_show-the-text-elements-in-the-style-guide.md)),
   the fonts follow. In Now.
-- **Status:** being worked on, since 2026-11-16.
+- **Status:** done, 2026-11-16. Not published yet: the style guide goes
+  live when it is complete.
 
 ## Why
 
@@ -68,7 +69,11 @@ its tests.
 3. Every sample is drawn with the stylesheet's classes (`font-sans`,
    `font-code`, `font-mono`, with italic and bold) and never names a
    font, so a change to the stylesheet shows in the samples too: unit
-   test.
+   test. Corrected at closing: the page uses named variants only
+   ([ADR-001](../adr/ADR-001-name-styles-by-visual-variant.md)), so
+   the samples use six variants, `sample-literata` to `sample-pixel`,
+   each built from those classes; the agent had written the test
+   without the ADR in mind.
 4. Every sample shows the same English text, written by the agent.
    Literata and Hack at the size of the page's text; IBM VGA 8x16 at
    16 px, its native size and the drawn logo's, since a pixel font
@@ -81,6 +86,25 @@ its tests.
    check, browser tests.
 8. Before the commit, the user has seen the page on a small phone and
    on a laptop.
+
+## Results
+
+- **The page** (commit `54d4f2f`): `style-guide/fonts.html`, its text
+  in `content/style-guide/fonts.md`, its samples placed by the build
+  after each font's section (`src/style_guide/fonts_page.rs`, on the
+  model of the colours page), six named variants in
+  `style/input.css`.
+- **The pixel font's sample is no wider than 80 characters:** at
+  16 px, on a laptop, a line held 88, and the net's check of long
+  lines failed; the text did not change.
+- **The labels sit below their samples**, as captions: above, they
+  read as captions of the explanation before them. A screen reader
+  reads the sample before its label.
+- **The checks of `build.yml`**, run locally on 2026-11-16: format,
+  lint, 361 unit tests, type check, 256 browser tests passed, one
+  skipped (the "page not found" test that runs on the live site only).
+- **Seen by the user** on a small phone and a laptop, light and dark,
+  before the commit.
 
 ## Answers
 
@@ -117,7 +141,8 @@ All answered by the user on 2026-11-16.
   the names and the explanations are written by hand. Defining the
   fonts once in the build, as the colours are, so that a change made
   for the style guide is a change of the whole site, is left to a card
-  of its own, opened when this one closes: otherwise the style guide
+  of its own, opened when this one closed
+  ([card](../backlog/link-the-fonts-to-the-build.md)): otherwise the style guide
   loses its purpose. Its known bond: the table widths are estimated
   from Literata's character widths, measured by a tool of their own
   (`src/literata_widths.rs`), which a change of the text font would

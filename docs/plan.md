@@ -49,9 +49,9 @@ live since 2026-10-26
     a fix it brought up, the accessibility check made to scroll the
     page before measuring, done
     ([card](done/2026-11-16_scroll-before-the-accessibility-check.md)),
-    and the fonts, being worked on
-    ([card](wip/show-the-fonts-in-the-style-guide.md)); the
-    breakpoints.
+    and the fonts, done
+    ([card](done/2026-11-16_show-the-fonts-in-the-style-guide.md));
+    the breakpoints.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle
@@ -59,6 +59,9 @@ live since 2026-10-26
 
 ## Next
 
+- [Link the fonts to the build](backlog/link-the-fonts-to-the-build.md),
+  as the colours are: defined once, so a change of font made for the
+  style guide is a change of the whole site.
 - [Write an article on the style guide](backlog/write-an-article-on-the-style-guide.md),
   told from the problem it solves, once the style guide is complete:
   published with it, as the third article, and the readers' way into
