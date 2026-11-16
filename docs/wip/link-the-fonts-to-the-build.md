@@ -45,6 +45,89 @@ the colours page and the stylesheet's colours.
 - **IBM VGA 8x16 is going:** the user means to replace the logo with an
   image, the font's only use today; the logo's role may go with it.
 
-## Questions
+## Answers
 
-1. What the configuration holds for each role, and in which file.
+1. **Only the roles in the roles' file.** `config/fonts.txt` says which
+   font plays each role, `text`, `code` and `logo`, and nothing else.
+   Chosen by the user: a change of font is a change of one name.
+2. **Each font described in a file of its own, in `config/`.** The
+   user first meant the description to sit beside the font's files in
+   `assets/fonts/`, then kept it in `config/`, with the rest of the
+   configuration; `assets/` is copied into the published site as it
+   is, `config/` is not.
+3. **Plain text, for now.** The user chose `.txt` files over a
+   structured format: the card
+   [use a structured configuration file](../backlog/use-a-structured-configuration-file.md)
+   will review how every configuration file is organised.
+4. **A font is named by its folder.** The description of a font is
+   `config/fonts/<folder>.txt`, `<folder>` being the font's folder in
+   `assets/fonts/`; the roles' file names the font the same way; the
+   family name the stylesheet uses, with its spaces and capitals, is
+   written inside the description.
+5. **The pixel font gets a folder of its own**, like the other two, as
+   the card's first slice, before the configuration: the user's choice,
+   for uniformity, so the configuration finds three fonts of the same
+   shape.
+6. **The description's form**, proposed by the user: one `key=value`
+   per line; keys without a prefix for the whole font (family name,
+   fallback, `font-display`), keys with a prefix for one file, the
+   prefix being a free label (`italic.file`, `italic.name`,
+   `italic.style`, `italic.weight`). Style and weight are written, not
+   inferred from the prefix, so a new weight needs no change to the
+   build. `.name` is the label the fonts page shows under the sample,
+   for the card
+   [build the fonts page from the configuration](../backlog/build-the-fonts-page-from-the-configuration.md).
+
+   ```
+   family=Literata
+   fallback=serif
+   display=swap
+   regular.file=literata-latin-400-normal.woff2
+   regular.name=Regular
+   regular.style=normal
+   regular.weight=400
+   italic.file=literata-latin-400-italic.woff2
+   italic.name=Italic
+   italic.style=italic
+   italic.weight=400
+   ...
+   ```
+
+## Acceptance tests
+
+Agreed with the user on 2026-11-16.
+
+**First slice, the pixel font's folder**
+
+1. The pixel font, with its README and licence, is in
+   `assets/fonts/ibm-vga-8x16/`; `assets/fonts/` holds only folders.
+2. The logo still takes the pixel font (the font roles' browser test
+   checks it), the font file is served at its new address, and the
+   documentation's references to the old path are updated.
+
+**Second slice, the configuration**
+
+3. `config/fonts.txt` holds three lines in the descriptions' own
+   `key=value` form (`text=literata`); each font has its description in
+   `config/fonts/<folder>.txt`, in the agreed form.
+4. The build writes the `@font-face` rules and the three roles to
+   `target/generated/fonts.css`, which `style/input.css` imports; the
+   hand-written stylesheet names no font any more, and the unit test of
+   the card
+   [give the fonts three roles in the stylesheet](../done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md)
+   is narrowed accordingly: no font name anywhere in `style/input.css`.
+5. The build stops, with a message naming the file and the line, when a
+   role is missing, repeated or unknown; a role names a font with no
+   description; a description lacks a required key, has an unknown or
+   repeated key, or a line not in the `key=value` form; a style, a
+   weight or a `font-display` has a value not allowed; a described file
+   does not exist in the font's folder. Each case has its unit test.
+6. A unit test shows that changing a role's font in the configuration
+   changes the role's value in the generated CSS (with `text=hack`,
+   `--font-text: "Hack", monospace`).
+7. Nothing visible changes: the computed font of every element of every
+   page of the sitemap is the same before and after, and screenshots on
+   a small phone and a laptop.
+8. Every check of `build.yml` passes; the browser tests' README and the
+   repository map in `CLAUDE.md` (`config/`, the new generated file) are
+   up to date.
