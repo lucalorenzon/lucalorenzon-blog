@@ -135,3 +135,26 @@ test('the three font roles are three different fonts', async ({ page }) => {
     expect(new Set(fonts).size).toBe(3);
   });
 });
+
+// The role tests above compare family names, which stay the same when a font's
+// file is missing. This one checks that every file the stylesheet declares is
+// served and loads. The style guide's fonts page is used, but the fonts are
+// loaded explicitly, so the test does not depend on what the page shows.
+const DECLARED_FONT_FACES = 6; // Literata x4, Hack x1, IBM VGA 8x16 x1
+
+test('every font file the stylesheet declares loads', async ({ page }) => {
+  await retryWhenLive(async () => {
+    await page.goto('./style-guide/fonts.html');
+    const faces = await page.evaluate(async () => {
+      const all = [...document.fonts];
+      await Promise.allSettled(all.map((face) => face.load()));
+      await document.fonts.ready;
+      return all.map((face) => ({
+        name: `${face.family} ${face.style} ${face.weight}`,
+        status: face.status,
+      }));
+    });
+    expect(faces, 'a font face is declared for each @font-face rule').toHaveLength(DECLARED_FONT_FACES);
+    expect(faces.filter((face) => face.status !== 'loaded'), 'font faces not loaded').toEqual([]);
+  });
+});
