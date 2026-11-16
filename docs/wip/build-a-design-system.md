@@ -102,7 +102,7 @@ twice. The price: until then, the two articles stay test pages.
     text checks leave the After Save Event article too; cut in two
     pages by the user on 2026-11-15, the elements of the text first,
     done ([card](../done/2026-11-16_show-the-text-elements-in-the-style-guide.md)), then the
-    fonts ([card](../backlog/show-the-fonts-in-the-style-guide.md));
+    fonts ([card](show-the-fonts-in-the-style-guide.md));
   - the breakpoints.
 
   Why: the site's whole look is shown at once, and the article on it

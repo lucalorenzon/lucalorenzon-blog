@@ -49,8 +49,8 @@ live since 2026-10-26
     a fix it brought up, the accessibility check made to scroll the
     page before measuring, done
     ([card](done/2026-11-16_scroll-before-the-accessibility-check.md)),
-    and the fonts, next
-    ([card](backlog/show-the-fonts-in-the-style-guide.md)); the
+    and the fonts, being worked on
+    ([card](wip/show-the-fonts-in-the-style-guide.md)); the
     breakpoints.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it

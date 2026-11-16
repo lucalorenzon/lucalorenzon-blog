@@ -5,7 +5,7 @@
   after [the table](2026-11-15_show-the-table-in-the-style-guide.md).
   The card's typography page was cut in two by the user: this one, the
   elements of the text, comes first; the fonts have
-  [a card of their own](../backlog/show-the-fonts-in-the-style-guide.md).
+  [a card of their own](../wip/show-the-fonts-in-the-style-guide.md).
   In Now.
 - **Status:** done, 2026-11-16. Not published yet: the style guide goes
   live when it is complete.
