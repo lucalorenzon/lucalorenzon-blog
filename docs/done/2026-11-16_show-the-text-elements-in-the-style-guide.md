@@ -1,13 +1,14 @@
 # Show the text elements in the style guide
 
 - **Opened:** 2026-11-15, by the user, as the fourth page of the style
-  guide in the card [build a design system](build-a-design-system.md),
-  after [the table](../done/2026-11-15_show-the-table-in-the-style-guide.md).
+  guide in the card [build a design system](../wip/build-a-design-system.md),
+  after [the table](2026-11-15_show-the-table-in-the-style-guide.md).
   The card's typography page was cut in two by the user: this one, the
   elements of the text, comes first; the fonts have
   [a card of their own](../backlog/show-the-fonts-in-the-style-guide.md).
   In Now.
-- **Status:** being worked on, since 2026-11-15.
+- **Status:** done, 2026-11-16. Not published yet: the style guide goes
+  live when it is complete.
 
 ## Why
 
@@ -115,6 +116,34 @@ Slice 2, the texts:
 11. Every placeholder of the explanations holds the user's text, and
     no case changed in this slice: review of the diff.
 
+## Results
+
+- **The page and its tests** (commit `844a954`): `style-guide/text.html`
+  with its cases in `content/style-guide/text.md`;
+  `readability.spec.ts` and `content-layout.spec.ts` run the text
+  checks on it instead of the After Save Event article, after a guard
+  that every case still takes two lines; the text spacing check also
+  runs on the code blocks and tables pages; the level-4 heading is
+  checked for its underline. No text test names an article any more,
+  and `WORST_CASE` and `expectWorstCaseStillWorst` are gone.
+- **A fault of the test it brought up** (commit `58774b8`): the
+  accessibility check now scrolls to the end of the page before axe
+  runs ([card](2026-11-16_scroll-before-the-accessibility-check.md)).
+- **The explanations** (commit `d4b2ffb`), written by the user, one
+  paragraph each, and no case changed while they were written.
+- **The guard bites**, proved on 2026-11-16 in a throwaway run: with
+  the second item of the bulleted list shortened to "Short item.", the
+  three text checks failed at all five column widths, 15 failures,
+  each naming the case and the width ("at 320px, these cases of
+  ./style-guide/text.html take one line, …: `<li> "Short item."`").
+- **The checks of `build.yml`**, run locally on 2026-11-16 after the
+  explanations: format, lint, 343 unit tests, type check, 247 browser
+  tests passed, one skipped (the "page not found" test that runs on
+  the live site only).
+- **The articles are no longer test pages:** the text checks were the
+  last browser tests that used one; the articles are still checked by
+  the net, like every page.
+
 ## Answers
 
 All answered by the user on 2026-11-16.
@@ -159,3 +188,13 @@ All answered by the user on 2026-11-16.
   the tests; the explanations are written by the user. Why: the guard
   makes a case's text part of the test, so rewriting it shorter would
   stop the build.
+- **The likeness of the level-4 heading to the links** is not noted in
+  the backlog, decided by the user on 2026-11-16: the level-4 heading
+  is used only in the curriculum, where it is two words above a list
+  ("Main work"), not a long line in running text like the guide's case,
+  so it is not taken for a link there.
+- **The level-3 heading is called a subheading on the page**, decided
+  by the user on 2026-11-16 while writing the explanations: "role
+  heading" fits only the curriculum, while the articles use it for
+  subsections. The browser tests' README says the same since this
+  card's closing.

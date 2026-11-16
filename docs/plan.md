@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-15
+Last updated: 2026-11-16
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -43,14 +43,13 @@ live since 2026-10-26
     ([card](done/2026-11-15_turn-the-code-wrap-toggle-into-an-icon.md))),
     the table with its record viewer, done
     ([card](done/2026-11-15_show-the-table-in-the-style-guide.md)),
-    the typography, cut in two: the elements of the text, being
-    worked on
-    ([card](wip/show-the-text-elements-in-the-style-guide.md)),
-    after a fix it brought up, the accessibility check made to scroll
-    the page before measuring, done
+    the typography, cut in two: the elements of the text, done
+    ([card](done/2026-11-16_show-the-text-elements-in-the-style-guide.md)),
+    so no browser test uses an article as a test page any more, with
+    a fix it brought up, the accessibility check made to scroll the
+    page before measuring, done
     ([card](done/2026-11-16_scroll-before-the-accessibility-check.md)),
-    and
-    the fonts
+    and the fonts, next
     ([card](backlog/show-the-fonts-in-the-style-guide.md)); the
     breakpoints.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),

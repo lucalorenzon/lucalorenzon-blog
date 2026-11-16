@@ -56,9 +56,13 @@ twice. The price: until then, the two articles stay test pages.
     article, for the text checks of `readability.spec.ts` and
     `content-layout.spec.ts`, with a guard
     (`expectWorstCaseStillWorst`) that stops the build if the article
-    loses one of the kinds of element those checks look at;
+    loses one of the kinds of element those checks look at; since
+    2026-11-16 on the style guide's text page instead, and both gone
+    ([card](../done/2026-11-16_show-the-text-elements-in-the-style-guide.md));
   - `end2end/tests/content-layout.spec.ts`: the numbered list and the
-    list markers, on the After Save Event article by name;
+    list markers, on the After Save Event article by name; since
+    2026-11-16 on the style guide's text page instead
+    ([card](../done/2026-11-16_show-the-text-elements-in-the-style-guide.md));
   - `end2end/tests/code-blocks.spec.ts`: the wrap toggle, on both
     articles by name (`ARTICLES`), and axe on the code blocks of the
     hybris article (`AXE_ARTICLE`), with a guard of its own; since
@@ -75,8 +79,9 @@ twice. The price: until then, the two articles stay test pages.
   Corrected on 2026-11-16: this line used to say they enter the
   overlap check of the net, but the net has no overlap check; the
   overlap check runs on the worst case only, which has no level-4
-  heading, so they are checked nowhere. Closed by the text elements'
-  page ([card](show-the-text-elements-in-the-style-guide.md)).
+  heading, so they are checked nowhere. Closed on 2026-11-16 by the
+  text elements' page, which checks the level-4 heading's underline
+  ([card](../done/2026-11-16_show-the-text-elements-in-the-style-guide.md)).
 - **A component check still run on every page:**
   `end2end/tests/tables.spec.ts` (single-value cells on one line) runs
   on every page of the built site at the four phone widths, 28 runs,
@@ -95,8 +100,8 @@ twice. The price: until then, the two articles stay test pages.
   - the typography: the fonts, and the elements of the text (headings
     down to level 4, paragraphs, numbered and bulleted lists), so the
     text checks leave the After Save Event article too; cut in two
-    pages by the user on 2026-11-15, the elements of the text first
-    ([card](show-the-text-elements-in-the-style-guide.md)), then the
+    pages by the user on 2026-11-15, the elements of the text first,
+    done ([card](../done/2026-11-16_show-the-text-elements-in-the-style-guide.md)), then the
     fonts ([card](../backlog/show-the-fonts-in-the-style-guide.md));
   - the breakpoints.
 
@@ -177,7 +182,11 @@ To be answered while the style guide is built:
   yet: through the article on it, decided by the user on 2026-11-12
   (see "Known from the start").
 - Which cases each component needs, written for the purpose, so that
-  the two articles stop being test pages and their guards go away.
+  the two articles stop being test pages and their guards go away:
+  answered component by component, for the code block, the table and
+  the elements of the text; since 2026-11-16 no browser test uses an
+  article as a test page
+  ([card](../done/2026-11-16_show-the-text-elements-in-the-style-guide.md)).
 - Whether `tables.spec.ts` becomes a check of the table component, run
   once on its cases: yes, decided by the user on 2026-11-15
   ([card](../done/2026-11-15_show-the-table-in-the-style-guide.md)).

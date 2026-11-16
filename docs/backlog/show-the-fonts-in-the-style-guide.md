@@ -3,7 +3,7 @@
 - **Opened:** 2026-11-15, by the user, cutting the typography page of
   the card [build a design system](../wip/build-a-design-system.md) in
   two: the elements of the text come first
-  ([card](../wip/show-the-text-elements-in-the-style-guide.md)), the
+  ([card](../done/2026-11-16_show-the-text-elements-in-the-style-guide.md)), the
   fonts follow. In Now, after the elements of the text.
 
 ## Why

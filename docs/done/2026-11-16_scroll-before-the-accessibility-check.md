@@ -1,7 +1,7 @@
 # Scroll before the accessibility check
 
 - **Opened:** 2026-11-16, by the user, while building the style guide's
-  text page ([card](../wip/show-the-text-elements-in-the-style-guide.md)):
+  text page ([card](2026-11-16_show-the-text-elements-in-the-style-guide.md)):
   the new link on the style guide's index made the net's accessibility
   test fail. In Now, before that card's first slice was committed.
 - **Status:** done, 2026-11-16.
