@@ -95,7 +95,7 @@ enum BuildError {
     #[error(transparent)]
     Colours(#[from] style_guide::colours::ContrastTooLow),
     #[error(transparent)]
-    ColoursPage(#[from] style_guide::colours_page::SectionError),
+    StyleGuidePage(#[from] sitemap::PageError),
     #[error("cannot create the folder `{}`: {reason}", path.display())]
     CreateFolder {
         path: PathBuf,
