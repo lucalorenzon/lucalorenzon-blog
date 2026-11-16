@@ -108,7 +108,7 @@ twice. The price: until then, the two articles stay test pages.
     roles in the stylesheet
     ([card](../done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md)),
     done, the
-    build ([card](../backlog/link-the-fonts-to-the-build.md)), the
+    build ([card](link-the-fonts-to-the-build.md)), the
     fonts page
     ([card](../backlog/build-the-fonts-page-from-the-configuration.md))
     and the measures

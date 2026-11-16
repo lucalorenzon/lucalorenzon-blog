@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-16, by the user, closing the card
   [show the fonts in the style guide](../done/2026-11-16_show-the-fonts-in-the-style-guide.md).
-  In Next.
+  In Next; in Now from 2026-11-16.
 - **Cut:** 2026-11-16, by the user. The stylesheet is made parametric
   first, in the card
   [give the fonts three roles in the stylesheet](../done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md);

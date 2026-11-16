@@ -58,7 +58,7 @@ live since 2026-10-26
     three roles, text, code and logo, so a change of font there is a
     change of every page; next, the build writes them from a
     configuration file
-    ([card](backlog/link-the-fonts-to-the-build.md)).
+    ([card](wip/link-the-fonts-to-the-build.md)).
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle

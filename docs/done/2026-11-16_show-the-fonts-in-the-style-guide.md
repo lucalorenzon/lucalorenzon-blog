@@ -142,7 +142,7 @@ All answered by the user on 2026-11-16.
   fonts once in the build, as the colours are, so that a change made
   for the style guide is a change of the whole site, is left to a card
   of its own, opened when this one closed
-  ([card](../backlog/link-the-fonts-to-the-build.md)): otherwise the style guide
+  ([card](../wip/link-the-fonts-to-the-build.md)): otherwise the style guide
   loses its purpose. Its known bond: the table widths are estimated
   from Literata's character widths, measured by a tool of their own
   (`src/literata_widths.rs`), which a change of the text font would
