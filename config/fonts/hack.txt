@@ -1,0 +1,7 @@
+family=Hack
+fallback=monospace
+display=swap
+regular.file=hack-regular-subset.woff2
+regular.name=Regular
+regular.style=normal
+regular.weight=400

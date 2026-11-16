@@ -95,6 +95,13 @@ enum BuildError {
     #[error(transparent)]
     Colours(#[from] style_guide::colours::ContrastTooLow),
     #[error(transparent)]
+    Fonts(#[from] style_guide::fonts::FontsError),
+    #[error("cannot read `{path}`: {reason}")]
+    ReadConfiguration {
+        path: String,
+        reason: std::io::Error,
+    },
+    #[error(transparent)]
     StyleGuidePage(#[from] sitemap::PageError),
     #[error("cannot create the folder `{}`: {reason}", path.display())]
     CreateFolder {
@@ -135,6 +142,7 @@ fn build() -> Result<(), BuildError> {
     })?;
 
     write_colours()?;
+    write_fonts()?;
     write_icons()?;
 
     let is_ci = env::var("CI").is_ok_and(|value| !value.is_empty());
@@ -238,6 +246,33 @@ fn write_colours() -> Result<(), BuildError> {
         &path,
         style_guide::colours::css(&style_guide::colours::PALETTE),
     )
+}
+
+/// Where the build writes the fonts, for Tailwind (style/input.css). Outside the published
+/// site on purpose.
+const FONTS_FILE: &str = "target/generated/fonts.css";
+
+/// The fonts are described in `config/fonts.txt` and `config/fonts/`, read by
+/// `style_guide::fonts`; the stylesheet imports this file. A configuration that does not hold
+/// together (a font without description, a file not in its folder...) stops the build before
+/// anything is written. The disk is read here so that the parsing can be tested without it.
+fn write_fonts() -> Result<(), BuildError> {
+    let roles = fs::read_to_string(style_guide::fonts::ROLES_FILE).map_err(|reason| {
+        BuildError::ReadConfiguration {
+            path: style_guide::fonts::ROLES_FILE.to_owned(),
+            reason,
+        }
+    })?;
+    let fonts = style_guide::fonts::load(
+        &roles,
+        &|folder| fs::read_to_string(style_guide::fonts::description_path(folder)).ok(),
+        &|folder, file| Path::new("assets/fonts").join(folder).join(file).is_file(),
+    )?;
+    let path = PathBuf::from(FONTS_FILE);
+    if let Some(folder) = path.parent() {
+        create_folder(folder)?;
+    }
+    write_file(&path, style_guide::fonts::css(&fonts))
 }
 
 /// Where the build writes the icons' drawings, for Tailwind (style/input.css). Outside the

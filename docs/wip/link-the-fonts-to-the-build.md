@@ -131,3 +131,15 @@ Agreed with the user on 2026-11-16.
 8. Every check of `build.yml` passes; the browser tests' README and the
    repository map in `CLAUDE.md` (`config/`, the new generated file) are
    up to date.
+
+## Results
+
+**Second slice, acceptance test 7 (2026-11-16).** The computed font
+family, style and weight of every element of every page of the sitemap
+(12 pages, 3638 elements, Chromium at 1366x768, light scheme), captured
+before and after the configuration: no difference. Screenshots of the
+home page, an article, the style guide's fonts page and its code blocks
+page, at 320x568 and 1366x768 (full page): the eight pairs are
+byte-identical. The only change in the built `style.css` is that the
+pixel font's `@font-face` rule now says `font-style: normal` and
+`font-weight: 400`, which are the defaults it had before.

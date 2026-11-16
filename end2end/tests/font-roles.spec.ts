@@ -1,9 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
 import { retryWhenLive } from './support';
 
-// The site has three fonts, named by role in the stylesheet (style/input.css,
-// block @theme): --font-text for the running text, --font-code for the code and
-// --font-logo for the logo. Everything else refers to the roles, never to a
+// The site has three fonts, named by role in the stylesheet (the @theme block the
+// build writes from config/fonts.txt and config/fonts/): --font-text for the
+// running text, --font-code for the code and --font-logo for the logo. Everything else refers to the roles, never to a
 // font's name, so changing one value changes every place that plays the role.
 // These tests check that: the stylesheet defines exactly the three roles, and
 // each role reaches the elements that play it, comparing the font the browser
@@ -138,12 +138,18 @@ test('the three font roles are three different fonts', async ({ page }) => {
 
 // The role tests above compare family names, which stay the same when a font's
 // file is missing. This one checks that every file the stylesheet declares is
-// served and loads. The style guide's fonts page is used, but the fonts are
-// loaded explicitly, so the test does not depend on what the page shows.
-const DECLARED_FONT_FACES = 6; // Literata x4, Hack x1, IBM VGA 8x16 x1
-
+// served and loads. The number of faces is read from the built stylesheet (one
+// per @font-face rule, written by the build from config/fonts/), so a font added
+// to the configuration needs no change here. The style guide's fonts page is
+// used, but the fonts are loaded explicitly, so the test does not depend on what
+// the page shows.
 test('every font file the stylesheet declares loads', async ({ page }) => {
   await retryWhenLive(async () => {
+    const response = await page.request.get('./style.css');
+    expect(response.ok()).toBe(true);
+    const declared = ((await response.text()).match(/@font-face\s*\{/g) ?? []).length;
+    expect(declared, 'the stylesheet declares at least one font face').toBeGreaterThan(0);
+
     await page.goto('./style-guide/fonts.html');
     const faces = await page.evaluate(async () => {
       const all = [...document.fonts];
@@ -154,7 +160,7 @@ test('every font file the stylesheet declares loads', async ({ page }) => {
         status: face.status,
       }));
     });
-    expect(faces, 'a font face is declared for each @font-face rule').toHaveLength(DECLARED_FONT_FACES);
+    expect(faces, 'a font face is declared for each @font-face rule').toHaveLength(declared);
     expect(faces.filter((face) => face.status !== 'loaded'), 'font faces not loaded').toEqual([]);
   });
 });

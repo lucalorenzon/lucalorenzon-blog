@@ -1,0 +1,3 @@
+text=literata
+code=hack
+logo=ibm-vga-8x16
