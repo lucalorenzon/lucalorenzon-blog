@@ -5,7 +5,7 @@
   In Next.
 - **Cut:** 2026-11-16, by the user. The stylesheet is made parametric
   first, in the card
-  [give the fonts three roles in the stylesheet](../wip/give-the-fonts-three-roles-in-the-stylesheet.md);
+  [give the fonts three roles in the stylesheet](../done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md);
   this card keeps the build. The fonts page and the measures on a font
   follow in cards of their own
   ([fonts page](build-the-fonts-page-from-the-configuration.md),

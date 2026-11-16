@@ -210,7 +210,7 @@ shared.
 
 The stylesheet names the site's fonts by role (text, code, logo) in one
 place; everything else refers to the role. Card:
-[give the fonts three roles in the stylesheet](../docs/wip/give-the-fonts-three-roles-in-the-stylesheet.md).
+[give the fonts three roles in the stylesheet](../docs/done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md).
 
 ### Component
 

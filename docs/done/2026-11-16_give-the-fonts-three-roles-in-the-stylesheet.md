@@ -4,11 +4,12 @@
   [link the fonts to the build](../backlog/link-the-fonts-to-the-build.md):
   the stylesheet is made parametric first, the build and the fonts
   page follow. In Now.
+- **Status:** done, 2026-11-16 (`efb5e57`).
 
 ## Why
 
 A change of font made for the style guide must be a change of the whole
-site. Today it is not, even inside the stylesheet: the running text of
+site. Before this card it was not, even inside the stylesheet: the running text of
 every page (paragraphs, lists, tables) takes its font from
 `html, body`, where `"Literata", serif` is written by hand
 (`style/input.css`), while only the page titles and the fonts page's
@@ -53,6 +54,10 @@ would show a font the site does not use.
 - **A CSS limit:** a `@font-face` rule accepts no variable, neither in
   its family name nor in its file; the name stays in each rule of its
   font until the build writes them.
+- **A mistaken report, corrected:** the sub-agent that made the change
+  reported that Tailwind's default fonts were not defined before it;
+  the stylesheet built from the previous commit shows they were, as
+  written above. Nothing on the pages depended on them (result 1).
 
 ## Acceptance tests
 
@@ -77,9 +82,15 @@ Agreed with the user on 2026-11-16.
 
 ## Results
 
-- **Acceptance test 4, computed fonts:** on the 12 pages of the sitemap
+All five acceptance tests pass.
+
+1. **Acceptance test 4, computed fonts:** on the 12 pages of the sitemap
   (3 638 elements, at 1366x768, light theme), `font-family`, `font-style`
   and `font-weight` of every element were captured before and after the
   change: 0 differences, not even in the family strings. Screenshots of the
   home page, an article and the style guide's fonts and code pages, at
-  320x568 and 1366x768, were taken before and after.
+  320x568 and 1366x768, were taken before and after: identical, byte
+  for byte.
+2. **Checks of `build.yml`:** 363 unit tests; 269 browser tests passed,
+   one skipped (the "page not found" test that runs on the live site
+   only).
