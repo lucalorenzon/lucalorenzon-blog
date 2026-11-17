@@ -1,7 +1,8 @@
 # Build the fonts page from the configuration
 
 - **Created:** 2026-11-16
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-17
 
 ## Why
 
@@ -47,7 +48,7 @@ The user wants this card done before the style guide is published.
 
 ## Questions to answer
 
-The ones known when the card was taken into work; there may be more.
+The ones known when the card was taken into work, and those that came up during it.
 
 - **How a sample gets its style when the styles come from the
   configuration.** Today one variant of the stylesheet exists for each
@@ -56,7 +57,7 @@ The ones known when the card was taken into work; there may be more.
   and a new style would have no variant; Tailwind cannot emit a class it
   does not find written in the sources.
 
-  **Answered in part by the user on 2026-11-16.** Through the role: the
+  **Answered by the user on 2026-11-16.** Through the role: the
   page takes from the configuration the font that plays each role, and
   shows a sample for each of that font's files.
 
@@ -100,7 +101,7 @@ The ones known when the card was taken into work; there may be more.
   sections are titled with the font's name only, and their order is the
   author's.
 
-  **Answered in part by the user on 2026-11-16.** Yes: a font is chosen
+  **Answered by the user on 2026-11-16.** Yes: a font is chosen
   for a role, and the rest of the site depends on the role, not on the
   font. The build writes the roles, from the configuration, under the
   section's title, so they stay true when a font moves to another role;
@@ -249,6 +250,36 @@ Agreed with the user on 2026-11-16.
     the three roles' fonts, with no test asking for three different
     fonts, and no case named after a font; their rows in
     `end2end/README.md` follow.
+
+## Recap
+
+Done in two steps, each with a commit of its own; every check of the
+pipeline passed before each.
+
+- **The samples from the configuration** (`ccbe164`): the pixel font's
+  native size in its description (`size=16`); the build writes one
+  variant per file of each role's font (`sample-<role>-<style>-<weight>`)
+  and lists the names for Tailwind with `@source inline(...)` in
+  `target/generated/fonts.css`; `FONTS_SHOWN` and the six variants
+  written by hand are gone; a browser test checks each sample against
+  its file. The page looked the same, pixel by pixel, on a phone and a
+  laptop screen.
+- **The placeholders and the roles** (`1e5cb31`): the author's text cut
+  by `## <folder> | <role>`, found with the converter's own parser, so
+  an indented or underlined level-2 heading is seen too; the sections
+  composed by the build with the roles' line; the browser tests of the
+  roles run on made-up fonts, and the test asking for three different
+  fonts is gone. The only visible change is the roles' line. Checks:
+  411 unit tests, 270 browser tests passed, one skipped (the "page not
+  found" test that runs on the live site only).
+
+## Cautions
+
+- A change of font in `config/fonts.txt` stops the build until
+  `content/style-guide/fonts.md` has a piece `## <folder> | <role>` for
+  it: on purpose, the text explains the choice.
+- The values measured on a font (table widths, the wrap toggle's
+  threshold) do not follow a change of font yet: see "What it leaves".
 
 ## What it leaves
 

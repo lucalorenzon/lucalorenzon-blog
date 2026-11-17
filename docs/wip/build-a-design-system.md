@@ -108,10 +108,10 @@ twice. The price: until then, the two articles stay test pages.
     stylesheet, done
     ([card](../done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md)),
     the build, done
-    ([card](../done/2026-11-16_link-the-fonts-to-the-build.md)), still
-    to do the fonts page
-    ([card](../wip/build-the-fonts-page-from-the-configuration.md))
-    and the measures
+    ([card](../done/2026-11-16_link-the-fonts-to-the-build.md)), the
+    fonts page, done
+    ([card](../done/2026-11-17_build-the-fonts-page-from-the-configuration.md)),
+    still to do the measures
     ([card](../backlog/measure-the-fonts-again-when-they-change.md));
   - the breakpoints.
 

@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-16
+Last updated: 2026-11-17
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -51,17 +51,18 @@ live since 2026-10-26
     ([card](done/2026-11-16_scroll-before-the-accessibility-check.md)),
     and the fonts, done
     ([card](done/2026-11-16_show-the-fonts-in-the-style-guide.md));
-    then the fonts' two cards below; last, the breakpoints.
+    then the fonts' cards below; last, the breakpoints.
   - The fonts made one setting for the whole site, first in the
     stylesheet, done
     ([card](done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md)):
     three roles, text, code and logo, so a change of font there is a
     change of every page; then written by the build from a
     configuration file, done
-    ([card](done/2026-11-16_link-the-fonts-to-the-build.md)). Still to
-    do before publishing, in this order:
-    [the fonts page built from the configuration](wip/build-the-fonts-page-from-the-configuration.md),
-    then
+    ([card](done/2026-11-16_link-the-fonts-to-the-build.md)); then
+    the fonts page built from the configuration, one section per font
+    with its roles, done
+    ([card](done/2026-11-17_build-the-fonts-page-from-the-configuration.md)).
+    Still to do before publishing:
     [the fonts measured again when they change](backlog/measure-the-fonts-again-when-they-change.md).
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it

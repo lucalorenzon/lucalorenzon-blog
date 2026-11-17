@@ -32,7 +32,7 @@ would show a font the site does not use.
 3. **The order of what follows**, chosen by the user: the build reads
    the fonts from a configuration file; then the fonts page is built
    from the same configuration
-   ([card](../wip/build-the-fonts-page-from-the-configuration.md));
+   ([card](../done/2026-11-17_build-the-fonts-page-from-the-configuration.md));
    then what is measured on a font
    ([card](../backlog/measure-the-fonts-again-when-they-change.md)).
 
