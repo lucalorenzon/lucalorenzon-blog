@@ -10,7 +10,7 @@
   this card keeps the build. The fonts page and the measures on a font
   follow in cards of their own
   ([fonts page](build-the-fonts-page-from-the-configuration.md),
-  [measures](measure-the-fonts-again-when-they-change.md)).
+  [measures](../wip/measure-the-fonts-again-when-they-change.md)).
 
 ## Why
 

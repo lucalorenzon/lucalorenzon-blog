@@ -63,7 +63,7 @@ live since 2026-10-26
     with its roles, done
     ([card](done/2026-11-17_build-the-fonts-page-from-the-configuration.md)).
     Still to do before publishing:
-    [the fonts measured again when they change](backlog/measure-the-fonts-again-when-they-change.md).
+    [the fonts measured again when they change](wip/measure-the-fonts-again-when-they-change.md).
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle

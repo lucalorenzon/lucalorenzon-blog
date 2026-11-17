@@ -34,7 +34,7 @@ would show a font the site does not use.
    from the same configuration
    ([card](../done/2026-11-17_build-the-fonts-page-from-the-configuration.md));
    then what is measured on a font
-   ([card](../backlog/measure-the-fonts-again-when-they-change.md)).
+   ([card](../wip/measure-the-fonts-again-when-they-change.md)).
 
 ## Known from the start
 

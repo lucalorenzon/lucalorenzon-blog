@@ -112,7 +112,7 @@ twice. The price: until then, the two articles stay test pages.
     fonts page, done
     ([card](../done/2026-11-17_build-the-fonts-page-from-the-configuration.md)),
     still to do the measures
-    ([card](../backlog/measure-the-fonts-again-when-they-change.md));
+    ([card](measure-the-fonts-again-when-they-change.md));
   - the breakpoints.
 
   Why: the site's whole look is shown at once, and the article on it
