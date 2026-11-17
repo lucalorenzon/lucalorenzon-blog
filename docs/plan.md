@@ -62,10 +62,13 @@ live since 2026-10-26
     the fonts page built from the configuration, one section per font
     with its roles, done
     ([card](done/2026-11-17_build-the-fonts-page-from-the-configuration.md)).
-    Still to do before publishing: cases at the limit of the wrap
-    toggle on the code page, so a code font that moves the threshold
-    stops the build
-    ([card](wip/measure-the-fonts-again-when-they-change.md)).
+    Still to do before publishing: the wrap toggle hidden on blocks
+    that fit, which Chromium on Linux draws narrower than the build
+    assumes ([card](wip/hide-the-wrap-toggle-on-blocks-that-fit.md));
+    then cases at the limit of the wrap toggle on the code page, so a
+    code font that moves the threshold stops the build
+    ([card](wip/measure-the-fonts-again-when-they-change.md)), waiting
+    for the fix.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle

@@ -56,6 +56,20 @@ measured values below to the font the configuration names.
   column at 767 pixels, is wider than its column. They catch a wrong
   measure only when a case sits near the threshold it moves.
 
+- **Chromium on this machine draws Hack narrower than the build
+  assumes.** Measured on 2026-11-17 by a sub-agent, on the built code
+  page, before any case was written: at 17 pixels (the code at 768
+  pixels and over) each character is 10 pixels wide, against the
+  10.234 pixels of 1233/2048 of an em; at 15.3 pixels it is 9 pixels.
+  The likely cause, not checked: the advances are rounded to whole
+  pixels, which depends on the platform. At 768 pixels and over the
+  scroller is 686 pixels wide: a line of 67 characters fits with no
+  toggle, one of 68 fits (680 pixels) but shows the toggle, one of 69
+  overflows and shows it. The case pair agreed below (one character
+  apart, the first fitting with no toggle, the second overflowing with
+  it) does not exist on this machine. Measuring scripts:
+  the session's scratchpad, not kept.
+
 ## Questions to answer
 
 The ones known when the card was written; there may be more.
@@ -110,6 +124,14 @@ The ones known when the card was written; there may be more.
   the site's font arrives, is not what was meant. The measures are
   taken in the build, in the browser, as the script for Literata does
   today. This work left the card (see "What it leaves").
+
+## Dependencies
+
+- Waits, since 2026-11-17, for the card
+  [hide the wrap toggle on blocks that fit](hide-the-wrap-toggle-on-blocks-that-fit.md):
+  the case pair below does not exist while the toggle's threshold
+  disagrees with what the browser draws. Acceptance tests 1 to 3 are
+  reviewed with the user when this card is taken up again.
 
 ## Acceptance tests
 
@@ -168,3 +190,5 @@ build before the style guide is published. Taken out, to the card
   serves.
 - [Take the measures from the configured fonts](../backlog/take-the-measures-from-the-configured-fonts.md):
   the part of this card that the cut took out.
+- [Hide the wrap toggle on blocks that fit](hide-the-wrap-toggle-on-blocks-that-fit.md):
+  the fault found while measuring the cases, which this card waits for.
