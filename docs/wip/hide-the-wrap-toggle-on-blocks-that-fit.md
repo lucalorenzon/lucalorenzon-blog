@@ -32,16 +32,37 @@ toggle's threshold agrees with what the browser draws.
   686 pixels) a line of 67 characters fits with no toggle, one of 68
   fits (680 pixels) and shows the toggle, one of 69 overflows and
   shows it.
-- **Supposed, not checked:**
-  - the cause is the rounding of the characters' advances to whole
-    pixels, which depends on the platform and its font settings, so
-    another system may draw Hack at 10.234 pixels, where the threshold
-    is right;
-  - the same window, a block that fits with the toggle, exists in the
-    narrower columns too, since the build assumes 9.21 pixels per
-    character at 15.3 pixels;
-  - the pipeline's Chromium, in Playwright's container on Linux,
-    rounds as this machine does.
+- **Chromium on this machine rounds each character to whole pixels,
+  in both directions.** Measured on 2026-11-17 by the agent, Chromium
+  158 of Playwright 1.65, Linux, drawing a line of 100 characters of
+  Hack inside the code block at every size from 10 to 30 pixels, in
+  tenths: the width of a character is always a whole number of
+  pixels, the nearest to the true one. About half the sizes are drawn
+  narrower than the build assumes (15.3 pixels: 9 against 9.211; 17
+  pixels: 10 against 10.235), the other half wider (16 pixels: 10
+  against 9.633; 18 pixels: 11 against 10.837). Drawn wider, a block
+  can overflow without the toggle, which breaks the page; the site's
+  own sizes, 15.3 and 17 pixels, happen to be both narrower, but a
+  reader who changes the browser's text size can reach the others.
+- **Firefox draws the true width.** Same measure, Firefox 159 of
+  Playwright, same machine: the width of a character differs from
+  1233/2048 of an em by less than one hundredth of a pixel at every
+  size, and the build rounds its threshold up, so the toggle is right
+  there. Seen in passing, not looked into: Firefox gives the code's
+  scroller other widths than Chromium (591 against 566 pixels at 767,
+  661 against 686 at 768 and over).
+- **With `text-rendering: geometricPrecision` on the code, Chromium
+  draws the true width.** Same measure on 2026-11-17, with that rule
+  added to the code of the page: at every size from 10 to 30 pixels a
+  character differs from 1233/2048 of an em by at most 0.011 pixels,
+  and is never wider by more than 0.01 pixels. What the rule changes
+  in the look of the code on Linux, where it turns off the fitting of
+  the letters to the pixels, has not been looked at yet.
+- **Supposed, not checked:** the rounding comes from how Chromium draws
+  fonts on Linux, so on another system Chromium may draw the true
+  width, as Firefox does.
+- **Measuring script:** `measure-advance.mjs`, in the session's
+  scratchpad, not kept.
 - **Why the tests did not see it.** The test `each one scrolls or fits
   as written` (`end2end/tests/code-blocks.spec.ts`) fails when a block
   that fits shows the toggle, but the code page has no block whose
@@ -52,13 +73,34 @@ toggle's threshold agrees with what the browser draws.
 The ones known when the card was written; there may be more.
 
 - **Whether the pipeline's Chromium draws Hack as this machine does.**
+
+  **Answered by the measure on 2026-11-17**, run by the user in
+  Playwright's container `mcr.microsoft.com/playwright:v1.65.0-noble`,
+  the one the pipeline uses: yes, the same width at every one of the
+  201 sizes measured, Chromium 158.
+
 - **What other browsers and systems draw**, at least Firefox and a
   system other than Linux, so the threshold is right for the readers
   and not only for the tests.
+
+  **Answered in part on 2026-11-17.** Firefox on Linux draws the true
+  width (see "What is known"). No system other than Linux was
+  measured. WebKit 27.2 of Playwright, on the same machine, also draws
+  the true width (at most 0.0075 pixels apart), with or without
+  `text-rendering: geometricPrecision`; the user asked for Safari, but
+  this is WebKit's port for Linux, which draws fonts with Linux's
+  tools, so it says nothing certain of Safari on macOS. Its code
+  scroller has Firefox's widths, not Chromium's.
 - **How the threshold can agree with the browser** when the width of
   a character depends on where the page is drawn, without making the
   opposite fault, a block that overflows without the toggle, which
   breaks the page.
+
+## What it leaves
+
+- The measure on macOS, Safari and Chrome, put in Later by the user on
+  2026-11-17: card
+  [measure the code font on macOS](../backlog/measure-the-code-font-on-macos.md).
 
 ## References
 
@@ -69,3 +111,5 @@ The ones known when the card was written; there may be more.
   where the code page and its cases come from.
 - [Take the measures from the configured fonts](../backlog/take-the-measures-from-the-configured-fonts.md):
   the code font's advance, measured in the build, may come from there.
+- [Measure the code font on macOS](../backlog/measure-the-code-font-on-macos.md):
+  the measure on a system other than Linux, left to Later.

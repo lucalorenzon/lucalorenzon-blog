@@ -205,5 +205,8 @@ live since 2026-10-26
   or plain JavaScript; probably the island above.
 - [Run a browser test from its row in the README](backlog/run-a-test-from-its-readme-row.md),
   on the last build, without writing the command by hand.
+- [Measure the code font on macOS](backlog/measure-the-code-font-on-macos.md),
+  in Safari and Chrome, since the wrap toggle's threshold was checked
+  on Linux only.
 - Further articles and everything around them, beyond the first two,
   now on the site. Not planned yet, on purpose.
