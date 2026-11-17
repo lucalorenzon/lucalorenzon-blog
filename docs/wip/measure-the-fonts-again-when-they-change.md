@@ -111,6 +111,37 @@ The ones known when the card was written; there may be more.
   taken in the build, in the browser, as the script for Literata does
   today. This work left the card (see "What it leaves").
 
+## Acceptance tests
+
+Agreed with the user on 2026-11-17.
+
+1. **The case that fits.** The code page of the style guide has a
+   block whose longest line is the longest that fits the column at the
+   width chosen for the cases; at that width the block does not scroll
+   and shows no wrap toggle.
+2. **The case one character longer.** A second block has the same line
+   with one character more; at the same width it scrolls and shows the
+   wrap toggle.
+3. **The width chosen.** The cases are measured at the widest column
+   (768 pixels and over), where the line is longest, so one character
+   is the smallest share of it and the test notices the smallest
+   difference.
+4. **At the other column widths** both cases do what their text says
+   (at a narrower column both scroll and show the toggle), checked by
+   the existing test `each one scrolls or fits as written`, extended to
+   the new cases.
+5. **Proof that the guard works.** With Hack's advance in the build
+   changed on purpose so the threshold moves by one character, in
+   either direction, the test fails; both failures are shown to the
+   user, then the value is put back.
+6. **The browser tests' README** (`end2end/README.md`) describes the
+   new cases in the test's row, and `end2end/tests/readme.spec.ts`
+   passes.
+
+Known limit: the guard notices a difference only when it is worth at
+least one character over the longest line. A code font almost as wide
+as Hack passes, and the page stays right, as the rule above asks.
+
 ## What it leaves
 
 Cut by the user on 2026-11-17: this card keeps the two cases at the
