@@ -107,9 +107,12 @@ The ones known when the card was taken into work; there may be more.
   a role named in the author's text is not checked. The form, proposed
   by the agent and agreed by the user on 2026-11-16: a paragraph right
   under the title, "Role: text" or "Roles: code, logo" in the roles'
-  order, with a named variant of its own (`font-roles`, written by hand
+  order, with a named variant of its own (`roles-line`, written by hand
   in `style/input.css`), smaller and in italics like the samples'
-  labels. A screen reader reads it as the first line of the section,
+  labels. The agent first proposed the name `font-roles`, and corrected
+  it on 2026-11-17: in Tailwind a class starting with `font-` names a
+  font (`font-text` is the role's), so `font-roles` would read as a
+  font called "roles". A screen reader reads it as the first line of the section,
   and the page's outline stays the title and one level-2 heading per
   font. Rejected: a level-3 heading, which would announce a subsection
   that is not there; a definition list, too much for one line; the
@@ -177,6 +180,25 @@ The ones known when the card was taken into work; there may be more.
   mistake of writing, and ignoring it would drop its text unnoticed. A
   heading in the form whose pair the configuration does not hold is
   ignored, as said above.
+- **How the browser tests tell the roles apart when two roles share a
+  font.** Came up while the first step was written: the tests of the
+  roles compare the font the browser computes for an element with the
+  value of its role's variable, and when two roles share a font the two
+  values are equal, so the comparison cannot tell them apart. The test
+  `the three font roles are three different fonts` stops the build in
+  that case, which the answer above allows.
+
+  **Answered by the user on 2026-11-17.** Before measuring, the tests
+  replace the three roles on the page with three made-up, different
+  names, and check that each element gets its role's name: they check
+  the link from the element to its role, whatever fonts the
+  configuration holds. The test of the three different fonts goes; the
+  cases named after a font ("the Literata sample") are named after the
+  role. The real fonts stay checked by the test that every font file
+  loads and by the one that checks each sample against its file.
+  Rejected: skipping the tests of two roles that share a font, the
+  smallest change, but a skipped test is easily missed, and the link
+  from element to role would go unchecked exactly then.
 
 ## Acceptance tests
 
@@ -188,7 +210,7 @@ Agreed with the user on 2026-11-16.
    role. Unit tests: one on the real configuration, one where the code
    and the logo share a font.
 2. Under each title, the build writes the roles' line, "Role: …" or
-   "Roles: …, …", with the variant `font-roles`. Unit test.
+   "Roles: …, …", with the variant `roles-line`. Unit test.
 3. The text before the first placeholder stays at the top of the page;
    each piece goes in its font's section, in the roles' order; no
    placeholder appears on the page. Unit tests.
@@ -222,6 +244,11 @@ Agreed with the user on 2026-11-16.
     before the commit.
 11. Every check of the pipeline passes: formatting, clippy, unit tests,
     type check and browser tests, run locally as in `build.yml`.
+12. Added on 2026-11-17, from the answer on the tests of the roles:
+    the browser tests of the roles pass with made-up names in place of
+    the three roles' fonts, with no test asking for three different
+    fonts, and no case named after a font; their rows in
+    `end2end/README.md` follow.
 
 ## What it leaves
 
