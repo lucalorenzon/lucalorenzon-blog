@@ -27,13 +27,16 @@ without it, and nothing would show it.
   the same port, and says nothing certain of Safari on macOS.
 - **Docker on a Mac does not help.** It runs a Linux machine, so the
   browsers inside it draw as on Linux.
-- **A page that measures in any browser was built and checked** on
-  2026-11-17, in the session's scratchpad, not kept: one HTML file
-  with Hack embedded, which draws a line of 100 characters at every
-  size from 10 to 30 pixels, in tenths, with and without
-  `geometricPrecision`, and prints a summary and the full result as
-  text to copy back. In Chromium and WebKit on Linux it gave the same
-  numbers as the measures on the built site.
+- **A page that measures in any browser** is written, on demand, by
+  `end2end/tools/make-code-font-page.mjs` (run from `end2end/`), to
+  `target/code-font-page.html`: one HTML file with the code font of
+  the configuration embedded, which draws a line of 100 characters at
+  every size from 10 to 30 pixels, in tenths, with and without
+  `geometricPrecision`, compares it with the advance the build uses
+  (read from `src/markdown.rs`), and prints a summary and the full
+  result as text to copy back. Checked on 2026-11-17: in Chromium and
+  WebKit on Linux it gives the same numbers as the measures on the
+  built site.
 
 ## Questions to answer
 
