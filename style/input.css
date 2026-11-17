@@ -285,6 +285,12 @@ body {
   @apply mt-[0.75em] mb-[0.25em] text-[0.75em] italic;
 }
 
+/* The first line of a font's section on the fonts page: the roles the font plays, right under
+   the title, smaller and in italics like the samples' labels. */
+@utility roles-line {
+  @apply mt-0 mb-[1em] text-[0.75em] italic;
+}
+
 /* The style guide's font samples (src/style_guide/fonts_page.rs) are drawn by
    variants the build writes, one for each file of each role's font
    (sample-<role>-<style>-<weight>, in target/generated/fonts.css), so none is

@@ -1,5 +1,9 @@
 use crate::table_widths::{self, Cells};
 use pulldown_cmark::{CodeBlockKind, Event, Options, Parser, Tag, TagEnd, html};
+
+/// The options the converter reads the Markdown with; whoever needs to see the same structure
+/// (the fonts page cuts its text at the headings) parses with these.
+pub(crate) const PARSER_OPTIONS: Options = Options::ENABLE_TABLES;
 use std::cell::RefCell;
 use std::collections::BTreeSet;
 
@@ -32,7 +36,7 @@ pub fn to_html(markdown: &str) -> String {
     let mut open_block: Option<(Option<String>, String)> = None;
     let mut open_table: Option<Vec<Event>> = None;
     let mut table_count = 0;
-    for event in Parser::new_ext(markdown, Options::ENABLE_TABLES) {
+    for event in Parser::new_ext(markdown, PARSER_OPTIONS) {
         if let Some(table) = open_table.as_mut() {
             let closes = matches!(event, Event::End(TagEnd::Table));
             table.push(event);

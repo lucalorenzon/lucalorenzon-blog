@@ -8,8 +8,11 @@ import { retryWhenLive } from './support';
 // running text, --font-code for the code and --font-logo for the logo. Everything else refers to the roles, never to a
 // font's name, so changing one value changes every place that plays the role.
 // These tests check that: the stylesheet defines exactly the three roles, and
-// each role reaches the elements that play it, comparing the font the browser
-// computes for the element with the one it computes for the role's variable.
+// each role reaches the elements that play it. Before measuring, the test replaces
+// the three roles on the page with three made-up, different names, so it checks the
+// link from the element to its role whatever fonts the configuration holds (two roles
+// may share a font): the font the browser computes for the element must be the name
+// of its role.
 // Card: docs/done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md.
 
 type Role = '--font-text' | '--font-code' | '--font-logo';
@@ -74,7 +77,7 @@ const ROLES: { role: Role; page: string; width: number; cases: [string, string][
     role: '--font-text',
     page: './style-guide/fonts.html',
     width: 1280,
-    cases: [['the Literata sample', '.sample-text-normal-400']],
+    cases: [['the text role\'s sample', '.sample-text-normal-400']],
   },
   {
     role: '--font-code',
@@ -92,14 +95,14 @@ const ROLES: { role: Role; page: string; width: number; cases: [string, string][
     role: '--font-code',
     page: './style-guide/fonts.html',
     width: 1280,
-    cases: [['the Hack sample', '.sample-code-normal-400']],
+    cases: [['the code role\'s sample', '.sample-code-normal-400']],
   },
   {
     role: '--font-logo',
     page: './style-guide/fonts.html',
     width: 1280,
     cases: [
-      ['the pixel sample', '.sample-logo-normal-400'],
+      ['the logo role\'s sample', '.sample-logo-normal-400'],
       ['the logo drawn in characters', '[data-testid="ascii-logo"]'],
     ],
   },
@@ -120,23 +123,16 @@ for (const { role, page: address, width, cases } of ROLES) {
       await retryWhenLive(async () => {
         await page.goto(address);
         await page.evaluate(() => document.fonts.ready);
+        await page.addStyleTag({
+          content: `:root { --font-text: "probe-text" !important; --font-code: "probe-code" !important; --font-logo: "probe-logo" !important; }`,
+        });
         const expected = await fontOfRole(page, role);
-        expect(expected, `${role} is defined on the page`).not.toBe('');
+        expect(expected, `${role} is made-up`).toContain(`probe-${role.replace('--font-', '')}`);
         expect(await fontOf(page, selector)).toBe(expected);
       });
     });
   }
 }
-
-test('the three font roles are three different fonts', async ({ page }) => {
-  await retryWhenLive(async () => {
-    await page.goto('./style-guide/fonts.html');
-    const fonts = await Promise.all(
-      (['--font-text', '--font-code', '--font-logo'] as const).map((role) => fontOfRole(page, role)),
-    );
-    expect(new Set(fonts).size).toBe(3);
-  });
-});
 
 // The role tests above compare family names, which stay the same when a font's
 // file is missing. This one checks that every file the stylesheet declares is

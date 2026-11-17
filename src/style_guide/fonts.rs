@@ -42,7 +42,7 @@ pub enum Role {
 }
 
 impl Role {
-    const ALL: [Role; 3] = [Role::Text, Role::Code, Role::Logo];
+    pub const ALL: [Role; 3] = [Role::Text, Role::Code, Role::Logo];
 
     /// The name in `config/fonts.txt` and in the theme (`--font-<name>`).
     pub const fn name(self) -> &'static str {

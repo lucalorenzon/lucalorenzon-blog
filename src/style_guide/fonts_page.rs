@@ -1,10 +1,12 @@
 //! The fonts page of the style guide: the text of `content/style-guide/fonts.md`, and after each
 //! of its sections the samples of that font, one for each file the site serves.
 //!
-//! The fonts, their names and their samples come from the configuration (`config/`, read by
-//! `fonts.rs`): a section of the text is matched to a font by its family name, and the font's
-//! files give the samples, each labelled with its `name`. Every sample shows the same text, so
-//! that only the font changes from one to the next. A sample never names a font: it carries a
+//! The fonts, their names, their roles and their samples come from the configuration
+//! (`config/`, read by `fonts.rs`). The author's text is cut in pieces, each opened by a
+//! placeholder heading `## <folder> | <role>`; the build composes the page: one section for each
+//! distinct font, with its family name, its roles, the pieces of its roles and its samples, and
+//! the font's files give the samples, each labelled with its `name`. Every sample shows the same
+//! text, so that only the font changes from one to the next. A sample never names a font: it carries a
 //! variant the build writes in `target/generated/fonts.css` (`sample-<role>-<style>-<weight>`),
 //! which takes the font from the role's variable, so a change of font in the configuration
 //! shows here too, and a file added to it gets its sample with nothing written by hand.
@@ -14,8 +16,9 @@ use super::navigation::GuideMain;
 use crate::markdown;
 use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
-use crate::style_guide::fonts::{Fonts, ShownFont};
+use crate::style_guide::fonts::{Fonts, Role, ShownFont};
 use leptos::prelude::*;
+use pulldown_cmark::{Event, HeadingLevel, Parser, Tag, TagEnd};
 
 /// The page's file in the guide's folder, as the index links to it.
 pub const FILE: &str = "fonts.html";
@@ -36,21 +39,81 @@ const SAMPLE_TEXT: &str =
 #[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
 pub enum SectionError {
     #[error(
-        "content/style-guide/fonts.md: the section `{title}` names no font (the titles are {titles})"
+        "content/style-guide/fonts.md: the heading `## {0}` is not in the form `## <font> | <role>`, \
+         with the font and the role written in small letters, digits and hyphens"
     )]
-    UnknownFont { title: String, titles: String },
-    #[error("content/style-guide/fonts.md: the section `{0}` appears more than once")]
+    NotAPlaceholder(String),
+    #[error("content/style-guide/fonts.md: the heading `## {0}` appears more than once")]
     Duplicate(String),
-    #[error("content/style-guide/fonts.md: the font `{0}` has no section")]
-    MissingSection(String),
+    #[error(
+        "content/style-guide/fonts.md: the font `{folder}` in the role `{role}` has no piece (write a heading `## {folder} | {role}`)"
+    )]
+    MissingPiece { folder: String, role: String },
 }
 
-fn titles(fonts: &[ShownFont]) -> String {
-    fonts
-        .iter()
-        .map(|font| font.family.as_str())
-        .collect::<Vec<_>>()
-        .join(", ")
+/// A piece of the author's text: what follows one placeholder heading, up to the next level-2
+/// heading or the end.
+struct Piece {
+    folder: String,
+    role: String,
+    markdown: String,
+}
+
+/// Whether a part of a placeholder is made only of small letters, digits and hyphens.
+fn is_plain(part: &str) -> bool {
+    !part.is_empty()
+        && part
+            .chars()
+            .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-')
+}
+
+/// Cuts the text at its level-2 headings, as the converter sees them (the Markdown parser's
+/// own, so an indented heading, an underlined one or one inside a code block are told apart
+/// exactly as the page will render them): the introduction before the first one, then one piece
+/// for each heading, which must be a placeholder `## <folder> | <role>`.
+fn cut(markdown: &str) -> Result<(String, Vec<Piece>), SectionError> {
+    let mut headings: Vec<(std::ops::Range<usize>, String)> = Vec::new();
+    let mut open: Option<(std::ops::Range<usize>, String)> = None;
+    for (event, range) in Parser::new_ext(markdown, markdown::PARSER_OPTIONS).into_offset_iter() {
+        match event {
+            Event::Start(Tag::Heading {
+                level: HeadingLevel::H2,
+                ..
+            }) => open = Some((range, String::new())),
+            Event::Text(text) | Event::Code(text) => {
+                if let Some((_, title)) = open.as_mut() {
+                    title.push_str(&text);
+                }
+            }
+            Event::End(TagEnd::Heading(HeadingLevel::H2)) => {
+                headings.extend(open.take());
+            }
+            _ => {}
+        }
+    }
+    let introduction_end = headings.first().map_or(markdown.len(), |h| h.0.start);
+    let introduction = markdown[..introduction_end].to_owned();
+    let mut pieces: Vec<Piece> = Vec::new();
+    for (at, (range, title)) in headings.iter().enumerate() {
+        let heading = title.trim();
+        let (folder, role) = heading
+            .split_once(" | ")
+            .filter(|(folder, role)| is_plain(folder) && is_plain(role))
+            .ok_or_else(|| SectionError::NotAPlaceholder(heading.to_owned()))?;
+        if pieces
+            .iter()
+            .any(|piece| piece.folder == folder && piece.role == role)
+        {
+            return Err(SectionError::Duplicate(heading.to_owned()));
+        }
+        let end = headings.get(at + 1).map_or(markdown.len(), |h| h.0.start);
+        pieces.push(Piece {
+            folder: folder.to_owned(),
+            role: role.to_owned(),
+            markdown: markdown[range.end..end].to_owned(),
+        });
+    }
+    Ok((introduction, pieces))
 }
 
 /// The samples of one font: for each file, the text drawn with it and, under it as a caption,
@@ -68,49 +131,59 @@ fn Samples(font: ShownFont) -> impl IntoView {
         .collect_view()
 }
 
-/// Puts the samples of each font after its section: after the section's text, before the next
-/// section. The HTML is split at `<h2>`, which the converter writes for a level-2 heading only
-/// (the same characters in a code block are escaped).
-fn with_samples(
-    html: &str,
-    fonts: &[ShownFont],
-    samples: impl Fn(&ShownFont) -> String,
-) -> Result<String, SectionError> {
-    let mut sections = html.split("<h2>");
-    let mut out = sections.next().unwrap_or_default().to_owned();
-    let mut seen: Vec<&str> = Vec::new();
-    for section in sections {
-        let title = section.split("</h2>").next().unwrap_or_default();
-        let font = fonts
-            .iter()
-            .find(|font| font.family == title)
-            .ok_or_else(|| SectionError::UnknownFont {
-                title: title.to_owned(),
-                titles: titles(fonts),
-            })?;
-        if seen.contains(&font.family.as_str()) {
-            return Err(SectionError::Duplicate(font.family.clone()));
-        }
-        seen.push(&font.family);
-        out.push_str("<h2>");
-        out.push_str(section);
-        out.push_str(&samples(font));
+/// The start of a font's section: its title, then the line that names the roles it plays.
+#[component]
+fn SectionStart(family: String, roles: String) -> impl IntoView {
+    view! {
+        <h2>{family}</h2>
+        <p class="roles-line">{roles}</p>
     }
-    if let Some(font) = fonts
-        .iter()
-        .find(|font| !seen.contains(&font.family.as_str()))
-    {
-        return Err(SectionError::MissingSection(font.family.clone()));
-    }
-    Ok(out)
 }
 
-/// The page's main content: the converted Markdown with the samples placed in it.
+/// "Role: text" or "Roles: code, logo", in the roles' order.
+fn roles_line(roles: &[Role]) -> String {
+    let names: Vec<&str> = roles.iter().map(|role| role.name()).collect();
+    let label = if names.len() == 1 { "Role" } else { "Roles" };
+    format!("{label}: {}", names.join(", "))
+}
+
+/// The page's main content: the introduction, then one section for each distinct font, in the
+/// order of its first role: its title, its roles, the author's piece for each role, its samples.
+/// A piece whose font and role the configuration does not hold is dropped.
 fn body(markdown: &str, fonts: &Fonts) -> Result<String, SectionError> {
+    let (introduction, pieces) = cut(markdown)?;
+    let shown = fonts.shown();
+    for font in &shown {
+        for role in &font.roles {
+            if !pieces
+                .iter()
+                .any(|piece| piece.folder == font.folder && piece.role == role.name())
+            {
+                return Err(SectionError::MissingPiece {
+                    folder: font.folder.clone(),
+                    role: role.name().to_owned(),
+                });
+            }
+        }
+    }
     let owner = Owner::new();
-    with_samples(&markdown::to_html(markdown), &fonts.shown(), |font| {
-        owner.with(|| view! { <Samples font=font.clone() /> }.to_html())
-    })
+    let mut out = markdown::to_html(&introduction);
+    for font in shown {
+        out.push_str(&owner.with(|| {
+            view! { <SectionStart family=font.family.clone() roles=roles_line(&font.roles) /> }
+                .to_html()
+        }));
+        for role in &font.roles {
+            if let Some(piece) = pieces
+                .iter()
+                .find(|piece| piece.folder == font.folder && piece.role == role.name())
+            {
+                out.push_str(&markdown::to_html(&piece.markdown));
+            }
+        }
+        out.push_str(&owner.with(|| view! { <Samples font=font.clone() /> }.to_html()));
+    }
+    Ok(out)
 }
 
 #[component]
@@ -158,53 +231,138 @@ mod tests {
         super::render_fonts_page(&site(), &fonts()).unwrap()
     }
 
-    /// A text with the sections, in the order given by the titles.
-    fn text_with(titles: &[&str]) -> String {
+    /// A text with an introduction and one piece for each placeholder heading given.
+    fn text_with(headings: &[&str]) -> String {
         let mut text = String::from("Introduction.\n");
-        for title in titles {
-            text.push_str(&format!("\n## {title}\n\nWhy.\n"));
+        for heading in headings {
+            text.push_str(&format!("\n## {heading}\n\nWhy {heading}.\n"));
         }
         text
     }
 
-    const ALL_TITLES: [&str; 3] = ["Literata", "Hack", "IBM VGA 8x16"];
+    const ALL: [&str; 3] = ["literata | text", "hack | code", "ibm-vga-8x16 | logo"];
 
+    /// Acceptance test 4: a pair of the configuration with no piece stops the build.
     #[test]
-    fn a_section_that_names_no_font_is_an_error() {
-        let mut titles = ALL_TITLES.to_vec();
-        titles.push("Meslo LG");
-        let error = body(&text_with(&titles), &fonts()).unwrap_err();
+    fn a_pair_without_a_piece_is_an_error() {
+        let error = body(
+            &text_with(&["literata | text", "ibm-vga-8x16 | logo"]),
+            &fonts(),
+        )
+        .unwrap_err();
         assert_eq!(
             error,
-            SectionError::UnknownFont {
-                title: "Meslo LG".to_owned(),
-                titles: "Literata, Hack, IBM VGA 8x16".to_owned()
+            SectionError::MissingPiece {
+                folder: "hack".to_owned(),
+                role: "code".to_owned()
             }
         );
         assert_eq!(
             error.to_string(),
-            "content/style-guide/fonts.md: the section `Meslo LG` names no font (the titles are Literata, Hack, IBM VGA 8x16)"
+            "content/style-guide/fonts.md: the font `hack` in the role `code` has no piece (write a heading `## hack | code`)"
         );
     }
 
+    /// Acceptance test 4: a pair written twice stops the build, held by the configuration or not.
     #[test]
-    fn a_font_without_a_section_is_an_error() {
-        let error = body(&text_with(&["Literata", "IBM VGA 8x16"]), &fonts()).unwrap_err();
-        assert_eq!(error, SectionError::MissingSection("Hack".to_owned()));
+    fn a_pair_written_twice_is_an_error() {
+        for twice in ["hack | code", "meslo-lg | code"] {
+            let mut headings = ALL.to_vec();
+            headings.push("meslo-lg | code");
+            headings.push(twice);
+            let error = body(&text_with(&headings), &fonts()).unwrap_err();
+            assert_eq!(error, SectionError::Duplicate(twice.to_owned()));
+            assert_eq!(
+                error.to_string(),
+                format!(
+                    "content/style-guide/fonts.md: the heading `## {twice}` appears more than once"
+                )
+            );
+        }
+    }
+
+    /// Acceptance test 4: a level-2 heading that is not a placeholder stops the build.
+    #[test]
+    fn a_heading_that_is_not_a_placeholder_is_an_error() {
+        for heading in [
+            "Literata",
+            "literata|text",
+            "literata | ",
+            " | text",
+            "Literata | text",
+            "literata | Text",
+            "literata | text | code",
+            "lite rata | text",
+            "literata | te_xt",
+        ] {
+            let mut headings = ALL.to_vec();
+            headings.push(heading);
+            let error = body(&text_with(&headings), &fonts()).unwrap_err();
+            assert_eq!(
+                error,
+                SectionError::NotAPlaceholder(heading.trim().to_owned())
+            );
+        }
+        let error = body("## Literata\n\nText.\n", &fonts()).unwrap_err();
         assert_eq!(
             error.to_string(),
-            "content/style-guide/fonts.md: the font `Hack` has no section"
+            "content/style-guide/fonts.md: the heading `## Literata` is not in the form `## <font> | <role>`, with the font and the role written in small letters, digits and hyphens"
         );
     }
 
+    /// Acceptance test 5: a well-formed placeholder whose pair the configuration does not hold is
+    /// dropped, without an error.
     #[test]
-    fn a_section_written_twice_is_an_error() {
-        let mut titles = ALL_TITLES.to_vec();
-        titles.push("Hack");
+    fn a_piece_whose_pair_the_configuration_does_not_hold_is_ignored() {
+        let mut headings = ALL.to_vec();
+        headings.push("meslo-lg | code");
+        headings.push("literata | heading");
+        let html = body(&text_with(&headings), &fonts()).unwrap();
+        assert!(!html.contains("Why meslo-lg"));
+        assert!(!html.contains("Why literata | heading"));
+        assert!(html.contains("Why literata | text."));
+        assert_eq!(html.matches("<h2>").count(), 3);
+    }
+
+    /// Acceptance test 4: an indented level-2 heading is still a heading for the converter.
+    #[test]
+    fn an_indented_heading_that_is_not_a_placeholder_is_an_error() {
+        let mut text = text_with(&ALL);
+        text.push_str("\n   ## Notes\n\nText.\n");
         assert_eq!(
-            body(&text_with(&titles), &fonts()).unwrap_err(),
-            SectionError::Duplicate("Hack".to_owned())
+            body(&text, &fonts()).unwrap_err(),
+            SectionError::NotAPlaceholder("Notes".to_owned())
         );
+    }
+
+    /// Acceptance test 4: so is a heading underlined with hyphens.
+    #[test]
+    fn an_underlined_heading_that_is_not_a_placeholder_is_an_error() {
+        let mut text = text_with(&ALL);
+        text.push_str("\nNotes\n-----\n\nText.\n");
+        assert_eq!(
+            body(&text, &fonts()).unwrap_err(),
+            SectionError::NotAPlaceholder("Notes".to_owned())
+        );
+    }
+
+    /// Acceptance test 3: a heading inside a longer fence is not a placeholder either.
+    #[test]
+    fn a_heading_inside_a_four_backtick_fence_is_not_cut() {
+        let mut text = text_with(&ALL);
+        text.push_str("\n````\n```\n## not a placeholder\n```\n````\n");
+        let html = body(&text, &fonts()).unwrap();
+        assert!(html.contains("## not a placeholder"));
+        assert_eq!(html.matches("<h2>").count(), 3);
+    }
+
+    /// Acceptance test 3: a heading in a fenced code block is not a placeholder.
+    #[test]
+    fn a_heading_inside_a_code_block_is_not_cut() {
+        let mut text = text_with(&ALL);
+        text.push_str("\n```\n## not a placeholder\n```\n");
+        let html = body(&text, &fonts()).unwrap();
+        assert!(html.contains("## not a placeholder"));
     }
 
     #[test]
@@ -233,6 +391,75 @@ mod tests {
         assert!(0 < literata && literata < hack && hack < vga);
     }
 
+    /// Acceptance tests 1 and 2: under each title, the roles' line.
+    #[test]
+    fn each_title_is_followed_by_the_roles_line() {
+        let html = main_html();
+        for (title, line) in [
+            ("Literata", "Role: text"),
+            ("Hack", "Role: code"),
+            ("IBM VGA 8x16", "Role: logo"),
+        ] {
+            assert!(
+                html.contains(&format!(
+                    "<h2>{title}</h2><p class=\"roles-line\">{line}</p>"
+                )),
+                "{title}"
+            );
+        }
+    }
+
+    /// A configuration where the code and the logo share a font, the pixel one.
+    fn shared_fonts() -> Fonts {
+        let root = env!("CARGO_MANIFEST_DIR");
+        crate::style_guide::fonts::load(
+            "text=literata\ncode=ibm-vga-8x16\nlogo=ibm-vga-8x16\n",
+            &|folder| std::fs::read_to_string(format!("{root}/config/fonts/{folder}.txt")).ok(),
+            &|_, _| true,
+        )
+        .unwrap()
+    }
+
+    /// Acceptance tests 1, 2 and 3: a font with two roles has one section, at the place of its
+    /// first role, naming both roles and holding both pieces in the roles' order.
+    #[test]
+    fn a_font_with_two_roles_has_one_section_with_both_pieces() {
+        let text = "Introduction.\n\n## ibm-vga-8x16 | logo\n\nLogo piece.\n\n\
+             ## literata | text\n\nText piece.\n\n## ibm-vga-8x16 | code\n\nCode piece.\n";
+        let html = body(text, &shared_fonts()).unwrap();
+        assert!(html.starts_with("<p>Introduction.</p>"));
+        assert_eq!(html.matches("<h2>").count(), 2);
+        let literata = html.find("<h2>Literata</h2>").unwrap();
+        let vga = html.find("<h2>IBM VGA 8x16</h2>").unwrap();
+        assert!(literata < vga);
+        assert!(html.contains("<p class=\"roles-line\">Role: text</p>"));
+        assert!(html.contains("<p class=\"roles-line\">Roles: code, logo</p>"));
+        let section = &html[vga..];
+        let code = section.find("Code piece.").unwrap();
+        let logo = section.find("Logo piece.").unwrap();
+        assert!(section.find("Roles: code, logo").unwrap() < code);
+        assert!(code < logo);
+        assert!(logo < section.find("sample-label").unwrap());
+    }
+
+    /// Acceptance test 3: no placeholder ever appears on the page.
+    #[test]
+    fn no_placeholder_appears_on_the_page() {
+        let html = render_fonts_page();
+        let main = &html[html.find("<main").unwrap()..html.find("</main>").unwrap()];
+        assert!(!main.contains(" | "));
+        assert!(!main.contains("ibm-vga-8x16"));
+    }
+
+    /// Acceptance test 3: each piece is in its font's section, in the roles' order.
+    #[test]
+    fn each_piece_is_in_the_section_of_its_font() {
+        let html = main_html();
+        assert!(samples_in(&html, "Literata").contains("I chose Literata"));
+        assert!(samples_in(&html, "Hack").contains("For the code I chose Hack"));
+        assert!(samples_in(&html, "IBM VGA 8x16").contains("was my first choice"));
+    }
+
     /// The samples of a font: what the page holds between its section and the next.
     fn samples_in(html: &str, title: &str) -> String {
         let start = html.find(&format!("<h2>{title}</h2>")).unwrap();
@@ -250,8 +477,8 @@ mod tests {
     fn labelled_samples_in(html: &str, title: &str) -> Vec<(String, String)> {
         let samples = samples_in(html, title);
         let mut found = Vec::new();
-        for part in samples.split("<p class=\"").skip(1) {
-            let class = part.split('"').next().unwrap().to_owned();
+        for part in samples.split("<p class=\"sample-").skip(1) {
+            let class = format!("sample-{}", part.split('"').next().unwrap());
             let label = part
                 .split("<div class=\"sample-label\">")
                 .nth(1)
