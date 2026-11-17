@@ -62,8 +62,10 @@ live since 2026-10-26
     the fonts page built from the configuration, one section per font
     with its roles, done
     ([card](done/2026-11-17_build-the-fonts-page-from-the-configuration.md)).
-    Still to do before publishing:
-    [the fonts measured again when they change](wip/measure-the-fonts-again-when-they-change.md).
+    Still to do before publishing: cases at the limit of the wrap
+    toggle on the code page, so a code font that moves the threshold
+    stops the build
+    ([card](wip/measure-the-fonts-again-when-they-change.md)).
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle
@@ -71,6 +73,9 @@ live since 2026-10-26
 
 ## Next
 
+- [Take the measures from the configured fonts](backlog/take-the-measures-from-the-configured-fonts.md),
+  in the build, in the browser, instead of Literata's widths generated
+  by hand and Hack's advance written in the code.
 - [Use a structured configuration file](backlog/use-a-structured-configuration-file.md),
   now that `config/` holds a second setting, the fonts, read by the
   build only; the heading limit is read by the tests too.

@@ -40,6 +40,21 @@ measured values below to the font the configuration names.
   Hack where it explains a measure; one comment also gives a number,
   0.602em, the width of the zero in Hack.
 - **The logo font.** No width measured on it was found in the code.
+- **A change of font already stops the build today, but not for the
+  measures.** The author's text of the fonts page
+  (`content/style-guide/fonts.md`) has one piece per font and role,
+  `## <folder> | <role>`; a font in a role with no piece stops the
+  build (`MissingPiece` in `src/style_guide/fonts_page.rs`). Once the
+  text is written, the build passes again with the old measures.
+- **The browser tests already check the outcome of the measures on the
+  style guide's cases** (`end2end/README.md`): `each one scrolls or
+  fits as written` fails when a block of the code page that should
+  scroll does not show the wrap toggle, or a block that fits shows it;
+  `exactly one form of each table` fails when a table is wider than
+  its column; `the form of the simple, six-column and limit tables at`
+  fails when the table of texts at the limit, built just under the
+  column at 767 pixels, is wider than its column. They catch a wrong
+  measure only when a case sits near the threshold it moves.
 
 ## Questions to answer
 
@@ -47,6 +62,67 @@ The ones known when the card was written; there may be more.
 
 - **Whether a change of the text font or of the code font should stop
   the build until its measures are taken again.**
+
+  **Answered by the user on 2026-11-17.** It should break, but not
+  always: whether it breaks depends on the stylesheet and on the nature
+  of the font. What matters is how the page is laid out: a new font may
+  cause no problem with the stylesheet as it is, while with another
+  stylesheet (text inside a box of a fixed size, for example) something
+  may break.
+
+- **Whether estimates made too cautious by a narrower font count as a
+  broken page.** Came up on 2026-11-17. A font wider than the one
+  measured makes the estimates too low, and the page breaks: a table
+  overflows its column, a block of code scrolls without the wrap
+  toggle. A narrower font makes them too cautious: the page works, but
+  worse than it could.
+
+  **Answered by the user on 2026-11-17.** It depends: caution counts
+  when it leads to a result that is hard to read. For the record
+  viewer it does not count. The wrap toggle on a block that fits
+  counts, and keeps stopping the build as it does today: it takes
+  space, and what can be avoided is better avoided.
+
+- **How the build notices that the code font's measure no longer
+  fits the page.** Came up on 2026-11-17. The tables have a case at
+  the limit, just under the column at 767 pixels; the code page has
+  none: its cases are a line longer than the column and a block that
+  always fits, both far from the threshold, so a code font somewhat
+  wider or narrower than Hack would pass unnoticed.
+
+  **Answered by the user on 2026-11-17.** By the outcome only: two
+  cases at the limit on the code page, a line that fills the column
+  exactly and one a character longer, and the toggle must show on the
+  second only. Rejected: a tool that measures the configured font and
+  stops the build when its measures differ from those in use, because
+  it would stop the build also when the page is right, against the
+  answer above.
+
+- **Where the measures come from.** Came up on 2026-11-17. Today
+  Hack's advance is written by hand in two files, and the generated
+  widths hold for Literata only.
+
+  **Answered by the user on 2026-11-17.** More precise measures would
+  be better, taken from the font the configuration gives each role,
+  whatever it is: a change of font means running the measure again,
+  not writing a value by hand. The other reading of the answer,
+  measures that also cover the fallback font the browser shows until
+  the site's font arrives, is not what was meant. The measures are
+  taken in the build, in the browser, as the script for Literata does
+  today. This work left the card (see "What it leaves").
+
+## What it leaves
+
+Cut by the user on 2026-11-17: this card keeps the two cases at the
+limit of the code page and their test, which are enough to stop the
+build before the style guide is published. Taken out, to the card
+[take the measures from the configured fonts](../backlog/take-the-measures-from-the-configured-fonts.md):
+
+- the measures taken in the build from the font of each role, for the
+  table widths and for the wrap toggle, instead of Literata's
+  generated table and Hack's advance written by hand;
+- the stylesheet's comments that name Literata and Hack, and the one
+  that gives Hack's 0.602em, which change together with the measures.
 
 ## References
 
@@ -59,3 +135,5 @@ The ones known when the card was written; there may be more.
   the roles text, code and logo that the measures belong to.
 - [Build a design system](build-a-design-system.md): the card this one
   serves.
+- [Take the measures from the configured fonts](../backlog/take-the-measures-from-the-configured-fonts.md):
+  the part of this card that the cut took out.
