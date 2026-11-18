@@ -51,6 +51,18 @@ where the components that change are shown.
   title and the logo are parts of the header, and change with it at
   1280 pixels, so the boundary between those pages is still to be
   drawn.
+- **The breakpoints sort the devices into groups**, three today
+  (said by the user on 2026-11-18). The page shows, for information,
+  the names of the devices in each group, taken from the list of
+  devices the browser tests run on, which stays apart from the
+  breakpoints and does not move with them (card
+  [read the breakpoints from the configuration](../wip/read-the-breakpoints-from-the-configuration.md)).
+- **The smallest device of the tests is not the one the user looks
+  at.** The tests' "iPhone SE" is 320 by 568 pixels, the first model;
+  the user checks the smallest screen on the later iPhone SE, 375 by
+  667, in Firefox's responsive design mode. The width 320 has a
+  reason of its own: WCAG 1.4.10 asks that text need not scroll
+  sideways at 320 pixels.
 - **The code block and the table** change form with the width of
   their own container, not the screen's; the page may say so and lead
   to their pages, which explain it.
@@ -66,6 +78,12 @@ The ones known when the card was written; there may be more.
 - **What the page puts to the test**, as every page of the style guide
   has its cases checked by the browser tests: perhaps only that the
   widths it shows are those of the configuration.
+- **Whether the list of devices can come from Firefox's**, the one
+  the user reads in its responsive design mode: whether it has a
+  stable public address, under which licence, and whether the tests'
+  list should follow it. Not checked.
+- **What the tests' 320 is called**, since it is not the iPhone SE
+  the user looks at.
 - **How the index declares the pages to come**, and whether those
   pages get their cards now.
 

@@ -33,6 +33,12 @@ it, and the threshold can follow.
   first the site follows the preference set in the reader's browser,
   with no script. A control on the site to choose between them belongs
   here.
+- **The breakpoints stay in pixels** (decided by the user on
+  2026-11-18, card
+  [read the breakpoints from the configuration](../wip/read-the-breakpoints-from-the-configuration.md)):
+  they say which devices the site addresses, so they do not move with
+  the text size the reader chooses. A larger text at the same
+  breakpoint puts fewer characters on each line of the column.
 
 ## Questions
 

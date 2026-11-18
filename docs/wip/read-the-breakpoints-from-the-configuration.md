@@ -39,9 +39,11 @@ page goes wrong at some width.
   appear in `end2end/tests/support.ts`, `header-layout.spec.ts`,
   `code-blocks.spec.ts`, `home.spec.ts` and `font-roles.spec.ts`.
   Some are the two sides of a breakpoint (767 and 768 in "column
-  widths", the bands of the header); others are real devices that
-  happen to have that width (iPad Mini at 768, a laptop at 1280).
-  320, 393 and 412 are devices only (`end2end/README.md`, "Widths").
+  widths", the bands of the header, `boundary 767` and
+  `boundary 1279` in the devices of `support.ts`); others are real
+  devices at the same width, on which the breakpoints were chosen
+  (iPad Mini at 768, a laptop at 1280). 320, 393 and 412 are devices
+  only (`end2end/README.md`, "Widths").
 - **The Rust checks of ADR-001** accept a class with the prefix `md:`
   or `xl:` written in the code, in three modules: `src/home_page.rs`,
   `src/curriculum_page.rs` and `src/style_guide.rs`.
@@ -82,13 +84,47 @@ The ones known when the card was written; there may be more.
   the reader changes the browser's default text size, which keeps the
   layout in step with a larger text; the tests run at the default
   size, where 1rem is 16 pixels.
+
+  **Answered by the user on 2026-11-18.** In pixels. A breakpoint
+  says which devices the site addresses, and devices are measured in
+  pixels: whatever text size a reader chooses, they still have to
+  reckon with the device in hand, and pixels bring that reckoning into
+  the site. It is also coherent with the text, which the stylesheet
+  already sets in pixels (16 for the page, 18 and 20 for the column),
+  ignoring the browser's default text size; the browser's zoom still
+  acts on both. A change, chosen: for a reader who has changed the
+  browser's default text size, the breakpoints stop moving with it.
+  With the default size the site stays identical. Rejected: rem, as
+  today, which follows a setting the text ignores. The breakpoints
+  stay in pixels even if one day the text follows the reader's choice
+  (card
+  [let readers adjust font and spacing](../backlog/let-readers-adjust-font-and-spacing.md)).
 - **Which widths of the tests come from the file.** The two sides of
-  each breakpoint, surely; the devices that happen to share a width
-  with one, perhaps not, since a device does not change when a
-  breakpoint moves.
+  each breakpoint, surely; the devices that share a width with one,
+  perhaps not, since a device does not change when a breakpoint
+  moves.
+
+  **Answered by the user on 2026-11-18.** Only the two sides of each
+  breakpoint, such as 767 and 768. The list of devices stays apart,
+  written by hand, and does not move when a breakpoint moves: the
+  breakpoints sort the devices into groups, three today, and the
+  style guide's page shows which devices fall in each group (card
+  [show the breakpoints in the style guide](../backlog/show-the-breakpoints-in-the-style-guide.md)).
 - **What the file may contain**, and what stops the build: a missing
   or repeated name, a width that is not a number, a name Tailwind
   would not accept as a prefix.
+
+  **Answered by the user on 2026-11-18.** The rules of the fonts'
+  files: one line `name=width` for each breakpoint, blank lines and
+  lines starting with `#` ignored; the name made of lowercase letters
+  and digits, as Tailwind's prefixes; the width a positive whole
+  number of pixels. A repeated name, a repeated width or a malformed
+  line stops the build, with a message naming the file and the line.
+  The Rust checks of the classes take the names from the file, which
+  closes a gap open today: a class with a prefix that matches no
+  breakpoint (`lg:` when there are only `md` and `xl`) is ignored by
+  Tailwind without a word, and so is a breakpoint removed from the
+  file while a component still uses it.
 
 ## Dependencies
 
@@ -96,7 +132,37 @@ None known.
 
 ## Acceptance tests
 
-To be agreed with the user before development starts.
+Agreed with the user on 2026-11-18.
+
+1. **With the browser's default text size, the site stays identical.**
+   The HTML of every built page is the same, byte for byte, as before
+   the change; in the stylesheet only the two media queries change,
+   from 48rem and 80rem to 768 and 1280 pixels. All the browser tests
+   pass.
+2. **`style/input.css` sets no breakpoint.** A unit test checks that a
+   width changed in the file moves in the stylesheet the build writes.
+3. **Every refusal stops the build, naming the file and the line:** a
+   repeated name, a repeated width, a malformed line, a name not made
+   of lowercase letters and digits, a width that is not a positive
+   whole number. One unit test for each.
+4. **The Rust checks of the classes**, in the three modules, accept
+   only the prefixes the file names: a class with `lg:` makes them
+   fail.
+5. **The browser tests take the two sides of each breakpoint from the
+   file:** no boundary is left written by hand in the tests' code. The
+   list of devices stays as it is, the iPad Mini at 768 and the laptop
+   at 1280 included.
+6. **A trial with `md` moved, not committed:** the stylesheet, the
+   Rust checks and the browser tests follow it; a test that fails
+   points to a number still written by hand.
+7. **The documentation agrees:** the section "Widths" of
+   `end2end/README.md` says where the boundaries come from, and the
+   repository map in `CLAUDE.md` names the new file.
+
+A known limit of test 6: the tables page's text says "the tests check
+it at 767 and 768 pixels" (`content/style-guide/tables.md`). With
+`md` moved, that sentence becomes false and no test notices. It is
+the author's text, and stays as it is.
 
 ## What it leaves
 
