@@ -6,7 +6,7 @@
 ## Why
 
 The user opened this card on 2026-11-17, while cutting the card
-[measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md).
+[measure the fonts again when they change](../done/2026-11-18_measure-the-fonts-again-when-they-change.md).
 
 Two values of the build are measured on one font each, and do not
 follow the configuration (`config/fonts.txt`), which gives each role
@@ -62,7 +62,7 @@ The ones known when the card was written; there may be more.
 
 ## References
 
-- [Measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md):
+- [Measure the fonts again when they change](../done/2026-11-18_measure-the-fonts-again-when-they-change.md):
   the card whose cut opened this one, and which gives the code page
   its cases at the limit.
 - [Link the fonts to the build](../done/2026-11-16_link-the-fonts-to-the-build.md):

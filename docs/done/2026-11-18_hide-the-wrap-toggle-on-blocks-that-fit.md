@@ -7,7 +7,7 @@
 ## Why
 
 The user opened this card on 2026-11-17, while working on the card
-[measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md):
+[measure the fonts again when they change](../done/2026-11-18_measure-the-fonts-again-when-they-change.md):
 the cases at the limit of the code page, measured before being
 written, showed that the wrap toggle of the code blocks can show on a
 block that fits its column.
@@ -130,7 +130,7 @@ The ones known when the card was written; there may be more.
 
   **Answered by the user on 2026-11-18.** Both cases at the limit of
   the card
-  [measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md)
+  [measure the fonts again when they change](../done/2026-11-18_measure-the-fonts-again-when-they-change.md)
   are written here, with the fix: the line one character longer than
   the column is the regression test, since today it fits and shows the
   toggle, and after the fix it overflows and shows it; the line that
@@ -143,7 +143,7 @@ The ones known when the card was written; there may be more.
 
 Agreed with the user on 2026-11-18; tests 1 to 4 and 6 come from the
 card
-[measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md),
+[measure the fonts again when they change](../done/2026-11-18_measure-the-fonts-again-when-they-change.md),
 where they were agreed on 2026-11-17.
 
 1. **The case that fits.** The code page of the style guide has a
@@ -228,7 +228,7 @@ where they were agreed on 2026-11-17.
 
 ## References
 
-- [Measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md):
+- [Measure the fonts again when they change](../done/2026-11-18_measure-the-fonts-again-when-they-change.md):
   the card whose measurements found this fault, which waited for this
   one and keeps the proof that the two cases guard the threshold.
 - [Show the code block in the style guide](../done/2026-11-15_show-the-code-block-in-the-style-guide.md):

@@ -285,7 +285,7 @@ pipeline passed before each.
 
 - The values measured on a font (table widths, the wrap toggle's
   threshold), taken again when it changes: card
-  [measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md),
+  [measure the fonts again when they change](../done/2026-11-18_measure-the-fonts-again-when-they-change.md),
   next in the plan.
 
 ## References
@@ -294,7 +294,7 @@ pipeline passed before each.
   the card this one was cut from; it put the fonts in the configuration.
 - [Show the fonts in the style guide](../done/2026-11-16_show-the-fonts-in-the-style-guide.md):
   the card that built the fonts page as it is today.
-- [Measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md):
+- [Measure the fonts again when they change](../done/2026-11-18_measure-the-fonts-again-when-they-change.md):
   cut from the same card, done after this one.
 - [Build a design system](../wip/build-a-design-system.md): the card in
   work this one belongs to; the style guide is published after it.

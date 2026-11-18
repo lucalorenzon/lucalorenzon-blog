@@ -1,7 +1,8 @@
 # Measure the fonts again when they change
 
 - **Created:** 2026-11-16
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-18
 
 ## Why
 
@@ -68,7 +69,9 @@ measured values below to the font the configuration names.
   overflows and shows it. The case pair agreed below (one character
   apart, the first fitting with no toggle, the second overflowing with
   it) does not exist on this machine. Measuring scripts:
-  the session's scratchpad, not kept.
+  the session's scratchpad, not kept. The fault was fixed on
+  2026-11-18 by the card the agent opened for it (see
+  "Dependencies"), and the pair exists since.
 
 ## Questions to answer
 
@@ -127,7 +130,7 @@ The ones known when the card was written; there may be more.
 
 ## Dependencies
 
-- Waits, since 2026-11-17, for the card
+- Waited, from 2026-11-17 to 2026-11-18, for the card
   [hide the wrap toggle on blocks that fit](../done/2026-11-18_hide-the-wrap-toggle-on-blocks-that-fit.md):
   the case pair below does not exist while the toggle's threshold
   disagrees with what the browser draws. On 2026-11-18 the user moved
@@ -171,6 +174,43 @@ Known limit: the guard notices a difference only when it is worth at
 least one character over the longest line. A code font almost as wide
 as Hack passes, and the page stays right, as the rule above asks.
 
+## Recap
+
+- **The two cases at the limit and their test** were written by the
+  card
+  [hide the wrap toggle on blocks that fit](../done/2026-11-18_hide-the-wrap-toggle-on-blocks-that-fit.md),
+  as its regression test (`65d9b1c`), which meets tests 1 to 4 and 6:
+  "A line that just fits", 67 characters, and "One character too
+  many", 68, on the style guide's code page.
+- **The proof that the guard works** (test 5) was run on 2026-11-18
+  by a sub-agent on Haiku, on the built site, with the test `each one
+  scrolls or fits as written`, and shown to the user; the value was
+  then put back, and nothing of it was committed:
+  - Hack's advance in the build (`CODE_ADVANCE_NUMERATOR` in
+    `src/markdown.rs`) at 1234 over 2048 instead of 1233: the build
+    counts the line of 67 characters as 686.3 pixels, over the 686 of
+    the column, and the test fails at 768 pixels with "line that just
+    fits: toggle hidden", expected false, received true;
+  - at 1215: the build counts the line of 68 characters as 685.8
+    pixels, and the test fails at 768 pixels with "one character too
+    many: toggle visible", expected true, received false;
+  - back at 1233, the test passes at all five column widths, and the
+    working tree is clean.
+
+## Cautions
+
+- **The guard is not symmetrical.** The case that fits has a quarter
+  of a pixel to spare, so a code font wider than Hack by one unit in
+  2048 already stops the build. On the other side, the line of 68
+  characters is about ten pixels over the column, so a narrower font
+  stops it only when it is about 1.5% narrower: at 1216 over 2048 the
+  test still passes. Both agree with the rule of the card: a narrower
+  font leaves the page right, a wider one would break it.
+- **The guard sees the code font only through the code blocks of the
+  code page**, at the column of 768 pixels and over. The table widths,
+  which also use Hack's advance for inline code, are guarded by the
+  tables' own cases at the limit.
+
 ## What it leaves
 
 Cut by the user on 2026-11-17: this card keeps the two cases at the
@@ -193,9 +233,10 @@ build before the style guide is published. Taken out, to the card
   fonts before publishing.
 - [Give the fonts three roles in the stylesheet](../done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md):
   the roles text, code and logo that the measures belong to.
-- [Build a design system](build-a-design-system.md): the card this one
+- [Build a design system](../wip/build-a-design-system.md): the card this one
   serves.
 - [Take the measures from the configured fonts](../backlog/take-the-measures-from-the-configured-fonts.md):
   the part of this card that the cut took out.
 - [Hide the wrap toggle on blocks that fit](../done/2026-11-18_hide-the-wrap-toggle-on-blocks-that-fit.md):
-  the fault found while measuring the cases, which this card waits for.
+  the fault found while measuring the cases, which this card waited
+  for, and which wrote its two cases.

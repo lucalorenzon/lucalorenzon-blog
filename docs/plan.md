@@ -66,9 +66,10 @@ live since 2026-10-26
     drew narrower than the build assumes, done
     ([card](done/2026-11-18_hide-the-wrap-toggle-on-blocks-that-fit.md)),
     with the cases at the limit of the wrap toggle on the code page as
-    its regression test. Still to do before publishing: the proof that
-    those cases stop the build when a code font moves the threshold
-    ([card](wip/measure-the-fonts-again-when-they-change.md)).
+    its regression test; and the proof that those cases stop the build
+    when a code font moves the threshold, done
+    ([card](done/2026-11-18_measure-the-fonts-again-when-they-change.md)).
+    Still to do before publishing: the breakpoints.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle
