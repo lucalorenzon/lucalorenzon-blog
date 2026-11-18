@@ -77,6 +77,9 @@ live since 2026-10-26
 
 ## Next
 
+- [Check the table widths against Chromium's rounding](backlog/check-table-widths-against-chromium-rounding.md),
+  which drew the code font a whole number of pixels wide on Linux and
+  may do the same with the tables' text.
 - [Take the measures from the configured fonts](backlog/take-the-measures-from-the-configured-fonts.md),
   in the build, in the browser, instead of Literata's widths generated
   by hand and Hack's advance written in the code.
