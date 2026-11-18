@@ -216,5 +216,11 @@ live since 2026-10-26
 - [Measure the code font on macOS](backlog/measure-the-code-font-on-macos.md),
   in Safari and Chrome, since the wrap toggle's threshold was checked
   on Linux only.
+- [Launch the site on LinkedIn](backlog/launch-the-site-on-linkedin.md),
+  the real launch, once the visitors are observed and a few more
+  articles are online.
+- [Plan marketing campaigns](backlog/plan-marketing-campaigns.md),
+  perhaps with banners, after the user has learned about them.
 - Further articles and everything around them, beyond the first two,
-  now on the site. Not planned yet, on purpose.
+  now on the site. Not planned yet, on purpose; the launch's card
+  names the ones the user has in mind.
