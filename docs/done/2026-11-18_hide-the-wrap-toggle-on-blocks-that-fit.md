@@ -1,12 +1,13 @@
 # Hide the wrap toggle on blocks that fit
 
 - **Created:** 2026-11-17
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-18
 
 ## Why
 
 The user opened this card on 2026-11-17, while working on the card
-[measure the fonts again when they change](measure-the-fonts-again-when-they-change.md):
+[measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md):
 the cases at the limit of the code page, measured before being
 written, showed that the wrap toggle of the code blocks can show on a
 block that fits its column.
@@ -56,8 +57,8 @@ toggle's threshold agrees with what the browser draws.
   added to the code of the page: at every size from 10 to 30 pixels a
   character differs from 1233/2048 of an em by at most 0.011 pixels,
   and is never wider by more than 0.01 pixels. What the rule changes
-  in the look of the code on Linux, where it turns off the fitting of
-  the letters to the pixels, has not been looked at yet.
+  in the look of the code was looked at on 2026-11-18 (see "Questions
+  to answer").
 - **Supposed, not checked:** the rounding comes from how Chromium draws
   fonts on Linux, so on another system Chromium may draw the true
   width, as Firefox does.
@@ -90,7 +91,10 @@ The ones known when the card was written; there may be more.
   `text-rendering: geometricPrecision`; the user asked for Safari, but
   this is WebKit's port for Linux, which draws fonts with Linux's
   tools, so it says nothing certain of Safari on macOS. Its code
-  scroller has Firefox's widths, not Chromium's.
+  scroller has Firefox's widths, not Chromium's. The part left
+  unanswered, a system other than Linux, went to Later (see "What it
+  leaves").
+
 - **What `text-rendering: geometricPrecision` changes in the look of
   the code** in Chromium on Linux, where it turns off the fitting of
   the letters to the pixels.
@@ -126,7 +130,7 @@ The ones known when the card was written; there may be more.
 
   **Answered by the user on 2026-11-18.** Both cases at the limit of
   the card
-  [measure the fonts again when they change](measure-the-fonts-again-when-they-change.md)
+  [measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md)
   are written here, with the fix: the line one character longer than
   the column is the regression test, since today it fits and shows the
   toggle, and after the fix it overflows and shows it; the line that
@@ -139,7 +143,7 @@ The ones known when the card was written; there may be more.
 
 Agreed with the user on 2026-11-18; tests 1 to 4 and 6 come from the
 card
-[measure the fonts again when they change](measure-the-fonts-again-when-they-change.md),
+[measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md),
 where they were agreed on 2026-11-17.
 
 1. **The case that fits.** The code page of the style guide has a
@@ -167,6 +171,55 @@ where they were agreed on 2026-11-17.
 7. **The text of the two cases** is drafted by the agent and reviewed
    by the user before the commit.
 
+## Recap
+
+- **The acceptance tests and the cut** were agreed with the user and
+  recorded in this card, in the card that waited for it and in the
+  plan (`ec5c2a9`).
+- **The fix and its regression test**, in one commit (`65d9b1c`), with
+  every acceptance test met:
+  - the code page of the style guide has two new cases after "A block
+    that always fits": "A line that just fits", 67 characters, and
+    "One character too many", 68, with the text drafted by the agent
+    and approved by the user (tests 1, 2 and 7);
+  - the test `each one scrolls or fits as written`
+    (`end2end/tests/code-blocks.spec.ts`) knows both: the first
+    scrolls below 768 pixels only, the second at every width; among
+    the column widths the test runs at (320, 393, 412, 767, 768), 768
+    is the only one with the widest column (tests 3 and 4);
+  - run before the fix by a sub-agent on Sonnet, the test failed at
+    768 pixels on the 68-character case, "scrolls sideways" expected
+    true and received false: the block fitted the column, 680 pixels
+    in 686. The test stops at its first failed check, which is the
+    scrolling, so the toggle's visibility was not checked in that run;
+    that it shows there is known from the measure of 2026-11-17 (test
+    2);
+  - `style/input.css` gives the code block `text-rendering:
+    geometricPrecision`, with a comment on why (test 5);
+  - the test's row in `end2end/README.md` describes the two cases
+    (test 6);
+  - all the checks the pipeline runs passed after the fix: format,
+    clippy with no warnings, 411 unit tests, the build, the browser
+    tests' types, and the whole browser suite, 270 passed and 1
+    skipped on purpose in the light Chromium project.
+- **Screenshots** of the two cases at 375 and 1366 pixels were shown
+  to the user before the commit: at 1366 the line of 67 characters
+  fits with no toggle and the one of 68 shows it; at 375 both show it.
+
+## Cautions
+
+- **The case that fits has a quarter of a pixel to spare** at the
+  widest column: 67 characters are 685.7 pixels in a content box of
+  686. A change of the column, of the padding of the block or of the
+  code's size moves the limit, and the two cases have to be measured
+  again; that is what they are for.
+- **The rule is what keeps the toggle right in Chromium on Linux.**
+  Taking `text-rendering: geometricPrecision` off the code block brings
+  the fault back; the regression test fails if that happens.
+- **Less than one pixel of overflow without the toggle** remains
+  possible at text sizes other than the site's (see "Questions to
+  answer").
+
 ## What it leaves
 
 - The measure on macOS, Safari and Chrome, put in Later by the user on
@@ -175,9 +228,9 @@ where they were agreed on 2026-11-17.
 
 ## References
 
-- [Measure the fonts again when they change](measure-the-fonts-again-when-they-change.md):
-  the card whose measurements found this fault, and which waits for
-  this one.
+- [Measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md):
+  the card whose measurements found this fault, which waited for this
+  one and keeps the proof that the two cases guard the threshold.
 - [Show the code block in the style guide](../done/2026-11-15_show-the-code-block-in-the-style-guide.md):
   where the code page and its cases come from.
 - [Take the measures from the configured fonts](../backlog/take-the-measures-from-the-configured-fonts.md):

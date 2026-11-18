@@ -128,17 +128,18 @@ The ones known when the card was written; there may be more.
 ## Dependencies
 
 - Waits, since 2026-11-17, for the card
-  [hide the wrap toggle on blocks that fit](hide-the-wrap-toggle-on-blocks-that-fit.md):
+  [hide the wrap toggle on blocks that fit](../done/2026-11-18_hide-the-wrap-toggle-on-blocks-that-fit.md):
   the case pair below does not exist while the toggle's threshold
   disagrees with what the browser draws. On 2026-11-18 the user moved
   the case pair to that card, as its regression test (see
-  "Acceptance tests").
+  "Acceptance tests"). That card was closed on 2026-11-18, so this
+  one no longer waits.
 
 ## Acceptance tests
 
 Agreed with the user on 2026-11-17. On 2026-11-18 the user moved tests
 1 to 4 and 6 to the card
-[hide the wrap toggle on blocks that fit](hide-the-wrap-toggle-on-blocks-that-fit.md),
+[hide the wrap toggle on blocks that fit](../done/2026-11-18_hide-the-wrap-toggle-on-blocks-that-fit.md),
 which writes the two cases as its regression test; they stay here as
 the record of what was agreed, and are met when that card is closed.
 This card keeps test 5 only.
@@ -196,5 +197,5 @@ build before the style guide is published. Taken out, to the card
   serves.
 - [Take the measures from the configured fonts](../backlog/take-the-measures-from-the-configured-fonts.md):
   the part of this card that the cut took out.
-- [Hide the wrap toggle on blocks that fit](hide-the-wrap-toggle-on-blocks-that-fit.md):
+- [Hide the wrap toggle on blocks that fit](../done/2026-11-18_hide-the-wrap-toggle-on-blocks-that-fit.md):
   the fault found while measuring the cases, which this card waits for.

@@ -6,7 +6,7 @@
 ## Why
 
 The user opened this card on 2026-11-17, while working on the card
-[hide the wrap toggle on blocks that fit](../wip/hide-the-wrap-toggle-on-blocks-that-fit.md),
+[hide the wrap toggle on blocks that fit](../done/2026-11-18_hide-the-wrap-toggle-on-blocks-that-fit.md),
 and put it in Later: the check matters less than the fix.
 
 The wrap toggle of the code blocks shows from a threshold the build
@@ -51,5 +51,5 @@ The ones known when the card was written; there may be more.
 
 ## References
 
-- [Hide the wrap toggle on blocks that fit](../wip/hide-the-wrap-toggle-on-blocks-that-fit.md):
+- [Hide the wrap toggle on blocks that fit](../done/2026-11-18_hide-the-wrap-toggle-on-blocks-that-fit.md):
   the card whose measures this one completes.
