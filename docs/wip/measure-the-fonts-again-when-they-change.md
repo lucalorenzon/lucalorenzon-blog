@@ -130,12 +130,18 @@ The ones known when the card was written; there may be more.
 - Waits, since 2026-11-17, for the card
   [hide the wrap toggle on blocks that fit](hide-the-wrap-toggle-on-blocks-that-fit.md):
   the case pair below does not exist while the toggle's threshold
-  disagrees with what the browser draws. Acceptance tests 1 to 3 are
-  reviewed with the user when this card is taken up again.
+  disagrees with what the browser draws. On 2026-11-18 the user moved
+  the case pair to that card, as its regression test (see
+  "Acceptance tests").
 
 ## Acceptance tests
 
-Agreed with the user on 2026-11-17.
+Agreed with the user on 2026-11-17. On 2026-11-18 the user moved tests
+1 to 4 and 6 to the card
+[hide the wrap toggle on blocks that fit](hide-the-wrap-toggle-on-blocks-that-fit.md),
+which writes the two cases as its regression test; they stay here as
+the record of what was agreed, and are met when that card is closed.
+This card keeps test 5 only.
 
 1. **The case that fits.** The code page of the style guide has a
    block whose longest line is the longest that fits the column at the

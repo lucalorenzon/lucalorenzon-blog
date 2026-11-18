@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-17
+Last updated: 2026-11-18
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -64,9 +64,10 @@ live since 2026-10-26
     ([card](done/2026-11-17_build-the-fonts-page-from-the-configuration.md)).
     Still to do before publishing: the wrap toggle hidden on blocks
     that fit, which Chromium on Linux draws narrower than the build
-    assumes ([card](wip/hide-the-wrap-toggle-on-blocks-that-fit.md));
-    then cases at the limit of the wrap toggle on the code page, so a
-    code font that moves the threshold stops the build
+    assumes ([card](wip/hide-the-wrap-toggle-on-blocks-that-fit.md)),
+    with the cases at the limit of the wrap toggle on the code page as
+    its regression test; then the proof that those cases stop the
+    build when a code font moves the threshold
     ([card](wip/measure-the-fonts-again-when-they-change.md)), waiting
     for the fix.
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),

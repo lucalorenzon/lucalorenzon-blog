@@ -91,10 +91,81 @@ The ones known when the card was written; there may be more.
   this is WebKit's port for Linux, which draws fonts with Linux's
   tools, so it says nothing certain of Safari on macOS. Its code
   scroller has Firefox's widths, not Chromium's.
+- **What `text-rendering: geometricPrecision` changes in the look of
+  the code** in Chromium on Linux, where it turns off the fitting of
+  the letters to the pixels.
+
+  **Answered by the user on 2026-11-18**, from screenshots of the code
+  page taken by the agent in Playwright's Chromium, with and without
+  the rule, at 375 pixels (device pixel ratio 2) and 1366 pixels
+  (ratio 1), whole and magnified: the change is practically
+  invisible. At ratio 2 the agent saw no difference in sharpness; at
+  ratio 1, magnified, some strokes fall between two pixels and are a
+  little softer, the underscore most of all, grey instead of black.
+  Lines and indents keep their height and place. Measured on the same
+  pages: with the rule a character of Hack is 9.2095 pixels at 15.3
+  pixels and 10.235 at 17, the widths the build assumes; without it,
+  9 and 10.
+
 - **How the threshold can agree with the browser** when the width of
   a character depends on where the page is drawn, without making the
   opposite fault, a block that overflows without the toggle, which
   breaks the page.
+
+  **Answered by the user on 2026-11-18**, with the answer above:
+  `text-rendering: geometricPrecision` on the code block, so Chromium
+  draws the width the build already assumes, as Firefox and WebKit do.
+  The threshold of the build stays as it is. Known limit, from the
+  measures of 2026-11-17: at sizes other than the site's, a character
+  can be drawn up to about a hundredth of a pixel wider than the true
+  width, so a line of a hundred characters could overflow by less
+  than one pixel without the toggle.
+
+- **Which case on the code page is the regression test.** Came up on
+  2026-11-18.
+
+  **Answered by the user on 2026-11-18.** Both cases at the limit of
+  the card
+  [measure the fonts again when they change](measure-the-fonts-again-when-they-change.md)
+  are written here, with the fix: the line one character longer than
+  the column is the regression test, since today it fits and shows the
+  toggle, and after the fix it overflows and shows it; the line that
+  fills the column exactly is its complement, right before and after.
+  That card keeps only the proof that the guard works. Rejected:
+  leaving that card as it was and writing a case of its own here,
+  which would put two cases on the page for one threshold.
+
+## Acceptance tests
+
+Agreed with the user on 2026-11-18; tests 1 to 4 and 6 come from the
+card
+[measure the fonts again when they change](measure-the-fonts-again-when-they-change.md),
+where they were agreed on 2026-11-17.
+
+1. **The case that fits.** The code page of the style guide has a
+   block whose longest line is the longest that fits the column at the
+   width chosen for the cases; at that width the block does not scroll
+   and shows no wrap toggle.
+2. **The case one character longer, the regression test.** A second
+   block has the same line with one character more; at the same width
+   it scrolls and shows the wrap toggle. Run before the fix, the test
+   fails on this case, because the block fits and shows the toggle;
+   the failure is shown to the user.
+3. **The width chosen.** The cases are measured at the widest column
+   (768 pixels and over), where the line is longest, so one character
+   is the smallest share of it and the test notices the smallest
+   difference.
+4. **At the other column widths** both cases do what their text says
+   (at a narrower column both scroll and show the toggle), checked by
+   the existing test `each one scrolls or fits as written`, extended to
+   the new cases.
+5. **The fix.** The code block is drawn with `text-rendering:
+   geometricPrecision`, and every browser test passes.
+6. **The browser tests' README** (`end2end/README.md`) describes the
+   new cases in the test's row, and `end2end/tests/readme.spec.ts`
+   passes.
+7. **The text of the two cases** is drafted by the agent and reviewed
+   by the user before the commit.
 
 ## What it leaves
 
