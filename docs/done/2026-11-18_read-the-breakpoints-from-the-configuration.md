@@ -1,13 +1,14 @@
 # Read the breakpoints from the configuration
 
 - **Created:** 2026-11-18
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-18
 
 ## Why
 
 The user opened this card on 2026-11-18, while cutting the last page
 of the style guide before it is published, the breakpoints (card
-[build a design system](build-a-design-system.md)). The user wants
+[build a design system](../wip/build-a-design-system.md)). The user wants
 that page to be both the explanation of how the site adapts to the
 screen width and the only place where the breakpoints are set: a new
 breakpoint is added there, and nowhere else.
@@ -125,6 +126,20 @@ The ones known when the card was written; there may be more.
   breakpoint (`lg:` when there are only `md` and `xl`) is ignored by
   Tailwind without a word, and so is a breakpoint removed from the
   file while a component still uses it.
+- **Which width stands for the side at a breakpoint**, a question
+  that came up during the work. The first version took the width
+  below each breakpoint from the file, but the width at it from the
+  devices sitting there today, the iPad Mini at 768 and the laptop at
+  1280, picked by name: with a breakpoint moved, some tests would
+  have checked the wrong side without failing. The agent's own brief
+  had asked for it.
+
+  **Answered by the agent on 2026-11-18**, applying the user's answer
+  above. Both sides come from the file. A real device sitting exactly
+  at a breakpoint's width stands for that side, so the list of
+  devices stays as it was; when none does, the tests add a width of
+  their own (`at <width>`, 800 pixels high, like the `boundary`
+  entries).
 
 ## Dependencies
 
@@ -164,6 +179,70 @@ it at 767 and 768 pixels" (`content/style-guide/tables.md`). With
 `md` moved, that sentence becomes false and no test notices. It is
 the author's text, and stays as it is.
 
+## Recap
+
+Done in `0ae5d00`, by a sub-agent on Sonnet 5.5, verified by the
+agent. All seven acceptance tests pass.
+
+### What changed
+
+- `config/breakpoints.txt` holds `md=768` and `xl=1280`.
+- `src/style_guide/breakpoints.rs` reads it, refuses what does not
+  hold together (one unit test per refusal) and writes
+  `target/generated/breakpoints.css`, an `@theme` block that clears
+  Tailwind's breakpoints and sets the site's in pixels;
+  `style/input.css` imports it and sets no breakpoint.
+- The Rust checks of the classes, in `src/home_page.rs`,
+  `src/curriculum_page.rs` and `src/style_guide.rs`, take off only the
+  prefixes the file names: a class with `lg:` fails them.
+- The browser tests read the file (`end2end/tests/support.ts`): every
+  breakpoint gives the width below it and the width at it, the
+  devices stay written by hand, and the column widths and the bands
+  pick the sides by width, not by device name. `MD` and `XL` remain
+  for the tests of the header, whose changes belong to those two
+  breakpoints.
+- `end2end/README.md` ("Widths") and the repository map of `CLAUDE.md`
+  say where the widths come from.
+
+### How it was verified
+
+- **Acceptance test 1.** The site built before the change was kept
+  and compared with the one after: the HTML of all 13 pages is
+  identical byte for byte; in `style.css` only four lines differ, the
+  media queries from `48rem` and `80rem` to `768px` and `1280px`.
+  The 270 browser tests pass, one skipped (the "page not found" test
+  that runs on the live site only); 421 unit tests.
+- **Acceptance test 6.** With `md` moved to 800, not committed: the
+  media queries moved to 800 pixels, the browser tests ran at 799 and
+  800 instead of 767 and 768 and all passed (272, two more since the
+  iPad Mini stays at 768 and the tests add 800); one unit test failed,
+  because it compared the file's real values with 768 and 1280
+  written by hand. It now writes from a fixed text, and with `md` at
+  800 the 421 unit tests pass.
+
+### Learned on the way
+
+Tailwind reads every word of `src/`, as the fonts' card had found:
+the word "lowercase" in an error message became a stray utility, and
+the whole names of the breakpoints' variables in a unit test made
+Tailwind write them in the page's `:root`. The message says "small
+letters", the check of the name avoids the standard method with that
+word, and the tests build the variables' names in pieces. The card
+[let Tailwind read only the presentation](../backlog/let-tailwind-read-only-the-presentation.md)
+is about this.
+
+## Cautions
+
+- **A breakpoint added to the file changes nothing by itself:** a
+  component has to use its prefix. The tests of the header know `md`
+  and `xl` by name and stop with a clear error if either is missing.
+- **The text of the tables page** still says "the tests check it at
+  767 and 768 pixels" (`content/style-guide/tables.md`): if `md`
+  moves, that sentence becomes false and no test notices.
+- **For a reader who has changed the browser's default text size**,
+  the breakpoints no longer move with it, by choice (see the unit's
+  answer above).
+
 ## What it leaves
 
 - The style guide's page on the breakpoints:
@@ -171,7 +250,7 @@ the author's text, and stays as it is.
 
 ## References
 
-- [Build a design system](build-a-design-system.md): the card this
+- [Build a design system](../wip/build-a-design-system.md): the card this
   one serves; its list of pages before publishing ends with the
   breakpoints.
 - [Show the breakpoints in the style guide](../backlog/show-the-breakpoints-in-the-style-guide.md):
@@ -181,3 +260,8 @@ the author's text, and stays as it is.
   the build.
 - [Use a structured configuration file](../backlog/use-a-structured-configuration-file.md):
   the breakpoints become its third setting to move.
+- [Let readers adjust font and spacing](../backlog/let-readers-adjust-font-and-spacing.md):
+  the breakpoints stay in pixels whatever text size the reader
+  chooses.
+- [Let Tailwind read only the presentation](../backlog/let-tailwind-read-only-the-presentation.md):
+  the stray utility and variables met on the way.

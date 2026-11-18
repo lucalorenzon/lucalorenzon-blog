@@ -12,7 +12,7 @@ explains to the reader how the site adapts to the screen width: at
 which widths it changes, and what changes there. It is also the
 entry point to the breakpoints, whose values it reads from the place
 the card
-[read the breakpoints from the configuration](../wip/read-the-breakpoints-from-the-configuration.md)
+[read the breakpoints from the configuration](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md)
 gives them.
 
 A breakpoint alone says nothing: it is the width where something
@@ -56,7 +56,7 @@ where the components that change are shown.
   the names of the devices in each group, taken from the list of
   devices the browser tests run on, which stays apart from the
   breakpoints and does not move with them (card
-  [read the breakpoints from the configuration](../wip/read-the-breakpoints-from-the-configuration.md)).
+  [read the breakpoints from the configuration](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md)).
 - **The smallest device of the tests is not the one the user looks
   at.** The tests' "iPhone SE" is 320 by 568 pixels, the first model;
   the user checks the smallest screen on the later iPhone SE, 375 by
@@ -89,14 +89,14 @@ The ones known when the card was written; there may be more.
 
 ## Dependencies
 
-- [Read the breakpoints from the configuration](../wip/read-the-breakpoints-from-the-configuration.md),
+- [Read the breakpoints from the configuration](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md),
   which gives the page the values to read.
 
 ## References
 
 - [Build a design system](../wip/build-a-design-system.md): the card
   this page completes before the style guide is published.
-- [Read the breakpoints from the configuration](../wip/read-the-breakpoints-from-the-configuration.md):
+- [Read the breakpoints from the configuration](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md):
   the values the page reads.
 - [Review the logo](review-the-logo.md): a page of the logo would
   describe something that may change.

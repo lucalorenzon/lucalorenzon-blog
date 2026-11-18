@@ -116,7 +116,7 @@ twice. The price: until then, the two articles stay test pages.
     ([card](../done/2026-11-18_measure-the-fonts-again-when-they-change.md));
   - the breakpoints, cut in two by the user on 2026-11-18: their
     values read from `config/`
-    ([card](read-the-breakpoints-from-the-configuration.md)), then the
+    ([card](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md)), then the
     page, with the changes whose components have no page yet
     declared as pages to come
     ([card](../backlog/show-the-breakpoints-in-the-style-guide.md)).
