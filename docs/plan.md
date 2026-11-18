@@ -69,7 +69,12 @@ live since 2026-10-26
     its regression test; and the proof that those cases stop the build
     when a code font moves the threshold, done
     ([card](done/2026-11-18_measure-the-fonts-again-when-they-change.md)).
-    Still to do before publishing: the breakpoints.
+    Still to do before publishing: the breakpoints, cut in two: their
+    values read from `config/` by the build and the tests, being
+    worked on
+    ([card](wip/read-the-breakpoints-from-the-configuration.md)), then
+    the page
+    ([card](backlog/show-the-breakpoints-in-the-style-guide.md)).
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle
