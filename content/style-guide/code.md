@@ -17,6 +17,22 @@ let sum = 1 + 2;
 println!("{sum}");
 ```
 
+## A line that just fits
+
+Where exactly does the toggle appear? Here the line is as long as the widest column allows, and not one character more: on a wide screen it fits, and the toggle stays hidden. On a narrower screen the same line no longer fits, and the toggle comes back.
+
+```rust
+let line = "as long as the widest column allows, and not one more";
+```
+
+## One character too many
+
+The same line with one character more no longer fits even the widest column, and the toggle shows. Together, these two blocks keep the site honest: if the browser drew the code font wider or narrower than the site counts it, one of them would get it wrong, and the tests would stop the build before the page goes online.
+
+```rust
+let line = "as long as the widest column allows, and not one more!";
+```
+
 ## Nested indentation
 
 In code, indentation has a meaning, and in some languages, such as Python, it decides which lines belong together. Keeping its structure is essential. So when a line wraps, its continuation starts four columns deeper than the line itself, and reads as the same line, not as a new one at the same level.

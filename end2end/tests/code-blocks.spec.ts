@@ -7,6 +7,8 @@ import { axeReport, COLUMN_WIDTHS, CONTRAST_RULES, VIEWPORTS, runAxe } from './s
 //   - each case shows or hides the "wrap" toggle as written for it, at every
 //     column width: the long line and the indented cases scroll sideways and
 //     show it, the short block and the block with a blank line fit and do not;
+//     two cases sit at the limit of the widest column: the line that just
+//     fits scrolls only below 768 px, the line one character longer always does;
 //     checking it wraps the lines, so nothing scrolls any more
 //   - the toggle is reached with Tab and switched with Space, and its focus
 //     outline is whole, not cut by the scroller's edge or the page's
@@ -32,11 +34,15 @@ const PAGE = './style-guide/code.html';
 // width. Measured on the built page: the text column is 704 px wide from 768
 // px up, and the block's content 686 px at most; the long line is about 1700
 // px (1890 px at the larger text), the nested and the tab cases 720 to 920 px,
-// the short block and the blank-line block fit even at 320 (286 px).
+// the short block and the blank-line block fit even at 320 (286 px). The two
+// cases at the limit: a line of 67 characters (685.7 px at the larger text)
+// fits the 686 px content box from 768 px up, one of 68 (696 px) does not.
 type Case = { name: string; heading: string; scrollsAt: (width: number) => boolean };
 const CASES: Case[] = [
   { name: 'long line', heading: 'A line longer than the column', scrollsAt: () => true },
   { name: 'short block', heading: 'A block that always fits', scrollsAt: () => false },
+  { name: 'line that just fits', heading: 'A line that just fits', scrollsAt: (width) => width < 768 },
+  { name: 'one character too many', heading: 'One character too many', scrollsAt: () => true },
   { name: 'nested indentation', heading: 'Nested indentation', scrollsAt: () => true },
   { name: 'tabs', heading: 'Indentation made of tabs', scrollsAt: () => true },
   { name: 'blank line', heading: 'A blank line inside a block', scrollsAt: () => false },

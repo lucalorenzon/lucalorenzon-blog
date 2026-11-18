@@ -515,6 +515,11 @@ body {
      2.25 times the column's size. */
   margin-top: calc(var(--long-text-size) * 2.25);
   container: code / inline-size;
+  /* Chromium on Linux rounds each character of the code font to whole
+     pixels (10 px instead of 10.235 at 17 px), so the width it drew
+     disagreed with the toggle's threshold, computed from the font's true
+     advance. This makes it draw the true width, as Firefox and WebKit do. */
+  text-rendering: geometricPrecision;
 
   &:has(input:checked) .code-text {
     white-space: pre-wrap;
