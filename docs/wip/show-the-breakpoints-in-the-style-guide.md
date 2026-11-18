@@ -77,11 +77,9 @@ The ones known when the card was written; there may be more.
   can say why each change happens.
 
   **Answered by the user on 2026-11-18.** Both, each for what it
-  does best. The build finds what changes: every class that carries a
-  breakpoint's prefix, in the components' code, so the list cannot get
-  out of step with it. The explanation comes from the page's Markdown,
-  written by the author and marked so that the build can tell which
-  change each piece explains; the build puts the two together. Why: a
+  does best. The build finds what changes, so the list cannot get out
+  of step with the code; the author's Markdown explains it; the build
+  puts the two together. Made precise in the answer below. Why: a
   class carries only its own name, which tells the reader neither what
   happens nor which page of the style guide shows it, while the
   decision to publish with the gaps declared asks the page to say both.
@@ -89,6 +87,61 @@ The ones known when the card was written; there may be more.
   check when a class is added or moved; and the list generated from
   the classes alone, which would show the reader technical names with
   no explanation and no links.
+- **What one piece of the Markdown explains, and what ties it to the
+  classes**: one class, or one change as the reader sees it. They
+  differ: at 768 pixels the reader sees one change, the written logo
+  giving way to the logo drawn in characters, made in the code by two
+  classes on two elements (`md:not-shown` and `md:art-logo-left`).
+  Added on 2026-11-18, from the answer above.
+
+  **Answered by the user on 2026-11-18.** One component. The meaning
+  of a breakpoint's classes is known by the component that uses them,
+  so the build asks each component what changes in it at each
+  breakpoint, and groups the answers by component. The page's
+  Markdown is cut in pieces, each marked with the component it speaks
+  of, as `fonts.md` is cut by the fonts' headings. So the build can
+  join each piece of text to a component that changes, and write a
+  text on the breakpoints that links to the page of each component,
+  where its look at each breakpoint is explained. Why: the component
+  is where the meaning of its classes lives, and the reader sees a
+  change of a component, not of a class. Rejected: one explanation per
+  class, which would show the reader two entries for what they see as
+  one change; and the tie between classes and changes written in the
+  Markdown, away from the code that knows it.
+- **What to do while the components the page needs are not components
+  in the code.** The header, the logo, the title and the footer all
+  live in one Leptos component, `PageFrame` (`src/page_frame.rs`); the
+  text column is no component at all, its class written by hand in the
+  `<main>` of every kind of page, in eight files. Asked today, one
+  component would answer for four changes, and the column would not
+  answer. Added on 2026-11-18, from the answer above.
+
+  **Answered by the user on 2026-11-19.** The page declares it as a
+  limit of the site as it is today, a first version kept small on
+  purpose, and says that a refactor of the code into components is
+  planned, listing the components to come. Why: as for the pages that
+  do not exist yet, publishing with the gap declared tells the reader
+  where the site stands, and does not hold the style guide back for a
+  refactor. Rejected: splitting the code into components before the
+  page, which this card did not foresee.
+- **What to do with the text column, for which no component would
+  answer.** Its change at 768 pixels, the text growing from 18 to 20
+  pixels and the column widening, is the most visible one, and would
+  be missing from a list the build generates, against the first
+  answer above. Added on 2026-11-19, from the answer above.
+
+  **Answered by the user on 2026-11-19.** The text column becomes a
+  component, `OneColumnText`, before this page, and gets a page of its
+  own in the style guide, which explains its look at each breakpoint;
+  the build links the breakpoints page to it. Cut in two cards:
+  [make the text column a component](make-the-text-column-a-component.md),
+  a refactor that keeps the published HTML as it is, then
+  [show the text column in the style guide](../backlog/show-the-text-column-in-the-style-guide.md).
+  This changes, knowingly, the decision of 2026-11-18 to add no page
+  of a component before publishing: the style guide waits one page
+  more, for the change that would otherwise be missing. Rejected:
+  leaving the column out of the list until the refactor of the other
+  components.
 - **What the page puts to the test**, as every page of the style guide
   has its cases checked by the browser tests: perhaps only that the
   widths it shows are those of the configuration.
@@ -105,8 +158,16 @@ The ones known when the card was written; there may be more.
 
 - [Read the breakpoints from the configuration](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md),
   which gives the page the values to read.
+- [Make the text column a component](make-the-text-column-a-component.md)
+  and [show the text column in the style guide](../backlog/show-the-text-column-in-the-style-guide.md),
+  so the column can say what changes in it, and has a page to link to.
 
 ## References
+
+- [Make the text column a component](make-the-text-column-a-component.md):
+  the first of the two cards this page waits for.
+- [Show the text column in the style guide](../backlog/show-the-text-column-in-the-style-guide.md):
+  the second, the page this one links the column to.
 
 - [Build a design system](build-a-design-system.md): the card
   this page completes before the style guide is published.
