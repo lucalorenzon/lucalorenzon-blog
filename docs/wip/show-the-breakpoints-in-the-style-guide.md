@@ -1,13 +1,13 @@
 # Show the breakpoints in the style guide
 
 - **Created:** 2026-11-18
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
 The user opened this card on 2026-11-18, while cutting the last page
 of the style guide before it is published (card
-[build a design system](../wip/build-a-design-system.md)). The page
+[build a design system](build-a-design-system.md)). The page
 explains to the reader how the site adapts to the screen width: at
 which widths it changes, and what changes there. It is also the
 entry point to the breakpoints, whose values it reads from the place
@@ -75,6 +75,20 @@ The ones known when the card was written; there may be more.
   Markdown, as for the other pages, or the build from the components'
   classes. The second cannot get out of step with the code, the first
   can say why each change happens.
+
+  **Answered by the user on 2026-11-18.** Both, each for what it
+  does best. The build finds what changes: every class that carries a
+  breakpoint's prefix, in the components' code, so the list cannot get
+  out of step with it. The explanation comes from the page's Markdown,
+  written by the author and marked so that the build can tell which
+  change each piece explains; the build puts the two together. Why: a
+  class carries only its own name, which tells the reader neither what
+  happens nor which page of the style guide shows it, while the
+  decision to publish with the gaps declared asks the page to say both.
+  Rejected: the list written by the author alone, which nothing would
+  check when a class is added or moved; and the list generated from
+  the classes alone, which would show the reader technical names with
+  no explanation and no links.
 - **What the page puts to the test**, as every page of the style guide
   has its cases checked by the browser tests: perhaps only that the
   widths it shows are those of the configuration.
@@ -94,13 +108,13 @@ The ones known when the card was written; there may be more.
 
 ## References
 
-- [Build a design system](../wip/build-a-design-system.md): the card
+- [Build a design system](build-a-design-system.md): the card
   this page completes before the style guide is published.
 - [Read the breakpoints from the configuration](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md):
   the values the page reads.
-- [Review the logo](review-the-logo.md): a page of the logo would
+- [Review the logo](../backlog/review-the-logo.md): a page of the logo would
   describe something that may change.
-- [Write an article on the style guide](write-an-article-on-the-style-guide.md):
+- [Write an article on the style guide](../backlog/write-an-article-on-the-style-guide.md):
   the readers' way into the style guide, published with it.
 - [Show the fonts in the style guide](../done/2026-11-16_show-the-fonts-in-the-style-guide.md):
   the last page done, the model for this one.

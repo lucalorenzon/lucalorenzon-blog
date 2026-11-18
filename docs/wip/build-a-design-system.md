@@ -119,7 +119,7 @@ twice. The price: until then, the two articles stay test pages.
     ([card](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md)), then the
     page, with the changes whose components have no page yet
     declared as pages to come
-    ([card](../backlog/show-the-breakpoints-in-the-style-guide.md)).
+    ([card](show-the-breakpoints-in-the-style-guide.md)).
 
   Why: the site's whole look is shown at once, and the article on it
   ([card](../backlog/write-an-article-on-the-style-guide.md)) tells a
