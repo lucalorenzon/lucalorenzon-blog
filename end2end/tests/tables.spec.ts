@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { COLUMN_WIDTHS } from './support';
+import { COLUMN_WIDTHS, MD } from './support';
 
 // A table cell whose text has no whitespace is a single value, not running
 // text, so it stays on one line. Browsers treat an en dash, and a hyphen
@@ -13,12 +13,12 @@ import { COLUMN_WIDTHS } from './support';
 // en dash and a column of words with a hyphen, each narrow and beside a column
 // with room to spare, so that without the rule the browser breaks them (at 320
 // the ranges and the words, measured). It runs at the phone widths of the text
-// column (COLUMN_WIDTHS below 768), where columns are narrow. A case is found
+// column (COLUMN_WIDTHS below md), where columns are narrow. A case is found
 // by the title of its section: a table belongs to the section whose heading
 // comes before it.
 // It checks what the reader sees, never how the page is built.
 
-const PHONES = COLUMN_WIDTHS.filter(({ width }) => width < 768);
+const PHONES = COLUMN_WIDTHS.filter(({ width }) => width < MD);
 const CASES = [
   { name: 'range with an en dash', heading: 'A range with an en dash' },
   { name: 'word with a hyphen', heading: 'A word with a hyphen' },

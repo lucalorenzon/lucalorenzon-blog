@@ -1,5 +1,5 @@
 import { test, expect, type Locator, type Page } from '@playwright/test';
-import { axeReport, COLUMN_WIDTHS, CONTRAST_RULES, VIEWPORTS, runAxe } from './support';
+import { axeReport, boundaryName, COLUMN_WIDTHS, CONTRAST_RULES, MD, VIEWPORTS, runAxe } from './support';
 
 // Every Markdown table is rendered in two forms inside one wrapper: the
 // table, and a "record viewer" (the names of the columns stay still on the
@@ -8,7 +8,7 @@ import { axeReport, COLUMN_WIDTHS, CONTRAST_RULES, VIEWPORTS, runAxe } from './s
 // tables never scroll sideways. Checked on the style guide's tables page,
 // whose cases are written for these tests (content/style-guide/tables.md);
 // the articles are no longer test pages for the tables:
-//   - at 767 and 768, the form of the simple table, of the six-column table
+//   - on either side of the md breakpoint (767 and 768 today), the form of the simple table, of the six-column table
 //     (a table at 768, a viewer at 767) and of the table of texts at the
 //     limit, which is a table at 767 and no wider than its wrapper
 //   - at the widths of the text column (COLUMN_WIDTHS), for every case:
@@ -89,11 +89,12 @@ async function showRecord(box: Locator, k: number) {
     .toBe(true);
 }
 
-// The form each case has at the two widths on either side of the change of the
-// text size (767: 18 px text, 584 px column; 768: 20 px text, 704 px column).
+// The form each case has at the two widths on either side of the md breakpoint, where
+// the text size changes (at today's 768: 767 has 18 px text and a 584 px column, 768
+// has 20 px text and a 704 px column).
 const FORMS: { width: number; height: number; expected: [Case, { table: boolean; viewer: boolean }][] }[] = [
-  { width: 767, height: 800, expected: [[SIMPLE, TABLE], [SIX_COLUMNS, VIEWER], [LIMIT, TABLE]] },
-  { width: 768, height: 1024, expected: [[SIMPLE, TABLE], [SIX_COLUMNS, TABLE], [LIMIT, TABLE]] },
+  { width: MD - 1, height: 800, expected: [[SIMPLE, TABLE], [SIX_COLUMNS, VIEWER], [LIMIT, TABLE]] },
+  { width: MD, height: 1024, expected: [[SIMPLE, TABLE], [SIX_COLUMNS, TABLE], [LIMIT, TABLE]] },
 ];
 
 for (const { width, height, expected } of FORMS) {
@@ -143,7 +144,7 @@ for (const { name, width, height } of COLUMN_WIDTHS) {
 // The rows of different heights are a viewer at every phone width (its
 // threshold is above the 767 column's 32.444 em): there the rows of a record
 // must line up with their labels.
-for (const { name, width, height } of COLUMN_WIDTHS.filter(({ width }) => width < 768)) {
+for (const { name, width, height } of COLUMN_WIDTHS.filter(({ width }) => width < MD)) {
   test(`every record of the rows of different heights at ${width}x${height} (${name}) lines up with the labels and is numbered`, async ({ page }) => {
     await page.setViewportSize({ width, height });
     await gotoReady(page);
@@ -208,8 +209,8 @@ for (const { name, width, height } of COLUMN_WIDTHS.filter(({ width }) => width 
   });
 }
 
-test('the keyboard reaches the viewer of the six-column table at 767x800 and moves one record, then one more', async ({ page }) => {
-  await page.setViewportSize({ width: 767, height: 800 });
+test(`the keyboard reaches the viewer of the six-column table at ${MD - 1}x800 and moves one record, then one more`, async ({ page }) => {
+  await page.setViewportSize({ width: MD - 1, height: 800 });
   await gotoReady(page);
 
   const wrapper = await wrapperOf(page, SIX_COLUMNS);
@@ -239,10 +240,10 @@ test('the keyboard reaches the viewer of the six-column table at 767x800 and mov
 
 // Accessibility of the components, with axe limited to the component.
 // Per ADR-004 a component is checked once, on the case that stresses it most:
-// the style guide's tables page shows both forms at 767 and tables only at
-// 768. The contrast rules are a test of their own, tagged @colours, to run in
+// the style guide's tables page shows both forms just below md and tables only
+// from md up (767 and 768 today). The contrast rules are a test of their own, tagged @colours, to run in
 // both themes.
-const AXE_WIDTHS = VIEWPORTS.filter(({ name }) => ['boundary 767', 'iPad Mini'].includes(name));
+const AXE_WIDTHS = VIEWPORTS.filter(({ name }) => [boundaryName(MD), 'iPad Mini'].includes(name));
 
 for (const { name, width, height } of AXE_WIDTHS) {
   const where = `of the style guide's tables page at ${width}x${height} (${name})`;

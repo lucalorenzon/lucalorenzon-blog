@@ -17,40 +17,100 @@ export async function retryWhenLive(check: () => Promise<void>): Promise<void> {
   }
 }
 
-// The devices every layout test runs on.
-export const VIEWPORTS = [
+// The site's breakpoints, in pixels, read from the file the build reads
+// (config/breakpoints.txt), so that there is one figure for each, not copies that
+// could drift apart. The tests also run on the live site, always from a checkout of
+// the repository, so the file is on the disk there too. One line name=width; blank
+// lines and lines starting with # are ignored (the build checks the rest).
+export const BREAKPOINTS: Record<string, number> = Object.fromEntries(
+  readFileSync(resolve(__dirname, '../../config/breakpoints.txt'), 'utf8')
+    .split('\n')
+    .map((line) => line.trim())
+    .filter((line) => line !== '' && !line.startsWith('#'))
+    .map((line) => {
+      const [name, width] = line.split('=').map((part) => part.trim());
+      return [name, Number.parseInt(width, 10)];
+    }),
+);
+
+function breakpoint(name: string): number {
+  const width = BREAKPOINTS[name];
+  if (!Number.isInteger(width)) throw new Error(`config/breakpoints.txt names no breakpoint \`${name}\``);
+  return width;
+}
+
+// Where the text column changes size and the header its logo (md), and where the
+// header becomes one row (xl). The width just below each is the other side of it.
+export const MD = breakpoint('md');
+export const XL = breakpoint('xl');
+
+// The name of the entry standing for the width just below a breakpoint.
+export const boundaryName = (breakpointWidth: number) => `boundary ${breakpointWidth - 1}`;
+// The name of the entry standing for the breakpoint's own width, where no real
+// device already sits.
+export const atName = (breakpointWidth: number) => `at ${breakpointWidth}`;
+
+// The real devices every layout test runs on, written by hand: a device does
+// not change when a breakpoint moves.
+const DEVICES = [
   { name: 'iPhone SE', width: 320, height: 568 },
   { name: 'iPhone 15', width: 393, height: 659 },
   { name: 'Pixel 7', width: 412, height: 839 },
   { name: 'iPhone 15 landscape', width: 659, height: 393 },
-  { name: 'boundary 767', width: 767, height: 800 },
   { name: 'iPad Mini', width: 768, height: 1024 },
   { name: 'iPad 7th gen', width: 810, height: 1080 },
   { name: 'iPad Mini landscape', width: 1024, height: 768 },
   { name: 'iPad Pro 11 landscape', width: 1194, height: 834 },
-  { name: 'boundary 1279', width: 1279, height: 800 },
   { name: 'Laptop', width: 1280, height: 720 },
   { name: 'Full HD', width: 1920, height: 1080 },
 ];
 
+// The two sides of every breakpoint of the file, not devices: the width just
+// below it ("boundary") and its own width ("at"), which follow the file. The
+// "at" entry is left out where a real device already sits at that width, so
+// the width is not run twice (with the file as it is today, the iPad Mini sits
+// at md and the laptop at xl).
+const SIDES = Object.values(BREAKPOINTS).flatMap((width) => [
+  { name: boundaryName(width), width: width - 1, height: 800 },
+  ...(DEVICES.some((device) => device.width === width) ? [] : [{ name: atName(width), width, height: 800 }]),
+]);
+
+// The devices and the sides of the breakpoints, by width.
+export const VIEWPORTS = [...DEVICES, ...SIDES].sort((a, b) => a.width - b.width);
+
+// The viewport at a width, whichever entry stands there (a device or a side).
+export function viewportAt(width: number) {
+  const found = VIEWPORTS.find((viewport) => viewport.width === width);
+  if (!found) throw new Error(`no viewport at ${width}px`);
+  return found;
+}
+
 // The widths for tests of what is inside the text column. Measured in the
 // browser: the column grows with the screen from 304 to 584 px up to about
-// 600 px, stays at 584 px up to 767 px (text 18 px), and is 704 px wide from
-// 768 px up (text 20 px). The table forms and the code "wrap" toggle follow
+// 600 px, stays at 584 px up to just below md (text 18 px), and is 704 px wide
+// from md up (text 20 px), at today's breakpoints (md at 768 px). The table forms and the code "wrap" toggle follow
 // the column. So a test of what is inside the column needs one width per
 // column size: 659 and 767 give the same result, and so do the seven widths
 // from 768 to 1920. The widths between 412 and 600 are sampled at three
 // points only, as before. Why: docs/done/2026-11-08_check-at-every-width-only-what-depends-on-it.md
-const COLUMN_WIDTH_NAMES = ['iPhone SE', 'iPhone 15', 'Pixel 7', 'boundary 767', 'iPad Mini'];
-export const COLUMN_WIDTHS = VIEWPORTS.filter(({ name }) => COLUMN_WIDTH_NAMES.includes(name));
+// The three phones are devices, by name; the last two are the two sides of md,
+// by width, whatever stands there.
+const COLUMN_WIDTH_PHONES = ['iPhone SE', 'iPhone 15', 'Pixel 7'];
+export const COLUMN_WIDTHS = [
+  ...VIEWPORTS.filter(({ name }) => COLUMN_WIDTH_PHONES.includes(name)),
+  viewportAt(MD - 1),
+  viewportAt(MD),
+];
 
 // The pages show different elements per width band (and axe checks only what
 // is shown), so some tests run once per band, with the same names and sizes
-// used in header-layout.spec.ts.
+// used in header-layout.spec.ts. The first band is a phone, a device; the others
+// start at md and at xl, taken by width from the file, so each is checked at the
+// start of its band even when a breakpoint moves.
 export const BANDS = [
-  { name: 'iPhone 15', width: 393, height: 659 }, // text logo
-  { name: 'iPad Mini', width: 768, height: 1024 }, // ASCII-art logo, title below the line
-  { name: 'Laptop', width: 1280, height: 720 }, // title beside the logo
+  viewportAt(393), // text logo
+  viewportAt(MD), // ASCII-art logo, title below the line
+  viewportAt(XL), // title beside the logo
 ];
 
 // The page the component checks of the text (readability.spec.ts and

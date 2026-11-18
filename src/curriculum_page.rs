@@ -206,14 +206,12 @@ mod tests {
         assert!(!defined.is_empty());
 
         let html = render_curriculum_page();
+        let breakpoints = crate::style_guide::breakpoints::real();
         let mut used = 0;
         for chunk in html.split("class=\"").skip(1) {
             let value = chunk.split('"').next().unwrap();
             for token in value.split_whitespace() {
-                let name = token
-                    .strip_prefix("md:")
-                    .or_else(|| token.strip_prefix("xl:"))
-                    .unwrap_or(token);
+                let name = crate::style_guide::breakpoints::without_prefix(token, &breakpoints);
                 assert!(
                     defined.contains(&name),
                     "class `{token}` is not an @utility in style/input.css"

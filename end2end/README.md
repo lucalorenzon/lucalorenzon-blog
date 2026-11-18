@@ -29,7 +29,7 @@ says what makes it fail.
 | Find in files | A piece of the line that declares the test, as the code writes it. It appears only once in `end2end/tests/`: search for it to land on the test. |
 | File | The file in `end2end/tests/`. |
 | Pages | The pages the test opens. "Build only" or "live only" when it runs in one of the two moments (below). |
-| Widths | The screen widths, in pixels. "Column widths" are 320, 393, 412, 767 and 768: one per size of the text column. "Bands" are 393, 768 and 1280: one per form of the header. "Every device" is the twelve widths from 320 to 1920. |
+| Widths | The screen widths, in pixels. "Column widths" are 320, 393, 412, 767 and 768: one per size of the text column. "Bands" are 393, 768 and 1280: one per form of the header, the second and third starting at the width of md and of xl. The two sides of each breakpoint (767 and 768, 1279 and 1280 today) are read from `config/breakpoints.txt` and move with it; the widths of real devices (320, 393, 412, 659, 768 and 1024 of the iPad Mini, 1280 of the laptop...) are written by hand and do not. "Every device" is the twelve widths from 320 to 1920. |
 | Themes | Light, or light and dark. Only tests on colours run in both themes, since the dark theme changes nothing else (a guard checks it). |
 | Fails when? | What the test rejects. |
 | Why | What a reader would lose if it were not checked. |

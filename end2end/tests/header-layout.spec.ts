@@ -1,15 +1,16 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { test, expect, type Page } from '@playwright/test';
-import { READER_SPACING, retryWhenLive, VIEWPORTS } from './support';
+import { MD, READER_SPACING, retryWhenLive, VIEWPORTS, XL } from './support';
 
 // Enforces the agreed responsive header layout. It checks what the reader
 // sees (positions, sizes, visibility), never how the page is built.
 //
-// Bands by viewport width:
-//   < 768    text logo 32px; title below the header line, 24px, centred
-//   768-1279 ASCII logo 16px; title below the header line, 32px, centred
-//   >= 1280  ASCII logo 16px; title in the header row, 32px, at most 2 lines
+// Bands by viewport width, at the breakpoints of config/breakpoints.txt (md and xl;
+// 768 and 1280 today):
+//   < md       text logo 32px; title below the header line, 24px, centred
+//   md to xl-1 ASCII logo 16px; title below the header line, 32px, centred
+//   >= xl      ASCII logo 16px; title in the header row, 32px, at most 2 lines
 //
 // A second test per viewport applies the reader's text spacing (WCAG 1.4.12,
 // READER_SPACING in support.ts) and checks that the header's logo, title and
@@ -156,8 +157,8 @@ const fmt = (n: number) => (Number.isFinite(n) ? n.toFixed(1) : String(n));
 // Returns one message per broken rule; empty means the layout is as agreed.
 function violations(s: Snapshot, title: string, centred: boolean): string[] {
   const w = s.innerWidth;
-  const narrow = w < 768;
-  const wide = w >= 1280;
+  const narrow = w < MD;
+  const wide = w >= XL;
   const where = `[${w}px, "${title}"]`;
   const out: string[] = [];
   const rule = (ok: boolean, message: string) => {
@@ -173,12 +174,12 @@ function violations(s: Snapshot, title: string, centred: boolean): string[] {
   const ascii = s.asciiLogo;
   const text = s.textLogo;
   if (narrow) {
-    rule(!!text?.visible, 'the text logo "Lvk@73r" must be visible below 768px');
-    rule(!ascii?.visible, 'the ASCII-art logo must be hidden below 768px');
+    rule(!!text?.visible, `the text logo "Lvk@73r" must be visible below ${MD}px`);
+    rule(!ascii?.visible, `the ASCII-art logo must be hidden below ${MD}px`);
     if (text?.visible) rule(text.fontSize === 32, `text logo font-size must be 32px, is ${text.fontSize}px`);
   } else {
-    rule(!!ascii?.visible, 'the ASCII-art logo must be visible from 768px');
-    rule(!text?.visible, 'the text logo must be hidden from 768px');
+    rule(!!ascii?.visible, `the ASCII-art logo must be visible from ${MD}px`);
+    rule(!text?.visible, `the text logo must be hidden from ${MD}px`);
     if (ascii?.visible) rule(ascii.fontSize === 16, `ASCII logo font-size must be 16px, is ${ascii.fontSize}px`);
   }
   const logo = (narrow ? text : ascii)?.visible ? (narrow ? text : ascii)! : null;

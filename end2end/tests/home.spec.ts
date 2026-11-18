@@ -121,7 +121,7 @@ test('from the about page, the text links lead to the licence page and to the cu
   await retryWhenLive(check);
 });
 
-// The logo has two forms (text below 768px, ASCII art from 768px); the link is
+// The logo has two forms (text below the md breakpoint, ASCII art from it up: 768px today); the link is
 // the same, and only one form is shown at a time.
 for (const { name, width, height } of [
   { name: 'iPhone 15', width: 393, height: 659 },

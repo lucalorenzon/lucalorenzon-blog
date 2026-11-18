@@ -1,6 +1,7 @@
 //! The style guide: the decisions about how the site looks, written once in Rust and
 //! written out for the stylesheet by the build, and the pages of the guide.
 
+pub mod breakpoints;
 pub mod code_page;
 pub mod colours;
 pub mod colours_page;
@@ -16,7 +17,8 @@ pub mod text_page;
 pub const FOLDER: &str = "style-guide/";
 
 /// ADR-001 for the guide's pages: every class of the page is an `@utility` of
-/// `style/input.css` or of the colours, icons and fonts the build writes, with or without `md:` or `xl:`.
+/// `style/input.css` or of the colours, icons and fonts the build writes, with or without the
+/// prefix of a breakpoint named in `config/breakpoints.txt`.
 #[cfg(test)]
 fn assert_only_named_variants(html: &str) {
     let generated =
@@ -28,14 +30,12 @@ fn assert_only_named_variants(html: &str) {
         .map(|rest| rest.trim_end_matches('{').trim())
         .collect();
     assert!(!defined.is_empty());
+    let breakpoints = breakpoints::real();
     let mut used = 0;
     for chunk in html.split("class=\"").skip(1) {
         let value = chunk.split('"').next().unwrap();
         for token in value.split_whitespace() {
-            let name = token
-                .strip_prefix("md:")
-                .or_else(|| token.strip_prefix("xl:"))
-                .unwrap_or(token);
+            let name = breakpoints::without_prefix(token, &breakpoints);
             assert!(
                 defined.contains(&name),
                 "class `{token}` is not an @utility of style/input.css or of the colours"

@@ -18,15 +18,18 @@
    here uses the roles. */
 @import "../target/generated/fonts.css";
 
+/* The breakpoints are written in config/breakpoints.txt, in pixels, and written by
+   the build into this file, with --breakpoint-*: initial that clears Tailwind's own
+   (src/style_guide/breakpoints.rs). This stylesheet sets no breakpoint; the md: and
+   xl: variants below only use them. */
+@import "../target/generated/breakpoints.css";
+
 /* The icons' drawings come from the icondata crate (Bootstrap Icons' set only);
    the build turns each into a mask utility, icon-<name>, and writes it into
    this file (src/icons.rs). */
 @import "../target/generated/icons.css";
 
 @theme {
-  --breakpoint-*: initial;
-  --breakpoint-md: 48rem; /* 768px */
-  --breakpoint-xl: 80rem; /* 1280px */
   /* Tailwind's base layer draws the page with these two, which take the roles
      the build defines (target/generated/fonts.css). */
   --default-font-family: var(--font-text);
@@ -45,7 +48,7 @@ body {
 }
 
 /* Named visual variants (ADR-001). The page uses only these names, with an
-   optional md: or xl: prefix. Side padding of 8px lives on the logo and the
+   optional prefix of a breakpoint (config/breakpoints.txt). Side padding of 8px lives on the logo and the
    menu slot, so the header line can span the full page width. */
 
 @utility page-fills-screen {

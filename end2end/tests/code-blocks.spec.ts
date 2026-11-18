@@ -1,5 +1,5 @@
 import { test, expect, type Locator, type Page } from '@playwright/test';
-import { axeReport, COLUMN_WIDTHS, CONTRAST_RULES, VIEWPORTS, runAxe } from './support';
+import { axeReport, COLUMN_WIDTHS, CONTRAST_RULES, MD, VIEWPORTS, runAxe } from './support';
 
 // Code blocks (Markdown code rendered as a component), on the style guide's
 // code page, whose cases are written for these tests
@@ -8,7 +8,7 @@ import { axeReport, COLUMN_WIDTHS, CONTRAST_RULES, VIEWPORTS, runAxe } from './s
 //     column width: the long line and the indented cases scroll sideways and
 //     show it, the short block and the block with a blank line fit and do not;
 //     two cases sit at the limit of the widest column: the line that just
-//     fits scrolls only below 768 px, the line one character longer always does;
+//     fits scrolls only below the md breakpoint (768 px today), the line one character longer always does;
 //     checking it wraps the lines, so nothing scrolls any more
 //   - the toggle is reached with Tab and switched with Space, and its focus
 //     outline is whole, not cut by the scroller's edge or the page's
@@ -31,8 +31,8 @@ import { axeReport, COLUMN_WIDTHS, CONTRAST_RULES, VIEWPORTS, runAxe } from './s
 const PAGE = './style-guide/code.html';
 
 // What each case puts to the test, and what it must show at each column
-// width. Measured on the built page: the text column is 704 px wide from 768
-// px up, and the block's content 686 px at most; the long line is about 1700
+// width. Measured on the built page, at today's breakpoints: the text column is
+// 704 px wide from 768 px up (md), and the block's content 686 px at most; the long line is about 1700
 // px (1890 px at the larger text), the nested and the tab cases 720 to 920 px,
 // the short block and the blank-line block fit even at 320 (286 px). The two
 // cases at the limit: a line of 67 characters (685.7 px at the larger text)
@@ -41,7 +41,7 @@ type Case = { name: string; heading: string; scrollsAt: (width: number) => boole
 const CASES: Case[] = [
   { name: 'long line', heading: 'A line longer than the column', scrollsAt: () => true },
   { name: 'short block', heading: 'A block that always fits', scrollsAt: () => false },
-  { name: 'line that just fits', heading: 'A line that just fits', scrollsAt: (width) => width < 768 },
+  { name: 'line that just fits', heading: 'A line that just fits', scrollsAt: (width) => width < MD },
   { name: 'one character too many', heading: 'One character too many', scrollsAt: () => true },
   { name: 'nested indentation', heading: 'Nested indentation', scrollsAt: () => true },
   { name: 'tabs', heading: 'Indentation made of tabs', scrollsAt: () => true },

@@ -96,6 +96,8 @@ enum BuildError {
     Colours(#[from] style_guide::colours::ContrastTooLow),
     #[error(transparent)]
     Fonts(#[from] style_guide::fonts::FontsError),
+    #[error(transparent)]
+    Breakpoints(#[from] style_guide::breakpoints::BreakpointsError),
     #[error("cannot read `{path}`: {reason}")]
     ReadConfiguration {
         path: String,
@@ -142,6 +144,7 @@ fn build() -> Result<(), BuildError> {
     })?;
 
     write_colours()?;
+    write_breakpoints()?;
     let fonts = write_fonts()?;
     write_icons()?;
 
@@ -274,6 +277,28 @@ fn write_fonts() -> Result<style_guide::fonts::Fonts, BuildError> {
     }
     write_file(&path, style_guide::fonts::css(&fonts))?;
     Ok(fonts)
+}
+
+/// Where the build writes the breakpoints, for Tailwind (style/input.css). Outside the
+/// published site on purpose.
+const BREAKPOINTS_FILE: &str = "target/generated/breakpoints.css";
+
+/// The breakpoints are written in `config/breakpoints.txt`, read by `style_guide::breakpoints`;
+/// the stylesheet imports this file. A file that does not hold together stops the build before
+/// anything is written.
+fn write_breakpoints() -> Result<(), BuildError> {
+    let text = fs::read_to_string(style_guide::breakpoints::FILE).map_err(|reason| {
+        BuildError::ReadConfiguration {
+            path: style_guide::breakpoints::FILE.to_owned(),
+            reason,
+        }
+    })?;
+    let breakpoints = style_guide::breakpoints::parse(&text)?;
+    let path = PathBuf::from(BREAKPOINTS_FILE);
+    if let Some(folder) = path.parent() {
+        create_folder(folder)?;
+    }
+    write_file(&path, style_guide::breakpoints::css(&breakpoints))
 }
 
 /// Where the build writes the icons' drawings, for Tailwind (style/input.css). Outside the

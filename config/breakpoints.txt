@@ -1,0 +1,5 @@
+# The widths, in pixels, at which the site changes its layout: one line name=width.
+# The name is the prefix of the classes that change at that width (md:..., xl:...).
+# What changes stays in the components; this file only says where.
+md=768
+xl=1280
