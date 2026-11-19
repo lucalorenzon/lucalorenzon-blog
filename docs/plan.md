@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-18
+Last updated: 2026-11-19
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -77,7 +77,10 @@ live since 2026-10-26
     waits for the text column made a component, done
     ([card](done/2026-11-19_make-the-text-column-a-component.md)), and shown in
     a page of its own, in work
-    ([card](wip/show-the-text-column-in-the-style-guide.md)).
+    ([card](wip/show-the-text-column-in-the-style-guide.md)), which
+    waits for a spike on how a component tells the build what changes
+    in it at each breakpoint, next
+    ([card](backlog/try-a-breakpoint-declaration-on-the-text-column.md)).
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle

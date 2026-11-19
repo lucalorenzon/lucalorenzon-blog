@@ -46,6 +46,18 @@ The ones known when the card was written; there may be more.
   mechanism the breakpoints page needs. Whether it is built here,
   with the first component that uses it, or with the breakpoints
   page.
+
+  **Answered by the user on 2026-11-19, in part.** Neither yet: the
+  mechanism is tried first, in a spike on this component alone
+  ([try a breakpoint declaration on the text column](../backlog/try-a-breakpoint-declaration-on-the-text-column.md)),
+  and this page waits for its finding. Why: the user's first idea of
+  the mechanism, a trait the component implements, which also gives
+  the build what it needs to compose the component's own page, was
+  a brainstorm, and the user said they did not know where it led.
+  Built here, it would also put two kinds of work in one card: the
+  mechanism, for every future component, and the page of one
+  component. Whether the mechanism is then built here or with the
+  breakpoints page is left to the spike's finding.
 - **How the page shows the column at each breakpoint**, since the
   reader sees it at one width only.
 - **Where the boundary lies with the text page**, which shows what
@@ -55,9 +67,14 @@ The ones known when the card was written; there may be more.
 ## Dependencies
 
 - [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md).
+- [Try a breakpoint declaration on the text column](../backlog/try-a-breakpoint-declaration-on-the-text-column.md),
+  whose finding says how the component tells the build what changes
+  in it.
 
 ## References
 
+- [Try a breakpoint declaration on the text column](../backlog/try-a-breakpoint-declaration-on-the-text-column.md):
+  the spike this page waits for.
 - [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md):
   the component this page shows.
 - [Show the breakpoints in the style guide](show-the-breakpoints-in-the-style-guide.md):
