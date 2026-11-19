@@ -1,13 +1,13 @@
 # Show the text column in the style guide
 
 - **Created:** 2026-11-19
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
 The user opened this card on 2026-11-19, while answering the
 questions of the card
-[show the breakpoints in the style guide](../wip/show-the-breakpoints-in-the-style-guide.md).
+[show the breakpoints in the style guide](show-the-breakpoints-in-the-style-guide.md).
 The breakpoints page links each component that changes to the page
 where its look at each breakpoint is explained. The text column
 changes at 768 pixels, and has no such page: without it, the
@@ -60,9 +60,9 @@ The ones known when the card was written; there may be more.
 
 - [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md):
   the component this page shows.
-- [Show the breakpoints in the style guide](../wip/show-the-breakpoints-in-the-style-guide.md):
+- [Show the breakpoints in the style guide](show-the-breakpoints-in-the-style-guide.md):
   the page that links to this one.
 - [Show the text elements in the style guide](../done/2026-11-16_show-the-text-elements-in-the-style-guide.md):
   the text page, the closest to this one.
-- [Build a design system](../wip/build-a-design-system.md): the card
+- [Build a design system](build-a-design-system.md): the card
   the style guide belongs to.
