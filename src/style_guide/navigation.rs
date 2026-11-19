@@ -12,6 +12,7 @@
 //! the browser's starting point for the Tab key to its target, so the next Tab reaches the
 //! first thing of the page (the logo) rather than the thing after the link.
 
+use crate::one_column_text::OneColumnText;
 use leptos::prelude::*;
 
 /// The guide's index, as a page of the guide writes the address: the folder holds it, and the
@@ -26,7 +27,7 @@ const BACK_TO_TOP: &str = "Back to top";
 #[component]
 pub fn GuideMain(title: &'static str, body: String) -> impl IntoView {
     view! {
-        <main class="long-text-column md:long-text-large">
+        <OneColumnText>
             <nav aria-label="Breadcrumb" class="breadcrumb">
                 <ol>
                     <li>
@@ -38,7 +39,7 @@ pub fn GuideMain(title: &'static str, body: String) -> impl IntoView {
             </nav>
             <div inner_html=body></div>
             <p><a href="#top">{BACK_TO_TOP}</a></p>
-        </main>
+        </OneColumnText>
     }
 }
 

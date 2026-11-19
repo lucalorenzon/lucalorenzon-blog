@@ -86,7 +86,8 @@ export function viewportAt(width: number) {
 }
 
 // The widths for tests of what is inside the text column. Measured in the
-// browser: the column grows with the screen from 304 to 584 px up to about
+// browser, as the width of its text, without the column's 8 px of padding on
+// each side: the column grows with the screen from 304 to 584 px up to about
 // 600 px, stays at 584 px up to just below md (text 18 px), and is 704 px wide
 // from md up (text 20 px), at today's breakpoints (md at 768 px). The table forms and the code "wrap" toggle follow
 // the column. So a test of what is inside the column needs one width per

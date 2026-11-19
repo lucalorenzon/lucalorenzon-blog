@@ -1,4 +1,5 @@
 use crate::markdown;
+use crate::one_column_text::OneColumnText;
 use crate::page_frame::{
     FooterLicence, Heading, HeadingError, IndexedPage, Indexing, PageFrame, PageKind, SITE_NAME,
 };
@@ -348,7 +349,7 @@ pub fn ArticlePage(article: Article, canonical: String) -> impl IntoView {
                 kind: PageKind::Article { published: article.date.to_string() },
             })
         >
-            <main class="long-text-column md:long-text-large" inner_html=html></main>
+            <OneColumnText html=html />
         </PageFrame>
     }
 }

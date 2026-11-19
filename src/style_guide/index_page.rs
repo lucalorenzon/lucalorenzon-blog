@@ -3,6 +3,7 @@
 
 use super::{FOLDER, code_page, colours_page, fonts_page, tables_page, text_page};
 use crate::markdown;
+use crate::one_column_text::OneColumnText;
 use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
@@ -40,10 +41,10 @@ pub fn IndexPage(canonical: String) -> impl IntoView {
                 kind: PageKind::Website,
             })
         >
-            <main class="long-text-column md:long-text-large">
+            <OneColumnText>
                 <div inner_html=markdown::to_html(INDEX)></div>
                 <ul>{entries}</ul>
-            </main>
+            </OneColumnText>
         </PageFrame>
     }
 }
