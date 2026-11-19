@@ -134,7 +134,7 @@ The ones known when the card was written; there may be more.
   component, `OneColumnText`, before this page, and gets a page of its
   own in the style guide, which explains its look at each breakpoint;
   the build links the breakpoints page to it. Cut in two cards:
-  [make the text column a component](make-the-text-column-a-component.md),
+  [make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md),
   a refactor that keeps the published HTML as it is, then
   [show the text column in the style guide](../backlog/show-the-text-column-in-the-style-guide.md).
   This changes, knowingly, the decision of 2026-11-18 to add no page
@@ -158,13 +158,13 @@ The ones known when the card was written; there may be more.
 
 - [Read the breakpoints from the configuration](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md),
   which gives the page the values to read.
-- [Make the text column a component](make-the-text-column-a-component.md)
+- [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md)
   and [show the text column in the style guide](../backlog/show-the-text-column-in-the-style-guide.md),
   so the column can say what changes in it, and has a page to link to.
 
 ## References
 
-- [Make the text column a component](make-the-text-column-a-component.md):
+- [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md):
   the first of the two cards this page waits for.
 - [Show the text column in the style guide](../backlog/show-the-text-column-in-the-style-guide.md):
   the second, the page this one links the column to.

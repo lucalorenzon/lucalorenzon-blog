@@ -16,13 +16,19 @@ visible change of the site.
 
 ## What is known
 
-- **The column becomes a component first**, `OneColumnText`, in the
-  card [make the text column a component](../wip/make-the-text-column-a-component.md).
-- **What changes in it** (checked on 2026-11-18): at 768 pixels its
-  text grows from 18 to 20 pixels and the column widens. Measured in
-  the browser, the column grows with the screen from 304 to 584
-  pixels up to about 600 pixels, stays at 584 pixels up to just below
-  768, and is 704 pixels wide from 768 up (`end2end/tests/support.ts`).
+- **The column is a component**, `OneColumnText`
+  (`src/one_column_text.rs`), since the card
+  [make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md).
+- **What changes in it** (checked on 2026-11-19 by the browser test
+  `text-column.spec.ts`): at 768 pixels its text grows from 18 to 20
+  pixels, and its maximum width, 60 characters of its own font, grows
+  with it: 600 pixels below 768, 720 pixels from 768, with Literata.
+  Below its maximum it fills the screen; it is always centred. The
+  figures of 584 and 704 pixels in `end2end/tests/support.ts` are the
+  width of its text, without its 8 pixels of padding on each side.
+- **The browser test of the column moves here**: written on the style
+  guide's text page by the refactor, it moves to this page once it
+  exists (agreed by the user on 2026-11-19).
 - **The page declares what changes at each breakpoint**, and is the
   one the build links from the breakpoints page (said by the user on
   2026-11-19).
@@ -48,11 +54,11 @@ The ones known when the card was written; there may be more.
 
 ## Dependencies
 
-- [Make the text column a component](../wip/make-the-text-column-a-component.md).
+- [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md).
 
 ## References
 
-- [Make the text column a component](../wip/make-the-text-column-a-component.md):
+- [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md):
   the component this page shows.
 - [Show the breakpoints in the style guide](../wip/show-the-breakpoints-in-the-style-guide.md):
   the page that links to this one.
