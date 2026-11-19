@@ -38,7 +38,7 @@ component, for every component to come.
   the change, named, with the classes that make it, sometimes none;
   so the heading would be `## <component code> | <change name>`. This
   agrees with the decision of 2026-11-18 to explain the change the
-  reader sees, not the class. Not confirmed by the user yet.
+  reader sees, not the class. Confirmed by the user on 2026-11-19.
 - **The first component to try it on** is `OneColumnText`
   (`src/one_column_text.rs`), the only component of the site so far
   that changes at a breakpoint and is not the page frame.
@@ -62,6 +62,10 @@ by the agent on 2026-11-19, from the user's idea.
   checked, is to be found out.
 - **What a change is**: a name with its breakpoint and its classes,
   as the agent read it, or something else.
+
+  **Answered by the user on 2026-11-19.** A named change, with its
+  breakpoint and the classes that make it, sometimes none, as the
+  agent read it. What else a change carries is for the spike to find.
 - **How long the spike lasts**: its time limit, agreed when it is
   taken into work.
 
