@@ -79,8 +79,8 @@ live since 2026-10-26
     a page of its own, in work
     ([card](wip/show-the-text-column-in-the-style-guide.md)), which
     waits for a spike on how a component tells the build what changes
-    in it at each breakpoint, next
-    ([card](backlog/try-a-breakpoint-declaration-on-the-text-column.md)).
+    in it at each breakpoint, in work
+    ([card](wip/try-a-breakpoint-declaration-on-the-text-column.md)).
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle

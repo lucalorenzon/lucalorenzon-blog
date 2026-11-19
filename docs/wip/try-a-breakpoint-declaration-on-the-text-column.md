@@ -1,14 +1,14 @@
 # Try a breakpoint declaration on the text column
 
 - **Created:** 2026-11-19
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
 The user opened this card on 2026-11-19, while taking up the card
-[show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md).
+[show the text column in the style guide](show-the-text-column-in-the-style-guide.md).
 Both that page and the page of the breakpoints
-([show the breakpoints in the style guide](../wip/show-the-breakpoints-in-the-style-guide.md))
+([show the breakpoints in the style guide](show-the-breakpoints-in-the-style-guide.md))
 need each component to tell the build what changes in it at each
 breakpoint, so that what the pages say cannot get out of step with
 the code. How a component does it is not known, and the user said
@@ -69,12 +69,16 @@ by the agent on 2026-11-19, from the user's idea.
 - **How long the spike lasts**: its time limit, agreed when it is
   taken into work.
 
+  **Answered by the user on 2026-11-19.** One working session, at
+  most 200,000 tokens of the agent's context. When the limit is
+  reached, the finding says what is known and what is still open.
+
 ## References
 
-- [Show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md):
+- [Show the text column in the style guide](show-the-text-column-in-the-style-guide.md):
   the first page that would use the mechanism; it waits for this
   finding.
-- [Show the breakpoints in the style guide](../wip/show-the-breakpoints-in-the-style-guide.md):
+- [Show the breakpoints in the style guide](show-the-breakpoints-in-the-style-guide.md):
   the page that groups the changes by breakpoint.
 - [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md):
   the component the spike tries the mechanism on.
