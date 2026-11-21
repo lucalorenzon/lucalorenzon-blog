@@ -1,7 +1,7 @@
 # Decide whether to cut the text column again
 
 - **Created:** 2026-11-21
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
