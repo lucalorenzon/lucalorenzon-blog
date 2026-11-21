@@ -6,7 +6,7 @@
 ## Why
 
 Opened by the agent on 2026-11-21, at the close of the spike
-[try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md),
+[try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md),
 with the user's agreement. The spike found that a component does not
 declare what changes in it at a breakpoint: its page in the style
 guide shows it at each of its thresholds, and a test checks that
@@ -63,7 +63,7 @@ was superseded.
 
 ## References
 
-- [Try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md):
+- [Try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md):
   the spike whose finding this page applies.
 - [Show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md):
   the page this one replaces, and the decisions it inherits.

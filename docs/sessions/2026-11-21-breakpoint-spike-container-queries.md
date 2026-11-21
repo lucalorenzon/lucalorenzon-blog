@@ -13,7 +13,7 @@
 Goal: the first session of the spike on how a component tells the
 build what changes in it at each breakpoint, tried on the text column
 (card
-[try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md)).
+[try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md)).
 The session started on 2026-11-19 and ended on 2026-11-21. Technical
 details, sources and reasons are in the card.
 
@@ -117,4 +117,4 @@ plan.
 - The second session of the spike, starting from whether the header
   and the footer move to containers, then writing the finding and
   deleting the throwaway branch: card
-  [try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md).
+  [try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md).

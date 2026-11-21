@@ -6,7 +6,7 @@
 ## Why
 
 Opened by the agent on 2026-11-21, at the close of the spike
-[try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md),
+[try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md),
 with the user's agreement. The user decided there that the text of
 the page frame takes its sizes from the ranges the site injects, as
 the column's text does, growing with the screen rather than with a
@@ -49,7 +49,7 @@ The ones known when the card was written; there may be more.
 
 ## References
 
-- [Try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md):
+- [Try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md):
   the spike that decided it.
 - [Let the column's text grow within a range the site injects](let-the-column-text-grow-within-an-injected-range.md):
   the first use of the ranges.

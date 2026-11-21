@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-19
+Last updated: 2026-11-21
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -69,18 +69,25 @@ live since 2026-10-26
     its regression test; and the proof that those cases stop the build
     when a code font moves the threshold, done
     ([card](done/2026-11-18_measure-the-fonts-again-when-they-change.md)).
-    Still to do before publishing: the breakpoints, cut in two: their
-    values read from `config/` by the build and the tests, done
-    ([card](done/2026-11-18_read-the-breakpoints-from-the-configuration.md)), then
-    the page, in work
-    ([card](done/2026-11-21_show-the-breakpoints-in-the-style-guide.md)), which
-    waits for the text column made a component, done
-    ([card](done/2026-11-19_make-the-text-column-a-component.md)), and shown in
-    a page of its own, in work
-    ([card](wip/show-the-text-column-in-the-style-guide.md)), which
-    waits for a spike on how a component tells the build what changes
-    in it at each breakpoint, in work
-    ([card](wip/try-a-breakpoint-declaration-on-the-text-column.md)).
+    The breakpoints, their values read from `config/` by the build and
+    the tests, done
+    ([card](done/2026-11-18_read-the-breakpoints-from-the-configuration.md));
+    their page superseded
+    ([card](done/2026-11-21_show-the-breakpoints-in-the-style-guide.md))
+    by the finding of a spike, done
+    ([card](done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md)):
+    a component's page shows what changes in it, nothing is declared.
+    Still to do before publishing, two pages of components: the text
+    column, made a component, done
+    ([card](done/2026-11-19_make-the-text-column-a-component.md)), its
+    text first made to grow within a range the site injects
+    ([card](backlog/let-the-column-text-grow-within-an-injected-range.md)),
+    then its page, in work
+    ([card](wip/show-the-text-column-in-the-style-guide.md)); and the
+    page frame, its text first made to grow within the same ranges
+    ([card](backlog/let-the-frame-text-grow-within-the-injected-ranges.md)),
+    then its page
+    ([card](backlog/show-the-page-frame-in-the-style-guide.md)).
 - [Update the screen reader check for an English site](backlog/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle
@@ -88,6 +95,10 @@ live since 2026-10-26
 
 ## Next
 
+- [Decide whether to cut the text column again](backlog/decide-whether-to-cut-the-text-column-again.md),
+  since it holds the look of the whole text besides the column; it
+  bears on how the column's page shows samples without a second
+  `<main>`.
 - [Check the table widths against Chromium's rounding](backlog/check-table-widths-against-chromium-rounding.md),
   which drew the code font a whole number of pixels wide on Linux and
   may do the same with the tables' text.

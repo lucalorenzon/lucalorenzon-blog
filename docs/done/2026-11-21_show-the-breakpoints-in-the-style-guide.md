@@ -149,7 +149,7 @@ The ones known when the card was written; there may be more.
 
   **Answered by the user on 2026-11-21: no, the page is superseded.**
   The spike
-  ([try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md))
+  ([try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md))
   found that a component does not declare what changes in it: its own
   page in the style guide shows it at each of its thresholds, and a
   test checks that what it shows is true. The column moves off the
@@ -195,7 +195,7 @@ The questions still open when the card was superseded, all moved to
 
 ## References
 
-- [Try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md):
+- [Try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md):
   the spike whose finding superseded this page.
 - [Show the page frame in the style guide](../backlog/show-the-page-frame-in-the-style-guide.md):
   the page that replaces this one, and takes its open questions.

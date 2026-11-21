@@ -120,6 +120,15 @@ twice. The price: until then, the two articles stay test pages.
     page, with the changes whose components have no page yet
     declared as pages to come
     ([card](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md)).
+    The page was superseded on 2026-11-21 by the finding of a spike
+    ([card](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md)):
+    each component's page shows what changes in it. Its place is
+    taken by two pages of components, the text column
+    ([card](show-the-text-column-in-the-style-guide.md)) and the page
+    frame
+    ([card](../backlog/show-the-page-frame-in-the-style-guide.md)),
+    each after its text is made to grow within ranges the site
+    injects.
 
   Why: the site's whole look is shown at once, and the article on it
   ([card](../backlog/write-an-article-on-the-style-guide.md)) tells a

@@ -113,7 +113,7 @@ plan.
 
 - Try how a component declares what changes in it at each breakpoint,
   on the text column: card
-  [try a breakpoint declaration on the text column](../backlog/try-a-breakpoint-declaration-on-the-text-column.md).
+  [try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md).
 - Show the text column in the style guide, after the spike: card
   [show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md).
 - Show the breakpoints in the style guide, after the column's page:

@@ -51,7 +51,7 @@ The ones known when the card was written; there may be more.
 
   **Answered by the user on 2026-11-19, in part.** Neither yet: the
   mechanism is tried first, in a spike on this component alone
-  ([try a breakpoint declaration on the text column](try-a-breakpoint-declaration-on-the-text-column.md)),
+  ([try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md)),
   and this page waits for its finding. Why: the user's first idea of
   the mechanism, a trait the component implements, which also gives
   the build what it needs to compose the component's own page, was
@@ -91,7 +91,7 @@ The ones known when the card was written; there may be more.
 ## Dependencies
 
 - [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md).
-- [Try a breakpoint declaration on the text column](try-a-breakpoint-declaration-on-the-text-column.md),
+- [Try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md),
   whose finding says how the component tells the build what changes
   in it.
 - [Let the column's text grow within a range the site injects](../backlog/let-the-column-text-grow-within-an-injected-range.md),
@@ -99,7 +99,7 @@ The ones known when the card was written; there may be more.
 
 ## References
 
-- [Try a breakpoint declaration on the text column](try-a-breakpoint-declaration-on-the-text-column.md):
+- [Try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md):
   the spike this page waits for.
 - [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md):
   the component this page shows.

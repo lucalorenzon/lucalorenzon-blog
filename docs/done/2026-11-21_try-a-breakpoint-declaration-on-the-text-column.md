@@ -1,12 +1,13 @@
 # Try a breakpoint declaration on the text column
 
 - **Created:** 2026-11-19
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-21
 
 ## Why
 
 The user opened this card on 2026-11-19, while taking up the card
-[show the text column in the style guide](show-the-text-column-in-the-style-guide.md).
+[show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md).
 Both that page and the page of the breakpoints
 ([show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md))
 need each component to tell the build what changes in it at each
@@ -113,7 +114,7 @@ Sources:
 
 Run on 2026-11-20 by a sub-agent (Claude Sonnet 5.5), on a throwaway
 branch, `worktree-agent-afb8353149f05acd9` (commit `d018d05`, based on
-`6ed629e`), deleted when the spike closes; the agent checked the
+`6ed629e`), deleted at the spike's close on 2026-11-21; the agent checked the
 generated rule and the samples' screenshot. The change tried: the
 frame's `div#top` made a container by a new utility,
 `page-container` (`container-type: inline-size`); a container size
@@ -184,6 +185,18 @@ by the agent on 2026-11-19, from the user's idea, except where said.
   user on 2026-11-19, after the search above: if others have solved
   the problem the other way, the user wants either to change position
   or to have a good reason to defend it.
+
+  **Answered at the close on 2026-11-21, by the decisions below; the
+  agent's reading, not discussed on its own.** The first direction, a
+  declaration the build reads from the component, had no example
+  among the sources. The direction the spike ended on follows common
+  practice: the component is observed, not declared (the second way
+  of the search); a container query for a component placed in the
+  page, the screen's breakpoints for the page's skeleton, as the
+  sources advise; and sizes that grow smoothly within bounds, as
+  intrinsic design suggests. What is the site's own is that the bounds
+  are injected by the site as shared values, which design systems
+  call design tokens.
 - **Who decides what changes at a breakpoint**: the component itself,
   or whoever uses it, as with the responsive properties above. Raised
   by the agent on 2026-11-19.
@@ -225,6 +238,14 @@ by the agent on 2026-11-19, from the user's idea, except where said.
   and that the site does it already for colours, fonts and
   breakpoints, not for text sizes, written inside the column's
   classes.
+
+  **Answered by the user on 2026-11-21, through the decision on the
+  ranges below.** The component, within bounds the site injects: the
+  site sets the smallest and largest text size and the widths at which
+  they are reached, and the component grows within them with the
+  space it has. The caller passes nothing. The view of the first
+  session, the site offering a set of sizes to choose from, gave way
+  to a range; see "Whether the column needs a breakpoint at all".
 - **Whether a component changes with the screen or with the space it
   has in the page.** Raised by the agent on 2026-11-19, from the
   user's words "the space it has".
@@ -327,15 +348,6 @@ by the agent on 2026-11-19, from the user's idea, except where said.
   by the agent: `config/breakpoints.txt` stays the list of the
   screen's breakpoints, and the container sizes need a place of their
   own.
-- **Where the explanation lives**: in the trait's description, in the
-  Markdown, or both, and then which says what.
-
-  **The user's view on 2026-11-19, still under discussion.** The
-  documentation stays with the code, as a principle (otherwise it
-  would be in a repository of its own). The user had thought of a
-  separate place, dedicated and linked to the component, to avoid one
-  large file to open and scroll for every change; ready to revise
-  this.
 - **What keeps the declaration in step with the component's view**.
   The trait is written by hand too: if a class changes in the view
   and not in the trait, the two part, and the problem is only moved.
@@ -351,6 +363,16 @@ by the agent on 2026-11-19, from the user's idea, except where said.
   so the user had fallen back on documentation written and kept in
   step by hand. This is at odds with the decision of 2026-11-18 that
   the build finds the changes.
+
+  **Answered by the user on 2026-11-21: nothing is declared, so
+  nothing has to be kept in step.** Agreed at the end of the first
+  session and confirmed at the close: each component's page in the
+  style guide shows the component at its thresholds, or across its
+  range, and a test checks that what the page shows is true. A page
+  made by the build from the component cannot contradict the code.
+  This also supersedes the decision of 2026-11-18 that the build finds
+  the changes and the author's Markdown explains them: there is no
+  list of changes left to find.
 - **Whether the column needs a breakpoint at all**, or could change
   its text size smoothly with the width, as intrinsic design suggests.
   Raised by the agent on 2026-11-19, from the search.
@@ -408,6 +430,8 @@ by the agent on 2026-11-19, from the user's idea, except where said.
   **Answered by the user on 2026-11-19.** A named change, with its
   breakpoint and the classes that make it, sometimes none, as the
   agent read it. What else a change carries is for the spike to find.
+  The question lost its object on 2026-11-21: nothing is declared,
+  so a change needs no shape of its own.
 - **How long the spike lasts**: its time limit, agreed when it is
   taken into work.
 
@@ -419,13 +443,91 @@ by the agent on 2026-11-19, from the user's idea, except where said.
   within the same limit of tokens: the questions above are worth
   discussing, and one session would not be enough.
 
+## Recap
+
+### The finding
+
+A component does not tell the build what changes in it at a
+breakpoint. Its page in the style guide shows it, and a test checks
+what the page shows. The mechanism the spike was opened to try, a
+trait the component implements, is not built.
+
+- **The text column leaves the screen's breakpoints.** Its text grows
+  smoothly with the space it has in the page, through a container
+  query, within a range of sizes the site injects. The experiment on a
+  throwaway branch showed that a container works with no side effect,
+  at the cost of a band of about 15 pixels, with a classic scrollbar,
+  where the column and the header disagree.
+- **The page frame stays on the screen's breakpoints** for its changes
+  of layout, which cannot be smooth; its text takes its sizes from the
+  same ranges, growing with the screen.
+- **The page of the breakpoints is superseded** by a page of the page
+  frame and the page of the text column.
+
+### Commits
+
+- The spike taken into work (`c84eaac`); the search and the questions
+  regrouped (`bdea3cb`); the turn to container queries (`6ed629e`);
+  the experiment's findings (`22816a9`); the user's view on the
+  breakpoints (`3ee1298`). First session, minute
+  [2026-11-21, the breakpoint spike turns to container queries](../sessions/2026-11-21-breakpoint-spike-container-queries.md).
+- The page frame kept on the screen's breakpoints (`a2a6700`); the
+  text growing within injected ranges (`a0bd441`); the new cards
+  (`0fca5ae`); the breakpoints page superseded (`1dbcc0c`); this
+  close, with the throwaway branch deleted. Second session.
+
+## Cautions
+
+- **The experiment's branch is deleted.** Its commit `d018d05` is no
+  longer reachable; what it showed is written above, under "What the
+  experiment with a container query found".
+- **The tests' headless Chromium hides the scrollbars**, so no browser
+  test sees the band where a container and the screen disagree.
+- **Tailwind leaves out, with no error, the rule of a container size
+  that is not defined or is mistyped**; until the Rust checks know the
+  containers, nothing catches it.
+- **A risk not verified for the planned sticky header**: if declaring
+  the page a container makes it the reference of the elements
+  positioned as fixed, a fixed header inside it would scroll away with
+  the page. The agent recalled that the specification removed this
+  from containers of width only, without knowing whether every
+  browser follows. The sticky header has no card yet.
+- **The `iframe` for the frame's samples is an idea, not tried.**
+
+## What it leaves
+
+- **Where the explanation of a component lives**: beside its code, or
+  in the Markdown. The user's view on 2026-11-19: the documentation
+  stays with the code, as a principle; the user had thought of a
+  separate place, dedicated and linked to the component, to avoid one
+  large file to open and scroll for every change; ready to revise
+  this. Moved to
+  [show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md).
+- **The column's text within an injected range**, with the Rust checks
+  that learn the containers and the check of the zoom:
+  [let the column's text grow within a range the site injects](../backlog/let-the-column-text-grow-within-an-injected-range.md).
+- **The frame's text within the same ranges**:
+  [let the page frame's text grow within the injected ranges](../backlog/let-the-frame-text-grow-within-the-injected-ranges.md).
+- **The page of the page frame**, with the open questions of the
+  breakpoints page:
+  [show the page frame in the style guide](../backlog/show-the-page-frame-in-the-style-guide.md).
+- **Whether `OneColumnText` is cut wrong**, and how a sample avoids a
+  second `<main>`:
+  [decide whether to cut the text column again](../backlog/decide-whether-to-cut-the-text-column-again.md).
+
 ## References
 
-- [Show the text column in the style guide](show-the-text-column-in-the-style-guide.md):
-  the first page that would use the mechanism; it waits for this
-  finding.
+- [Show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md):
+  the first page that would have used the mechanism; it shows the
+  column instead.
 - [Show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md):
-  the page that groups the changes by breakpoint.
+  the page that was to group the changes by breakpoint, superseded.
+- [Let the column's text grow within a range the site injects](../backlog/let-the-column-text-grow-within-an-injected-range.md),
+  [let the page frame's text grow within the injected ranges](../backlog/let-the-frame-text-grow-within-the-injected-ranges.md),
+  [show the page frame in the style guide](../backlog/show-the-page-frame-in-the-style-guide.md)
+  and
+  [decide whether to cut the text column again](../backlog/decide-whether-to-cut-the-text-column-again.md):
+  the cards born of the finding.
 - [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md):
   the component the spike tries the mechanism on.
 - [Show the fonts in the style guide](../done/2026-11-16_show-the-fonts-in-the-style-guide.md):

@@ -6,7 +6,7 @@
 ## Why
 
 Opened by the agent on 2026-11-21, at the close of the spike
-[try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md),
+[try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md),
 with the user's agreement. In the spike the user observed that
 `OneColumnText` is not generic because it is cut wrong: it took over
 things that are not about "one column". The refactor that made it a
@@ -39,7 +39,7 @@ The ones known when the card was written; there may be more.
 
 ## References
 
-- [Try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md):
+- [Try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md):
   the spike where the question came up.
 - [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md):
   the refactor that gave the component its shape.

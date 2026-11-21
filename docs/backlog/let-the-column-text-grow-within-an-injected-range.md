@@ -6,7 +6,7 @@
 ## Why
 
 Opened by the agent on 2026-11-21, at the close of the spike
-[try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md),
+[try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md),
 with the user's agreement. The user decided there that the text of
 the column grows smoothly with the space it has in the page, within a
 range of sizes the site injects, instead of jumping from 18 to 20
@@ -85,7 +85,7 @@ The ones known when the card was written; there may be more.
 
 ## References
 
-- [Try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md):
+- [Try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md):
   the spike that decided it.
 - [Let the page frame's text grow within the injected ranges](let-the-frame-text-grow-within-the-injected-ranges.md):
   the same ranges, for the header and the footer.
