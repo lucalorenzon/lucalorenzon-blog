@@ -260,6 +260,29 @@ by the agent on 2026-11-19, from the user's idea, except where said.
   thresholds, and a test checks that what it shows is true. Adopting
   container queries changes behaviour (the scrollbar), so it would be
   a card of its own, not a refactor.
+
+  **The user's answer on 2026-11-21.** The reading convinces the user.
+  Once this philosophy is taken, the page of the breakpoints may make
+  no sense: the header and the footer, still tied to the screen, would
+  move to containers too, in time, and then a page of the breakpoints
+  would have nothing left to show. What makes sense instead is to
+  define the style the site injects: the values the components choose
+  from (text sizes, spacing, container sizes), the design tokens of
+  the agent's reading, which the user confirmed. The agent named the
+  consequences: the breakpoints page's card, in work, would be
+  superseded rather than finished, a change of the decision of
+  2026-11-18; `config/breakpoints.txt` would become the list of the
+  container sizes; and moving the page's skeleton to containers goes
+  further than the sources, which keep the screen's breakpoints for
+  it. For the outermost element its space and the screen are nearly
+  the same, so the gain is one mechanism for the whole site, and no
+  disagreement between header and text in the scrollbar's band; the
+  cost is declaring the whole page a container, which the experiment
+  did with no side effect.
+
+  **Not settled.** Whether the header and the footer move to
+  containers is the user's view at the end of the first session, to
+  be checked first in the second session.
 - **Where the explanation lives**: in the trait's description, in the
   Markdown, or both, and then which says what.
 
