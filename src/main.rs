@@ -7,7 +7,6 @@ mod licence_page;
 mod literata_widths;
 mod markdown;
 mod not_found_page;
-mod one_column_text;
 mod page_frame;
 mod robots_txt;
 mod site_address;

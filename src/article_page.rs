@@ -1,5 +1,4 @@
 use crate::markdown;
-use crate::one_column_text::OneColumnText;
 use crate::page_frame::{
     FooterLicence, Heading, HeadingError, IndexedPage, Indexing, PageFrame, PageKind, SITE_NAME,
 };
@@ -348,9 +347,8 @@ pub fn ArticlePage(article: Article, canonical: String) -> impl IntoView {
                 description: article.description.as_str().to_owned(),
                 kind: PageKind::Article { published: article.date.to_string() },
             })
-        >
-            <OneColumnText html=html />
-        </PageFrame>
+            html=html
+        />
     }
 }
 

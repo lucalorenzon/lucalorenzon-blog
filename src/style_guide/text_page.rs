@@ -3,7 +3,7 @@
 //! Markdown converted as every article is, so the elements are the real ones.
 
 use super::FOLDER;
-use super::navigation::GuideMain;
+use super::navigation::GuideBody;
 use crate::markdown;
 use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
@@ -35,7 +35,7 @@ pub fn TextPage(canonical: String, body: String) -> impl IntoView {
                 kind: PageKind::Website,
             })
         >
-            <GuideMain title="Text" body=body />
+            <GuideBody title="Text" body=body />
         </PageFrame>
     }
 }

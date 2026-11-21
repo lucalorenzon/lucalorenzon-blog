@@ -1,4 +1,3 @@
-use crate::one_column_text::OneColumnText;
 use crate::page_frame::{FooterLicence, Heading, Indexing, PageFrame};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
@@ -19,11 +18,9 @@ pub fn NotFoundPage(site_path: String) -> impl IntoView {
             footer_licence=FooterLicence::ReuseWithAttribution
             indexing=Indexing::NoIndex
         >
-            <OneColumnText>
-                <p>
-                    <a href=site_path>"Go to the home page"</a>
-                </p>
-            </OneColumnText>
+            <p>
+                <a href=site_path>"Go to the home page"</a>
+            </p>
         </PageFrame>
     }
 }

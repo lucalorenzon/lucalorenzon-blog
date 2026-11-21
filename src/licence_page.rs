@@ -1,5 +1,4 @@
 use crate::markdown;
-use crate::one_column_text::OneColumnText;
 use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
@@ -25,9 +24,8 @@ pub fn LicencePage(canonical: String) -> impl IntoView {
                 description: DESCRIPTION.to_owned(),
                 kind: PageKind::Website,
             })
-        >
-            <OneColumnText html=markdown::to_html(LICENCE) />
-        </PageFrame>
+            html=markdown::to_html(LICENCE)
+        />
     }
 }
 

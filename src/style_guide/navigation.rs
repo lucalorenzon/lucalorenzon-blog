@@ -1,6 +1,6 @@
 //! What the style guide's pages, except its index, have in common around their text: the
 //! breadcrumb above it ("Style guide › Code blocks") and the link back to the top below it.
-//! A page of the guide puts its text in [`GuideMain`] instead of writing its own `<main>`, so
+//! A page of the guide puts its text in [`GuideBody`], which the frame places in its `<main>`, so
 //! the pages to come get both without asking.
 //!
 //! The breadcrumb follows the WAI-ARIA Authoring Practices pattern, except that it does not
@@ -12,7 +12,6 @@
 //! the browser's starting point for the Tab key to its target, so the next Tab reaches the
 //! first thing of the page (the logo) rather than the thing after the link.
 
-use crate::one_column_text::OneColumnText;
 use leptos::prelude::*;
 
 /// The guide's index, as a page of the guide writes the address: the folder holds it, and the
@@ -22,24 +21,22 @@ const INDEX_ADDRESS: &str = "./";
 /// The text of the link below the page.
 const BACK_TO_TOP: &str = "Back to top";
 
-/// The `<main>` of a page of the guide: breadcrumb, the page's text (HTML made from its
-/// Markdown), and the link back to the top. `title` is the page's name in the breadcrumb.
+/// What a page of the guide puts in the frame's `<main>`: breadcrumb, the page's text (HTML made
+/// from its Markdown), and the link back to the top. `title` is the page's name in the breadcrumb.
 #[component]
-pub fn GuideMain(title: &'static str, body: String) -> impl IntoView {
+pub fn GuideBody(title: &'static str, body: String) -> impl IntoView {
     view! {
-        <OneColumnText>
-            <nav aria-label="Breadcrumb" class="breadcrumb">
-                <ol>
-                    <li>
-                        <a href=INDEX_ADDRESS>"Style guide"</a>
-                        <span aria-hidden="true" class="breadcrumb-separator">"›"</span>
-                    </li>
-                    <li><span aria-current="page">{title}</span></li>
-                </ol>
-            </nav>
-            <div inner_html=body></div>
-            <p><a href="#top">{BACK_TO_TOP}</a></p>
-        </OneColumnText>
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+            <ol>
+                <li>
+                    <a href=INDEX_ADDRESS>"Style guide"</a>
+                    <span aria-hidden="true" class="breadcrumb-separator">"›"</span>
+                </li>
+                <li><span aria-current="page">{title}</span></li>
+            </ol>
+        </nav>
+        <div inner_html=body></div>
+        <p><a href="#top">{BACK_TO_TOP}</a></p>
     }
 }
 

@@ -3,6 +3,10 @@ use leptos::prelude::*;
 use std::sync::LazyLock;
 use unicode_segmentation::UnicodeSegmentation;
 
+/// The classes of the `<main>`: the text column's look, and the larger text from `md`. They are
+/// in `style/input.css`.
+const MAIN_CLASSES: &str = "long-text-column md:long-text-large";
+
 /// The ASCII-art logo (narrow version of the old site's `AsciiArtLogo`).
 pub const LOGO: &str = r#"    __        __   ______  __________
    / / _   __/ /__/ ____ \/__  /__  /_____
@@ -163,8 +167,12 @@ fn common_tags(page: IndexedPage, heading: String, og_type: &'static str) -> imp
 }
 
 /// The frame every page shares: the `<html>` element with its `<head>`, the
-/// header (logo, title, reserved menu slot) and the footer. The page supplies
-/// its tab title, its `<h1>` and its `<main>` element.
+/// header (logo, title, reserved menu slot), the `<main>` (the text column: 60 characters wide
+/// at most and centred, its text 18px and from `md` 20px) and the footer. The page supplies its
+/// tab title, its `<h1>` and what goes in the `<main>`.
+///
+/// The `<main>` holds either the HTML made from a Markdown file (`html`, written as it is) or
+/// other components (`children`); the page gives one of the two.
 ///
 /// `address_prefix` is put in front of the addresses of the stylesheet and of
 /// the icon: `""` for the pages that write addresses relative to themselves
@@ -181,7 +189,8 @@ pub fn PageFrame(
     #[prop(into)] address_prefix: String,
     footer_licence: FooterLicence,
     indexing: Indexing,
-    children: Children,
+    #[prop(optional, into)] html: Option<String>,
+    #[prop(optional)] children: Option<Children>,
 ) -> impl IntoView {
     let about_page = format!("{address_prefix}about.html");
     let home_page = if address_prefix.is_empty() {
@@ -211,6 +220,11 @@ pub fn PageFrame(
             ))),
         },
         Indexing::NoIndex => Either::Right(view! { <meta name="robots" content="noindex" /> }),
+    };
+    let main = match html {
+        Some(html) => view! { <main class=MAIN_CLASSES inner_html=html></main> }.into_any(),
+        None => view! { <main class=MAIN_CLASSES>{children.map(|children| children())}</main> }
+            .into_any(),
     };
     view! {
         <html lang="en">
@@ -244,7 +258,7 @@ pub fn PageFrame(
                             class="reserved-menu-slot"
                         ></div>
                     </header>
-                    {children()}
+                    {main}
                     <footer class="footer-sticky-bottom md:footer-text-large">
                         <p>
                             "© 2026 Luca Lorenzon · "
@@ -260,6 +274,50 @@ pub fn PageFrame(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The classes the `<main>` must carry, written out here so that the test does not depend on
+    /// the constant of the component.
+    const EXPECTED_CLASSES: &str = "long-text-column md:long-text-large";
+
+    fn render(view: impl IntoView + 'static) -> String {
+        let owner = Owner::new();
+        owner.with(|| view.to_html())
+    }
+
+    #[test]
+    fn with_html_it_writes_the_main_with_both_classes_holding_the_html_unchanged() {
+        let html = render(view! {
+            <PageFrame
+                title="Title"
+                heading=Heading::try_from("Heading").unwrap()
+                address_prefix=""
+                footer_licence=FooterLicence::ReuseWithAttribution
+                indexing=Indexing::NoIndex
+                html="<h2>Title</h2><p>Text &amp; more</p>"
+            />
+        });
+        let expected = format!(
+            "<main class=\"{EXPECTED_CLASSES}\"><h2>Title</h2><p>Text &amp; more</p></main>"
+        );
+        assert!(html.contains(&expected), "{html}");
+    }
+
+    #[test]
+    fn with_children_it_writes_the_same_main_holding_the_children() {
+        let html = render(view! {
+            <PageFrame
+                title="Title"
+                heading=Heading::try_from("Heading").unwrap()
+                address_prefix=""
+                footer_licence=FooterLicence::ReuseWithAttribution
+                indexing=Indexing::NoIndex
+            >
+                <p>"Hello"</p>
+            </PageFrame>
+        });
+        let expected = format!("<main class=\"{EXPECTED_CLASSES}\"><p>Hello</p></main>");
+        assert!(html.contains(&expected), "{html}");
+    }
 
     /// A text of exactly `count` graphemes, each one made of `unit`.
     fn of(count: usize, unit: &str) -> String {

@@ -12,7 +12,7 @@
 //! shows here too, and a file added to it gets its sample with nothing written by hand.
 
 use super::FOLDER;
-use super::navigation::GuideMain;
+use super::navigation::GuideBody;
 use crate::markdown;
 use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
@@ -200,7 +200,7 @@ pub fn FontsPage(canonical: String, body: String) -> impl IntoView {
                 kind: PageKind::Website,
             })
         >
-            <GuideMain title="Fonts" body=body />
+            <GuideBody title="Fonts" body=body />
         </PageFrame>
     }
 }

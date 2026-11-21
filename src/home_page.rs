@@ -1,5 +1,4 @@
 use crate::article_page::{Article, newest_first};
-use crate::one_column_text::OneColumnText;
 use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
@@ -37,9 +36,7 @@ pub fn HomePage(canonical: String, articles: Vec<Article>) -> impl IntoView {
                 kind: PageKind::Website,
             })
         >
-            <OneColumnText>
-                <ul class="article-list">{entries}</ul>
-            </OneColumnText>
+            <ul class="article-list">{entries}</ul>
         </PageFrame>
     }
 }

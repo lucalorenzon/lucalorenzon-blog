@@ -1,5 +1,4 @@
 use crate::markdown;
-use crate::one_column_text::OneColumnText;
 use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
 use leptos::prelude::*;
@@ -24,9 +23,8 @@ pub fn CurriculumPage(canonical: String) -> impl IntoView {
                 description: DESCRIPTION.to_owned(),
                 kind: PageKind::Profile,
             })
-        >
-            <OneColumnText html=markdown::to_html(CURRICULUM) />
-        </PageFrame>
+            html=markdown::to_html(CURRICULUM)
+        />
     }
 }
 
