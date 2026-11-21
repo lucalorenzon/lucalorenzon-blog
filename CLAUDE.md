@@ -117,28 +117,13 @@ of work to sub-agents run on the matching model.
 
 ## Session minutes
 
-Every working session ends with a minute in `docs/board/sessions/`, named
-`YYYY-MM-DD-<topic>.md`, committed as the session's last commit. The minute
-records how the session went and who contributed what; once committed it is
-not edited. What a card already says is linked, not repeated. Sections, in
-this order:
+Every working session ends with a minute in `docs/board/sessions/`,
+written with the skill `session-minute`, which says what a minute holds
+and how it is checked. What this repository adds:
 
-1. **Participants and goal:** the user, the agent and its sub-agents with
-   their models; the goal, with a link to the card.
-2. **Decisions:** a numbered table with the MADR roles: decision-makers (who
-   decided), consulted (who gave input), informed (who was told afterwards).
-3. **Discussion:** one short point per topic, saying who raised it, who
-   proposed what and how it ended, with a reference to the decisions it led
-   to. Only what shaped the decisions; technical details stay in the card.
-4. **Outcome:** what changed, with commit references.
-5. **Open points**, if any: questions left unresolved.
-6. **Next steps:** the actions that came out of the session, each with a
-   link to the card that carries it. When they are done is decided by the
-   plan, not by the minute.
-
-Reference: `docs/board/sessions/2026-10-27-run-browser-tests-in-playwright-image.md`.
-Earlier minutes keep their earlier format. Why this format:
-`docs/board/cards/revise-session-minute-format.md`.
+- Reference: `docs/board/sessions/2026-10-27-run-browser-tests-in-playwright-image.md`.
+- Earlier minutes keep their earlier format.
+- Why this format: `docs/board/cards/revise-session-minute-format.md`.
 
 ## Commit attribution
 
