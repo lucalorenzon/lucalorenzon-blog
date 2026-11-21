@@ -280,9 +280,53 @@ by the agent on 2026-11-19, from the user's idea, except where said.
   cost is declaring the whole page a container, which the experiment
   did with no side effect.
 
-  **Not settled.** Whether the header and the footer move to
-  containers is the user's view at the end of the first session, to
-  be checked first in the second session.
+  **Decided by the user on 2026-11-21, in the second session: the
+  page frame stays on the screen's breakpoints, the column moves to a
+  container query.** Checked first, as agreed. The agent named three
+  tensions. For the header and the footer, the space they have is
+  nearly the screen: they always take the page's whole width and are
+  not reused in other contexts, so a container gives them no
+  modularity, only one mechanism for the site and no disagreement
+  with the column in the scrollbar's band. The screen's breakpoints
+  do not disappear anyway: a container query asks only for a width,
+  while the window's height, the orientation, the pointer and the
+  reader's preferences are questions for the screen. And a risk, not
+  verified: if declaring `div#top` a container makes it the reference
+  of the elements positioned as fixed, the planned sticky header would
+  scroll away with the page; the agent recalled that the
+  specification removed this from containers of width only, without
+  knowing whether every browser follows.
+
+  The user expected two gains: one mechanism for the whole site, and
+  no page of the breakpoints, replaced by a page of the page frame and
+  one of the column, then publishing. The agent observed that the two
+  do not depend on each other: the breakpoints page loses its sense
+  because each component's page shows its own thresholds, observed
+  rather than declared, whatever the mechanism; moving the frame to
+  containers serves only the first gain, with more work and the risk
+  above before publishing. Showing the frame at several widths on one
+  page would duplicate its header, footer and main heading, as the
+  experiment duplicated `<main>`; an `iframe` avoids it, since it has
+  a window of its own, so the screen's breakpoints switch at its
+  width, and is a document of its own, to be tried with the
+  accessibility check.
+
+  Two options were weighed:
+
+  - **Chosen: the frame on the screen's breakpoints, the column on a
+    container.** Closer to publishing, as the sources do, with no
+    risk for the sticky header. Accepted costs: two mechanisms to
+    explain, and, with a classic scrollbar, header and text disagree
+    between 768 and about 783 pixels.
+  - **Rejected: everything on containers.** One mechanism, but the
+    user judged it not worth the work before publishing, since the
+    breakpoints page goes in both cases.
+
+  This revises the user's view of the first session, that the header
+  and the footer would move to containers in time. Consequences named
+  by the agent: `config/breakpoints.txt` stays the list of the
+  screen's breakpoints, and the container sizes need a place of their
+  own.
 - **Where the explanation lives**: in the trait's description, in the
   Markdown, or both, and then which says what.
 
