@@ -14,6 +14,10 @@ live since 2026-10-26
 
 ## Now
 
+- [Refer to cards by name in frozen documents](backlog/refer-to-cards-by-name-in-frozen-documents.md),
+  so moving a card no longer breaks links in minutes and finished
+  cards; first, as it has waited since 2026-11-01 while broken links
+  kept appearing.
 - The round of the refactors left waiting is done, not published yet:
   the errors declared with thiserror, started in the domain and printed
   only by the build
@@ -77,8 +81,12 @@ live since 2026-10-26
     by the finding of a spike, done
     ([card](done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md)):
     a component's page shows what changes in it, nothing is declared.
-    Still to do before publishing, two pages of components: the text
-    column, made a component, done
+    Still to do before publishing, two pages of components. First,
+    whether the text column is cut again
+    ([card](backlog/decide-whether-to-cut-the-text-column-again.md)),
+    since it holds the look of the whole text besides the column: it
+    may end quickly with the cut not possible, or change the two
+    pages that follow. Then the text column, made a component, done
     ([card](done/2026-11-19_make-the-text-column-a-component.md)), its
     text first made to grow within a range the site injects
     ([card](backlog/let-the-column-text-grow-within-an-injected-range.md)),
@@ -95,10 +103,6 @@ live since 2026-10-26
 
 ## Next
 
-- [Decide whether to cut the text column again](backlog/decide-whether-to-cut-the-text-column-again.md),
-  since it holds the look of the whole text besides the column; it
-  bears on how the column's page shows samples without a second
-  `<main>`.
 - [Check the table widths against Chromium's rounding](backlog/check-table-widths-against-chromium-rounding.md),
   which drew the code font a whole number of pixels wide on Linux and
   may do the same with the tables' text.
@@ -196,8 +200,6 @@ live since 2026-10-26
   so a returning visitor does not keep the old look.
 - [Check the workflows with actionlint](backlog/lint-workflows-with-actionlint.md),
   in the pipeline rather than on one machine.
-- [Refer to cards by name in frozen documents](backlog/refer-to-cards-by-name-in-frozen-documents.md),
-  so moving a card no longer breaks links in minutes and finished cards.
 - [Show the check results as badges in the README](backlog/show-check-results-as-readme-badges.md),
   from shields.io, after the performance check.
 - [Add a second way to download Tailwind](backlog/add-a-second-way-to-download-tailwind.md),
