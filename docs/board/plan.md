@@ -80,7 +80,7 @@ live since 2026-10-26
     Still to do before publishing, one page of a component. The text
     column, made a component, done
     ([card](cards/make-the-text-column-a-component.md)), went back
-    into the page frame, which writes the `<main>` again, in work
+    into the page frame, which writes the `<main>` again, done
     ([card](cards/decide-whether-to-cut-the-text-column-again.md));
     so the column's page joined the frame's, closed
     ([card](cards/show-the-text-column-in-the-style-guide.md)). First

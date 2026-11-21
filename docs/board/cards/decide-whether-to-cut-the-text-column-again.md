@@ -1,7 +1,8 @@
 # Decide whether to cut the text column again
 
 - **Created:** 2026-11-21
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-21
 
 ## Why
 
@@ -94,6 +95,48 @@ done as a refactor in this card.
   page` in `end2end/README.md`, which names the component, is
   reviewed in the same commit.
 
+## Recap
+
+The column was not cut again: the component `OneColumnText` was
+removed, and the page frame writes the `<main>` again, between the
+header and the footer.
+
+- The answers and the acceptance tests written in the card
+  (`392e900`).
+- The refactor (`fa15da1`), written by a sub-agent on Sonnet 5.5 and
+  checked by the agent: `PageFrame` writes the `<main>` with the
+  classes `long-text-column` and `md:long-text-large`, held in one
+  constant, and takes either the HTML made from a Markdown file
+  (`html`) or other components (`children`); the component's two
+  unit tests moved to the frame. The eight pages that used the
+  component give the frame what they gave it. In the style guide,
+  `GuideMain` became `GuideBody`, since it now returns only what goes
+  inside the `<main>`. The row of the column's browser test in
+  `end2end/README.md` and the repository map in `CLAUDE.md` were
+  updated in the same commit.
+- Every acceptance test passed: the site built after the change was
+  compared with the one built before it and is identical byte for
+  byte, the stylesheet included; formatting, clippy, 423 unit tests,
+  the build, the type check and 275 browser tests passed, with one
+  skipped, Lighthouse included.
+- The consequences on the other cards (`e487148`): the column's page
+  in the style guide was closed, and what it was to show joined the
+  page of the frame
+  ([show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md)),
+  decided by the user; the card on the column's growing text no
+  longer names the removed file.
+
+## Cautions
+
+- **The look of the text is still given to every page**, through the
+  frame's `<main>`, also to pages not made from Markdown: the home
+  page's list of boxes has to win over the column's rule for lists.
+  A page that needs a `<main>` without that look needs a change to
+  the frame first.
+- **The code block takes its spacing from `--long-text-size`**, the
+  property the `<main>`'s class declares (`style/input.css`): it
+  looks right only inside the frame's `<main>`.
+
 ## References
 
 - [Try a breakpoint declaration on the text column](try-a-breakpoint-declaration-on-the-text-column.md):
@@ -103,4 +146,6 @@ done as a refactor in this card.
 - [Show the text column in the style guide](show-the-text-column-in-the-style-guide.md):
   the page that would show the column's samples.
 - [Let the column's text grow within a range the site injects](let-the-column-text-grow-within-an-injected-range.md):
-  the next change to the component.
+  the next change to the column, now in the frame.
+- [Show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md):
+  the page that shows the column, since its own page joined it.
