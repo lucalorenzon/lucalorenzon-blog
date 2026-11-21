@@ -109,6 +109,71 @@ Sources:
 [CSS Containment Module Level 3](https://w3.org/TR/css-contain-3/),
 [OddBird, containment](https://css.oddbird.net/rwd/query/contain/).
 
+### What the experiment with a container query found
+
+Run on 2026-11-20 by a sub-agent (Claude Sonnet 5.5), on a throwaway
+branch, `worktree-agent-afb8353149f05acd9` (commit `d018d05`, based on
+`6ed629e`), deleted when the spike closes; the agent checked the
+generated rule and the samples' screenshot. The change tried: the
+frame's `div#top` made a container by a new utility,
+`page-container` (`container-type: inline-size`); a container size
+`--container-column: 48rem` (768 pixels) in a `@theme` block; the
+column's class `@column:long-text-large` instead of
+`md:long-text-large`. Before the change, 423 unit tests and 275
+browser tests passed.
+
+1. **Tailwind 4.3.5 supports it** with no plugin: the stylesheet gets
+   `@container (min-width:48rem){.\@column\:long-text-large{...}}`.
+   If the container size is not defined, or its name is mistyped, the
+   rule is left out with no error; the Rust checks see only the class
+   name, so neither would notice.
+2. **The Rust checks of the classes refuse the new classes**: six
+   tests failed, on `@container`, a class of Tailwind and not of the
+   stylesheet, and on the `@column:` prefix, unknown to
+   `without_prefix`. The sub-agent used a utility of the site for the
+   container and wrote the prefix into the code by hand, a shortcut;
+   the real answer would read the container sizes from `config/`, as
+   the breakpoints are.
+3. **The column's browser test passes unchanged**, but the behaviour
+   is not the same. A container does not include the scrollbar, the
+   screen's breakpoint does. With a classic scrollbar, 15 pixels wide,
+   on a page that scrolls, the text grows to 20 pixels at a window of
+   783 pixels instead of 768; in between, the header, still following
+   the screen, and the text, following its container, disagree. The
+   test does not see it, because the tests' headless Chromium hides
+   the scrollbars; seeing it needs the option
+   `ignoreDefaultArgs: ['--hide-scrollbars']`.
+4. **No side effect found**: every unit test and every browser test
+   passes, and screenshots of the home page and of the text page, at
+   375 and 1280 pixels, are identical pixel for pixel before and
+   after. A container that already fills the width changes nothing in
+   the layout.
+5. **The column shown at several widths on one page works**: in
+   containers of 400, 700 and 900 pixels, with a window of 1280, the
+   text is 18, 18 and 20 pixels (the columns 400, 600 and 720 wide).
+   But each sample is a `<main>`, and a page should have one: the
+   on-demand check of axe's best practices reports
+   `landmark-no-duplicate-main` and `landmark-unique`, while the
+   accessibility test of the build, which runs WCAG's rules only,
+   does not. A sample would need the component to write another
+   element, such as a `<div>`. A sample of fixed width also scrolls
+   the page sideways on a 320-pixel screen.
+6. **What changes in the built site**: 14 pages, each in its two
+   classes only, and 79 bytes more in the stylesheet (28,590 to
+   28,669).
+
+Found without being asked:
+
+- **Tailwind's default container sizes are active** in this project,
+  since the build clears only the screen's breakpoints: `@3xl` is
+  already 768 pixels. Naming the size `md` would work, and would not
+  clash with the screen's `md:`, but would change `max-w-md` silently;
+  a name of the site's own, such as `column`, avoids it.
+- **A container without a name is the one any descendant queries.**
+  The code blocks and the tables already use named containers
+  (`code`, `table`); a column placed inside one of them would query
+  it. A named container for the page would avoid it.
+
 ## Questions to answer
 
 The ones known when the card was written; there may be more. Raised
@@ -184,7 +249,17 @@ by the agent on 2026-11-19, from the user's idea, except where said.
   column's page asks for.
 
   **The user decided on 2026-11-19** that the spike tries the column
-  with a container query, instead of the declaring trait.
+  with a container query, instead of the declaring trait. What the
+  try found is under "What the experiment with a container query
+  found" above. The agent's reading on 2026-11-20, not discussed yet:
+  the threshold becomes the component's own, and a page of the
+  breakpoints valid for the whole site shrinks to the page's skeleton,
+  the header and the footer; keeping a list of changes in step could
+  give way to the second way of the search, observing instead of
+  declaring: the column's page shows the component at each of its
+  thresholds, and a test checks that what it shows is true. Adopting
+  container queries changes behaviour (the scrollbar), so it would be
+  a card of its own, not a refactor.
 - **Where the explanation lives**: in the trait's description, in the
   Markdown, or both, and then which says what.
 
