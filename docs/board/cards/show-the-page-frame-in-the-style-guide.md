@@ -25,6 +25,29 @@ page to show its changes.
   title beside the logo. Its text sizes are to grow within the site's
   ranges
   ([card](let-the-frame-text-grow-within-the-injected-ranges.md)).
+- **The frame writes the text column** since 2026-11-21: the
+  `<main>`, with the look of the text, went back to it from the
+  component `OneColumnText`, removed
+  ([decide whether to cut the text column again](decide-whether-to-cut-the-text-column-again.md)).
+  The column's own page
+  ([show the text column in the style guide](show-the-text-column-in-the-style-guide.md))
+  joined this one, decided by the user on 2026-11-21, at least until
+  the user changes their mind. What was known there:
+  - **What changes in the column** (checked on 2026-11-19 by the
+    browser test `text-column.spec.ts`): at 768 pixels its text grows
+    from 18 to 20 pixels, and its maximum width, 60 characters of its
+    own font, grows with it: 600 pixels below 768, 720 from 768, with
+    Literata. Below its maximum it fills the screen; it is always
+    centred. Its text is to grow within a range the site injects
+    instead
+    ([card](let-the-column-text-grow-within-an-injected-range.md)).
+  - **The browser test of the column moves here**: written on the
+    style guide's text page, it moves to this page once it exists
+    (agreed by the user on 2026-11-19, for the column's page).
+  - **The style guide's text page** already shows the elements of the
+    text inside the column
+    ([card](show-the-text-elements-in-the-style-guide.md)), and the
+    tables page names the column's width in passing.
 - **Showing the frame at several widths on one page** would
   duplicate its header, footer and main heading, as the spike's
   experiment duplicated `<main>`. An `iframe` has a window of its own,
@@ -51,6 +74,15 @@ was superseded.
   build's and axe's best practices, and how wide a sample may be on a
   320-pixel screen without scrolling the page sideways.
 - **What the page puts to the test.**
+- **Where the explanation of a component lives**: beside its code, or
+  in the Markdown of `content/style-guide/` as for the other pages.
+  Came from the column's page. The user's view on 2026-11-19: the
+  documentation stays with the code, as a principle; the user had
+  thought of a separate place, dedicated and linked to the component,
+  to avoid one large file to open and scroll for every change; ready
+  to revise this.
+- **Where the boundary lies with the text page**, which shows what
+  goes inside the column. Came from the column's page.
 - **Whether the frame is one page, or the header, the logo and the
   title are pages of their own**, whose boundaries were still to be
   drawn; the logo is under review.
@@ -70,7 +102,13 @@ was superseded.
 - [Let the page frame's text grow within the injected ranges](let-the-frame-text-grow-within-the-injected-ranges.md):
   what the frame's text becomes.
 - [Show the text column in the style guide](show-the-text-column-in-the-style-guide.md):
-  the other component page born of the spike.
+  the other component page born of the spike, joined to this one.
+- [Decide whether to cut the text column again](decide-whether-to-cut-the-text-column-again.md):
+  the card that put the column back into the frame.
+- [Let the column's text grow within a range the site injects](let-the-column-text-grow-within-an-injected-range.md):
+  what the column's text becomes.
+- [Show the text elements in the style guide](show-the-text-elements-in-the-style-guide.md):
+  the text page, the closest to the column.
 - [Build a design system](build-a-design-system.md): the card
   the style guide belongs to.
 - [Review the logo](review-the-logo.md): a page of the logo would

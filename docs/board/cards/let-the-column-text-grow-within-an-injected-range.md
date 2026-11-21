@@ -25,7 +25,9 @@ code, which is the problem the spike was opened for.
 - **Today**: the column's text is 18 pixels, and 20 from a screen of
   768 pixels, through the class `md:long-text-large`; its maximum
   width, 60 characters of its own font, follows the text, 600 pixels
-  then 720 (`src/one_column_text.rs`, `style/input.css`).
+  then 720 (`src/page_frame.rs`, `style/input.css`). The column is the
+  frame's `<main>` since 2026-11-21, no longer a component of its own
+  ([decide whether to cut the text column again](decide-whether-to-cut-the-text-column-again.md)).
 - **What the spike's experiment found** with a container query in
   place of the screen's breakpoint, on a branch deleted at the
   spike's close (details in the spike's card):
@@ -89,8 +91,11 @@ The ones known when the card was written; there may be more.
   the spike that decided it.
 - [Let the page frame's text grow within the injected ranges](let-the-frame-text-grow-within-the-injected-ranges.md):
   the same ranges, for the header and the footer.
-- [Show the text column in the style guide](show-the-text-column-in-the-style-guide.md):
-  the page that shows the column at several widths.
+- [Show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md):
+  the page that shows the column at several widths, since the
+  column's own page joined it.
+- [Decide whether to cut the text column again](decide-whether-to-cut-the-text-column-again.md):
+  the card that put the column back into the frame.
 - [Use a structured configuration file](use-a-structured-configuration-file.md):
   a possible place for the range.
 - [Check the table widths against Chromium's rounding](check-table-widths-against-chromium-rounding.md):

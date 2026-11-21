@@ -77,20 +77,18 @@ live since 2026-10-26
     by the finding of a spike, done
     ([card](cards/try-a-breakpoint-declaration-on-the-text-column.md)):
     a component's page shows what changes in it, nothing is declared.
-    Still to do before publishing, two pages of components. First,
-    whether the text column is cut again
-    ([card](cards/decide-whether-to-cut-the-text-column-again.md)),
-    since it holds the look of the whole text besides the column: it
-    may end quickly with the cut not possible, or change the two
-    pages that follow. Then the text column, made a component, done
-    ([card](cards/make-the-text-column-a-component.md)), its
-    text first made to grow within a range the site injects
+    Still to do before publishing, one page of a component. The text
+    column, made a component, done
+    ([card](cards/make-the-text-column-a-component.md)), went back
+    into the page frame, which writes the `<main>` again, in work
+    ([card](cards/decide-whether-to-cut-the-text-column-again.md));
+    so the column's page joined the frame's, closed
+    ([card](cards/show-the-text-column-in-the-style-guide.md)). First
+    the column's text made to grow within a range the site injects
     ([card](cards/let-the-column-text-grow-within-an-injected-range.md)),
-    then its page, in work
-    ([card](cards/show-the-text-column-in-the-style-guide.md)); and the
-    page frame, its text first made to grow within the same ranges
+    then the frame's text within the same ranges
     ([card](cards/let-the-frame-text-grow-within-the-injected-ranges.md)),
-    then its page
+    then the frame's page, which shows the column too
     ([card](cards/show-the-page-frame-in-the-style-guide.md)).
 - [Update the screen reader check for an English site](cards/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it

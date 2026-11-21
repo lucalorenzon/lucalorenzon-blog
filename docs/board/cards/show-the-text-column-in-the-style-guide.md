@@ -1,7 +1,8 @@
 # Show the text column in the style guide
 
 - **Created:** 2026-11-19
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-21
 
 ## Why
 
@@ -97,6 +98,32 @@ The ones known when the card was written; there may be more.
 - [Let the column's text grow within a range the site injects](let-the-column-text-grow-within-an-injected-range.md),
   the behaviour this page shows.
 
+## Recap
+
+No page was written. On 2026-11-21 the component `OneColumnText` was
+removed and the `<main>` went back to the page frame
+([decide whether to cut the text column again](decide-whether-to-cut-the-text-column-again.md),
+commit `fa15da1`): the column still exists as something the reader
+sees, the look of the `<main>`, but as a part of the frame. So the
+user decided, on 2026-11-21, that what this page was to show becomes
+part of the page of the frame
+([show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md)),
+at least until the user changes their mind. What is known above passed to that
+card. Why the card is closed rather than deleted: it was worked on,
+its first question was answered, and its work is not dropped but
+done in another card.
+
+## What it leaves
+
+The questions still open when the card was closed, all moved to
+[show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md):
+
+- how the page shows the column at several widths, without a second
+  `<main>` and without scrolling a 320-pixel screen sideways;
+- where the explanation of a component lives;
+- where the boundary lies with the text page;
+- what the page puts to the test.
+
 ## References
 
 - [Try a breakpoint declaration on the text column](try-a-breakpoint-declaration-on-the-text-column.md):
@@ -115,3 +142,5 @@ The ones known when the card was written; there may be more.
   the text page, the closest to this one.
 - [Build a design system](build-a-design-system.md): the card
   the style guide belongs to.
+- [Decide whether to cut the text column again](decide-whether-to-cut-the-text-column-again.md):
+  the card that removed the component this page was to show.
