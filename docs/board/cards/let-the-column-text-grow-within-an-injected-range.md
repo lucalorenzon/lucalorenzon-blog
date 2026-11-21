@@ -1,7 +1,7 @@
 # Let the column's text grow within a range the site injects
 
 - **Created:** 2026-11-21
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
