@@ -103,6 +103,11 @@ The ones known when the card was written; there may be more.
   dropped and begun again clean. The rewriting is done by a throwaway
   script kept outside the repository, checked by `card.sh check` and by
   a count of the links that lead nowhere, which has to be zero.
+
+  **Added by the user on 2026-11-21, once the four steps were done.** An
+  `AGENTS.md` at the root, a symbolic link to `CLAUDE.md`, so that tools
+  reading their rules from `AGENTS.md` find the same ones. Outside the
+  card's problem, but it costs nothing and completes the alignment.
 - **The local rule that deletes a card when it is split.** The local
   rules deleted a split card and sent its parts to new cards; the global
   rules keep in the card the part done now and send only the rest to

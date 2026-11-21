@@ -212,6 +212,7 @@ Why each choice was made: `docs/board/cards/put-working-skeleton-live.md`.
 | `.github/actions/get-tailwind/action.yml` | Local action: restore the pinned Tailwind from the Actions cache, or download it and save it in the cache; used by `build.yml` and `daily.yml` |
 | `.github/workflows/daily.yml` | Scheduled every day (and by hand): restore the Tailwind cache entry so it does not expire after 7 days without a build, and recreate it if it is gone; and run the check for newer versions of the pinned tools with `--apply`, which opens or updates issues (the only job with `issues: write`) |
 | `.github/workflows/deploy.yml` | On a version tag: check the tag, take the snapshot of that commit or rebuild it, publish, create the version's Release, test the live site |
+| `AGENTS.md` | A symbolic link to this file, for the tools that read their project rules from `AGENTS.md` instead of `CLAUDE.md` |
 | `CHANGELOG.md` | What each published version brought, and the rules for version numbers and tags |
 | `docs/board/plan.md` | The project's board: Now / Next / Later (see "The plan") |
 | `docs/board/cards/` | Every card, whatever its state (see "Cards") |
