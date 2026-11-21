@@ -14,10 +14,6 @@ live since 2026-10-26
 
 ## Now
 
-- [Refer to cards by name in frozen documents](cards/refer-to-cards-by-name-in-frozen-documents.md),
-  so moving a card no longer breaks links in minutes and finished
-  cards; first, as it has waited since 2026-11-01 while broken links
-  kept appearing.
 - The round of the refactors left waiting is done, not published yet:
   the errors declared with thiserror, started in the domain and printed
   only by the build

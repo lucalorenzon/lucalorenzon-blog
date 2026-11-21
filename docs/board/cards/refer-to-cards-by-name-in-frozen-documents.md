@@ -1,7 +1,8 @@
 # Refer to cards by name in frozen documents
 
 - **Created:** 2026-11-01
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-21
 
 ## Why
 
@@ -102,7 +103,9 @@ The ones known when the card was written; there may be more.
   its own (`adopt-the-global-board`), so that a start gone wrong can be
   dropped and begun again clean. The rewriting is done by a throwaway
   script kept outside the repository, checked by `card.sh check` and by
-  a count of the links that lead nowhere, which has to be zero.
+  a count of the links that lead nowhere, which has to reach zero for
+  every link the card is about (see "Cautions" for the five the count
+  still finds).
 
   **Added by the user on 2026-11-21, once the four steps were done.** An
   `AGENTS.md` at the root, a symbolic link to `CLAUDE.md`, so that tools
@@ -131,6 +134,61 @@ The ones known when the card was written; there may be more.
   comment in `end2end/tests/accessibility.spec.ts` pointing at one of
   those cards was updated as ordinary upkeep, to the cards that cover
   checking by hand today.
+
+## Recap
+
+The repository now uses the global board: every card at
+`docs/board/cards/<name>.md`, its state a symbolic link in
+`docs/board/backlog/`, `wip/` or `done/`, the plan at
+`docs/board/plan.md`, the minutes in `docs/board/sessions/`. A card's
+path never changes, so moving a card breaks no link. All on the branch
+`adopt-the-global-board`, brought onto `main` when the card closed.
+
+- `a1af041`: the card taken into work and translated into the card
+  format.
+- `d145520`: the choice of the global layout recorded, with the
+  exception for frozen documents.
+- `de5aa55`: the 136 cards moved, with their links; 944 links to cards
+  and about 40 other references rewritten, the links inside the cards
+  recomputed, the 24 links to deleted cards replaced by the cards of
+  today; `CLAUDE.md`, "Cards", defers to the global rules. Broken links
+  went from 141 to the five in "Cautions".
+- `813342f`: the plan and the 67 minutes moved, 438 links inside them
+  recomputed and the references to them rewritten.
+- `13574d0`: `CLAUDE.md`, "Session minutes", reduced to a pointer to the
+  skill `session-minute` and the three things the skill does not say.
+- `c281236`: `AGENTS.md`, a symbolic link to `CLAUDE.md`.
+- The closing commit: this card closed and taken out of the plan's Now.
+
+The rewriting was done by two throwaway scripts, outside the repository,
+written and run by a sub-agent on Claude Sonnet 5.5; the by-hand edits,
+the checks and the decisions' wording by the main session on Claude Opus
+5.5.
+
+## Cautions
+
+- **The name of a card's file is now its address.** Renaming a card's
+  file breaks every link to it, as a move used to. A card's title can
+  change; its file name should not.
+- **Frozen documents still mention the old folders in their prose**, for
+  example "moves between `docs/backlog/` and `docs/done/`". They were
+  left on purpose: they describe the layout of their day, and are not
+  links.
+- **The count of links that lead nowhere still finds five**, none of
+  them a fault: four in `content/` link to pages of the built site
+  (`curriculum.html`, `licence.html`, an article, `../about.html`),
+  which exist only after the build; one is the template
+  `[<title>](<path>)` in this card, inside backticks, which the count
+  does not tell apart from a link.
+- **This card's title** still says "by name": the answer turned out to
+  be a path that never changes, but the file name is kept, by the rule
+  above.
+
+## What it leaves
+
+- A rule in `ll-dev-setup` giving every repository an `AGENTS.md`: the
+  global rules do not ask for one yet. Not opened, by the user's choice
+  on 2026-11-21.
 
 ## References
 
