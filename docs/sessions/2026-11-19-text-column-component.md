@@ -10,7 +10,7 @@
 
 Goal: start the page of the breakpoints, the last page of the style
 guide before it is published (card
-[show the breakpoints in the style guide](../wip/show-the-breakpoints-in-the-style-guide.md)).
+[show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md)).
 The session answered how that page is built, found that the text
 column had to become a component first, and did it
 ([card](../done/2026-11-19_make-the-text-column-a-component.md)).
@@ -117,4 +117,4 @@ plan.
 - Show the text column in the style guide, after the spike: card
   [show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md).
 - Show the breakpoints in the style guide, after the column's page:
-  card [show the breakpoints in the style guide](../wip/show-the-breakpoints-in-the-style-guide.md).
+  card [show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md).

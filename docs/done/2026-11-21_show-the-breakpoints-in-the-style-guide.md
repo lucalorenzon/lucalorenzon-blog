@@ -1,13 +1,14 @@
 # Show the breakpoints in the style guide
 
 - **Created:** 2026-11-18
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-21
 
 ## Why
 
 The user opened this card on 2026-11-18, while cutting the last page
 of the style guide before it is published (card
-[build a design system](build-a-design-system.md)). The page
+[build a design system](../wip/build-a-design-system.md)). The page
 explains to the reader how the site adapts to the screen width: at
 which widths it changes, and what changes there. It is also the
 entry point to the breakpoints, whose values it reads from the place
@@ -136,40 +137,74 @@ The ones known when the card was written; there may be more.
   the build links the breakpoints page to it. Cut in two cards:
   [make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md),
   a refactor that keeps the published HTML as it is, then
-  [show the text column in the style guide](show-the-text-column-in-the-style-guide.md).
+  [show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md).
   This changes, knowingly, the decision of 2026-11-18 to add no page
   of a component before publishing: the style guide waits one page
   more, for the change that would otherwise be missing. Rejected:
   leaving the column out of the list until the refactor of the other
   components.
-- **What the page puts to the test**, as every page of the style guide
-  has its cases checked by the browser tests: perhaps only that the
-  widths it shows are those of the configuration.
-- **Whether the list of devices can come from Firefox's**, the one
-  the user reads in its responsive design mode: whether it has a
-  stable public address, under which licence, and whether the tests'
-  list should follow it. Not checked.
-- **What the tests' 320 is called**, since it is not the iPhone SE
-  the user looks at.
-- **How the index declares the pages to come**, and whether those
-  pages get their cards now.
+- **Whether the page is still needed**, once the spike on the column
+  found how a component shows what changes in it. Added on
+  2026-11-21, at the spike's close.
+
+  **Answered by the user on 2026-11-21: no, the page is superseded.**
+  The spike
+  ([try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md))
+  found that a component does not declare what changes in it: its own
+  page in the style guide shows it at each of its thresholds, and a
+  test checks that what it shows is true. The column moves off the
+  screen's breakpoints: its text grows within a range the site
+  injects, following its container. Only the page frame's changes of
+  layout stay on the screen's breakpoints, and they get a page of the
+  frame. So a page listing the changes of the whole site would repeat
+  what the components' pages show. This supersedes the answers above
+  on who writes the list of changes and what ties it to the classes:
+  nothing is listed. Why the card is closed rather than deleted, as a
+  card split in smaller ones would be: it was worked on, its
+  questions were answered, and the work it foresaw is not done as a
+  consequence of that work; the new cards were not cut from it.
 
 ## Dependencies
 
 - [Read the breakpoints from the configuration](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md),
   which gives the page the values to read.
 - [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md)
-  and [show the text column in the style guide](show-the-text-column-in-the-style-guide.md),
+  and [show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md),
   so the column can say what changes in it, and has a page to link to.
+
+## Recap
+
+No page was written. The card answered its questions from 2026-11-18
+to 2026-11-19, and was then superseded by the finding of the spike on
+the text column, closed the same day. What still holds of its
+decisions passed to the card
+[show the page frame in the style guide](../backlog/show-the-page-frame-in-the-style-guide.md):
+the style guide published with its gaps declared, the components not
+yet cut in the code declared as a limit of the site, and the pages
+the user wishes for later.
+
+## What it leaves
+
+The questions still open when the card was superseded, all moved to
+[show the page frame in the style guide](../backlog/show-the-page-frame-in-the-style-guide.md):
+
+- what the page puts to the test;
+- whether the list of devices can come from Firefox's;
+- what the tests' 320 is called;
+- how the index declares the pages to come.
 
 ## References
 
+- [Try a breakpoint declaration on the text column](../wip/try-a-breakpoint-declaration-on-the-text-column.md):
+  the spike whose finding superseded this page.
+- [Show the page frame in the style guide](../backlog/show-the-page-frame-in-the-style-guide.md):
+  the page that replaces this one, and takes its open questions.
 - [Make the text column a component](../done/2026-11-19_make-the-text-column-a-component.md):
   the first of the two cards this page waits for.
-- [Show the text column in the style guide](show-the-text-column-in-the-style-guide.md):
+- [Show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md):
   the second, the page this one links the column to.
 
-- [Build a design system](build-a-design-system.md): the card
+- [Build a design system](../wip/build-a-design-system.md): the card
   this page completes before the style guide is published.
 - [Read the breakpoints from the configuration](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md):
   the values the page reads.

@@ -73,7 +73,7 @@ live since 2026-10-26
     values read from `config/` by the build and the tests, done
     ([card](done/2026-11-18_read-the-breakpoints-from-the-configuration.md)), then
     the page, in work
-    ([card](wip/show-the-breakpoints-in-the-style-guide.md)), which
+    ([card](done/2026-11-21_show-the-breakpoints-in-the-style-guide.md)), which
     waits for the text column made a component, done
     ([card](done/2026-11-19_make-the-text-column-a-component.md)), and shown in
     a page of its own, in work

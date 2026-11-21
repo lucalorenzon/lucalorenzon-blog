@@ -7,7 +7,7 @@
 
 The user told it on 2026-11-18, while deciding to publish the style
 guide with the pages still to come declared (card
-[show the breakpoints in the style guide](../wip/show-the-breakpoints-in-the-style-guide.md)).
+[show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md)).
 Today the site is not promoted: readers reach it only through search
 engines, and through a link on the user's Medium profile. The real
 launch will be a post on LinkedIn, once the site has a few more
@@ -59,7 +59,7 @@ The ones known when the card was written; there may be more.
 
 ## References
 
-- [Show the breakpoints in the style guide](../wip/show-the-breakpoints-in-the-style-guide.md):
+- [Show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md):
   where the launch was told, as a reason to publish the style guide
   early.
 - [Observe the visitors in production](observe-visitors-in-production.md):

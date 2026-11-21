@@ -8,7 +8,7 @@
 
 The user opened this card on 2026-11-19, while answering the
 questions of the card
-[show the breakpoints in the style guide](../wip/show-the-breakpoints-in-the-style-guide.md).
+[show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md).
 That page lists what changes at each breakpoint by asking each
 component what changes in it. The text column changes at 768 pixels,
 the most visible change of all: its text grows from 18 to 20 pixels
@@ -156,7 +156,7 @@ says so.
 
 ## References
 
-- [Show the breakpoints in the style guide](../wip/show-the-breakpoints-in-the-style-guide.md):
+- [Show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md):
   the card that waits for this one.
 - [Show the text column in the style guide](../backlog/show-the-text-column-in-the-style-guide.md):
   the page of this component, which comes next.

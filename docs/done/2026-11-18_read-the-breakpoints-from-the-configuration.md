@@ -79,7 +79,7 @@ The ones known when the card was written; there may be more.
 
   **Answered by the user on 2026-11-18.** No: two cards, the values
   first, then the page
-  ([show the breakpoints in the style guide](../backlog/show-the-breakpoints-in-the-style-guide.md)).
+  ([show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md)).
 - **In which unit the width is written.** Tailwind takes rem (48rem),
   the tests set the window in pixels. A breakpoint in rem moves when
   the reader changes the browser's default text size, which keeps the
@@ -110,7 +110,7 @@ The ones known when the card was written; there may be more.
   written by hand, and does not move when a breakpoint moves: the
   breakpoints sort the devices into groups, three today, and the
   style guide's page shows which devices fall in each group (card
-  [show the breakpoints in the style guide](../backlog/show-the-breakpoints-in-the-style-guide.md)).
+  [show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md)).
 - **What the file may contain**, and what stops the build: a missing
   or repeated name, a width that is not a number, a name Tailwind
   would not accept as a prefix.
@@ -246,14 +246,14 @@ is about this.
 ## What it leaves
 
 - The style guide's page on the breakpoints:
-  [show the breakpoints in the style guide](../backlog/show-the-breakpoints-in-the-style-guide.md).
+  [show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md).
 
 ## References
 
 - [Build a design system](../wip/build-a-design-system.md): the card this
   one serves; its list of pages before publishing ends with the
   breakpoints.
-- [Show the breakpoints in the style guide](../backlog/show-the-breakpoints-in-the-style-guide.md):
+- [Show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md):
   the page that reads the values this card puts in `config/`.
 - [Link the fonts to the build](../done/2026-11-16_link-the-fonts-to-the-build.md):
   the same path, from a file in `config/` to a stylesheet written by

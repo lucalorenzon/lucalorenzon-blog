@@ -104,7 +104,7 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - The breakpoints' page, last before the style guide is published:
-  card [show the breakpoints in the style guide](../backlog/show-the-breakpoints-in-the-style-guide.md).
+  card [show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md).
 - The real launch: card [launch the site on LinkedIn](../backlog/launch-the-site-on-linkedin.md).
 - Learning about campaigns and banners: card
   [plan marketing campaigns](../backlog/plan-marketing-campaigns.md).
