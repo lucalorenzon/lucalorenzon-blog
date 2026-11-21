@@ -354,6 +354,54 @@ by the agent on 2026-11-19, from the user's idea, except where said.
 - **Whether the column needs a breakpoint at all**, or could change
   its text size smoothly with the width, as intrinsic design suggests.
   Raised by the agent on 2026-11-19, from the search.
+
+  **Answered by the user on 2026-11-21, in the second session: the
+  text grows smoothly, within a range the site injects.** The agent
+  named the tension: intrinsic design would let the text grow from 18
+  to 20 pixels with the space, through `clamp()`, the width in
+  characters following by itself, with no threshold, no class with a
+  prefix; the user's view of the first session, the site offering a
+  set of text sizes for the component to choose from, points the
+  other way; and a size that depends on a width may not grow with the
+  browser's zoom unless it is built with care. The user explained the
+  worry behind the set of sizes: uniformity, a page ending up with
+  text of different sizes dictated by the space; and observed that
+  inside a container the space is the same for every child, so there
+  is no need to impose the sizes from outside, and doing so would be
+  too rigid. This changes the first session's decision that the site
+  defines the text sizes the components choose from.
+
+  Two ways were weighed, offered by the agent after the answer:
+
+  - **Chosen: the site injects a range**, the smallest and largest
+    size and the widths at which they are reached, as a value shared
+    by the site, and the component grows within it with its
+    container. The decision that the site defines the values the
+    components choose from stays, in a new form: the site sets the
+    bounds, the component its place between them.
+  - **Rejected: the component sets its own bounds.** Simpler, but
+    uniformity across components would rest on the discipline of whoever
+    writes them.
+
+  Consequences named by the agent: the experiment's container is
+  still needed, since the units that measure a container need an
+  ancestor declared one; the column has no threshold left, so its
+  page shows it at several widths and a test checks that the size
+  stays within the range; whether the text still grows with the
+  browser's zoom, with a smallest size in units of the page's font, is
+  to be verified.
+
+  **Extended by the user on the same day to the page frame.** The
+  agent named a tension with the decision to keep the frame on the
+  screen's breakpoints: its title and footer text jump to a larger
+  size at 768 pixels (`md:title-below-line-large`,
+  `md:footer-text-large`), so one page would mix sizes that jump with
+  text that grows smoothly, the lack of uniformity the user worried
+  about. The user decided that the frame's text takes its sizes from
+  the site's ranges too, growing with the screen rather than with a
+  container. The frame's changes of layout, the header from two rows
+  to one and the written logo giving way to the drawn one, cannot be
+  smooth and stay on the screen's breakpoints.
 - **What a change is**: a name with its breakpoint and its classes,
   as the agent read it, or something else.
 
