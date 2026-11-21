@@ -1,0 +1,1 @@
+../cards/state-that-views-are-the-authors-own.md

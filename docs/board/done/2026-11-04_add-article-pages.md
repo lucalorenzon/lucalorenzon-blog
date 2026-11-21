@@ -1,0 +1,1 @@
+../cards/add-article-pages.md

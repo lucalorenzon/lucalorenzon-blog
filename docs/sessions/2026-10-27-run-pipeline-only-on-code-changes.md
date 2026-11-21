@@ -37,7 +37,7 @@ image), which stays next.
 |---|---|
 | `633aef0` | `docs/wip/` created, the pipeline card moved there, references updated |
 | `7a21480` | Workflow: `changes` job and conditional `build`; decision recorded in the card |
-| `3601f7f` | Card closed in `docs/done/2026-10-27_run-pipeline-only-on-code-changes.md`; card-folder rule added to `CLAUDE.md` |
+| `3601f7f` | Card closed in `docs/board/cards/run-pipeline-only-on-code-changes.md`; card-folder rule added to `CLAUDE.md` |
 | `a2deb6f` | `.gitkeep` in `docs/backlog/` and `docs/done/` too |
 
 The workflow code was written by a sub-agent on Sonnet and reviewed here;
@@ -66,4 +66,4 @@ pushing.
 
 As planned in the previous minute: run the browser tests inside the
 official Playwright image
-(`docs/done/2026-10-27_run-browser-tests-in-playwright-image.md`).
+(`docs/board/cards/run-browser-tests-in-playwright-image.md`).

@@ -1,0 +1,1 @@
+../cards/add-generate-pk-article-markdown.md

@@ -5,7 +5,7 @@ the sub-agent Sonnet 5.5 (the code of the front matter, its changes
 after the user's review, and two tests).
 **Goal:** take the card on moving titles, descriptions and dates into
 the Markdown's front matter, cut it into slices, and build the first:
-[read the articles' title, description and date from the front matter](../done/2026-11-08_read-article-fields-from-front-matter.md),
+[read the articles' title, description and date from the front matter](../board/cards/read-article-fields-from-front-matter.md),
 built and closed. Reasons and rejected options are in the card.
 
 ## Decisions
@@ -105,27 +105,27 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 
 - The change could not be shown free of regressions in the pipeline,
   because of the failed download, which belongs to the card on
-  [the build's external downloads](../backlog/make-external-downloads-in-the-build-reliable.md);
+  [the build's external downloads](../board/cards/make-external-downloads-in-the-build-reliable.md);
   the browser tests passed on the author's machine only.
 
 ## Next steps
 
 - Make the build's external downloads reliable, then see the pipeline
   pass on this session's change: card
-  [make the build's external downloads reliable](../backlog/make-external-downloads-in-the-build-reliable.md).
+  [make the build's external downloads reliable](../board/cards/make-external-downloads-in-the-build-reliable.md).
 - Give dates a module of their own, or a library: card
-  [give dates a module of their own](../backlog/give-dates-a-module-of-their-own.md).
+  [give dates a module of their own](../board/cards/give-dates-a-module-of-their-own.md).
 - One model for the licence, about and curriculum pages: card
-  [unify the model of the information pages](../backlog/unify-the-information-pages-model.md).
+  [unify the model of the information pages](../board/cards/unify-the-information-pages-model.md).
 - A page's own licence terms: card
-  [let a page state its own licence terms](../backlog/let-a-page-state-its-own-licence-terms.md).
+  [let a page state its own licence terms](../board/cards/let-a-page-state-its-own-licence-terms.md).
 - The other pages' fields in the Markdown: card
-  [read the other pages' title and description from the Markdown](../backlog/read-page-fields-from-markdown.md).
+  [read the other pages' title and description from the Markdown](../board/cards/read-page-fields-from-markdown.md).
 - Addresses from a slug, with redirects: card
-  [take the pages' addresses from a slug](../backlog/take-page-addresses-from-slug.md).
+  [take the pages' addresses from a slug](../board/cards/take-page-addresses-from-slug.md).
 - The articles found in the content folder: card
-  [find the articles in the content folder](../backlog/find-articles-in-content-folder.md).
+  [find the articles in the content folder](../board/cards/find-articles-in-content-folder.md).
 - The errors with thiserror, and the YAML reader's doubled "error:":
-  card [refactor the code's errors with thiserror](../backlog/refactor-errors-with-thiserror.md).
+  card [refactor the code's errors with thiserror](../board/cards/refactor-errors-with-thiserror.md).
 - The text checked in the build: card
-  [check the pages' text in the build](../backlog/check-page-bodies-in-the-build.md).
+  [check the pages' text in the build](../board/cards/check-page-bodies-in-the-build.md).

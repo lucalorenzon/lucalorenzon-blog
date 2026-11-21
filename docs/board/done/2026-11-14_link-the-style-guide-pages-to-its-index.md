@@ -1,0 +1,1 @@
+../cards/link-the-style-guide-pages-to-its-index.md

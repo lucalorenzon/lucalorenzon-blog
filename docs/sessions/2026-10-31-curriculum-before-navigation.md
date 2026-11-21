@@ -3,9 +3,9 @@
 **Participants:** the user (author); the agent (Claude Opus 5.5), with
 sub-agents Claude Haiku 5.5 (git commands).
 **Goal:** start the card
-[add site navigation](../backlog/add-site-navigation.md). The session
+add site navigation (later split into [Add a menu for the site](../board/cards/add-site-menu.md), [List the articles on the home page](../board/cards/list-articles-on-home-page.md)). The session
 ended instead by reordering the road and opening the card
-[put the curriculum on the home page](../backlog/put-curriculum-on-home-page.md).
+[put the curriculum on the home page](../board/cards/put-curriculum-on-home-page.md).
 Reasons are in the two cards.
 
 ## Decisions
@@ -76,6 +76,6 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 
 - Put the curriculum on the home page, starting with how its Markdown
   becomes part of the page: card
-  [put the curriculum on the home page](../backlog/put-curriculum-on-home-page.md).
+  [put the curriculum on the home page](../board/cards/put-curriculum-on-home-page.md).
 - Then choose the site's public address: card
-  [choose the site's public address](../backlog/choose-site-address.md).
+  [choose the site's public address](../board/cards/choose-site-address.md).

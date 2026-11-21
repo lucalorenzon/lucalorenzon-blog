@@ -1,0 +1,1 @@
+../cards/separate-the-domain-from-the-adapters.md

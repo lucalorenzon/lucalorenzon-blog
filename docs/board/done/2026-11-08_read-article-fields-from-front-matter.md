@@ -1,0 +1,1 @@
+../cards/read-article-fields-from-front-matter.md

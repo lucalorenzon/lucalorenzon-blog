@@ -1,0 +1,1 @@
+../cards/read-the-breakpoints-from-the-configuration.md

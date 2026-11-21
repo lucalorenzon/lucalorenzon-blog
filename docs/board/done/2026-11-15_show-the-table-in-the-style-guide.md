@@ -1,0 +1,1 @@
+../cards/show-the-table-in-the-style-guide.md

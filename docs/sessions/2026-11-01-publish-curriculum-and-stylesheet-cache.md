@@ -6,7 +6,7 @@ sub-agent Claude Haiku 5.5 (push, tag and publication).
 [curriculum on the home page](2026-10-31-curriculum-on-home-page.md),
 whose minute was committed before the publication. Then, raised by the
 user, open the card
-[refresh the stylesheet after a new version](../backlog/refresh-stylesheet-after-a-new-version.md).
+[refresh the stylesheet after a new version](../board/cards/refresh-stylesheet-after-a-new-version.md).
 
 ## Decisions
 
@@ -42,6 +42,6 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Choose the site's public address: card
-  [choose the site's public address](../backlog/choose-site-address.md).
+  [choose the site's public address](../board/cards/choose-site-address.md).
 - Run the screen reader check on the English site: card
-  [update the screen reader check for an English site](../backlog/update-screen-reader-check-for-english-site.md).
+  [update the screen reader check for an English site](../board/cards/update-screen-reader-check-for-english-site.md).

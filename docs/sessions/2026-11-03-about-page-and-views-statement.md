@@ -3,7 +3,7 @@
 **Participants:** the user (author); the agent (Claude Opus 5.5), with a
 sub-agent on Claude Sonnet 5.5 (code).
 **Goal:** answer and publish the card
-[state that the views are the author's own](../done/2026-11-03_state-that-views-are-the-authors-own.md),
+[state that the views are the author's own](../board/cards/state-that-views-are-the-authors-own.md),
 left open in the previous part of the same session
 ([minute](2026-11-03-show-licences-on-the-site.md)). The reasons and the
 rejected options are in the card.
@@ -71,8 +71,8 @@ plan.
 
 - Bring the first articles, now that the licence and the statement are
   live: card
-  [add the two articles already on Medium](../backlog/add-the-two-medium-articles.md).
+  add the two articles already on Medium (later split into [Bring "After Save Event" into the site's Markdown](../board/cards/add-after-save-event-markdown.md), [Bring the article on generating hybris PK values into the site's Markdown](../board/cards/add-generate-pk-article-markdown.md), [Give each article a page of its own](../board/cards/add-article-pages.md), [Give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md)).
 - The about page and the logo link are pieces of navigation that
   already exist; when the curriculum leaves the home page, only the
   address of the "my curriculum" link changes: card
-  [add site navigation](../backlog/add-site-navigation.md).
+  add site navigation (later split into [Add a menu for the site](../board/cards/add-site-menu.md), [List the articles on the home page](../board/cards/list-articles-on-home-page.md)).

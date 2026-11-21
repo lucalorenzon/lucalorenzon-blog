@@ -1,0 +1,1 @@
+../cards/declare-dom-iterable-for-the-editor.md

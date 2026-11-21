@@ -1,0 +1,1 @@
+../cards/run-live-test-when-snapshot-is-published.md

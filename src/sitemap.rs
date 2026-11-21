@@ -3,7 +3,7 @@
 //! The build writes every page from [`pages`] and nowhere else, so a page cannot be written
 //! and forgotten in the sitemap. Each page names the Markdown file it is written from; the
 //! date of the file's last change comes from a text file made by
-//! `scripts/content-dates/content_dates.py` (card docs/wip/add-sitemap.md).
+//! `scripts/content-dates/content_dates.py` (card docs/board/cards/add-sitemap.md).
 
 use crate::article_page::Article;
 use crate::site_address::SiteAddress;

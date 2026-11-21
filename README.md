@@ -168,9 +168,9 @@ at the same time it runs the browser test again on the public address.
 | Document | Path | Description |
 |---|---|---|
 | Plan | [docs/plan.md](docs/plan.md) | What is being worked on now, next and later |
-| Backlog | [docs/backlog/](docs/backlog/) | Things noticed but deliberately not done yet, with the reason |
-| Work in progress | [docs/wip/](docs/wip/) | Backlog cards being worked on now |
-| Done | [docs/done/](docs/done/) | Finished backlog cards, prefixed with the date they were finished |
+| Backlog | [docs/board/backlog/](docs/board/backlog/) | Things noticed but deliberately not done yet, with the reason |
+| Work in progress | [docs/board/wip/](docs/board/wip/) | Backlog cards being worked on now |
+| Done | [docs/board/done/](docs/board/done/) | Finished backlog cards, each link prefixed with the date they were finished |
 | Session minutes | [docs/sessions/](docs/sessions/) | One record per working session: decisions and why |
 | Working rules | [CLAUDE.md](CLAUDE.md) | How this project is developed |
 

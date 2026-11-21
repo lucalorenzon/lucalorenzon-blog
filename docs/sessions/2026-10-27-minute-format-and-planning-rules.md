@@ -4,9 +4,9 @@
 Haiku sub-agent for the two card moves (`427d046`, `df3d3c6`), each
 checked by the agent on the resulting commit.
 **Goal:** close the card
-[make the session minute record who contributed what](../done/2026-10-27_revise-session-minute-format.md),
+[make the session minute record who contributed what](../board/cards/revise-session-minute-format.md),
 then the card it raised,
-[define the rules for planning and project management](../done/2026-10-27_define-planning-rules.md).
+[define the rules for planning and project management](../board/cards/define-planning-rules.md).
 Reasons and rejected options are in the cards.
 
 ## Decisions
@@ -87,7 +87,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 - Rules in `CLAUDE.md`: "Session minutes", "Commit attribution" (in
   `66d1ad0`), "The plan" and the completed "Backlog cards" (`772cea1`).
 - `docs/plan.md` is a short board; its decisions are in
-  [the skeleton card](../done/2026-10-26_put-working-skeleton-live.md)
+  [the skeleton card](../board/cards/put-working-skeleton-live.md)
   (`11b63f1`). The three finished cards of 2026-10-27 are rewritten as
   answers (`99415b4`).
 - Commits: `427d046` and `66d1ad0` minute card started and closed,

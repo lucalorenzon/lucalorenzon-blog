@@ -5,7 +5,7 @@ the sub-agent Claude Haiku 5.5 (one task: running the checks of
 `build.yml` locally, without editing anything).
 **Goal:** resume from the plan, write the four texts left on the
 style guide's tables page and close its card,
-[show the table in the style guide](../done/2026-11-15_show-the-table-in-the-style-guide.md).
+[show the table in the style guide](../board/cards/show-the-table-in-the-style-guide.md).
 Technical details and reasons are in the card.
 
 ## Decisions
@@ -73,7 +73,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
   [2026-11-15-style-guide-tables-page](2026-11-15-style-guide-tables-page.md),
   links the card in `docs/wip/`, where it no longer is; the backlog
   already carries the general problem: card
-  [refer to cards by name in frozen documents](../backlog/refer-to-cards-by-name-in-frozen-documents.md).
+  [refer to cards by name in frozen documents](../board/cards/refer-to-cards-by-name-in-frozen-documents.md).
 
 ## Next steps
 
@@ -83,6 +83,6 @@ plan.
 - The typography and breakpoints pages of the style guide, the last two
   before it is published, and with the typography the After Save Event
   article freed from the text checks: card
-  [build a design system](../wip/build-a-design-system.md).
+  [build a design system](../board/cards/build-a-design-system.md).
 - The screen reader check for the English site: card
-  [update the screen reader check for an English site](../backlog/update-screen-reader-check-for-english-site.md).
+  [update the screen reader check for an English site](../board/cards/update-screen-reader-check-for-english-site.md).

@@ -1,0 +1,1 @@
+../cards/let-a-page-state-its-own-licence-terms.md

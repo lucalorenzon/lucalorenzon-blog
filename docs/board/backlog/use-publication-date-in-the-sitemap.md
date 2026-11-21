@@ -1,0 +1,1 @@
+../cards/use-publication-date-in-the-sitemap.md

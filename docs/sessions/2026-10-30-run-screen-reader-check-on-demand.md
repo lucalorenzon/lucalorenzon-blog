@@ -4,7 +4,7 @@
 sub-agents Sonnet 5.5 (the command, its fixes and its clean-up) and
 Haiku 5.5 (a type annotation).
 **Goal:** close the card
-[run a screen reader check on demand](../done/2026-10-30_run-screen-reader-check-on-demand.md).
+[run a screen reader check on demand](../board/cards/run-screen-reader-check-on-demand.md).
 Technical details and reasons are in the card. The session came right
 after the session
 [check the accessibility tree in the build](2026-10-30-check-accessibility-tree-in-the-build.md).
@@ -81,6 +81,6 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - Make the screen reader check work on any computer (decision 7): card
-  [run the screen reader check in a container](../done/2026-10-30_run-screen-reader-check-in-a-container.md).
+  [run the screen reader check in a container](../board/cards/run-screen-reader-check-in-a-container.md).
 - Cover the WCAG criteria axe cannot check (decision 6): card
-  [cover the WCAG criteria axe cannot check](../backlog/cover-wcag-criteria-axe-cannot-check.md).
+  [cover the WCAG criteria axe cannot check](../board/cards/cover-wcag-criteria-axe-cannot-check.md).

@@ -4,7 +4,7 @@
 the sub-agent Sonnet 5.5 (the code of the SEO check, its dependency
 audit and its checks).
 **Goal:** resume the card
-[check SEO with Lighthouse in the build](../done/2026-11-07_check-seo-with-lighthouse.md),
+[check SEO with Lighthouse in the build](../board/cards/check-seo-with-lighthouse.md),
 on hold since the previous session for the sitemap and the
 `robots.txt`, answer its last questions, build it, and publish it with
 the version that was waiting for it. Reasons and rejected options are in
@@ -87,8 +87,8 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 
 - Choose the next card from Next: [plan](../plan.md).
 - Watch the rules Lighthouse finds not applicable: card
-  [watch the rules Lighthouse finds not applicable](../backlog/watch-lighthouse-rules-not-applicable.md).
+  [watch the rules Lighthouse finds not applicable](../board/cards/watch-lighthouse-rules-not-applicable.md).
 - Add the performance category to the same Lighthouse run: card
-  [check performance in the build](../backlog/check-performance-in-the-build.md).
+  [check performance in the build](../board/cards/check-performance-in-the-build.md).
 - Structured data, the rule Lighthouse leaves to a person: card
-  [check the structured data](../backlog/check-structured-data.md).
+  [check the structured data](../board/cards/check-structured-data.md).

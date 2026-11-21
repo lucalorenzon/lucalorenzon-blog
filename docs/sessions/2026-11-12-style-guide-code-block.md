@@ -8,8 +8,8 @@ page with its tests, and the code of the breadcrumb and "Back to top",
 corrected once on the agent's request).
 **Goal:** start again from the plan, and do the style guide's second
 page,
-[show the code block in the style guide](../done/2026-11-15_show-the-code-block-in-the-style-guide.md),
-within the card [build a design system](../wip/build-a-design-system.md).
+[show the code block in the style guide](../board/cards/show-the-code-block-in-the-style-guide.md),
+within the card [build a design system](../board/cards/build-a-design-system.md).
 Technical details and reasons are in the cards.
 
 ## Decisions
@@ -116,10 +116,10 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - Turn the wrap toggle into an icon, in a session of its own: card
-  [turn the code wrap toggle into an icon](../backlog/turn-the-code-wrap-toggle-into-an-icon.md).
+  [turn the code wrap toggle into an icon](../board/cards/turn-the-code-wrap-toggle-into-an-icon.md).
 - The table page, then the typography and the breakpoints: card
-  [build a design system](../wip/build-a-design-system.md).
+  [build a design system](../board/cards/build-a-design-system.md).
 - The article on the style guide, once it is complete: card
-  [write an article on the style guide](../backlog/write-an-article-on-the-style-guide.md).
+  [write an article on the style guide](../board/cards/write-an-article-on-the-style-guide.md).
 - A breadcrumb and a way back to the top for the articles: card
-  [add breadcrumbs and a way back to the top to the articles](../backlog/add-breadcrumbs-and-back-to-top-to-articles.md).
+  [add breadcrumbs and a way back to the top to the articles](../board/cards/add-breadcrumbs-and-back-to-top-to-articles.md).

@@ -1,0 +1,1 @@
+../cards/show-the-text-column-in-the-style-guide.md

@@ -3,9 +3,9 @@
 **Participants:** the user (author); the agent (Claude Opus), with
 sub-agents Haiku (card moves) and Sonnet (spikes, code and tests).
 **Goal:** start the card
-[let the Markdown ask for components for wide code and tables](../wip/annotate-markdown-for-wide-content.md),
+[let the Markdown ask for components for wide code and tables](../board/cards/annotate-markdown-for-wide-content.md),
 code first. Technical details and reasons are in that card and in the
-[look card](../wip/design-look-of-articles.md).
+[look card](../board/cards/design-look-of-articles.md).
 
 ## Decisions
 
@@ -105,8 +105,8 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 
 - The look of the articles: text size, headings, quotes, tables; the
   user's next session. Card
-  [give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md).
+  [give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md).
 - Tables and the hybris PK article back in the checks. Card
-  [let the Markdown ask for components for wide code and tables](../wip/annotate-markdown-for-wide-content.md).
+  [let the Markdown ask for components for wide code and tables](../board/cards/annotate-markdown-for-wide-content.md).
 - Firefox in the tests. Card
-  [run the browser tests in more browsers](../backlog/run-browser-tests-in-more-browsers.md).
+  [run the browser tests in more browsers](../board/cards/run-browser-tests-in-more-browsers.md).

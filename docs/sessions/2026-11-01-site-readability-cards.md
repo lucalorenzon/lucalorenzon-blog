@@ -4,9 +4,9 @@
 sub-agent (Claude Haiku 5.5), which moved a card to `docs/wip/`.
 **Goal:** open a card to make the published text easier to read; it
 became the card
-[improve the site's readability](../backlog/improve-site-readability.md),
+[improve the site's readability](../board/cards/improve-site-readability.md),
 with the card
-[cover the WCAG criteria axe cannot check](../backlog/cover-wcag-criteria-axe-cannot-check.md)
+[cover the WCAG criteria axe cannot check](../board/cards/cover-wcag-criteria-axe-cannot-check.md)
 put before it.
 
 ## Decisions
@@ -56,7 +56,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 - `9169c28`: the two cards, line spacing and text colours, in Now.
 - `2816940`: the line spacing card moved to `docs/wip/` (sub-agent).
 - `4aa88e2`: the two cards joined into
-  [improve the site's readability](../backlog/improve-site-readability.md),
+  [improve the site's readability](../board/cards/improve-site-readability.md),
   font included; the earlier cards removed. A pull with automatic stash
   had left the removals and the plan out of the commit; the agent saw it
   and amended the commit before pushing.
@@ -75,6 +75,6 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Go through the WCAG criteria not covered, levels A to AAA: card
-  [cover the WCAG criteria axe cannot check](../backlog/cover-wcag-criteria-axe-cannot-check.md).
+  [cover the WCAG criteria axe cannot check](../board/cards/cover-wcag-criteria-axe-cannot-check.md).
 - Split and carry out the readability work, font first: card
-  [improve the site's readability](../backlog/improve-site-readability.md).
+  [improve the site's readability](../board/cards/improve-site-readability.md).

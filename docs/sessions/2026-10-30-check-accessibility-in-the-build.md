@@ -4,7 +4,7 @@
 the sub-agent Sonnet 5.5 (the accessibility test).
 **Goal:** take the card "Add automated accessibility tests" and close
 its automated part:
-[check accessibility in the build](../done/2026-10-30_check-accessibility-in-the-build.md).
+[check accessibility in the build](../board/cards/check-accessibility-in-the-build.md).
 Technical details and reasons are in the card. The session started on
 2026-10-29, right after the session
 [stop the generic CSS checker on the stylesheet](2026-10-29-stop-generic-css-checker.md),
@@ -55,4 +55,4 @@ plan.
 
 - Decide which checks are done by hand, such as a screen reader
   (decision 1): card
-  [check accessibility by hand](../backlog/check-accessibility-by-hand.md).
+  check accessibility by hand (later split into [Check the accessibility tree in the build](../board/cards/check-accessibility-tree-in-the-build.md), [Run a screen reader check on demand](../board/cards/run-screen-reader-check-on-demand.md)).

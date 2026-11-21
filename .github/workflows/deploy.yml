@@ -16,7 +16,7 @@
 # Right after publishing it creates the GitHub Release of the version, with
 # the notes from CHANGELOG.md and the zip of the published site attached.
 # Finally the browser test runs on the live site.
-# Why: docs/done/2026-10-28_separate-build-from-deploy.md.
+# Why: docs/board/cards/separate-build-from-deploy.md.
 name: Deploy
 
 on:
@@ -198,7 +198,7 @@ jobs:
   # parallel with verify-live and whether or not it passes: the Release
   # documents what went live, and a failed live test says what to fix in a
   # later patch version (decision recorded in
-  # docs/done/2026-10-28_separate-build-from-deploy.md). The zip of the exact site that
+  # docs/board/cards/separate-build-from-deploy.md). The zip of the exact site that
   # was published lets an earlier version be published again without
   # rebuilding it. Safe to re-run: an existing Release gets its notes and its
   # zip replaced.
@@ -271,7 +271,7 @@ jobs:
   # only if every job before it, even indirectly, succeeded: when the
   # snapshot is published the job build is skipped, and verify-live was
   # skipped with it, silently (version 0.2.0). Why:
-  # docs/done/2026-10-28_run-live-test-when-snapshot-is-published.md.
+  # docs/board/cards/run-live-test-when-snapshot-is-published.md.
   verify-live:
     needs: [check-tag, deploy]
     if: ${{ !cancelled() && needs.deploy.result == 'success' }}

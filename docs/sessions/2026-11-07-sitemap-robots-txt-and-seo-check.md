@@ -6,11 +6,11 @@ test of the fixed pages' sources, the robots list step and the
 `robots.txt`, with their tests) and Haiku 5.5 (one comment corrected).
 The session ran from 2026-11-06 to 2026-11-07.
 **Goal:** take the card
-[check SEO with Lighthouse in the build](../wip/check-seo-with-lighthouse.md)
+[check SEO with Lighthouse in the build](../board/cards/check-seo-with-lighthouse.md)
 and build it. Five of its questions were answered, then the card was put
 on hold, still in `docs/wip/`, for two cards it turned out to need:
-[add a sitemap](../done/2026-11-07_add-sitemap.md) and
-[add a robots.txt](../done/2026-11-07_add-robots-txt.md), both built and
+[add a sitemap](../board/cards/add-sitemap.md) and
+[add a robots.txt](../board/cards/add-robots-txt.md), both built and
 closed. Reasons and rejected options are in the cards.
 
 ## Decisions
@@ -164,18 +164,18 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Resume the SEO check, with its pages read from the sitemap: card
-  [check SEO with Lighthouse in the build](../wip/check-seo-with-lighthouse.md).
+  [check SEO with Lighthouse in the build](../board/cards/check-seo-with-lighthouse.md).
 - Watch the rules Lighthouse finds not applicable: card
-  [watch the rules Lighthouse finds not applicable](../backlog/watch-lighthouse-rules-not-applicable.md).
+  [watch the rules Lighthouse finds not applicable](../board/cards/watch-lighthouse-rules-not-applicable.md).
 - Structured data, and asking robots for a citation: card
-  [check the structured data](../backlog/check-structured-data.md).
+  [check the structured data](../board/cards/check-structured-data.md).
 - Titles, descriptions and dates into a front matter: card
-  [move titles, descriptions and dates into the Markdown's front matter](../backlog/move-page-fields-into-markdown-front-matter.md).
+  move titles, descriptions and dates into the Markdown's front matter (later split into [Read the articles' title, description and date from the front matter](../board/cards/read-article-fields-from-front-matter.md), [Read the other pages' title and description from the Markdown](../board/cards/read-page-fields-from-markdown.md), [Take the pages' addresses from a slug, with redirects](../board/cards/take-page-addresses-from-slug.md)).
 - The home page's date in the sitemap: card
-  [give the home page a date in the sitemap](../backlog/date-the-home-page-in-the-sitemap.md).
+  [give the home page a date in the sitemap](../board/cards/date-the-home-page-in-the-sitemap.md).
 - The publication date in the sitemap: card
-  [use the publication date in the sitemap](../backlog/use-publication-date-in-the-sitemap.md).
+  [use the publication date in the sitemap](../board/cards/use-publication-date-in-the-sitemap.md).
 - The Python scripts in Rust: card
-  [port the Python scripts to Rust, run with Docker](../backlog/port-python-scripts-to-rust-with-docker.md).
+  [port the Python scripts to Rust, run with Docker](../board/cards/port-python-scripts-to-rust-with-docker.md).
 - Check the workflows with `actionlint`: card
-  [check the workflows with actionlint](../backlog/lint-workflows-with-actionlint.md).
+  [check the workflows with actionlint](../board/cards/lint-workflows-with-actionlint.md).

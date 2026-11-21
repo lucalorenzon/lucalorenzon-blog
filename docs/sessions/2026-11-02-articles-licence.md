@@ -3,7 +3,7 @@
 **Participants:** the user (author); the agent (Claude Opus 5.5), with a
 sub-agent on Claude Haiku 5.5 (moving the card).
 **Goal:** answer the card
-[choose the licence of the articles](../done/2026-11-02_choose-articles-licence.md),
+[choose the licence of the articles](../board/cards/choose-articles-licence.md),
 before the first articles come to the site. The reasons and the
 rejected options are in the card.
 
@@ -60,12 +60,12 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Outcome
 
 - Card started (`8c2eb70`, by the Haiku sub-agent).
-- New card [show the licences on the site](../backlog/show-licences-on-the-site.md)
+- New card [show the licences on the site](../board/cards/show-licences-on-the-site.md)
   in Now (`303a1f3`).
 - Licences declared in the repository: `content/README.md`,
   `content/LICENSE-MIT-0`, `README.md`, `CLAUDE.md` (`ce20fcd`).
 - Card closed, links and plan updated (`378f040`).
-- New card [publish the curriculum in more languages](../backlog/publish-curriculum-in-more-languages.md)
+- New card [publish the curriculum in more languages](../board/cards/publish-curriculum-in-more-languages.md)
   in Later (`c62a668`).
 
 ## Open points
@@ -81,9 +81,9 @@ plan.
 
 - Show the licence sentence on every page and the exception on the
   curriculum: card
-  [show the licences on the site](../backlog/show-licences-on-the-site.md).
+  [show the licences on the site](../board/cards/show-licences-on-the-site.md).
 - Check, for each image of the articles from Medium, whether it is the
   author's and, if not, its source and terms: card
-  [add the two articles already on Medium](../backlog/add-the-two-medium-articles.md).
+  add the two articles already on Medium (later split into [Bring "After Save Event" into the site's Markdown](../board/cards/add-after-save-event-markdown.md), [Bring the article on generating hybris PK values into the site's Markdown](../board/cards/add-generate-pk-article-markdown.md), [Give each article a page of its own](../board/cards/add-article-pages.md), [Give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md)).
 - Translate the curriculum: card
-  [publish the curriculum in more languages](../backlog/publish-curriculum-in-more-languages.md).
+  [publish the curriculum in more languages](../board/cards/publish-curriculum-in-more-languages.md).

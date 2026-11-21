@@ -4,9 +4,9 @@
 sub-agents Haiku 5.5 (card move, commit of the fix) and Sonnet 5.5 (markup
 change and tests).
 **Goal:** close the card
-[logo name not read by Orca 51](../done/2026-10-30_logo-name-not-read-by-orca-51.md);
+[logo name not read by Orca 51](../board/cards/logo-name-not-read-by-orca-51.md);
 then, chosen by the user during the session, the card
-[check whether the container reads like Orca 51](../done/2026-10-31_check-whether-the-container-reads-like-orca-51.md).
+[check whether the container reads like Orca 51](../board/cards/check-whether-the-container-reads-like-orca-51.md).
 Technical details and reasons are in the cards.
 
 ## Decisions

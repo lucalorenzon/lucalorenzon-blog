@@ -9,9 +9,9 @@
   then three rounds of fixes asked by the agent.
 
 Goal: start the breakpoints, the last page of the style guide before
-it is published (card [build a design system](../wip/build-a-design-system.md)).
+it is published (card [build a design system](../board/cards/build-a-design-system.md)).
 The session cut them in two cards and finished the first
-([card](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md)).
+([card](../board/cards/read-the-breakpoints-from-the-configuration.md)).
 Technical details and reasons are in the cards.
 
 ## Decisions
@@ -95,7 +95,7 @@ Nothing was pushed.
 
 - The tables page's text still names 767 and 768; if `md` moves, it
   becomes false unnoticed (card
-  [read the breakpoints from the configuration](../done/2026-11-18_read-the-breakpoints-from-the-configuration.md),
+  [read the breakpoints from the configuration](../board/cards/read-the-breakpoints-from-the-configuration.md),
   "Cautions").
 
 ## Next steps
@@ -104,7 +104,7 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - The breakpoints' page, last before the style guide is published:
-  card [show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md).
-- The real launch: card [launch the site on LinkedIn](../backlog/launch-the-site-on-linkedin.md).
+  card [show the breakpoints in the style guide](../board/cards/show-the-breakpoints-in-the-style-guide.md).
+- The real launch: card [launch the site on LinkedIn](../board/cards/launch-the-site-on-linkedin.md).
 - Learning about campaigns and banners: card
-  [plan marketing campaigns](../backlog/plan-marketing-campaigns.md).
+  [plan marketing campaigns](../board/cards/plan-marketing-campaigns.md).

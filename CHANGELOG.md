@@ -20,14 +20,14 @@ While the site is at version 0, a new design counts as MINOR, not MAJOR:
 the leading 0 says the site is still being built: the articles came
 with version 0.9.0, the site's menu is still to come. Set on 2026-10-28,
 when the first design came with version 0.2.0
-([card](docs/done/2026-10-28_add-header-footer-and-favicon.md)).
+([card](docs/board/cards/add-header-footer-and-favicon.md)).
 
 A version tag is never moved. If one has to be deleted, its name is never
 used again: the next version takes the next number. GitHub can stop a tag
 from being moved, but not a deleted name from being reused, so this rule
 holds only because it is written here.
 
-Why these rules: [the card that set them](docs/done/2026-10-28_separate-build-from-deploy.md).
+Why these rules: [the card that set them](docs/board/cards/separate-build-from-deploy.md).
 
 ## [Unreleased]
 

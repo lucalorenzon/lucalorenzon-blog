@@ -9,7 +9,7 @@ the colour of the markers).
 **Goal:** fix the numbered list that showed no numbers at the end of the
 article "After Save Event", then try the amber accent on the markers of
 lists. Card:
-[show numbered lists, and colour the markers of lists](../done/2026-11-07_show-numbered-lists-and-colour-list-markers.md).
+[show numbered lists, and colour the markers of lists](../board/cards/show-numbered-lists-and-colour-list-markers.md).
 
 ## Decisions
 

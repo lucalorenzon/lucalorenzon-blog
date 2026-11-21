@@ -75,39 +75,28 @@ the backlog (two or three of the same size may be created together) and work
 starts. Planning stops there and resumes later: validating the plan's
 assumptions with code matters more than settling every detail in advance.
 
-## Backlog cards
+## Cards
 
-A card is a file that moves through three folders, so the folder alone tells
-its state:
+Cards follow the global rules, section "The Board": every card lives at
+`docs/board/cards/<name>.md`, a path that never changes, and its state is
+a symbolic link in `docs/board/backlog/`, `wip/` or `done/`, moved with
+`~/.local/bin/card.sh`. A document refers to a card by its path in
+`cards/`. A card's text follows the skill `card-management`, and a card
+is cut as the global rules say, section "Planning": the part done now
+stays in the card, the rest goes to new cards; a card is never deleted.
+Why: `docs/board/cards/refer-to-cards-by-name-in-frozen-documents.md`.
 
-| Folder | State | File name |
-|---|---|---|
-| `docs/backlog/` | Noticed, not started | `<name>.md` |
-| `docs/wip/` | Being worked on now | `<name>.md` |
-| `docs/done/` | Finished | `yyyy-MM-dd_<name>.md`, the date being the day the work finished |
+What this repository adds:
 
-- `docs/backlog/` collects every idea or question noticed. A card may never
-  be done and end up superseded by others; from time to time a cleanup card
-  clears the backlog.
-- The card being worked on goes to `docs/wip/`. Usually it is the session's
-  only card, but that is not a fixed rule.
-- A card split into smaller ones does not go to `docs/done/`: the new cards
-  go to the backlog and the original file is deleted in the same commit. The
-  session minute records the split with that commit, and the git history
-  keeps the original text. The plan is updated to match.
-- A card's title names its subject, with no "Backlog:" prefix: the folder
-  tells the state.
-- A finished card reads as the answer to the questions it raised: title and
-  status with the closing date; why it was opened; the answers, each with
-  what was chosen and why, and the rejected options with their reason; the
-  results observed, if any. Proposal-time sections ("Proposal", "When to
-  pick this up") are removed.
-
-Cards move with `git mv`, so their history follows them. When a card moves,
-links to it from other documents are updated in the same commit. The date
-prefix keeps `docs/done/` in the order the work was finished. Each of the
-three folders holds a `.gitkeep`, so it exists, and links to it work, even
-when it has no cards.
+- The backlog collects every idea or question noticed. A card may never
+  be done and end up superseded by others; from time to time a cleanup
+  card clears the backlog.
+- Usually the card in work is the session's only one, but that is not a
+  fixed rule.
+- A card's title names its subject, with no "Backlog:" prefix: the state
+  is told by the folder of its link.
+- Each state folder holds a `.gitkeep`, so it exists, and links to it
+  work, even when it has no cards.
 
 ## Model routing
 
@@ -149,7 +138,7 @@ this order:
 
 Reference: `docs/sessions/2026-10-27-run-browser-tests-in-playwright-image.md`.
 Earlier minutes keep their earlier format. Why this format:
-`docs/done/2026-10-27_revise-session-minute-format.md`.
+`docs/board/cards/revise-session-minute-format.md`.
 
 ## Commit attribution
 
@@ -177,7 +166,7 @@ declaring line to find it in the code.
   agent's to watch, so when a test's behaviour changes, its row's text
   is reviewed too.
 
-Why: `docs/done/2026-11-09_describe-the-browser-tests-in-a-readme.md`.
+Why: `docs/board/cards/describe-the-browser-tests-in-a-readme.md`.
 
 ## Stack
 
@@ -188,20 +177,20 @@ Why: `docs/done/2026-11-09_describe-the-browser-tests-in-a-readme.md`.
   holds no HTML (a unit test checks it)
 - [serde-saphyr](https://crates.io/crates/serde-saphyr) 2.1, reading
   only, for the YAML front matter at the top of each article (why:
-  `docs/done/2026-11-08_read-article-fields-from-front-matter.md`)
+  `docs/board/cards/read-article-fields-from-front-matter.md`)
 - [jiff](https://github.com/BurntSushi/jiff) 0.2, without time zones,
   reading the dates of the articles and of the sitemap (strict ISO
   form, `YYYY-MM-DD`) and writing them for the reader (why:
-  `docs/done/2026-11-09_give-dates-a-module-of-their-own.md`)
+  `docs/board/cards/give-dates-a-module-of-their-own.md`)
 - [unicode-segmentation](https://github.com/unicode-rs/unicode-segmentation)
   1.13, counting the graphemes of a page heading against its limit
   (already compiled as a dependency of Leptos; why:
-  `docs/done/2026-11-08_enforce-the-title-length-limit-in-the-build.md`)
+  `docs/board/cards/enforce-the-title-length-limit-in-the-build.md`)
 - [icondata](https://github.com/Carlosted/icondata) 0.7, the drawings of
   the site's icons, with Bootstrap Icons' set only; the build turns each
   into a CSS mask (`src/icons.rs`), so no drawing is written by hand in
   the stylesheet (why:
-  `docs/done/2026-11-15_turn-the-code-wrap-toggle-into-an-icon.md`)
+  `docs/board/cards/turn-the-code-wrap-toggle-into-an-icon.md`)
 - [Tailwind CSS](https://tailwindcss.com/) v4, standalone command-line tool
   pinned by version and checksum in `scripts/get-tailwind.sh`
 - Hosting on GitHub Pages, published by GitHub Actions only when a version
@@ -211,10 +200,10 @@ Why: `docs/done/2026-11-09_describe-the-browser-tests-in-a-readme.md`.
 - [Lighthouse](https://github.com/GoogleChrome/lighthouse) 13.6.0, driven
   from a Playwright project of its own: the search-engine rules on every
   page of the sitemap, in both moments (why:
-  `docs/done/2026-11-07_check-seo-with-lighthouse.md`)
+  `docs/board/cards/check-seo-with-lighthouse.md`)
 - Rust stable toolchain, pinned in `rust-toolchain.toml`
 
-Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
+Why each choice was made: `docs/board/cards/put-working-skeleton-live.md`.
 
 ## Repository map
 
@@ -240,9 +229,8 @@ Why each choice was made: `docs/done/2026-10-26_put-working-skeleton-live.md`.
 | `.github/workflows/deploy.yml` | On a version tag: check the tag, take the snapshot of that commit or rebuild it, publish, create the version's Release, test the live site |
 | `CHANGELOG.md` | What each published version brought, and the rules for version numbers and tags |
 | `docs/plan.md` | The project's board: Now / Next / Later (see "The plan") |
-| `docs/backlog/` | Tickets: things noticed but deliberately not done yet, with the reason |
-| `docs/wip/` | Backlog cards being worked on now (see "Backlog cards") |
-| `docs/done/` | Finished backlog cards, prefixed with the date they were finished |
+| `docs/board/cards/` | Every card, whatever its state (see "Cards") |
+| `docs/board/backlog/`, `wip/`, `done/` | One symbolic link per card, showing its state: noticed and not started, being worked on, finished (in `done/` named after the day the work finished) |
 | `docs/sessions/` | One minute per working session |
 | `docs/accessibility/` | Reference transcript and record of every screen reader check |
 | `docs/licences/third-party-usage.md` | Usage log for the CC BY-NC-SA `modularity` plugin, enabled in `.claude/settings.json` (required by the global licensing rule) |

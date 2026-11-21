@@ -7,9 +7,9 @@ card opened in the previous session
 ([minute](2026-11-03-about-page-and-views-statement.md)). The card was
 split during this session (`bfa0705`); three of the new cards were
 done:
-[the Markdown of "After Save Event"](../done/2026-11-03_add-after-save-event-markdown.md),
-[the Markdown of the article on hybris PK values](../done/2026-11-03_add-generate-pk-article-markdown.md)
-and [a page for each article](../done/2026-11-04_add-article-pages.md).
+[the Markdown of "After Save Event"](../board/cards/add-after-save-event-markdown.md),
+[the Markdown of the article on hybris PK values](../board/cards/add-generate-pk-article-markdown.md)
+and [a page for each article](../board/cards/add-article-pages.md).
 The reasons and the rejected options are in the cards.
 
 ## Decisions
@@ -100,13 +100,13 @@ plan.
 
 - Let wide code and tables be shown on a phone, and put the article
   pages back into the readability checks: card
-  [let the Markdown ask for components for wide code and tables](../backlog/annotate-markdown-for-wide-content.md).
+  [let the Markdown ask for components for wide code and tables](../board/cards/annotate-markdown-for-wide-content.md).
 - Text size, code in a visible box, headings of articles, and whether
   the pages join the accessibility-tree check: card
-  [give the articles' code, quotes and tables a look](../backlog/design-look-of-articles.md).
+  [give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md).
 - Link the articles and publish a version: card
-  [add site navigation](../backlog/add-site-navigation.md).
+  add site navigation (later split into [Add a menu for the site](../board/cards/add-site-menu.md), [List the articles on the home page](../board/cards/list-articles-on-home-page.md)).
 - The canonical link, and the setting to change on Medium: card
-  [add SEO and Open Graph tags to every page](../backlog/add-seo-and-open-graph-tags.md).
+  add SEO and Open Graph tags to every page (later split into [Add the description and the Open Graph tags to every indexed page](../board/cards/add-description-and-open-graph-tags.md), [Check SEO with Lighthouse in the build](../board/cards/check-seo-with-lighthouse.md), [Add preview images](../board/cards/add-preview-images.md)).
 - Whether an "article" model is needed: card
-  [run a full round of `residuality`](../backlog/run-full-residuality-round.md).
+  [run a full round of `residuality`](../board/cards/run-full-residuality-round.md).

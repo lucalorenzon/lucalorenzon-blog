@@ -4,7 +4,7 @@
 sub-agents Sonnet 5.5 (code and tests of each slice) and Haiku 5.5
 (formatting fix).
 **Goal:** continue the card
-[give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md),
+[give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md),
 starting from the text size. Reasons and rejected options are in that
 card and in
 [ADR-003](../adr/ADR-003-readability-first-amber-as-accent.md).
@@ -102,9 +102,9 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Tables, then the light background. Card
-  [give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md).
+  [give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md).
 - What a table too wide for a phone does, and the hybris PK article
   back in the checks. Card
-  [let the Markdown ask for components for wide code and tables](../wip/annotate-markdown-for-wide-content.md).
+  [let the Markdown ask for components for wide code and tables](../board/cards/annotate-markdown-for-wide-content.md).
 - A reader's control to choose the background on the site. Card
-  [let readers adjust font and spacing](../backlog/let-readers-adjust-font-and-spacing.md).
+  [let readers adjust font and spacing](../board/cards/let-readers-adjust-font-and-spacing.md).

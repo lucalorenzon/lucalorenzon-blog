@@ -3,7 +3,7 @@
 **Participants:** the user (author); the agent (Claude Opus), with
 sub-agents Haiku (file moves) and Sonnet (workflow code).
 **Goal:** close the card
-[run the browser tests inside the official Playwright image](../done/2026-10-27_run-browser-tests-in-playwright-image.md).
+[run the browser tests inside the official Playwright image](../board/cards/run-browser-tests-in-playwright-image.md).
 Technical details and reasons are in the card.
 
 ## Decisions
@@ -53,7 +53,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
    the most used and the most readable, over DACI and over a mixed table
    the agent proposed. → decision 7. This minute was rewritten afterwards
    in the final format set by the card
-   [make the session minute record who contributed what](../done/2026-10-27_revise-session-minute-format.md).
+   [make the session minute record who contributed what](../board/cards/revise-session-minute-format.md).
 
 ## Outcome
 
@@ -74,8 +74,8 @@ plan.
 
 - Separate the build from a tag-triggered deploy and add a
   `CHANGELOG.md` (decisions 5 and 6): card
-  [separate the build from the deploy](../backlog/separate-build-from-deploy.md).
+  [separate the build from the deploy](../board/cards/separate-build-from-deploy.md).
 - Make commit trailers tell the author apart from the agent: `acd67ed`,
   made by the Haiku sub-agent, names Opus in its `Co-Authored-By` line,
   because the agent wrote that line into its instructions. Card
-  [make the session minute record who contributed what](../done/2026-10-27_revise-session-minute-format.md).
+  [make the session minute record who contributed what](../board/cards/revise-session-minute-format.md).

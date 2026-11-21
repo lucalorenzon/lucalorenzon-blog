@@ -4,9 +4,9 @@
 sub-agents Sonnet 5.5 (header code, browser tests, playground page) and
 Haiku 5.5 (build and test runs, one mechanical edit).
 **Goal:** take the card "Make the site responsive". It became
-[adapt the header to screen width](../done/2026-10-29_adapt-header-to-screen-width.md)
+[adapt the header to screen width](../board/cards/adapt-header-to-screen-width.md)
 and, along the way,
-[name styles in the stylesheet](../done/2026-10-29_name-styles-in-the-stylesheet.md).
+[name styles in the stylesheet](../board/cards/name-styles-in-the-stylesheet.md).
 Technical details and reasons are in the cards and in
 [ADR-001](../adr/ADR-001-name-styles-by-visual-variant.md).
 
@@ -97,11 +97,11 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - Fix the editor errors in the browser test (decision 12): card
-  [fix the editor errors in the browser test](../backlog/fix-editor-errors-in-browser-test.md).
+  [fix the editor errors in the browser test](../board/cards/fix-editor-errors-in-browser-test.md).
 - Adapt the footer and the articles, with the 50-character limit
   (decision 6): card
-  [adapt the footer and the articles to screen width](../backlog/adapt-footer-and-articles-to-screen-width.md).
+  [adapt the footer and the articles to screen width](../board/cards/adapt-footer-and-articles-to-screen-width.md).
 - Add the navigation the header leaves room for (decision 1): card
-  [add site navigation](../backlog/add-site-navigation.md).
+  add site navigation (later split into [Add a menu for the site](../board/cards/add-site-menu.md), [List the articles on the home page](../board/cards/list-articles-on-home-page.md)).
 - Review ADR-001 once more pages use it (decision 10): trigger written in
   the ADR.

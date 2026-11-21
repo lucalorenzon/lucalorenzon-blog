@@ -1,0 +1,1 @@
+../cards/lint-workflows-with-actionlint.md

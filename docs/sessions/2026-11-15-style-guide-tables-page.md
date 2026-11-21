@@ -7,7 +7,7 @@ first slice of the card, resumed once to redo the case of the texts at
 the limit).
 **Goal:** resume from the plan, choose the next card, build its
 first slice and start its texts; the user chose the table's page of the style guide, card
-[show the table in the style guide](../wip/show-the-table-in-the-style-guide.md).
+[show the table in the style guide](../board/cards/show-the-table-in-the-style-guide.md).
 Technical details and reasons are in the card.
 
 ## Decisions
@@ -106,7 +106,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 - `end2end/tests/content-layout.spec.ts` and a guard in
   `end2end/tests/support.ts` still need the After Save Event article to
   show a table, for the text checks: left to the typography page of the
-  card [build a design system](../wip/build-a-design-system.md).
+  card [build a design system](../board/cards/build-a-design-system.md).
 
 ## Next steps
 
@@ -115,10 +115,10 @@ plan.
 
 - The four texts left on the tables page, starting from the user's
   draft above: card
-  [show the table in the style guide](../wip/show-the-table-in-the-style-guide.md),
+  [show the table in the style guide](../board/cards/show-the-table-in-the-style-guide.md),
   slice 2.
 - The typography and breakpoints pages of the style guide: card
-  [build a design system](../wip/build-a-design-system.md).
+  [build a design system](../board/cards/build-a-design-system.md).
 - The screen reader check for the English site: card
-  [update the screen reader check for an English site](../backlog/update-screen-reader-check-for-english-site.md).
+  [update the screen reader check for an English site](../board/cards/update-screen-reader-check-for-english-site.md).
  

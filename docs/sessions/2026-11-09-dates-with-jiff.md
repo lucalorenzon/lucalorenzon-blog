@@ -4,7 +4,7 @@
 the sub-agent Claude Sonnet 5.5 (two tasks: the articles' dates, and
 the sitemap's dates).
 **Goal:** do the card
-[give dates a module of their own](../done/2026-11-09_give-dates-a-module-of-their-own.md),
+[give dates a module of their own](../board/cards/give-dates-a-module-of-their-own.md),
 the first of the refactors in Now. Technical details are in the card.
 
 ## Decisions
@@ -62,7 +62,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 
 ## Outcome
 
-- Card [give dates a module of their own](../done/2026-11-09_give-dates-a-module-of-their-own.md):
+- Card [give dates a module of their own](../board/cards/give-dates-a-module-of-their-own.md):
   started (`1166ae3`); answered with jiff (`efc2bd2`); the articles'
   dates with jiff, and jiff in the project's `CLAUDE.md` (`5c5074b`);
   the sitemap's dates with jiff (`c25996c`); moved to done
@@ -75,6 +75,6 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Refactor the errors with thiserror: card
-  [refactor the code's errors with thiserror](../backlog/refactor-errors-with-thiserror.md).
+  [refactor the code's errors with thiserror](../board/cards/refactor-errors-with-thiserror.md).
 - Run the spike on Holt, then build the catalogue that frees the two
-  articles: card [build a design system](../backlog/build-a-design-system.md).
+  articles: card [build a design system](../board/cards/build-a-design-system.md).

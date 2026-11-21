@@ -13,7 +13,7 @@ import { retryWhenLive } from './support';
 // link from the element to its role whatever fonts the configuration holds (two roles
 // may share a font): the font the browser computes for the element must be the name
 // of its role.
-// Card: docs/done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md.
+// Card: docs/board/cards/give-the-fonts-three-roles-in-the-stylesheet.md.
 
 type Role = '--font-text' | '--font-code' | '--font-logo';
 
@@ -169,7 +169,7 @@ test('every font file the stylesheet declares loads', async ({ page }) => {
 // the family of the sample's role and the style and weight of the file whose name is the
 // sample's label. The expected values are read from the configuration, so a font or a file
 // added there is checked with no change here.
-// Card: docs/wip/build-the-fonts-page-from-the-configuration.md.
+// Card: docs/board/cards/build-the-fonts-page-from-the-configuration.md.
 const CONFIG = join(__dirname, '..', '..', 'config');
 
 function settings(path: string): [string, string][] {

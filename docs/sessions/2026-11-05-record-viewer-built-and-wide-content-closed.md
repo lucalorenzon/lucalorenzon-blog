@@ -5,12 +5,12 @@ sub-agents Sonnet 5.5 (the rebuilt prototype and its fixes, the record
 viewer in the site with its tests, the hybris article back in the
 checks).
 **Goal:** slices 2 and 3 of the card
-[let the Markdown ask for components for wide code and tables](../done/2026-11-05_annotate-markdown-for-wide-content.md):
+[let the Markdown ask for components for wide code and tables](../board/cards/annotate-markdown-for-wide-content.md):
 the record viewer and its threshold in the build, then the hybris PK
 article back in the checks, which closes the card. Then, on
 2026-11-06, the user's validation of the article pages, which closes
 the card
-[give the articles' code, quotes and tables a look](../done/2026-11-06_design-look-of-articles.md).
+[give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md).
 Reasons and rejected options are in the cards.
 
 ## Decisions
@@ -108,14 +108,14 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
   skipped, as before).
 - The card: `e5e0ea9` slice 2's decisions and results; `336cfc8` the
   card closed in `docs/done/`, and the card
-  [handle long tables](../backlog/handle-long-tables.md) opened in
+  [handle long tables](../board/cards/handle-long-tables.md) opened in
   Later; `68165ea` the 1.4.4 question in the
-  [WCAG card](../backlog/cover-wcag-criteria-axe-cannot-check.md).
+  [WCAG card](../board/cards/cover-wcag-criteria-axe-cannot-check.md).
 - [ADR-001](../adr/ADR-001-name-styles-by-visual-variant.md) extends
   the container query exception to tables (`e5e0ea9`).
 - `1ab20fd` the reason for the viewer's Tab stop, in the code;
   `5ba7f57` the
-  [look card](../done/2026-11-06_design-look-of-articles.md) closed,
+  [look card](../board/cards/design-look-of-articles.md) closed,
   the plan updated: the navigation's condition is met.
 - Plus this minute, which replaces `33e18aa`, pushed earlier.
 
@@ -127,6 +127,6 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - The site's navigation, whose condition is now met, in Next:
-  [add site navigation](../backlog/add-site-navigation.md).
+  add site navigation (later split into [Add a menu for the site](../board/cards/add-site-menu.md), [List the articles on the home page](../board/cards/list-articles-on-home-page.md)).
 - Whether text set in pixels fails WCAG 1.4.4, in the card
-  [cover the WCAG criteria axe cannot check](../backlog/cover-wcag-criteria-axe-cannot-check.md).
+  [cover the WCAG criteria axe cannot check](../board/cards/cover-wcag-criteria-axe-cannot-check.md).

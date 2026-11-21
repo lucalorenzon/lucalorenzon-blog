@@ -4,7 +4,7 @@
 sub-agents Claude Haiku 5.5 (card moves, commits, the browser test on the
 live site) and Claude Sonnet 5.5 (the comment in the test configuration).
 **Goal:** answer the card
-[choose the site's public address](../done/2026-11-01_choose-site-address.md),
+[choose the site's public address](../board/cards/choose-site-address.md),
 the only card in Now, and put the address live.
 
 ## Decisions
@@ -99,6 +99,6 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Decide how frozen documents refer to other cards: card
-  [refer to cards by name in frozen documents](../backlog/refer-to-cards-by-name-in-frozen-documents.md).
+  [refer to cards by name in frozen documents](../board/cards/refer-to-cards-by-name-in-frozen-documents.md).
 - Run the screen reader check on the English site: card
-  [update the screen reader check for an English site](../backlog/update-screen-reader-check-for-english-site.md).
+  [update the screen reader check for an English site](../board/cards/update-screen-reader-check-for-english-site.md).

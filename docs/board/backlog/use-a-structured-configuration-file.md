@@ -1,0 +1,1 @@
+../cards/use-a-structured-configuration-file.md

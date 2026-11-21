@@ -1,0 +1,1 @@
+../cards/check-seo-with-lighthouse.md

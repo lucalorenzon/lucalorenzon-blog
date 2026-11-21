@@ -18,7 +18,7 @@ import { MD, READER_SPACING, retryWhenLive, VIEWPORTS, XL } from './support';
 // and that the page does not scroll sideways. It uses the home page title and
 // the two invented titles below instead of the real pages' titles: the build
 // limits a heading to a number of graphemes (card
-// docs/done/2026-11-08_enforce-the-title-length-limit-in-the-build.md), so the
+// docs/board/cards/enforce-the-title-length-limit-in-the-build.md), so the
 // longest title any page can have is covered by the invented ones, at every width.
 // The rest of the 1.4.12 checks live in readability.spec.ts, at the widths of
 // the text column.

@@ -3,7 +3,7 @@
 - **Date:** 2026-10-29
 - **Status:** Accepted, as a trial: to be reviewed once the first pages
   are built with it
-- **Card:** [name styles in the stylesheet](../done/2026-10-29_name-styles-in-the-stylesheet.md)
+- **Card:** [name styles in the stylesheet](../board/cards/name-styles-in-the-stylesheet.md)
 
 ## Context
 
@@ -102,7 +102,7 @@ Markdown carries no classes, so its elements cannot take named variants.
 The variant goes on the container instead, and holds rules for the
 elements inside it (`& h2 { @apply ...; }`); Tailwind 4.3.3 keeps them,
 with width prefixes too. First use: `long-text-column`, in the card
-[put the curriculum on the home page](../done/2026-11-01_put-curriculum-on-home-page.md).
+[put the curriculum on the home page](../board/cards/put-curriculum-on-home-page.md).
 The rule of this decision still holds: the page carries only our names.
 
 **Note, 2026-11-04: one threshold per code block, an exception.** A
@@ -123,7 +123,7 @@ variant switched on with a prefix); it departs from point 1 and point
 articles in the source code. Rejected: the Rust build writing CSS
 rules itself, which keeps our names but splits the presentation
 between the stylesheet and the code. Card:
-[Markdown annotations for wide content](../done/2026-11-05_annotate-markdown-for-wide-content.md).
+[Markdown annotations for wide content](../board/cards/annotate-markdown-for-wide-content.md).
 
 **Note, 2026-11-05: the same exception for tables.** A table shows as
 a record viewer when its box is narrower than the width its columns
@@ -137,6 +137,6 @@ in tenths of an em) and `viewer-record-count-5`. Card: the same.
 
 ## References
 
-- Card: [name styles in the stylesheet](../done/2026-10-29_name-styles-in-the-stylesheet.md)
-- First use: [adapt the header to screen width](../done/2026-10-29_adapt-header-to-screen-width.md)
+- Card: [name styles in the stylesheet](../board/cards/name-styles-in-the-stylesheet.md)
+- First use: [adapt the header to screen width](../board/cards/adapt-header-to-screen-width.md)
 - Tailwind CSS v4: `@theme`, `@utility`, `@apply` ([documentation](https://tailwindcss.com/docs))

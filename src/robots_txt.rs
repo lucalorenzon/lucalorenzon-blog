@@ -1,4 +1,4 @@
-//! The `robots.txt` the build writes into the site's root (card docs/wip/add-robots-txt.md).
+//! The `robots.txt` the build writes into the site's root (card docs/board/cards/add-robots-txt.md).
 //!
 //! It points search engines to the sitemap and asks the robots that collect text to train AI
 //! models to stay away. No `User-agent: *` group: whatever is not named stays allowed, so

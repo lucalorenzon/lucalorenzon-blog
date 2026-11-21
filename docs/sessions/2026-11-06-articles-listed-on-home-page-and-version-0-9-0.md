@@ -5,7 +5,7 @@ sub-agents Sonnet 5.5 (the curriculum page; the home page as the list
 of articles, with its tests and the fix of its bullets).
 **Goal:** bring the changelog up to date, move the navigation to Now,
 and start it. The navigation card was split; its first part,
-[list the articles on the home page](../done/2026-11-06_list-articles-on-home-page.md),
+[list the articles on the home page](../board/cards/list-articles-on-home-page.md),
 was built, validated and published with version 0.9.0. Reasons and
 rejected options are in the card.
 
@@ -107,8 +107,8 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - The menu, with search, categories, subscribing and settings, in Next:
-  [add a menu for the site](../backlog/add-site-menu.md).
+  [add a menu for the site](../board/cards/add-site-menu.md).
 - The screen reader reference, in Next:
-  [update the screen reader check for an English site](../backlog/update-screen-reader-check-for-english-site.md).
+  [update the screen reader check for an English site](../board/cards/update-screen-reader-check-for-english-site.md).
 - The next card in Now, chosen by the user from Next:
   [plan](../plan.md).

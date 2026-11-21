@@ -6,9 +6,9 @@ and moved the text checks onto it; the other made the accessibility
 check scroll the page, and measured that the contrast is judged on the
 same elements).
 **Goal:** take up the typography page of the card
-[build a design system](../wip/build-a-design-system.md): agree its
+[build a design system](../board/cards/build-a-design-system.md): agree its
 scope and build its first slice, in the card
-[show the text elements in the style guide](../wip/show-the-text-elements-in-the-style-guide.md).
+[show the text elements in the style guide](../board/cards/show-the-text-elements-in-the-style-guide.md).
 The session began on 2026-11-15 and ended on 2026-11-16. Technical
 details and reasons are in the cards.
 
@@ -97,7 +97,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
   system card's sentence on level-4 headings corrected (`595593e`).
 - The accessibility check scrolls to the end of the page before axe
   runs; its card is closed
-  ([card](../done/2026-11-16_scroll-before-the-accessibility-check.md))
+  ([card](../board/cards/scroll-before-the-accessibility-check.md))
   (`58774b8`).
 - The style guide's text page, with the text checks on it instead of
   the After Save Event article, which is no longer a test page; the
@@ -114,6 +114,6 @@ plan.
 - The user's explanations in place of the placeholders, one paragraph
   each, and the card's closing, with the dropped note on the likeness
   to the links: card
-  [show the text elements in the style guide](../wip/show-the-text-elements-in-the-style-guide.md).
+  [show the text elements in the style guide](../board/cards/show-the-text-elements-in-the-style-guide.md).
 - The fonts' page: card
-  [show the fonts in the style guide](../backlog/show-the-fonts-in-the-style-guide.md).
+  [show the fonts in the style guide](../board/cards/show-the-fonts-in-the-style-guide.md).

@@ -1,0 +1,1 @@
+../cards/choose-how-pages-write-addresses.md

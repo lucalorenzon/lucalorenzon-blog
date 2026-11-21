@@ -5,7 +5,7 @@
 **Participants:** the user (author); the agent (Claude Opus 5.5), with a
 sub-agent on Claude Haiku 5.5 (card moves and commits).
 **Goal:** take from Next the card
-[challenge the live skeleton with `residuality`](../done/2026-10-28_challenge-skeleton-with-residuality.md)
+[challenge the live skeleton with `residuality`](../board/cards/challenge-skeleton-with-residuality.md)
 and find the next increment that creates value. Stressors, answers and
 reasons are in the card.
 
@@ -76,12 +76,12 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - Give the page a header, a footer and a favicon, in a dark terminal
-  style: card [add header, footer and favicon](../backlog/add-header-footer-and-favicon.md).
+  style: card [add header, footer and favicon](../board/cards/add-header-footer-and-favicon.md).
 - Check the publication with the version that publishes it: card
-  [verify the publication at the next version](../backlog/verify-publication-at-next-version.md).
+  [verify the publication at the next version](../board/cards/verify-publication-at-next-version.md).
 - Apply the full method: card
-  [run a full round of `residuality`](../backlog/run-full-residuality-round.md).
+  [run a full round of `residuality`](../board/cards/run-full-residuality-round.md).
 - Decide the articles' licence: card
-  [choose the licence of the articles](../backlog/choose-articles-licence.md).
+  [choose the licence of the articles](../board/cards/choose-articles-licence.md).
 - Decide where the 1985 photo goes: card
-  [place the 1985 photo](../backlog/place-1985-photo.md).
+  [place the 1985 photo](../board/cards/place-1985-photo.md).

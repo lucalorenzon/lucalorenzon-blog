@@ -1,0 +1,1 @@
+../cards/take-the-nets-pages-from-the-sitemap.md

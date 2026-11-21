@@ -4,7 +4,7 @@
 sub-agents Haiku 5.5 (git, `gh` commands, watching runs) and Sonnet 5.5
 (workflow code).
 **Goal:** settle and carry out the card
-[separate the build from the deploy, publish from a tag](../done/2026-10-28_separate-build-from-deploy.md).
+[separate the build from the deploy, publish from a tag](../board/cards/separate-build-from-deploy.md).
 Technical details and reasons are in the card.
 
 ## Decisions
@@ -116,4 +116,4 @@ plan.
 
 - Check the snapshot path, the version's Release and, if cheap, the
   deploy's refusals at the next real version (decision 17): card
-  [verify the publication at the next version](../backlog/verify-publication-at-next-version.md).
+  [verify the publication at the next version](../board/cards/verify-publication-at-next-version.md).

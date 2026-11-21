@@ -5,9 +5,9 @@ three sub-agents: two Claude Haiku 5.5 (one ran the checks of
 `build.yml`, the other proved in a throwaway run that the text page's
 guard bites) and one Claude Sonnet 5.5 (built the fonts page).
 **Goal:** resume from the plan: finish the card
-[show the text elements in the style guide](../done/2026-11-16_show-the-text-elements-in-the-style-guide.md)
+[show the text elements in the style guide](../board/cards/show-the-text-elements-in-the-style-guide.md)
 with the user's explanations and close it, then take up the card
-[show the fonts in the style guide](../done/2026-11-16_show-the-fonts-in-the-style-guide.md).
+[show the fonts in the style guide](../board/cards/show-the-fonts-in-the-style-guide.md).
 Technical details and reasons are in the cards.
 
 ## Decisions
@@ -89,6 +89,6 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - Define the fonts once in the build: card
-  [link the fonts to the build](../backlog/link-the-fonts-to-the-build.md).
+  [link the fonts to the build](../board/cards/link-the-fonts-to-the-build.md).
 - The style guide's last page, the breakpoints, before it is
-  published: card [build a design system](../wip/build-a-design-system.md).
+  published: card [build a design system](../board/cards/build-a-design-system.md).

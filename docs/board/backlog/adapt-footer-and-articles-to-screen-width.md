@@ -1,0 +1,1 @@
+../cards/adapt-footer-and-articles-to-screen-width.md

@@ -4,7 +4,7 @@
 sub-agents Sonnet 5.5 (types and type check in `end2end/` and the
 build) and Haiku 5.5 (the line-height replacement).
 **Goal:** close the card
-[fix the editor errors in the browser test](../done/2026-10-29_fix-editor-errors-in-browser-test.md).
+[fix the editor errors in the browser test](../board/cards/fix-editor-errors-in-browser-test.md).
 Technical details and reasons are in the cards.
 
 ## Decisions
@@ -82,4 +82,4 @@ plan.
 
 - Stop the generic CSS checker on the Tailwind stylesheet (decision 6):
   card
-  [stop the generic CSS checker on the Tailwind stylesheet](../backlog/stop-generic-css-checker-on-tailwind-stylesheet.md).
+  [stop the generic CSS checker on the Tailwind stylesheet](../board/cards/stop-generic-css-checker-on-tailwind-stylesheet.md).

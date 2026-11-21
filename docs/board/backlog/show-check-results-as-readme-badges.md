@@ -1,0 +1,1 @@
+../cards/show-check-results-as-readme-badges.md

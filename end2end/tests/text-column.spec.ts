@@ -12,7 +12,7 @@ import { COLUMN_WIDTHS, MD, retryWhenLive, TEXT_PAGE } from './support';
 //     column's 8px of padding on each side);
 //   - the column is centred: the space left and right of it is equal;
 //   - the maximum grows with the text size, so from md it is wider than at 18px.
-// Why: docs/done/2026-11-19_make-the-text-column-a-component.md
+// Why: docs/board/cards/make-the-text-column-a-component.md
 
 const TEXT_SIZE_BELOW_MD = 18;
 const TEXT_SIZE_FROM_MD = 20;

@@ -1,0 +1,1 @@
+../cards/run-a-test-from-its-readme-row.md

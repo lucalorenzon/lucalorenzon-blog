@@ -3,11 +3,11 @@
 **Participants:** the user (author); the agent (Claude Opus 5.5), with a
 sub-agent on Claude Sonnet 5.5 (code).
 **Goal:** open the card
-[add SEO and Open Graph tags to every page](../backlog/add-seo-and-open-graph-tags.md),
+add SEO and Open Graph tags to every page (later split into [Add the description and the Open Graph tags to every indexed page](../board/cards/add-description-and-open-graph-tags.md), [Check SEO with Lighthouse in the build](../board/cards/check-seo-with-lighthouse.md), [Add preview images](../board/cards/add-preview-images.md)),
 then close the card
-[serve the site's own "page not found"](../done/2026-11-02_serve-own-not-found-page.md);
+[serve the site's own "page not found"](../board/cards/serve-own-not-found-page.md);
 the spike
-[choose how pages write the addresses of their files](../done/2026-11-02_choose-how-pages-write-addresses.md)
+[choose how pages write the addresses of their files](../board/cards/choose-how-pages-write-addresses.md)
 was opened and closed on the way. Technical details and reasons are in
 the cards and in
 [ADR-002](../adr/ADR-002-relative-paths-and-site-address-at-build.md).
@@ -98,4 +98,4 @@ plan.
 
 - Put the "page not found" on the block-list, and use the site's
   address setting for the full addresses: card
-  [add SEO and Open Graph tags to every page](../backlog/add-seo-and-open-graph-tags.md).
+  add SEO and Open Graph tags to every page (later split into [Add the description and the Open Graph tags to every indexed page](../board/cards/add-description-and-open-graph-tags.md), [Check SEO with Lighthouse in the build](../board/cards/check-seo-with-lighthouse.md), [Add preview images](../board/cards/add-preview-images.md)).

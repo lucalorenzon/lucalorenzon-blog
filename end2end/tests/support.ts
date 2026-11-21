@@ -93,7 +93,7 @@ export function viewportAt(width: number) {
 // the column. So a test of what is inside the column needs one width per
 // column size: 659 and 767 give the same result, and so do the seven widths
 // from 768 to 1920. The widths between 412 and 600 are sampled at three
-// points only, as before. Why: docs/done/2026-11-08_check-at-every-width-only-what-depends-on-it.md
+// points only, as before. Why: docs/board/cards/check-at-every-width-only-what-depends-on-it.md
 // The three phones are devices, by name; the last two are the two sides of md,
 // by width, whatever stands there.
 const COLUMN_WIDTH_PHONES = ['iPhone SE', 'iPhone 15', 'Pixel 7'];

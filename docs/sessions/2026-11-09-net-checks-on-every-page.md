@@ -7,10 +7,10 @@ tasks).
 [ADR-004](../adr/ADR-004-test-components-once-and-pages-with-a-net.md),
 checking every page with tests written once, split during the session
 into
-[take the net's pages from the sitemap](../done/2026-11-09_take-the-nets-pages-from-the-sitemap.md),
-[check accessibility on every page with the net](../done/2026-11-09_check-accessibility-on-every-page-with-the-net.md)
+[take the net's pages from the sitemap](../board/cards/take-the-nets-pages-from-the-sitemap.md),
+[check accessibility on every page with the net](../board/cards/check-accessibility-on-every-page-with-the-net.md)
 and
-[check the layout on every page with the net](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md).
+[check the layout on every page with the net](../board/cards/check-the-layout-on-every-page-with-the-net.md).
 Technical details and reasons are in those cards.
 
 ## Decisions
@@ -121,20 +121,20 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
   42571013921, 42576172246, 42578666728).
 - The card on checking every page with tests written once split in
   three (`a675f8b`); all three closed:
-  [take the net's pages from the sitemap](../done/2026-11-09_take-the-nets-pages-from-the-sitemap.md)
+  [take the net's pages from the sitemap](../board/cards/take-the-nets-pages-from-the-sitemap.md)
   (`5cc93a7`, `4f2c9bc`),
-  [check accessibility on every page with the net](../done/2026-11-09_check-accessibility-on-every-page-with-the-net.md)
+  [check accessibility on every page with the net](../board/cards/check-accessibility-on-every-page-with-the-net.md)
   (`ef36c9f`, `43f415e`, `ed27a1d`, `dac34de`),
-  [check the layout on every page with the net](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md)
+  [check the layout on every page with the net](../board/cards/check-the-layout-on-every-page-with-the-net.md)
   (`e6107e8`, `d767f91`, `cf491de`).
 - On-demand check of axe's best practices:
   `end2end/tools/check-axe-best-practices.mjs` (`43f415e`).
 - Cards opened:
-  [break long words in the text](../backlog/break-long-words-in-the-text.md)
+  [break long words in the text](../board/cards/break-long-words-in-the-text.md)
   (`8373e39`),
-  [check periodically that the published text matches its Markdown](../backlog/check-published-text-against-markdown.md)
+  [check periodically that the published text matches its Markdown](../board/cards/check-published-text-against-markdown.md)
   (`c69a638`); card extended:
-  [check the pages' text in the build](../backlog/check-page-bodies-in-the-build.md),
+  [check the pages' text in the build](../board/cards/check-page-bodies-in-the-build.md),
   with empty table headers (`d6f91a4`).
 - ADR-004 carries a note: the long word with the reader's spacing is
   no longer a loss.
@@ -160,10 +160,10 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
   card yet, to be written with the user (ADR-004, Consequences; plan,
   Now).
 - Start the SEO check first: card
-  [start the SEO check first](../backlog/start-the-seo-check-first.md).
+  [start the SEO check first](../board/cards/start-the-seo-check-first.md).
 - Break long words in the text: card
-  [break long words in the text](../backlog/break-long-words-in-the-text.md).
+  [break long words in the text](../board/cards/break-long-words-in-the-text.md).
 - Check the published text against its Markdown: card
-  [check periodically that the published text matches its Markdown](../backlog/check-published-text-against-markdown.md).
+  [check periodically that the published text matches its Markdown](../board/cards/check-published-text-against-markdown.md).
 - Refuse empty table headers in the build: card
-  [check the pages' text in the build](../backlog/check-page-bodies-in-the-build.md).
+  [check the pages' text in the build](../board/cards/check-page-bodies-in-the-build.md).

@@ -4,7 +4,7 @@
 sub-agents Sonnet 5.5 (the recorder and its tests) and Haiku 5.5
 (removing the desktop command).
 **Goal:** slices 2 and 3 of the card
-[run the screen reader check in a container](../done/2026-10-30_run-screen-reader-check-in-a-container.md),
+[run the screen reader check in a container](../board/cards/run-screen-reader-check-in-a-container.md),
 then close it. Technical details and reasons are in the card.
 
 ## Decisions
@@ -69,4 +69,4 @@ plan.
 
 - Give the container an Italian locale, so the recording sounds as an
   Italian visitor would hear it (decision 4): card
-  [give the screen reader container an Italian voice](../backlog/give-the-screen-reader-container-an-italian-voice.md).
+  [give the screen reader container an Italian voice](../board/cards/give-the-screen-reader-container-an-italian-voice.md).

@@ -4,12 +4,12 @@
 the sub-agents Sonnet 5.5 (the code of every change) and Haiku 5.5 (the
 first card's move, the two pushes and the checks on GitHub).
 **Goal:** take the card
-[make the build's external downloads reliable](../done/2026-11-08_make-external-downloads-in-the-build-reliable.md),
+[make the build's external downloads reliable](../board/cards/make-external-downloads-in-the-build-reliable.md),
 first in Now after the pipeline failed on Tailwind's download. Two more
 cards came out of it and were done in the same session:
-[check for newer versions of the pinned tools](../done/2026-11-08_check-for-newer-versions-of-pinned-tools.md)
+[check for newer versions of the pinned tools](../board/cards/check-for-newer-versions-of-pinned-tools.md)
 and
-[silence the expected error in the robots list's tests](../done/2026-11-08_silence-expected-error-in-robots-list-tests.md).
+[silence the expected error in the robots list's tests](../board/cards/silence-expected-error-in-robots-list-tests.md).
 Reasons and rejected options are in the cards.
 
 ## Decisions
@@ -119,12 +119,12 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
   no commit after the pin. Its first real issue will be the proof.
 - The workflows were checked by running them on GitHub; `actionlint`,
   which would check them before a push, is not installed (card
-  [check the workflows with actionlint](../backlog/lint-workflows-with-actionlint.md)).
+  [check the workflows with actionlint](../board/cards/lint-workflows-with-actionlint.md)).
 
 ## Next steps
 
 - Update Tailwind to 4.3.5 and close issue #33: card
-  [update Tailwind to 4.3.5](../backlog/update-tailwind-to-4-3-5.md).
+  [update Tailwind to 4.3.5](../board/cards/update-tailwind-to-4-3-5.md).
 - A second way to download Tailwind, if the build stops again on its
   download: card
-  [add a second way to download Tailwind](../backlog/add-a-second-way-to-download-tailwind.md).
+  [add a second way to download Tailwind](../board/cards/add-a-second-way-to-download-tailwind.md).

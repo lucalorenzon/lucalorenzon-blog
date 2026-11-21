@@ -20,7 +20,7 @@ import {
 //      and with the reader's spacing (READER_SPACING). The text breaks only at
 //      spaces, so a word wider than the column scrolls the page whatever the
 //      style does; with the spacing the same word is about a quarter wider.
-//      See docs/backlog/break-long-words-in-the-text.md. Both measurements are
+//      See docs/board/cards/break-long-words-in-the-text.md. Both measurements are
 //      in one test per page.
 // (The 80-character line is the other net check: see readability.spec.ts.)
 //

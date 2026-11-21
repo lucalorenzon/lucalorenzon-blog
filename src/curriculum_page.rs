@@ -157,7 +157,7 @@ mod tests {
     }
 
     /// Orca 51 presents a `<pre>` as a code block and does not speak its name
-    /// (card docs/wip/logo-name-not-read-by-orca-51.md).
+    /// (card docs/board/cards/logo-name-not-read-by-orca-51.md).
     #[test]
     fn logo_is_not_a_pre_element() {
         let html = render_curriculum_page();

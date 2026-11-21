@@ -4,7 +4,7 @@
 sub-agents Haiku 5.5 (card move; push, tag and watching the runs) and
 Sonnet 5.5 (workflow fix).
 **Goal:** close the card
-[run the live-site test when the snapshot is published](../done/2026-10-28_run-live-test-when-snapshot-is-published.md),
+[run the live-site test when the snapshot is published](../board/cards/run-live-test-when-snapshot-is-published.md),
 handled as a malfunction with the `fix` skill. Technical details and
 reasons are in the card.
 
@@ -74,4 +74,4 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - Check the workflows with actionlint (decision 5): card
-  [check the workflows with actionlint](../backlog/lint-workflows-with-actionlint.md).
+  [check the workflows with actionlint](../board/cards/lint-workflows-with-actionlint.md).

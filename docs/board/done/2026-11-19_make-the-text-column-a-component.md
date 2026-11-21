@@ -1,0 +1,1 @@
+../cards/make-the-text-column-a-component.md

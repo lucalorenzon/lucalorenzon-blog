@@ -6,7 +6,7 @@ and tests) and Claude Haiku 5.5 (card moves, builds and test runs, one
 commit).
 **Goal:** start the card on the WCAG criteria axe cannot check; it led
 to the card
-[improve the site's readability](../done/2026-11-02_improve-site-readability.md),
+[improve the site's readability](../board/cards/improve-site-readability.md),
 carried out and published in version 0.5.0. Technical details and
 reasons are in that card.
 
@@ -100,12 +100,12 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 - `e2cefc6`: version 0.5.0 in the changelog; tag `v0.5.0` pushed,
   published, live test passed.
 - `1bf1783`: the readability card closed; the card
-  [use the space beside the text on wide screens](../backlog/use-space-beside-text-on-wide-screens.md)
+  [use the space beside the text on wide screens](../board/cards/use-space-beside-text-on-wide-screens.md)
   opened (sub-agent).
 - `3332398`: the cards
-  [check performance in the build](../backlog/check-performance-in-the-build.md),
-  [show the check results as badges in the README](../backlog/show-check-results-as-readme-badges.md)
-  and [measure the CO2 of a page view](../backlog/measure-co2-of-a-page-view.md).
+  [check performance in the build](../board/cards/check-performance-in-the-build.md),
+  [show the check results as badges in the README](../board/cards/show-check-results-as-readme-badges.md)
+  and [measure the CO2 of a page view](../board/cards/measure-co2-of-a-page-view.md).
 - The playground page stayed outside the repository, as the header's
   did.
 
@@ -118,11 +118,11 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Serve the site's own "page not found": card
-  [serve the site's own "page not found"](../backlog/serve-own-not-found-page.md).
+  [serve the site's own "page not found"](../board/cards/serve-own-not-found-page.md).
 - Go through the WCAG criteria not covered, levels A to AAA, the two
   parts of 1.4.8 included: card
-  [cover the WCAG criteria axe cannot check](../backlog/cover-wcag-criteria-axe-cannot-check.md).
+  [cover the WCAG criteria axe cannot check](../board/cards/cover-wcag-criteria-axe-cannot-check.md).
 - Fill the space beside the text on wide screens: card
-  [use the space beside the text on wide screens](../backlog/use-space-beside-text-on-wide-screens.md).
+  [use the space beside the text on wide screens](../board/cards/use-space-beside-text-on-wide-screens.md).
 - Check performance in the build: card
-  [check performance in the build](../backlog/check-performance-in-the-build.md).
+  [check performance in the build](../board/cards/check-performance-in-the-build.md).

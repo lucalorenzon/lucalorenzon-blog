@@ -4,7 +4,7 @@
 sub-agents Claude Haiku 5.5 (card moves and commits of the content) and
 Claude Sonnet 5.5 (page, look and their tests).
 **Goal:** do the card
-[put the curriculum on the home page](../done/2026-11-01_put-curriculum-on-home-page.md),
+[put the curriculum on the home page](../board/cards/put-curriculum-on-home-page.md),
 up to a version ready to publish. Reasons and technical details are in
 the card.
 
@@ -101,8 +101,8 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Push and publish version 0.4.0 with the tag `v0.4.0`: card
-  [put the curriculum on the home page](../done/2026-11-01_put-curriculum-on-home-page.md).
+  [put the curriculum on the home page](../board/cards/put-curriculum-on-home-page.md).
 - Choose the site's public address: card
-  [choose the site's public address](../backlog/choose-site-address.md).
+  [choose the site's public address](../board/cards/choose-site-address.md).
 - Run the screen reader check on the English site: card
-  [update the screen reader check for an English site](../backlog/update-screen-reader-check-for-english-site.md).
+  [update the screen reader check for an English site](../board/cards/update-screen-reader-check-for-english-site.md).

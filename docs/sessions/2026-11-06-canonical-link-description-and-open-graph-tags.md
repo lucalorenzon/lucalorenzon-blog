@@ -6,11 +6,11 @@ tab title, with their tests).
 **Goal:** take the card on SEO and Open Graph tags from the backlog and
 build its first slices. The card was split twice; two parts were built
 and closed,
-[add the canonical link to every page](../done/2026-11-06_add-canonical-link-to-every-page.md)
+[add the canonical link to every page](../board/cards/add-canonical-link-to-every-page.md)
 and
-[add the description and the Open Graph tags to every indexed page](../done/2026-11-06_add-description-and-open-graph-tags.md),
-while [check SEO with Lighthouse in the build](../backlog/check-seo-with-lighthouse.md)
-and [add preview images](../backlog/add-preview-images.md) wait.
+[add the description and the Open Graph tags to every indexed page](../board/cards/add-description-and-open-graph-tags.md),
+while [check SEO with Lighthouse in the build](../board/cards/check-seo-with-lighthouse.md)
+and [add preview images](../board/cards/add-preview-images.md) wait.
 Reasons and rejected options are in the cards. Nothing was pushed.
 
 ## Decisions
@@ -120,14 +120,14 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 
 - Check SEO with Lighthouse in the build, with the block-list the
   "page not found" needs, before pushing and publishing: card
-  [check SEO with Lighthouse in the build](../backlog/check-seo-with-lighthouse.md).
+  [check SEO with Lighthouse in the build](../board/cards/check-seo-with-lighthouse.md).
 - After the next version is published, point the canonical link of
   each Medium story at the site, by the author: card
-  [add the canonical link to every page](../done/2026-11-06_add-canonical-link-to-every-page.md),
+  [add the canonical link to every page](../board/cards/add-canonical-link-to-every-page.md),
   "Left to the author".
 - The preview images: card
-  [add preview images](../backlog/add-preview-images.md).
+  [add preview images](../board/cards/add-preview-images.md).
 - `lang="en-GB"` on the pages: card
-  [check the declared languages in the build](../backlog/check-declared-languages-in-the-build.md).
+  [check the declared languages in the build](../board/cards/check-declared-languages-in-the-build.md).
 - The home page's new tab title in the reference transcript: card
-  [update the screen reader check for an English site](../backlog/update-screen-reader-check-for-english-site.md).
+  [update the screen reader check for an English site](../board/cards/update-screen-reader-check-for-english-site.md).

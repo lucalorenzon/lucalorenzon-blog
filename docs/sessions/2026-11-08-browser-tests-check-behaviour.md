@@ -96,21 +96,21 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
   test job went from 189 to 121 seconds (runs 42496141109,
   42508735255, 42514256662).
 - Cards closed:
-  [run colour-free tests in one theme](../done/2026-11-08_run-colour-free-tests-in-one-theme.md)
+  [run colour-free tests in one theme](../board/cards/run-colour-free-tests-in-one-theme.md)
   (`8641bca`),
-  [check at every width only what depends on it](../done/2026-11-08_check-at-every-width-only-what-depends-on-it.md)
+  [check at every width only what depends on it](../board/cards/check-at-every-width-only-what-depends-on-it.md)
   (`0bfb789`, `ac44e7e`),
-  [enforce the title length limit in the build](../done/2026-11-08_enforce-the-title-length-limit-in-the-build.md)
+  [enforce the title length limit in the build](../board/cards/enforce-the-title-length-limit-in-the-build.md)
   (`1277d9a`),
-  [declare DOM.Iterable for the editor](../done/2026-11-08_declare-dom-iterable-for-the-editor.md)
+  [declare DOM.Iterable for the editor](../board/cards/declare-dom-iterable-for-the-editor.md)
   (`8b2262d`).
 - The original card split, with
   [ADR-004](../adr/ADR-004-test-components-once-and-pages-with-a-net.md)
   (`017269d`).
 - Cards opened:
-  [build a design system](../backlog/build-a-design-system.md),
-  [start the SEO check first](../backlog/start-the-seo-check-first.md),
-  [use a structured configuration file](../backlog/use-a-structured-configuration-file.md)
+  [build a design system](../board/cards/build-a-design-system.md),
+  [start the SEO check first](../board/cards/start-the-seo-check-first.md),
+  [use a structured configuration file](../board/cards/use-a-structured-configuration-file.md)
   (`b25708e`, `c0129bb`).
 - The generated site is unchanged; pushed up to `ac44e7e`, the commits
   after it are local.
@@ -126,10 +126,10 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Check every page with tests written once: card
-  [check every page with tests written once](../backlog/check-every-page-with-tests-written-once.md).
+  check every page with tests written once (later split into [Take the net's pages from the sitemap](../board/cards/take-the-nets-pages-from-the-sitemap.md), [Check accessibility on every page with the net](../board/cards/check-accessibility-on-every-page-with-the-net.md), [Check the layout on every page with the net](../board/cards/check-the-layout-on-every-page-with-the-net.md)).
 - Put the components' cases in test pages shaped as a catalogue: no card
   yet, to be written after the net (ADR-004, Consequences).
 - Start the SEO check first: card
-  [start the SEO check first](../backlog/start-the-seo-check-first.md).
+  [start the SEO check first](../board/cards/start-the-seo-check-first.md).
 - Build a design system: card
-  [build a design system](../backlog/build-a-design-system.md).
+  [build a design system](../board/cards/build-a-design-system.md).

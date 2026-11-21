@@ -10,9 +10,9 @@
 
 Goal: restart from the plan, fix the wrap toggle shown on code blocks
 that fit
-([card](../done/2026-11-18_hide-the-wrap-toggle-on-blocks-that-fit.md)),
+([card](../board/cards/hide-the-wrap-toggle-on-blocks-that-fit.md)),
 then finish the card it blocked
-([card](../done/2026-11-18_measure-the-fonts-again-when-they-change.md)).
+([card](../board/cards/measure-the-fonts-again-when-they-change.md)).
 Technical details and reasons are in the cards.
 
 ## Decisions
@@ -80,7 +80,7 @@ Technical details and reasons are in the cards.
   the guard works; links in the other cards and the plan updated
   (`36732da`).
 - New card in Next:
-  [check the table widths against Chromium's rounding](../backlog/check-table-widths-against-chromium-rounding.md)
+  [check the table widths against Chromium's rounding](../board/cards/check-table-widths-against-chromium-rounding.md)
   (`c3d086d`).
 - Nothing pushed.
 
@@ -89,7 +89,7 @@ Technical details and reasons are in the cards.
 - The minute of 2026-11-17 links to the two cards through `docs/wip/`,
   which no longer holds them; it is not edited, as minutes are frozen.
   The card
-  [refer to cards by name in frozen documents](../backlog/refer-to-cards-by-name-in-frozen-documents.md)
+  [refer to cards by name in frozen documents](../board/cards/refer-to-cards-by-name-in-frozen-documents.md)
   covers the cause.
 
 ## Next steps
@@ -98,7 +98,7 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - The breakpoints, last page of the style guide before it is
-  published: card [build a design system](../wip/build-a-design-system.md).
+  published: card [build a design system](../board/cards/build-a-design-system.md).
 - Whether Chromium's rounding can make a table overflow its column:
   card
-  [check the table widths against Chromium's rounding](../backlog/check-table-widths-against-chromium-rounding.md).
+  [check the table widths against Chromium's rounding](../board/cards/check-table-widths-against-chromium-rounding.md).

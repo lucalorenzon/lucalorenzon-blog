@@ -31,8 +31,8 @@ export default defineConfig({
   // order of the projects, and this single test of about 30 seconds, listed
   // last, would start last and run alone while the other workers sit idle.
   // Why: docs/adr/ADR-004-test-components-once-and-pages-with-a-net.md, the
-  // card docs/done/2026-11-08_run-colour-free-tests-in-one-theme.md and the
-  // card docs/done/2026-11-09_start-the-seo-check-first.md.
+  // card docs/board/cards/run-colour-free-tests-in-one-theme.md and the
+  // card docs/board/cards/start-the-seo-check-first.md.
   projects: [
     {
       name: 'lighthouse',

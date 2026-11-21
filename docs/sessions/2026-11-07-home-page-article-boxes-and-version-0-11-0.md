@@ -8,9 +8,9 @@ screenshots, the build of the boxes and their tests).
 
 **Goal:** frame each article on the home page in a box, its border in
 the amber of the page's lines. Card:
-[frame each article on the home page in a box](../done/2026-11-07_frame-home-page-articles-in-boxes.md).
+[frame each article on the home page in a box](../board/cards/frame-home-page-articles-in-boxes.md).
 A second card opened during the session:
-[show the first box of the home page at mid-height of the screen](../done/2026-11-07_centre-first-box-on-home-page.md).
+[show the first box of the home page at mid-height of the screen](../board/cards/centre-first-box-on-home-page.md).
 
 ## Decisions
 
@@ -108,11 +108,11 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 
 - The user feels something is not right with the home page, and that it
   may not be the height of the boxes: not named yet
-  ([card](../done/2026-11-07_centre-first-box-on-home-page.md), "Open
+  ([card](../board/cards/centre-first-box-on-home-page.md), "Open
   point").
 
 ## Next steps
 
 - Choose the next card from Next: [plan](../plan.md).
 - Open a card on the home page once what is not right can be named:
-  [card](../done/2026-11-07_centre-first-box-on-home-page.md).
+  [card](../board/cards/centre-first-box-on-home-page.md).

@@ -10,12 +10,12 @@
 
 Goal: start the page of the breakpoints, the last page of the style
 guide before it is published (card
-[show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md)).
+[show the breakpoints in the style guide](../board/cards/show-the-breakpoints-in-the-style-guide.md)).
 The session answered how that page is built, found that the text
 column had to become a component first, and did it
-([card](../done/2026-11-19_make-the-text-column-a-component.md)).
+([card](../board/cards/make-the-text-column-a-component.md)).
 It then took up the column's own page
-([card](../wip/show-the-text-column-in-the-style-guide.md)) and stopped
+([card](../board/cards/show-the-text-column-in-the-style-guide.md)) and stopped
 on a spike. The session started late on 2026-11-18 and ended on
 2026-11-19. Technical details and reasons are in the cards.
 
@@ -113,8 +113,8 @@ plan.
 
 - Try how a component declares what changes in it at each breakpoint,
   on the text column: card
-  [try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md).
+  [try a breakpoint declaration on the text column](../board/cards/try-a-breakpoint-declaration-on-the-text-column.md).
 - Show the text column in the style guide, after the spike: card
-  [show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md).
+  [show the text column in the style guide](../board/cards/show-the-text-column-in-the-style-guide.md).
 - Show the breakpoints in the style guide, after the column's page:
-  card [show the breakpoints in the style guide](../done/2026-11-21_show-the-breakpoints-in-the-style-guide.md).
+  card [show the breakpoints in the style guide](../board/cards/show-the-breakpoints-in-the-style-guide.md).

@@ -1,0 +1,1 @@
+../cards/write-an-article-on-the-style-guide.md

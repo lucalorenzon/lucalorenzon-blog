@@ -1,0 +1,1 @@
+../cards/add-canonical-link-to-every-page.md

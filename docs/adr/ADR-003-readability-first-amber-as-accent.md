@@ -8,24 +8,24 @@
   (see Consequences and Technical notes). Extended on 2026-11-07: the
   markers of lists, bullets and numbers, join the uses of amber (see
   Decision and Technical notes;
-  [card](../done/2026-11-07_show-numbered-lists-and-colour-list-markers.md)).
+  [card](../board/cards/show-numbered-lists-and-colour-list-markers.md)).
   Extended again on 2026-11-07: the frame of the boxes that hold the
   articles on the home page joins the uses of amber (see Decision and
-  Technical notes; [card](../done/2026-11-07_frame-home-page-articles-in-boxes.md))
-- **Card:** [give the articles' code, quotes and tables a look](../done/2026-11-06_design-look-of-articles.md)
+  Technical notes; [card](../board/cards/frame-home-page-articles-in-boxes.md))
+- **Card:** [give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md)
 
 ## Context
 
 On 2026-10-28 the site took the look of a 1980s bulletin board system
 (BBS): amber text on black, in the pixel font of the IBM PC, as on the
 terminal the author sat at in 1985
-([card](../done/2026-10-28_add-header-footer-and-favicon.md)). The look
+([card](../board/cards/add-header-footer-and-favicon.md)). The look
 was chosen for identity: it tells where the author comes from.
 
 Readability has been giving way ever since. On 2026-11-02 the text moved
 to Literata, a font made for reading on screens, and the amber was
 toned down because it glared
-([card](../done/2026-11-02_improve-site-readability.md)). On 2026-11-04
+([card](../board/cards/improve-site-readability.md)). On 2026-11-04
 code turned off-white. Reading the long technical articles, the user
 found the text too small and the BBS look too tight a fit: a desire for
 identity had made them underrate readability. The site had become a
@@ -55,7 +55,7 @@ communicating. The look has one job, letting that content be read.
 4. **The reader chooses a light or a dark background.** First through the
    preference the reader already set in their browser or system, with no
    script; a control on the site belongs to the card on
-   [letting readers adjust font and spacing](../backlog/let-readers-adjust-font-and-spacing.md).
+   [letting readers adjust font and spacing](../board/cards/let-readers-adjust-font-and-spacing.md).
 
 Why: the user compared, on the real article page at phone and laptop
 width, the page of today, a BBS frame around a reading page, a neutral
@@ -126,14 +126,14 @@ small file.
   `#a9600d` for logo, title and headings, `#6f3f09` for code inside a
   sentence, on a code surface of `#ebe7df` and a text of `#1c1a17`.
   Contrasts and the trials:
-  [card](../done/2026-11-06_design-look-of-articles.md), "The light background".
+  [card](../board/cards/design-look-of-articles.md), "The light background".
 - **The markers of lists** (added on 2026-11-07) follow the same tones:
   a bullet is a graphic, so it takes the tone of lines and frames
   (`accent-line`); a number is normal-size text, so it takes the tone
   of code inside a sentence (`accent-code`). On the light page the two
   shades differ; on the dark page both are `#dd9911`. Why and the
   options rejected:
-  [card](../done/2026-11-07_show-numbered-lists-and-colour-list-markers.md).
+  [card](../board/cards/show-numbered-lists-and-colour-list-markers.md).
 - **The boxes of the home page** (added on 2026-11-07) are a frame, so
   their border takes the tone of lines and frames (`accent-line`): 2
   pixels at rest, 4 under the mouse or with the keyboard focus. Their
@@ -141,7 +141,7 @@ small file.
   which stays square; the two never meet on the same page. The date on
   the border keeps the colour of the text, not amber. Why and the
   options rejected:
-  [card](../done/2026-11-07_frame-home-page-articles-in-boxes.md).
+  [card](../board/cards/frame-home-page-articles-in-boxes.md).
 - **Hack** (version 3.003, npm package `hack-font` 3.3.0): MIT License
   for the Hack project, public domain for DejaVu's work, Bitstream Vera
   License for Bitstream's; the web subset made by the Hack project,
@@ -162,8 +162,8 @@ small file.
 
 ## References
 
-- Card: [give the articles' code, quotes and tables a look](../done/2026-11-06_design-look-of-articles.md)
-- Earlier choices: [header, footer and favicon](../done/2026-10-28_add-header-footer-and-favicon.md),
-  [site readability](../done/2026-11-02_improve-site-readability.md)
+- Card: [give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md)
+- Earlier choices: [header, footer and favicon](../board/cards/add-header-footer-and-favicon.md),
+  [site readability](../board/cards/improve-site-readability.md)
 - Related ADRs: [ADR-001](ADR-001-name-styles-by-visual-variant.md)
   (styles named by visual variant, which the new styles follow)

@@ -7,9 +7,9 @@ the test that the font files load; one made the build read the fonts
 from the configuration).
 **Goal:** make a change of font made for the style guide a change of
 the whole site, starting from the card
-[link the fonts to the build](../done/2026-11-16_link-the-fonts-to-the-build.md),
+[link the fonts to the build](../board/cards/link-the-fonts-to-the-build.md),
 cut during the session into
-[give the fonts three roles in the stylesheet](../done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md)
+[give the fonts three roles in the stylesheet](../board/cards/give-the-fonts-three-roles-in-the-stylesheet.md)
 and itself. Technical details and reasons are in the cards.
 
 ## Decisions
@@ -107,9 +107,9 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - The fonts page built from the configuration: card
-  [build the fonts page from the configuration](../backlog/build-the-fonts-page-from-the-configuration.md).
+  [build the fonts page from the configuration](../board/cards/build-the-fonts-page-from-the-configuration.md).
 - What is measured on a font, taken again when it changes: card
-  [measure the fonts again when they change](../backlog/measure-the-fonts-again-when-they-change.md).
+  [measure the fonts again when they change](../board/cards/measure-the-fonts-again-when-they-change.md).
 - How every configuration file is organised, now that the fonts are a
   second setting: card
-  [use a structured configuration file](../backlog/use-a-structured-configuration-file.md).
+  [use a structured configuration file](../board/cards/use-a-structured-configuration-file.md).

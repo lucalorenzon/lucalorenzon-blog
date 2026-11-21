@@ -9,11 +9,11 @@ taken again and for the forced colours styles) and Claude Haiku 5.5
 all the checks run: `size-6`, the canonical classes, the third slice's
 checks, the leftover font).
 **Goal:** build the three slices agreed in the previous session, card
-[turn the code wrap toggle into an icon](../done/2026-11-15_turn-the-code-wrap-toggle-into-an-icon.md).
+[turn the code wrap toggle into an icon](../board/cards/turn-the-code-wrap-toggle-into-an-icon.md).
 Two small cards came out of the session and were done in it:
-[write Tailwind classes in their canonical form](../done/2026-11-15_write-tailwind-classes-in-their-canonical-form.md)
+[write Tailwind classes in their canonical form](../board/cards/write-tailwind-classes-in-their-canonical-form.md)
 and
-[drop the wrap toggle's leftover font](../done/2026-11-15_drop-the-wrap-toggles-leftover-font.md).
+[drop the wrap toggle's leftover font](../board/cards/drop-the-wrap-toggles-leftover-font.md).
 Technical details and reasons are in the cards.
 
 ## Decisions
@@ -122,6 +122,6 @@ plan.
 
 - Update the screen reader check for the English site and let it read
   more pages, with the toggle's test: card
-  [update the screen reader check for an English site](../backlog/update-screen-reader-check-for-english-site.md).
+  [update the screen reader check for an English site](../board/cards/update-screen-reader-check-for-english-site.md).
 - The style guide's next pages, the table with its record viewer
-  first: card [build a design system](../wip/build-a-design-system.md).
+  first: card [build a design system](../board/cards/build-a-design-system.md).

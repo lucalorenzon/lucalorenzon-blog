@@ -3,7 +3,7 @@
 **Participants:** the user (author); the agent (Claude Opus 5.5), with
 the sub-agent Haiku 5.5 (the settings file).
 **Goal:** close the card
-[stop the generic CSS checker on the Tailwind stylesheet](../done/2026-10-29_stop-generic-css-checker-on-tailwind-stylesheet.md),
+[stop the generic CSS checker on the Tailwind stylesheet](../board/cards/stop-generic-css-checker-on-tailwind-stylesheet.md),
 right after the session
 [fix the editor errors in the browser test](2026-10-29-fix-editor-errors-in-browser-test.md),
 which opened it. Technical details and reasons are in the card.

@@ -4,7 +4,7 @@
 **Goal:** a follow-up to the session
 [the site's public address](2026-11-01-site-address.md), after its minute
 was committed: open the card
-[serve the site's own "page not found"](../backlog/serve-own-not-found-page.md).
+[serve the site's own "page not found"](../board/cards/serve-own-not-found-page.md).
 
 ## Decisions
 
@@ -43,4 +43,4 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Decide what the "page not found" shows, and build it: card
-  [serve the site's own "page not found"](../backlog/serve-own-not-found-page.md).
+  [serve the site's own "page not found"](../board/cards/serve-own-not-found-page.md).

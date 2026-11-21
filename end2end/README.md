@@ -35,7 +35,7 @@ says what makes it fail.
 | Why | What a reader would lose if it were not checked. |
 
 The component tests run on the style guide's pages, whose cases are
-written for them: [build a design system](../docs/wip/build-a-design-system.md).
+written for them: [build a design system](../docs/board/cards/build-a-design-system.md).
 
 ## When the tests run
 
@@ -119,7 +119,7 @@ presentation) and 1.4.12 (text spacing).
 | `visual presentation (WCAG 1.4.8)` | `readability.spec.ts` | style guide, text | column widths | light | line height under 1.5 times the text size; paragraphs closer than 1.5 lines; justified text; or a case of the page takes one line at that width, so there is nothing to measure | WCAG 1.4.8: dense or justified text is hard to follow for readers with low vision or dyslexia |
 | `text spacing (WCAG 1.4.12) of the style guide's` | `readability.spec.ts` | style guide, text; style guide, code blocks; style guide, tables | column widths | light | with the reader's own spacing applied, blocks overlap, an element cuts off its content, or the text runs under the footer (the code's scroller and the record viewer may scroll or clip as designed); on the text page, also when a case takes one line at that width | WCAG 1.4.12: a reader may widen the spacing, and nothing may be lost. It runs on the pages of the components that have a place in the text |
 | `content layout of the style guide's text page` | `content-layout.spec.ts` | style guide, text | column widths | light | a section heading is not larger than the text; headings, paragraphs or list items overlap; the text ends less than 32 pixels above the footer; or a case takes one line at that width | The structure of the text must show at a glance, and nothing may hide under the sticky footer |
-| `text column of the style guide's text page` | `text-column.spec.ts` | style guide, text | column widths | light | below md the text is not 18 pixels, or from md not 20; the column does not fill the screen up to 60 characters of its own font, or is not centred; or from md its maximum is not wider than at 18 pixels | The text column is the frame of every page's text: its size, its maximum width and its centring must hold when it is built from a component ([make the text column a component](../docs/done/2026-11-19_make-the-text-column-a-component.md)) |
+| `text column of the style guide's text page` | `text-column.spec.ts` | style guide, text | column widths | light | below md the text is not 18 pixels, or from md not 20; the column does not fill the screen up to 60 characters of its own font, or is not centred; or from md its maximum is not wider than at 18 pixels | The text column is the frame of every page's text: its size, its maximum width and its centring must hold when it is built from a component ([make the text column a component](../docs/board/cards/make-the-text-column-a-component.md)) |
 | `heading colours and underline of the style guide's text page` | `content-layout.spec.ts` | style guide, text | 1280 | light and dark | a section heading or subheading has the colour of the text; the level-4 heading is not underlined; or the text of a paragraph is | Headings stand apart from the text by colour, amber ([ADR-003](../docs/adr/ADR-003-readability-first-amber-as-accent.md)), and the level-4 heading by its underline alone |
 | `numbered list of the style guide's text page` | `content-layout.spec.ts` | style guide, text | 1280 | light | a numbered list shows no numbers, or its indent or the space above it differs from a bulleted list | Both kinds of list must sit in the column the same way |
 | `list markers take the amber accent` | `content-layout.spec.ts` | style guide, text | 1280 | light and dark | bullets or numbers are not amber, or the text of the items is | The markers guide the eye; the text must keep its own colour |
@@ -142,7 +142,7 @@ component takes the wrong form, parts overlap.
 
 | Find in files | File | Pages | Widths | Themes | Fails when? | Why |
 |---|---|---|---|---|---|---|
-| `no sideways scroll on the ${pageName}` | `content-layout.spec.ts` | every page of the sitemap | 320 | light | the page scrolls sideways, as it is or with the reader's spacing (tables in table form excepted) | The text breaks only at spaces, so one long word can push the page sideways: it depends on the text ([break long words](../docs/backlog/break-long-words-in-the-text.md)) |
+| `no sideways scroll on the ${pageName}` | `content-layout.spec.ts` | every page of the sitemap | 320 | light | the page scrolls sideways, as it is or with the reader's spacing (tables in table form excepted) | The text breaks only at spaces, so one long word can push the page sideways: it depends on the text ([break long words](../docs/board/cards/break-long-words-in-the-text.md)) |
 
 ### Component
 
@@ -151,7 +151,7 @@ component takes the wrong form, parts overlap.
 | `each one scrolls or fits as written` | `code-blocks.spec.ts` | style guide, code blocks | column widths | light | a case of the page does not do what is written for it in the test (the long line, the nested indentation and the tabs scroll and show the wrap toggle; the short block and the blank line fit and do not; the line that just fits the widest column does not scroll at 768 and over and scrolls below, and the line one character longer scrolls at every width), or wrapped code still scrolls, or the page scrolls sideways; or a case's heading is renamed, and the test names the case it cannot find | The toggle is offered only where it is needed, and must work; the two cases at the limit check that the toggle's threshold agrees with the width the browser draws the code font |
 | `exactly one form of each table` | `table-forms.spec.ts` | style guide, tables | column widths | light | both forms of a table show, or none; a table is wider than its column; the page scrolls sideways; or a case's heading is renamed, and the test names the case it cannot find | A table shows as a table while its columns fit, as a record viewer below that |
 | `every record of the rows of different heights` | `table-forms.spec.ts` | style guide, tables | 320, 393, 412, 767 | light | the case of rows of different heights is not a record viewer; a row of a record is not level with its label, or not as tall; or the number row does not read "k / n" | Each value must sit beside its column's name, also when one value wraps over many lines, a label wraps, or a value is empty |
-| `the form of the simple, six-column and limit tables at` | `table-forms.spec.ts` | style guide, tables | 767, 768 | light | the simple table is not a table, or the six-column table is not a table at 768 and a record viewer at 767, or the table of texts at the limit is not a table at 767 and 768 or is wider than its column | The threshold the build estimates puts each case in the form written for it where the column widens. The limit table is made only of single words, in italic, inline code and bold, so its estimate is close to its real minimum width and just under the column at 767: an estimate too low for those texts makes the table wider than its column (measurements: [card](../docs/done/2026-11-15_show-the-table-in-the-style-guide.md)) |
+| `the form of the simple, six-column and limit tables at` | `table-forms.spec.ts` | style guide, tables | 767, 768 | light | the simple table is not a table, or the six-column table is not a table at 768 and a record viewer at 767, or the table of texts at the limit is not a table at 767 and 768 or is wider than its column | The threshold the build estimates puts each case in the form written for it where the column widens. The limit table is made only of single words, in italic, inline code and bold, so its estimate is close to its real minimum width and just under the column at 767: an estimate too low for those texts makes the table wider than its column (measurements: [card](../docs/board/cards/show-the-table-in-the-style-guide.md)) |
 
 ### Frame
 
@@ -196,7 +196,7 @@ shared.
 
 | Find in files | File | Pages | Widths | Themes | Fails when? | Why |
 |---|---|---|---|---|---|---|
-| `every page of the sitemap meets Lighthouse` | `seo.spec.ts` | every page of the sitemap, in one test | Lighthouse's own | — | a rule of Lighthouse's SEO category neither passes nor is not applicable | The rules search engines publish, checked by the tool they recommend ([card](../docs/done/2026-11-07_check-seo-with-lighthouse.md)) |
+| `every page of the sitemap meets Lighthouse` | `seo.spec.ts` | every page of the sitemap, in one test | Lighthouse's own | — | a rule of Lighthouse's SEO category neither passes nor is not applicable | The rules search engines publish, checked by the tool they recommend ([card](../docs/board/cards/check-seo-with-lighthouse.md)) |
 | `has one canonical link with its full address` | `canonical-link.spec.ts` | every page of the sitemap | 1280 | light | a page has no canonical link, more than one, or one with another address | Search engines count one address per page, not the copies |
 | `has its description and its Open Graph tags` | `open-graph.spec.ts` | every page of the sitemap | 1280 | light | the description is missing or over 160 characters, or the Open Graph tags are missing or disagree with the page (title, address, type, date, author) | A shared link shows its title, description and kind of page |
 
@@ -212,7 +212,7 @@ shared.
 The stylesheet names the site's fonts by role (text, code, logo) in one
 place, the file the build writes from `config/fonts.txt` and `config/fonts/`;
 everything else refers to the role. Card:
-[give the fonts three roles in the stylesheet](../docs/done/2026-11-16_give-the-fonts-three-roles-in-the-stylesheet.md).
+[give the fonts three roles in the stylesheet](../docs/board/cards/give-the-fonts-three-roles-in-the-stylesheet.md).
 
 ### Component
 

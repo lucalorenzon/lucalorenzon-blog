@@ -3,7 +3,7 @@
 **Participants:** the user (author); the agent (Claude Opus 5.5), with
 sub-agents Sonnet 5.5 (code and tests of each slice).
 **Goal:** the slices left in the card
-[give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md),
+[give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md),
 starting from tables. Reasons and rejected options are in that card
 and in [ADR-003](../adr/ADR-003-readability-first-amber-as-accent.md).
 
@@ -88,9 +88,9 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Validate the article pages and close the card
-  [give the articles' code, quotes and tables a look](../wip/design-look-of-articles.md).
+  [give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md).
 - Decide the logo, likely the written logo everywhere. Card
-  [review the logo](../backlog/review-the-logo.md).
+  [review the logo](../board/cards/review-the-logo.md).
 - What a table too wide for a phone does, and the hybris PK article
   back in the checks. Card
-  [let the Markdown ask for components for wide code and tables](../wip/annotate-markdown-for-wide-content.md).
+  [let the Markdown ask for components for wide code and tables](../board/cards/annotate-markdown-for-wide-content.md).

@@ -6,11 +6,11 @@
 sub-agents on Claude Sonnet 5.5 (code) and Claude Haiku 5.5 (card moves,
 commits, push, tag, test runs).
 **Goal:** do the card
-[give the page a header, a footer and a favicon, in a dark terminal style](../done/2026-10-28_add-header-footer-and-favicon.md),
+[give the page a header, a footer and a favicon, in a dark terminal style](../board/cards/add-header-footer-and-favicon.md),
 chosen by the
 [light pass of `residuality`](2026-10-28-residuality-light-pass.md)
 earlier the same day, then publish it with the
-[verification of the publication](../done/2026-10-28_verify-publication-at-next-version.md).
+[verification of the publication](../board/cards/verify-publication-at-next-version.md).
 Answers and reasons are in the cards.
 
 ## Decisions
@@ -94,8 +94,8 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - Fix the skipped live-site test, with version 0.2.1: card
-  [run the live-site test when the snapshot is published](../done/2026-10-28_run-live-test-when-snapshot-is-published.md).
+  [run the live-site test when the snapshot is published](../board/cards/run-live-test-when-snapshot-is-published.md).
 - Make the site responsive: card
-  [make the site responsive](../backlog/make-site-responsive.md).
+  make the site responsive (later split into [Adapt the header to screen width](../board/cards/adapt-header-to-screen-width.md), [Adapt the footer and the articles to screen width](../board/cards/adapt-footer-and-articles-to-screen-width.md), [Add a menu for the site](../board/cards/add-site-menu.md), [List the articles on the home page](../board/cards/list-articles-on-home-page.md)).
 - Add automated accessibility tests: card
-  [add automated accessibility tests](../backlog/add-automated-accessibility-tests.md).
+  add automated accessibility tests (later split into [Check accessibility in the build](../board/cards/check-accessibility-in-the-build.md), [Check the accessibility tree in the build](../board/cards/check-accessibility-tree-in-the-build.md), [Run a screen reader check on demand](../board/cards/run-screen-reader-check-on-demand.md)).

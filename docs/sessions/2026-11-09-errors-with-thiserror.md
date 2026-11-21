@@ -3,7 +3,7 @@
 **Participants:** the user (author); the agent (Claude Opus 5.5), with
 the sub-agent Claude Sonnet 5.5 (six tasks, one per slice of code).
 **Goal:** do the card
-[refactor the code's errors with thiserror](../done/2026-11-09_refactor-errors-with-thiserror.md),
+[refactor the code's errors with thiserror](../board/cards/refactor-errors-with-thiserror.md),
 the second of the refactors in Now. Technical details are in the card.
 
 ## Decisions
@@ -67,14 +67,14 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 
 ## Outcome
 
-- Card [refactor the code's errors with thiserror](../done/2026-11-09_refactor-errors-with-thiserror.md):
+- Card [refactor the code's errors with thiserror](../board/cards/refactor-errors-with-thiserror.md):
   started (`09646f8`); answered (`adff226`); six code commits, one per
   slice: the hand-written types (`f5c5e05`), the robots list
   (`2e930b1`), the sitemap (`fc2a92a`), the articles (`f66f0ca`), the
   build's error type (`6ccfdd0`), the YAML reader's position
   (`7a68629`); moved to done (`16b0cb9`); closed (`7867cf4`).
-- Cards opened: [separate the domain from the adapters](../backlog/separate-the-domain-from-the-adapters.md)
-  (`8c512ff`) and [let Tailwind read only the presentation](../backlog/let-tailwind-read-only-the-presentation.md)
+- Cards opened: [separate the domain from the adapters](../board/cards/separate-the-domain-from-the-adapters.md)
+  (`8c512ff`) and [let Tailwind read only the presentation](../board/cards/let-tailwind-read-only-the-presentation.md)
   (`ac93e47`), both in Next.
 - 691 lines added and 400 removed in `src/`, `Cargo.toml` and
   `Cargo.lock`; the built site byte-identical after each code commit.
@@ -85,15 +85,15 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Open points
 
 - The comment at the top of `src/robots_txt.rs` still points to
-  `docs/wip/add-robots-txt.md`, now
-  `docs/done/2026-11-07_add-robots-txt.md`; not corrected in this
+  `docs/board/cards/add-robots-txt.md`, now
+  `docs/board/cards/add-robots-txt.md`; not corrected in this
   session.
 
 ## Next steps
 
 - Run the spike on Holt, then build the catalogue that frees the two
-  articles: card [build a design system](../backlog/build-a-design-system.md).
+  articles: card [build a design system](../board/cards/build-a-design-system.md).
 - Separate the domain from the adapters, revisiting the errors: card
-  [separate the domain from the adapters](../backlog/separate-the-domain-from-the-adapters.md).
+  [separate the domain from the adapters](../board/cards/separate-the-domain-from-the-adapters.md).
 - Keep Tailwind from reading anything but the presentation: card
-  [let Tailwind read only the presentation](../backlog/let-tailwind-read-only-the-presentation.md).
+  [let Tailwind read only the presentation](../board/cards/let-tailwind-read-only-the-presentation.md).

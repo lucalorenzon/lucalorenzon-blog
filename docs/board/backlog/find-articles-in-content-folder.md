@@ -1,0 +1,1 @@
+../cards/find-articles-in-content-folder.md

@@ -35,7 +35,7 @@ only the rigid pipeline. The previous site is kept on the local branch
 | 10 | Running the tests in the official Playwright image: deferred to the backlog | Slowdown seen once; the fix adds a version to keep aligned by hand |
 
 Full reasoning for 5–8 and 10: `docs/plan.md` and
-`docs/done/2026-10-27_run-browser-tests-in-playwright-image.md`.
+`docs/board/cards/run-browser-tests-in-playwright-image.md`.
 
 ## What was done
 
@@ -78,11 +78,11 @@ Outside the repository:
 
 Both tracked as backlog cards:
 
-- [Choose the site's public address](../backlog/choose-site-address.md):
+- [Choose the site's public address](../board/cards/choose-site-address.md):
   open, not blocking until pages link to each other.
-- [Challenge the live skeleton with `residuality`](../backlog/challenge-skeleton-with-residuality.md):
+- [Challenge the live skeleton with `residuality`](../board/cards/challenge-skeleton-with-residuality.md):
   when the user calls it.
-- [Run build, deploy and tests only when the code changes](../done/2026-10-27_run-pipeline-only-on-code-changes.md):
+- [Run build, deploy and tests only when the code changes](../board/cards/run-pipeline-only-on-code-changes.md):
   asked by the user after documentation-only commits triggered full
   publications; options open.
 
@@ -91,4 +91,4 @@ Both tracked as backlog cards:
 The Chromium slowdown recurred in a later run (two slow runs out of
 three, see the card's "Measurements"), so the user decided on 2026-10-27
 that the next session starts with
-[running the browser tests inside the official Playwright image](../done/2026-10-27_run-browser-tests-in-playwright-image.md).
+[running the browser tests inside the official Playwright image](../board/cards/run-browser-tests-in-playwright-image.md).

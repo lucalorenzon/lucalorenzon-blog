@@ -12,8 +12,8 @@ can judge).
 Why: the build checks what the page gives a screen reader, not how it sounds.
 The page is declared Italian but its title "Home Page" is English, and the
 logo's name is spelled out letter by letter; a regression there changes what
-Orca says. Cards: [run a screen reader check on demand](../done/2026-10-30_run-screen-reader-check-on-demand.md),
-[run it in a container](../done/2026-10-30_run-screen-reader-check-in-a-container.md)
+Orca says. Cards: [run a screen reader check on demand](../board/cards/run-screen-reader-check-on-demand.md),
+[run it in a container](../board/cards/run-screen-reader-check-in-a-container.md)
 
 How to run it, from the repository root (it needs Docker):
 

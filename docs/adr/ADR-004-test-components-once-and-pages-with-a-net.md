@@ -4,15 +4,15 @@
 - **Status:** Accepted
 - **Cards:** split from "make the browser tests check behaviour, not
   articles" (opened 2026-11-05, split on 2026-11-08) into
-  [run in one theme the tests that do not check colours](../done/2026-11-08_run-colour-free-tests-in-one-theme.md),
-  [check at every width only what depends on the width](../done/2026-11-08_check-at-every-width-only-what-depends-on-it.md)
+  [run in one theme the tests that do not check colours](../board/cards/run-colour-free-tests-in-one-theme.md),
+  [check at every width only what depends on the width](../board/cards/check-at-every-width-only-what-depends-on-it.md)
   and "check every page with tests written once", itself split on
   2026-11-08 into
-  [take the net's pages from the sitemap](../done/2026-11-09_take-the-nets-pages-from-the-sitemap.md),
-  [check accessibility on every page with the net](../done/2026-11-09_check-accessibility-on-every-page-with-the-net.md)
+  [take the net's pages from the sitemap](../board/cards/take-the-nets-pages-from-the-sitemap.md),
+  [check accessibility on every page with the net](../board/cards/check-accessibility-on-every-page-with-the-net.md)
   and
-  [check the layout on every page with the net](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md);
-  related: [build a design system](../wip/build-a-design-system.md)
+  [check the layout on every page with the net](../board/cards/check-the-layout-on-every-page-with-the-net.md);
+  related: [build a design system](../board/cards/build-a-design-system.md)
 
 ## Context
 
@@ -74,7 +74,7 @@ does not wait for the design system.
 (Revised on 2026-11-09: the test pages are no longer built by hand
 before the design system; its catalogue builds them, and the work is
 merged into
-[build a design system](../wip/build-a-design-system.md). The
+[build a design system](../board/cards/build-a-design-system.md). The
 growth this rule was meant to stop is gone, stopped by the net, and the
 pages would otherwise be built twice. Meanwhile the components are
 checked on the real article that stresses them most, so two articles
@@ -104,7 +104,7 @@ remain test pages until the catalogue exists.)
   scroll, with and without the reader's spacing, depends on the text,
   since the text breaks only at spaces, so both checks run in the net
   on every page:
-  [check the layout on every page with the net](../done/2026-11-09_check-the-layout-on-every-page-with-the-net.md).)
+  [check the layout on every page with the net](../board/cards/check-the-layout-on-every-page-with-the-net.md).)
 - The test pages may be built twice: by hand now, then in the design
   system. (Revised on 2026-11-09: avoided, see the revision under
   Decision.)

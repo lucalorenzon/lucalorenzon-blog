@@ -1,0 +1,1 @@
+../cards/take-page-addresses-from-slug.md

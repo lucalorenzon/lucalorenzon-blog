@@ -5,7 +5,7 @@
   // CSS checker reports it as errors and warnings. CSS files here are
   // checked by Tailwind's own CSS server instead, as Zed's Tailwind
   // documentation suggests. Why: the card
-  // stop-generic-css-checker-on-tailwind-stylesheet in docs/done/.
+  // stop-generic-css-checker-on-tailwind-stylesheet in docs/board/cards/.
   "languages": {
     "CSS": {
       "language_servers": [

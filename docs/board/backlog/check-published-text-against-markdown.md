@@ -1,0 +1,1 @@
+../cards/check-published-text-against-markdown.md

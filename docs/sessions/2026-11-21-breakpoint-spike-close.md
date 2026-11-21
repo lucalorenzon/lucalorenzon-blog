@@ -11,7 +11,7 @@ tells the build what changes in it at each breakpoint, starting from
 the point the first session left to check, whether the header and the
 footer move to containers; then the spike's finding and its close
 (card
-[try a breakpoint declaration on the text column](../done/2026-11-21_try-a-breakpoint-declaration-on-the-text-column.md)).
+[try a breakpoint declaration on the text column](../board/cards/try-a-breakpoint-declaration-on-the-text-column.md)).
 The first session's minute:
 [2026-11-21, the breakpoint spike turns to container queries](2026-11-21-breakpoint-spike-container-queries.md).
 Technical details, sources and reasons are in the card.
@@ -102,15 +102,15 @@ plan.
 
 - Stop moved cards from breaking links in minutes and finished cards:
   card
-  [refer to cards by name in frozen documents](../backlog/refer-to-cards-by-name-in-frozen-documents.md).
+  [refer to cards by name in frozen documents](../board/cards/refer-to-cards-by-name-in-frozen-documents.md).
 - Decide whether the text column is cut again, starting from the
   user's new idea: card
-  [decide whether to cut the text column again](../backlog/decide-whether-to-cut-the-text-column-again.md).
+  [decide whether to cut the text column again](../board/cards/decide-whether-to-cut-the-text-column-again.md).
 - Let the column's text grow within a range the site injects: card
-  [let the column's text grow within a range the site injects](../backlog/let-the-column-text-grow-within-an-injected-range.md);
+  [let the column's text grow within a range the site injects](../board/cards/let-the-column-text-grow-within-an-injected-range.md);
   then its page: card
-  [show the text column in the style guide](../wip/show-the-text-column-in-the-style-guide.md).
+  [show the text column in the style guide](../board/cards/show-the-text-column-in-the-style-guide.md).
 - Let the frame's text grow within the same ranges: card
-  [let the page frame's text grow within the injected ranges](../backlog/let-the-frame-text-grow-within-the-injected-ranges.md);
+  [let the page frame's text grow within the injected ranges](../board/cards/let-the-frame-text-grow-within-the-injected-ranges.md);
   then its page: card
-  [show the page frame in the style guide](../backlog/show-the-page-frame-in-the-style-guide.md).
+  [show the page frame in the style guide](../board/cards/show-the-page-frame-in-the-style-guide.md).

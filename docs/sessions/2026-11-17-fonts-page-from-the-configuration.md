@@ -8,7 +8,7 @@
 
 Goal: start again from the plan, then build the style guide's fonts
 page from the fonts' configuration
-([card](../done/2026-11-17_build-the-fonts-page-from-the-configuration.md)).
+([card](../board/cards/build-the-fonts-page-from-the-configuration.md)).
 
 ## Decisions
 
@@ -72,6 +72,6 @@ page from the fonts' configuration
 ## Next steps
 
 - The fonts' measures: card
-  [measure the fonts again when they change](../backlog/measure-the-fonts-again-when-they-change.md).
+  [measure the fonts again when they change](../board/cards/measure-the-fonts-again-when-they-change.md).
 - The breakpoints page, last before publishing: card
-  [build a design system](../wip/build-a-design-system.md).
+  [build a design system](../board/cards/build-a-design-system.md).

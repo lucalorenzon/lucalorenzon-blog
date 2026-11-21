@@ -1,0 +1,1 @@
+../cards/check-structured-data.md

@@ -1,0 +1,1 @@
+../cards/start-the-seo-check-first.md

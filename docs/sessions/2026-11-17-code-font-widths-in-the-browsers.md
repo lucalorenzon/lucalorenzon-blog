@@ -10,9 +10,9 @@
   wrote the tool that makes the measuring page.
 
 Goal: take up the card on measuring the fonts again when they change
-([card](../wip/measure-the-fonts-again-when-they-change.md)). It led to
+([card](../board/cards/measure-the-fonts-again-when-they-change.md)). It led to
 a fault of the wrap toggle, opened as a card of its own
-([card](../wip/hide-the-wrap-toggle-on-blocks-that-fit.md)). Technical
+([card](../board/cards/hide-the-wrap-toggle-on-blocks-that-fit.md)). Technical
 details and reasons are in the cards.
 
 ## Decisions
@@ -79,12 +79,12 @@ details and reasons are in the cards.
   cut, with its acceptance tests and now waiting for the fix
   (`ae33a0e`, `71f3cca`, `6a589f7`).
 - New card in Next:
-  [take the measures from the configured fonts](../backlog/take-the-measures-from-the-configured-fonts.md)
+  [take the measures from the configured fonts](../board/cards/take-the-measures-from-the-configured-fonts.md)
   (`71f3cca`).
 - New card in work, the fault of the wrap toggle, with the measures of
   three browsers (`213c71e`, `e4dbe16`).
 - New card in Later:
-  [measure the code font on macOS](../backlog/measure-the-code-font-on-macos.md)
+  [measure the code font on macOS](../board/cards/measure-the-code-font-on-macos.md)
   (`e4dbe16`).
 - A broken link mended in a finished card (`b8cd3a8`).
 - The tool `end2end/tools/make-code-font-page.mjs`, which writes a page
@@ -106,6 +106,6 @@ plan.
 
 - Screenshots of the code with and without `geometricPrecision`, side
   by side, then the regression test and the fix: card
-  [hide the wrap toggle on blocks that fit](../wip/hide-the-wrap-toggle-on-blocks-that-fit.md).
+  [hide the wrap toggle on blocks that fit](../board/cards/hide-the-wrap-toggle-on-blocks-that-fit.md).
 - Review acceptance tests 1 to 3, then write the cases at the limit:
-  card [measure the fonts again when they change](../wip/measure-the-fonts-again-when-they-change.md).
+  card [measure the fonts again when they change](../board/cards/measure-the-fonts-again-when-they-change.md).

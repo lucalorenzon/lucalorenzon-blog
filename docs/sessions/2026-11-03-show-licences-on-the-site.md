@@ -4,7 +4,7 @@
 sub-agents on Claude Haiku 5.5 (moving the card) and Claude Sonnet 5.5
 (code).
 **Goal:** answer and publish the card
-[show the licences on the site](../done/2026-11-03_show-licences-on-the-site.md),
+[show the licences on the site](../board/cards/show-licences-on-the-site.md),
 opened in the previous part of the same session
 ([minute](2026-11-02-articles-licence.md)). The reasons and the rejected
 options are in the card.
@@ -92,7 +92,7 @@ plan.
 
 - Bring the first articles, which get the footer "Reuse with
   attribution": card
-  [add the two articles already on Medium](../backlog/add-the-two-medium-articles.md).
+  add the two articles already on Medium (later split into [Bring "After Save Event" into the site's Markdown](../board/cards/add-after-save-event-markdown.md), [Bring the article on generating hybris PK values into the site's Markdown](../board/cards/add-generate-pk-article-markdown.md), [Give each article a page of its own](../board/cards/add-article-pages.md), [Give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md)).
 - The logo link is a first piece of navigation, to be taken into
   account by the card
-  [add site navigation](../backlog/add-site-navigation.md).
+  add site navigation (later split into [Add a menu for the site](../board/cards/add-site-menu.md), [List the articles on the home page](../board/cards/list-articles-on-home-page.md)).

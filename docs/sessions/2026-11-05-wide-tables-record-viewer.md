@@ -4,7 +4,7 @@
 sub-agents Sonnet 5.5 (prototype, measurements, code and tests of the
 first slice).
 **Goal:** decide what a table too wide for a phone does, in the card
-[let the Markdown ask for components for wide code and tables](../wip/annotate-markdown-for-wide-content.md),
+[let the Markdown ask for components for wide code and tables](../board/cards/annotate-markdown-for-wide-content.md),
 section "Slice 2: wide tables". Reasons and rejected options are in
 the card.
 
@@ -84,9 +84,9 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
   and the spike's results: `d5dc148` spike A, `1888d2b` the record
   number, `afaa34b` single-value cells, `4f4810f` the threshold.
 - New cards in the backlog: `0c57618`
-  [measure what a Leptos island weighs](../backlog/measure-weight-of-a-leptos-island.md),
+  [measure what a Leptos island weighs](../board/cards/measure-weight-of-a-leptos-island.md),
   in Later; `e40068b`
-  [make the browser tests check behaviour, not articles](../backlog/make-browser-tests-check-behaviour.md),
+  make the browser tests check behaviour, not articles (later split into [Run in one theme the tests that do not check colours](../board/cards/run-colour-free-tests-in-one-theme.md), [Check at every width only what depends on the width](../board/cards/check-at-every-width-only-what-depends-on-it.md), [Take the net's pages from the sitemap](../board/cards/take-the-nets-pages-from-the-sitemap.md), [Check accessibility on every page with the net](../board/cards/check-accessibility-on-every-page-with-the-net.md), [Check the layout on every page with the net](../board/cards/check-the-layout-on-every-page-with-the-net.md)),
   in Next.
 - On the site: `18c22a0` a table cell with no space stays on one line.
   101 unit tests and 500 browser tests pass (2 skipped, as before).
@@ -112,6 +112,6 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 - Slice 2: the record viewer and its threshold in the build, with the
   readability rule revised for a box that cuts text vertically by
   design. Card
-  [let the Markdown ask for components for wide code and tables](../wip/annotate-markdown-for-wide-content.md).
+  [let the Markdown ask for components for wide code and tables](../board/cards/annotate-markdown-for-wide-content.md).
 - Slice 3: the hybris PK article back in the checks, which closes that
   card.

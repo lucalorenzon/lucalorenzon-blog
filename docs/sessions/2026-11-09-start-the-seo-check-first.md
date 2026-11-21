@@ -5,7 +5,7 @@ sub-agents Claude Haiku 5.5 (building the site and measuring the
 browser tests, two tasks) and Claude Sonnet 5.5 (the change to the test
 configuration, one task).
 **Goal:** do the card
-[start the SEO check first](../done/2026-11-09_start-the-seo-check-first.md),
+[start the SEO check first](../board/cards/start-the-seo-check-first.md),
 so the Lighthouse check stops running last and alone. Technical details
 and measurements are in the card.
 
@@ -47,7 +47,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 - On two workers, as in the pipeline, the browser tests went from
   about 49 to about 36 seconds; on this machine's twelve workers, from
   about 34 to about 31.
-- Card [start the SEO check first](../done/2026-11-09_start-the-seo-check-first.md):
+- Card [start the SEO check first](../board/cards/start-the-seo-check-first.md):
   started (`3ff3f9c`), change to `end2end/playwright.config.ts`
   (`69d831e`), closed with the answers and the measurements
   (`6d6ceba`).
@@ -64,5 +64,5 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 
 - Read the browser test step's time and the SEO check's duration in
   the first pipeline run after the next push: card
-  [start the SEO check first](../done/2026-11-09_start-the-seo-check-first.md),
+  [start the SEO check first](../board/cards/start-the-seo-check-first.md),
   "Does Lighthouse's own Chromium slow the tests beside it?".

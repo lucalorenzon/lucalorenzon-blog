@@ -1,0 +1,257 @@
+# Separate the build from the deploy, publish from a tag
+
+- **Opened:** 2026-10-27, asked by the user while the Playwright image card
+  (`docs/board/cards/run-browser-tests-in-playwright-image.md`) was
+  being worked on.
+- **Status:** done, closed on 2026-10-28. Two parts are still to be seen
+  working on GitHub, at the next real version: see "Not seen yet".
+
+## Why this was asked
+
+Until then one workflow (`.github/workflows/deploy.yml`) did everything:
+on every push to `main` it checked, built and tested the site and, if all
+of that passed, published it straight away. Every code change merged into
+`main` therefore went live immediately; there was no moment where the
+author decided "this is a version worth publishing".
+
+The user wants publishing to be a deliberate act, separate from the
+build, and a written record of what changed between one published
+version and the next. Not every change is worth publishing: some do not
+change what a visitor sees, others do but are not mature enough yet.
+
+## What the user asked
+
+- **Build.** Checks, builds and tests the site, as today, including the
+  browser test on the freshly built site, so every change is still checked
+  for regressions. It never publishes.
+- **Deploy.** Publishes the site to GitHub Pages and then runs the browser
+  test on the live site, as today. It is started by a version tag: the tag
+  says "this version of the site is ready to become public".
+- **CHANGELOG.** A `CHANGELOG.md` file that keeps the list of changes, so
+  each published version says what it brought. Part of this card,
+  confirmed by the user on 2026-10-27: once versions are introduced, a
+  document tracking what each one contains belongs with them.
+
+The user chose on 2026-10-28 to keep the three together in one card
+rather than split it: they only have value together and the work on them
+is connected.
+
+## Answers
+
+Settled with the user on 2026-10-28, one question at a time.
+
+### Which site the deploy publishes
+
+**Chosen: two paths.** On every push to `main`, the build, only after the
+browser test on the freshly built site passed, replaces a zip of the site
+in a GitHub Release named `snapshot` (a pre-release, so it is never shown
+as the latest version), together with the commit it was built from. The
+deploy publishes that snapshot when it was built from the tagged commit;
+otherwise it rebuilds the site from the tagged commit, runs the same
+checks and tests, and publishes that.
+
+Why: the usual publication is fast and publishes exactly the site that was
+already tested. Comparing the snapshot's commit with the tagged one,
+rather than asking "is the tag on the last commit of `main`?", also covers
+a tag pushed while the build of its commit is still running, and a tag on
+a documentation-only commit, for which no build runs. The cost, accepted
+by the user: the rebuild path is rarely used, so it can break without
+anyone noticing until it is needed.
+
+Rejected:
+
+- **Always rebuild from the tagged commit.** One path, always exercised;
+  no snapshot and no write permission for the build. Rejected because the
+  user prefers publishing the site that was already tested, without
+  waiting for a second build and its tests.
+- **Reuse the site the build uploads today as a workflow artifact.**
+  Workflow artifacts expire (after one day here, 90 days at most), while a
+  version may wait longer than that before it is tagged. Files attached to
+  a GitHub Release do not expire.
+
+### How a version is published
+
+**Chosen:** by hand, from the terminal: `git tag vX.Y.Z` then
+`git push origin vX.Y.Z`. Only tags of that form start the deploy; the
+`snapshot` tag does not.
+
+Rejected: **creating a release from GitHub's web page**, which creates the
+tag with it. The user prefers the terminal.
+
+### Tag format
+
+**Chosen:** `vMAJOR.MINOR.PATCH`, with a meaning defined for this site:
+
+- **major:** a completely new design, or a different navigation;
+- **minor:** an additional feature;
+- **patch:** a security fix or a bug fix.
+
+Adding an article is not a software change. While test articles live in
+this repository, adding one changes the repository and counts as a patch.
+Real articles will live in a separate repository, published in a way that
+a future card will decide (plan, "Later").
+
+Why: semantic versioning was designed for libraries, where a "breaking"
+change is one that breaks the programs using them. A blog has no such
+programs, so each number needed a meaning of its own before the format
+could be used without arbitrary choices.
+
+### Which commits may be published
+
+**Chosen:** only tags on commits that are on `main`. A tag on any other
+commit makes the deploy fail, visibly, without publishing.
+
+Why: a commit outside `main` has not gone through a pull request, even if
+its tests pass. The deploy fails rather than stopping silently, so a
+misplaced tag is noticed and not mistaken for a published version. Whether
+the commit passed its tests needs no separate check: a snapshot exists
+only for a build that passed, and the rebuild path runs the tests again.
+
+### GitHub settings
+
+**Chosen:**
+
+- the `github-pages` environment also accepts tags matching `v*` (today it
+  accepts only `main`);
+- a tag ruleset on `v*`: a version tag cannot be moved, and only the
+  repository administrator can delete one;
+- a deleted version name is never reused: the next version is used
+  instead. This is a written rule, stated at the top of `CHANGELOG.md`,
+  where it is seen at every publication.
+
+Why: a version name must point to one site only, otherwise the CHANGELOG
+would describe something other than what went live. Deleting a tag and
+creating it again on another commit amounts to moving it, and no setting
+can forbid reusing a name, because creating tags must stay allowed. The
+user accepted a written rule for that case.
+
+Rejected: **letting version tags move freely.**
+
+### CHANGELOG
+
+**Chosen:** `CHANGELOG.md` at the repository root, in the
+[Keep a Changelog](https://keepachangelog.com/) layout, written by hand,
+and checked by the deploy. A publication goes like this:
+
+1. While working, changes are noted under "Unreleased".
+2. To publish, the author turns "Unreleased" into the version's section
+   (`## [1.2.0] - yyyy-mm-dd`) and commits it on `main`.
+3. The build runs on that commit and saves its snapshot.
+4. The author tags that commit and pushes the tag. Tagging before the
+   build has finished still works, but takes the slower rebuild path.
+5. The deploy fails if the tagged commit's `CHANGELOG.md` has no section
+   for the tag's version. It checks the file's content, not whether the
+   tagged commit changed it.
+
+The deploy never commits: a commit made by it would come after the tagged
+one, so the published site would no longer be the one the tag names.
+
+Why: with the check, the CHANGELOG cannot fall behind; the cost is one
+preparation commit before each tag. The layout's change types fit the
+version numbers: an addition leads to a minor, a fix or a security patch
+to a patch.
+
+Rejected: **no check.** Publishing would need only the tag, but the
+CHANGELOG could fall behind without anyone noticing.
+
+### A GitHub Release for each version
+
+**Chosen:** after publishing, the deploy creates a GitHub Release for the
+tag. Its text is the version's section of the CHANGELOG, and the zip of
+the published site is attached to it.
+
+Why: each version gets its own page on GitHub, and each site that went
+live is archived exactly, so an earlier version can be published again
+from its zip without rebuilding it. Accepted costs: the deploy needs
+permission to write to the repository, and the description is in two
+places, the second copied automatically from the first.
+
+Rejected: **the tag and the CHANGELOG alone.**
+
+### Documentation-only changes
+
+**Chosen:** nothing changes for the build, which keeps skipping
+documentation-only pushes
+(`docs/board/cards/run-pipeline-only-on-code-changes.md`). The deploy
+never skips: the tag is already the author's decision. A tag on a
+documentation-only commit takes the rebuild path, since no snapshot exists
+for that commit.
+
+`CHANGELOG.md` must stay out of the documentation-only list, so that a
+version's preparation commit is built and gets its snapshot.
+
+## How it was done
+
+In four steps, agreed with the user on 2026-10-28. Each step works on its
+own. The
+build stops publishing in the same step where the deploy from a tag
+starts, so there is never a time when nothing, or two things, publish.
+
+1. **GitHub settings.** Done on 2026-10-28 with `gh`: the `github-pages`
+   environment also accepts tags `v*`; ruleset "Version tags cannot be
+   moved" (no bypass); ruleset "Only admins delete version tags" (bypass:
+   repository administrators). Two rulesets, because a bypass applies to
+   a whole ruleset: a single one would also let administrators move tags.
+2. **Deploy from a tag, rebuild path only.** The workflow is split into
+   `build.yml` (never publishes) and `deploy.yml` (from a version tag),
+   `CHANGELOG.md` and the guide in `README.md` are added, and the
+   environment stops accepting `main`. The deploy does not keep its own
+   copy of the build: it calls `build.yml`, so the rebuild path runs on
+   every push and cannot break unnoticed, which removes most of the cost
+   accepted above for the two paths. Done on 2026-10-28 (commit
+   `efe3ff6`). The user chose `v0.1.0` for the first version. It was published from its
+   tag the same day (commit `794eb5f`); every job of the deploy passed,
+   including the browser test on the live site. Not yet seen on GitHub:
+   the deploy failing on a bad tag, a commit outside `main` or a missing
+   CHANGELOG section (the tag and CHANGELOG checks were tested locally).
+3. **The snapshot.** On `main`, after the browser test passed, the build
+   replaces the zip in the `snapshot` Release with `site-<commit>.zip`.
+   The commit is in the file name because a file is replaced in one
+   operation, so the site and its commit can never disagree; the release's
+   own tag does not follow `main`. The deploy looks for the zip of the
+   tagged commit: if it is there, it publishes it; otherwise it calls
+   `build.yml`. It downloads the zip at once and passes it on inside its
+   own run, so a newer build replacing the zip in the meantime cannot
+   change what is published. Done on 2026-10-28 (commit `4e2116e`): its
+   first build created the `snapshot` Release with the zip of that
+   commit. The deploy taking the snapshot is seen at the next version.
+   To call `build.yml`, the deploy must grant it permission to write to
+   the repository, even though the part that writes never runs when
+   called: GitHub checks the permissions of every job of a called
+   workflow, skipped or not. A separate workflow just for the snapshot
+   would avoid that, and was rejected as one more moving part.
+4. **A GitHub Release for each version**, with the CHANGELOG text and the
+   zip of the published site. It is created right after publishing, alongside
+   the browser test on the live site and whatever that test's result:
+   the user decided that a failed live test says what to fix in a later
+   patch version, while the Release records what went live. Done on
+   2026-10-28 (commit `e4da19f`).
+
+Going back to an earlier version (a rollback), which the zip in each
+Release makes possible, came up during step 4. The user judged it not
+worth a card for now.
+
+## Results observed
+
+- `v0.1.0` was published from its tag through the rebuild path: the tag
+  checks, the build called by the deploy, the publication and the browser
+  test on the live site all passed.
+- A push to `main` no longer publishes: the builds of `efe3ff6`,
+  `794eb5f`, `4e2116e` and `e4da19f` ran without starting a deploy.
+- The build of `main` keeps the `snapshot` Release up to date: created
+  by `4e2116e`, its zip replaced by that of `e4da19f`, with no older zip
+  left behind.
+
+## Not seen yet
+
+Left to the next real version, by the user's choice: a version made only
+to test the publication would bring nothing to the site's visitors.
+
+- The deploy publishing the snapshot instead of rebuilding.
+- The Release of a version, with its CHANGELOG text and the site's zip.
+- The deploy failing on a malformed tag, a commit outside `main`, or a
+  missing CHANGELOG section (the tag and CHANGELOG checks were tested
+  locally only).
+
+Card that carries the check:
+[verify the publication at the next version](verify-publication-at-next-version.md).

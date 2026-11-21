@@ -5,7 +5,7 @@ the sub-agent Claude Sonnet 5.5 (one task, resumed once: a trial of
 three icons on the style guide's code block page, in a separate working
 copy, never committed).
 **Goal:** start the card
-[turn the code wrap toggle into an icon](../wip/turn-the-code-wrap-toggle-into-an-icon.md),
+[turn the code wrap toggle into an icon](../board/cards/turn-the-code-wrap-toggle-into-an-icon.md),
 answer its questions, agree its slices and acceptance tests; the
 slices themselves are left to the next session. Technical details and
 reasons are in the card.
@@ -103,7 +103,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 - A button to copy a block to the clipboard, mentioned by the user as
   the next icon, has no card yet. The agent pointed out it needs
   JavaScript, the site's first, and so touches the card
-  [measure what a Leptos island weighs](../backlog/measure-weight-of-a-leptos-island.md).
+  [measure what a Leptos island weighs](../board/cards/measure-weight-of-a-leptos-island.md).
 
 ## Next steps
 
@@ -111,4 +111,4 @@ Actions that came out of this session; when they are done is up to the
 plan.
 
 - The three slices, in a new session: card
-  [turn the code wrap toggle into an icon](../wip/turn-the-code-wrap-toggle-into-an-icon.md).
+  [turn the code wrap toggle into an icon](../board/cards/turn-the-code-wrap-toggle-into-an-icon.md).

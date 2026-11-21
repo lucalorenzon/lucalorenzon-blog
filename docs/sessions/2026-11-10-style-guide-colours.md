@@ -7,9 +7,9 @@ the sub-agents Claude Haiku 5.5 (an experiment on Tailwind reading the
 colours from a generated file) and Claude Sonnet 5.5 (two tasks, the
 code of each of the two commits).
 **Goal:** start the card
-[build a design system](../wip/build-a-design-system.md), and do its
+[build a design system](../board/cards/build-a-design-system.md), and do its
 first page,
-[show the colours in the style guide](../done/2026-11-12_show-the-colours-in-the-style-guide.md).
+[show the colours in the style guide](../board/cards/show-the-colours-in-the-style-guide.md).
 Technical details and reasons are in the cards.
 
 ## Decisions
@@ -111,7 +111,7 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Open points
 
 - How the reader reaches the style guide, until the site has a menu:
-  in the card [build a design system](../wip/build-a-design-system.md).
+  in the card [build a design system](../board/cards/build-a-design-system.md).
 
 ## Next steps
 
@@ -120,6 +120,6 @@ plan.
 
 - The next page of the style guide, with the cases that free the two
   articles from serving as test pages: card
-  [build a design system](../wip/build-a-design-system.md).
+  [build a design system](../board/cards/build-a-design-system.md).
 - The article on the style guide, once the colour page is live: card
-  [write an article on the style guide](../backlog/write-an-article-on-the-style-guide.md).
+  [write an article on the style guide](../board/cards/write-an-article-on-the-style-guide.md).

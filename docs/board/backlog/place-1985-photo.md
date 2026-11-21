@@ -1,0 +1,1 @@
+../cards/place-1985-photo.md

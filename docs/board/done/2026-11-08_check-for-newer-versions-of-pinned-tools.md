@@ -1,0 +1,1 @@
+../cards/check-for-newer-versions-of-pinned-tools.md

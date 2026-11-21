@@ -8,7 +8,7 @@
 // Chromium on Linux rounds the advance to whole pixels unless the code has
 // `text-rendering: geometricPrecision`. The page lets someone measure a
 // browser on another system, such as Safari on macOS, that the agent cannot
-// reach; see docs/backlog/measure-the-code-font-on-macos.md.
+// reach; see docs/board/cards/measure-the-code-font-on-macos.md.
 //
 // Run from end2end/ (plain Node, no dependency, no browser needed):
 //

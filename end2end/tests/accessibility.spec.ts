@@ -33,8 +33,9 @@ import {
 //
 // Not checked here: most of level AAA, and everything a tool cannot see
 // (for example whether alternative texts make sense, or how the page works
-// with a screen reader). That is covered by hand, see the card
-// docs/backlog/check-accessibility-by-hand.md.
+// with a screen reader). That is covered by hand, see the cards
+// docs/board/cards/run-screen-reader-check-on-demand.md and
+// docs/board/cards/cover-wcag-criteria-axe-cannot-check.md.
 
 // Rules that must have been evaluated by the tests: if they are missing from
 // the results, axe did not look at what they check and an empty list of
@@ -194,7 +195,7 @@ for (const { name: pageName, address } of NET_PAGES) {
   // and one link with any text. The content of main is long text that changes
   // at every edit, so it is not listed: only that it holds no level-1 heading.
   // How the page sounds (the voice, how "Lvk@73r" is spelled out) is not
-  // checked here: see the card docs/backlog/run-screen-reader-check-on-demand.md.
+  // checked here: see the card docs/board/cards/run-screen-reader-check-on-demand.md.
   //
   // The logo, in both forms, is one link to the home page named "Lvk@73r, home
   // page"; the ASCII art is hidden from the tree, so the screen reader hears

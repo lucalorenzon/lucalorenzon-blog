@@ -2,7 +2,7 @@
 
 - **Date:** 2026-11-02
 - **Status:** Accepted
-- **Card:** [choose how pages write the addresses of their files](../done/2026-11-02_choose-how-pages-write-addresses.md)
+- **Card:** [choose how pages write the addresses of their files](../board/cards/choose-how-pages-write-addresses.md)
 - **History:** first written the same day with a different decision, a
   base path in every address; questioned by the user while reading it,
   revised after the card above. The first version is in the git
@@ -14,13 +14,13 @@ Every page refers to other files: its stylesheet, its icon, and soon
 other pages. Since 2026-10-28 each page does so by a path relative to
 itself ("the file next to me"), a rule the agent took because the site
 then lived in a sub-folder of GitHub Pages
-([card](../done/2026-10-28_add-header-footer-and-favicon.md), section
+([card](../board/cards/add-header-footer-and-favicon.md), section
 "Which layout?"). The rule was never recorded as a decision of its own.
 
 Two needs put it to the test:
 
 - **The site's own "page not found"**
-  ([card](../done/2026-11-02_serve-own-not-found-page.md)). The host serves it
+  ([card](../board/cards/serve-own-not-found-page.md)). The host serves it
   for any address that does not exist, at any depth: at `/a/b/c`, a
   relative `style.css` becomes `/a/b/style.css`, which does not exist,
   and the page loses its look and its icon.
@@ -42,7 +42,7 @@ Two needs put it to the test:
    it finds its files at any depth.
 4. **The full address is kept for what needs a full address,** the
    search-engine and Open Graph tags of the card
-   [add SEO and Open Graph tags to every page](../done/2026-11-06_add-description-and-open-graph-tags.md),
+   [add SEO and Open Graph tags to every page](../board/cards/add-description-and-open-graph-tags.md),
    when that card is done.
 
 Why: only relative paths let a gateway expose the site under any prefix
@@ -85,7 +85,7 @@ a single rule.
 ## Alternatives Considered
 
 The full comparison, with what static site generators commonly do, is
-in the [card](../done/2026-11-02_choose-how-pages-write-addresses.md).
+in the [card](../board/cards/choose-how-pages-write-addresses.md).
 
 | Alternative | Why rejected |
 |---|---|
@@ -112,9 +112,9 @@ in the [card](../done/2026-11-02_choose-how-pages-write-addresses.md).
 
 ## References
 
-- Card: [choose how pages write the addresses of their files](../done/2026-11-02_choose-how-pages-write-addresses.md)
-- First use: [serve the site's own "page not found"](../done/2026-11-02_serve-own-not-found-page.md)
-- Earlier rule: [add header, footer and favicon](../done/2026-10-28_add-header-footer-and-favicon.md)
+- Card: [choose how pages write the addresses of their files](../board/cards/choose-how-pages-write-addresses.md)
+- First use: [serve the site's own "page not found"](../board/cards/serve-own-not-found-page.md)
+- Earlier rule: [add header, footer and favicon](../board/cards/add-header-footer-and-favicon.md)
 - [sphinx-notfound-page, configuration](https://sphinx-notfound-page.readthedocs.io/en/stable/configuration.html);
   [Read the Docs, 404 pages and MkDocs](https://docs.ReadTheDocs.io/en/stable/reference/404-not-found.html)
 - GitHub Pages: [creating a custom 404 page](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-custom-404-page-for-your-github-pages-site)

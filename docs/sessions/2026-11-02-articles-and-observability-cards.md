@@ -41,15 +41,15 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Outcome
 
 - `b892027`: the phone reading in the closed card
-  [improve the site's readability](../done/2026-11-02_improve-site-readability.md).
+  [improve the site's readability](../board/cards/improve-site-readability.md).
 - `70cfe52`, `28e299b`: the card
-  [observe the visitors in production](../backlog/observe-visitors-in-production.md),
+  [observe the visitors in production](../board/cards/observe-visitors-in-production.md),
   first opened as "add Google Analytics 4 and Google Tag Manager".
 - `14f67c3`: the card
-  [add the two articles already on Medium](../backlog/add-the-two-medium-articles.md)
+  add the two articles already on Medium (later split into [Bring "After Save Event" into the site's Markdown](../board/cards/add-after-save-event-markdown.md), [Bring the article on generating hybris PK values into the site's Markdown](../board/cards/add-generate-pk-article-markdown.md), [Give each article a page of its own](../board/cards/add-article-pages.md), [Give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md))
   in Now; the navigation in Next.
 - `884f1e4`: the card
-  [choose the licence of the articles](../backlog/choose-articles-licence.md)
+  [choose the licence of the articles](../board/cards/choose-articles-licence.md)
   in Now, before the articles.
 
 ## Open points
@@ -62,6 +62,6 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 - Look again at version 0.5.0 on the phone; if needed, open a card from
   the note in the closed readability card.
 - Choose the licence of the articles: card
-  [choose the licence of the articles](../backlog/choose-articles-licence.md).
+  [choose the licence of the articles](../board/cards/choose-articles-licence.md).
 - Bring the two Medium articles onto the site: card
-  [add the two articles already on Medium](../backlog/add-the-two-medium-articles.md).
+  add the two articles already on Medium (later split into [Bring "After Save Event" into the site's Markdown](../board/cards/add-after-save-event-markdown.md), [Bring the article on generating hybris PK values into the site's Markdown](../board/cards/add-generate-pk-article-markdown.md), [Give each article a page of its own](../board/cards/add-article-pages.md), [Give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md)).

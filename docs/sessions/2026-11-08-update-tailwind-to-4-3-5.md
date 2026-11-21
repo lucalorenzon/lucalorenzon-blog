@@ -3,7 +3,7 @@
 **Participants:** the user (author); the agent (Claude Opus 5.5), with
 the sub-agent Haiku 5.5 (the change of version and the local checks).
 **Goal:** take the card
-[update Tailwind to 4.3.5](../done/2026-11-08_update-tailwind-to-4-3-5.md),
+[update Tailwind to 4.3.5](../board/cards/update-tailwind-to-4-3-5.md),
 first in Now, reported by the daily check in issue #33. What changed
 and why is in the card.
 
@@ -56,4 +56,4 @@ Roles as in MADR: *decision-makers* decided, *consulted* gave input,
 ## Next steps
 
 - The next card in Now: a module of their own for dates, card
-  [give dates a module of their own](../backlog/give-dates-a-module-of-their-own.md).
+  [give dates a module of their own](../board/cards/give-dates-a-module-of-their-own.md).

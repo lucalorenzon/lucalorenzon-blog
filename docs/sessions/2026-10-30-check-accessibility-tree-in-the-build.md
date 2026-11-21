@@ -4,7 +4,7 @@
 the sub-agent Sonnet 5.5 (the accessibility tree test).
 **Goal:** take the card "Check accessibility by hand" and close its
 first part:
-[check the accessibility tree in the build](../done/2026-10-30_check-accessibility-tree-in-the-build.md).
+[check the accessibility tree in the build](../board/cards/check-accessibility-tree-in-the-build.md).
 Technical details and reasons are in the card. The session came right
 after the session
 [check accessibility in the build](2026-10-30-check-accessibility-in-the-build.md).
@@ -68,6 +68,6 @@ plan.
 
 - Make the screen reader check start with one local command (decision
   2): card
-  [run a screen reader check on demand](../backlog/run-screen-reader-check-on-demand.md).
+  [run a screen reader check on demand](../board/cards/run-screen-reader-check-on-demand.md).
 - Run the browser tests in more browsers (decision 5): card
-  [run the browser tests in more browsers](../backlog/run-browser-tests-in-more-browsers.md).
+  [run the browser tests in more browsers](../board/cards/run-browser-tests-in-more-browsers.md).
