@@ -88,7 +88,7 @@ The ones known when the card was written; there may be more.
   **Answered by the user's choice of the global layout, 2026-11-21.** The
   question no longer arises: every card is referred to by its path in
   `docs/board/cards/`, whatever its state.
-- **Live documents.** `docs/plan.md` and the open cards are kept current,
+- **Live documents.** `docs/board/plan.md` and the open cards are kept current,
   so their links can stay; this card does not change them.
 
   **Answered by the user on 2026-11-21.** This card does change them: the

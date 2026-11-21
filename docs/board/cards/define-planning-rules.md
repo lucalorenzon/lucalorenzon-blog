@@ -14,7 +14,7 @@ While reworking the session minute format, the user set what a minute's
 order in which work is done. When an action is done is a planning matter.
 
 That left a gap. Changes in the order of the work were written down only
-in the minutes, and `docs/plan.md` had fallen behind: last updated on
+in the minutes, and `docs/board/plan.md` had fallen behind: last updated on
 2026-10-26, its Next section still named the `residuality` challenge as
 the next thing, and two of the three cards taken on 2026-10-27 instead
 (the pipeline card and the minute format card) did not appear in it. The

@@ -2,7 +2,7 @@
 
 - **Opened:** 2026-11-08, by the user, after the pipeline failed three
   times on the download of Tailwind
-  ([session](../../sessions/2026-11-08-articles-front-matter.md)).
+  ([session](../sessions/2026-11-08-articles-front-matter.md)).
 - **Status:** done, on 2026-11-08.
 
 ## Why

@@ -470,7 +470,7 @@ trait the component implements, is not built.
   regrouped (`bdea3cb`); the turn to container queries (`6ed629e`);
   the experiment's findings (`22816a9`); the user's view on the
   breakpoints (`3ee1298`). First session, minute
-  [2026-11-21, the breakpoint spike turns to container queries](../../sessions/2026-11-21-breakpoint-spike-container-queries.md).
+  [2026-11-21, the breakpoint spike turns to container queries](../sessions/2026-11-21-breakpoint-spike-container-queries.md).
 - The page frame kept on the screen's breakpoints (`a2a6700`); the
   text growing within injected ranges (`a0bd441`); the new cards
   (`0fca5ae`); the breakpoints page superseded (`1dbcc0c`); this

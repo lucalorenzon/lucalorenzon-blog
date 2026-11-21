@@ -42,7 +42,7 @@ Overridden for this repository:
 
 ## The plan
 
-`docs/plan.md` is the project's board and the only file updated
+`docs/board/plan.md` is the project's board and the only file updated
 continuously. It maps the road toward the project's outcome in three
 horizons, kept short on purpose:
 
@@ -117,7 +117,7 @@ of work to sub-agents run on the matching model.
 
 ## Session minutes
 
-Every working session ends with a minute in `docs/sessions/`, named
+Every working session ends with a minute in `docs/board/sessions/`, named
 `YYYY-MM-DD-<topic>.md`, committed as the session's last commit. The minute
 records how the session went and who contributed what; once committed it is
 not edited. What a card already says is linked, not repeated. Sections, in
@@ -136,7 +136,7 @@ this order:
    link to the card that carries it. When they are done is decided by the
    plan, not by the minute.
 
-Reference: `docs/sessions/2026-10-27-run-browser-tests-in-playwright-image.md`.
+Reference: `docs/board/sessions/2026-10-27-run-browser-tests-in-playwright-image.md`.
 Earlier minutes keep their earlier format. Why this format:
 `docs/board/cards/revise-session-minute-format.md`.
 
@@ -228,10 +228,10 @@ Why each choice was made: `docs/board/cards/put-working-skeleton-live.md`.
 | `.github/workflows/daily.yml` | Scheduled every day (and by hand): restore the Tailwind cache entry so it does not expire after 7 days without a build, and recreate it if it is gone; and run the check for newer versions of the pinned tools with `--apply`, which opens or updates issues (the only job with `issues: write`) |
 | `.github/workflows/deploy.yml` | On a version tag: check the tag, take the snapshot of that commit or rebuild it, publish, create the version's Release, test the live site |
 | `CHANGELOG.md` | What each published version brought, and the rules for version numbers and tags |
-| `docs/plan.md` | The project's board: Now / Next / Later (see "The plan") |
+| `docs/board/plan.md` | The project's board: Now / Next / Later (see "The plan") |
 | `docs/board/cards/` | Every card, whatever its state (see "Cards") |
 | `docs/board/backlog/`, `wip/`, `done/` | One symbolic link per card, showing its state: noticed and not started, being worked on, finished (in `done/` named after the day the work finished) |
-| `docs/sessions/` | One minute per working session |
+| `docs/board/sessions/` | One minute per working session |
 | `docs/accessibility/` | Reference transcript and record of every screen reader check |
 | `docs/licences/third-party-usage.md` | Usage log for the CC BY-NC-SA `modularity` plugin, enabled in `.claude/settings.json` (required by the global licensing rule) |
 

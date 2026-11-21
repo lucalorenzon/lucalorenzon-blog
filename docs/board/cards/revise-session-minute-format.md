@@ -76,7 +76,7 @@ stays, to trace a commit back to its session.
 
 **In this repository's `CLAUDE.md`.** Whether they also go to
 `ll-dev-setup` is left to the user, after seeing how they work here.
-Recording the order of the work and bringing `docs/plan.md` up to date
+Recording the order of the work and bringing `docs/board/plan.md` up to date
 went to a card of their own:
 [define the rules for planning and project management](define-planning-rules.md).
 

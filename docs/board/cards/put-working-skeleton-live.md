@@ -2,7 +2,7 @@
 
 - **Opened and finished:** 2026-10-26.
 - **Status:** done on 2026-10-26. Written afterwards, on 2026-10-27, when
-  the decisions moved out of `docs/plan.md` (card
+  the decisions moved out of `docs/board/plan.md` (card
   [define the rules for planning and project management](define-planning-rules.md)).
   It never went through `docs/backlog/` and `docs/wip/`: the card folders
   did not exist yet.
@@ -11,7 +11,7 @@
 
 The project restarted from scratch on 2026-10-26, after the previous
 attempt kept stalling in ceremony
-([minute of that session](../../sessions/2026-10-26-restart-from-scratch.md)).
+([minute of that session](../sessions/2026-10-26-restart-from-scratch.md)).
 The working rules ask for a working skeleton first: the thinnest version
 of the site that goes live end to end, from build to a reachable address.
 

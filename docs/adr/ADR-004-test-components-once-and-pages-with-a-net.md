@@ -168,4 +168,4 @@ both themes.
   (named visual variants, the starting point of a design system),
   [ADR-003](ADR-003-readability-first-amber-as-accent.md) (the colours
   the contrast checks protect)
-- Session minute: `docs/sessions/2026-11-08-browser-tests-check-behaviour.md`
+- Session minute: `docs/board/sessions/2026-11-08-browser-tests-check-behaviour.md`
