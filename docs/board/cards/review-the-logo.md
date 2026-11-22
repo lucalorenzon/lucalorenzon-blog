@@ -231,6 +231,18 @@ The ones known when the card was taken into work; there may be more.
   exactly what the trial showed at 48 and 64. The user accepts that
   small reduction rather than an icon that grows by steps.
 
+  **Answered by the user on 2026-11-22, for the recipe.** On the
+  agent's proposal, the way the images are made is written in
+  `assets/logo/README.md`, and the images are made once by a script
+  kept out of the repository; the card of the favicon decides whether
+  a committed script is worth it. The agent found again the crop's
+  place in the original photo, written nowhere until then: the square
+  of 760 pixels at 0 from the left and 110 from the top.
+
+  **Decided by the agent on 2026-11-22, the user informed.** The files
+  are lossy WebP, quality 90: from 2,510 to 9,546 bytes, against 6,120
+  to 30,906 lossless.
+
   **Decided by the user on 2026-11-22, for the favicon.** The favicon
   went to a card of its own (see "What it leaves"); the formats and
   sizes of the icon's images stay here.
@@ -351,6 +363,20 @@ The ones known when the card was taken into work; there may be more.
 
 ## Dependencies
 
+- **The slice's code, not committed.** Built on 2026-11-22 by a
+  sub-agent and checked by the agent: formatting, clippy, 425 unit
+  tests, the build, the type check and the browser tests (298 passed,
+  one skipped as before) pass, which covers the acceptance tests 1 to
+  9, 12 and 14; 10 and 11 were checked by the agent. It waits in the
+  working tree of the user's machine, not committed, for test 13: the
+  user's approval of the screenshots of the real header, made by the
+  agent in `target/logo-look/shots/real-*.png` (not committed; the
+  script that made the images is beside them, `make_logo.py`), at 375
+  and 1366 pixels, dark and light. The name
+  stands on the line with no measure of the font: the logo's link is a
+  line of text of height 0, the icon sits on its baseline with a
+  margin of -20 per cent, and the name takes no height
+  (`style/input.css`, `logo-link`, `logo-icon`, `logo-name`).
 - **The trial files**, outside the repository and not committed: the
   original photo in `assets/logo-original.jpg`, kept out of git on
   purpose (see the answer on what goes into the repository) and, since

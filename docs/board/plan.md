@@ -101,7 +101,9 @@ live since 2026-10-26
   italic on the same line, in place of the written logo and the logo
   drawn in characters; the role `logo` moves to Literata, so the pixel
   font leaves the stylesheet. Agreed on a trial and cut: the card
-  keeps the icon and the name on the line; next, its acceptance tests.
+  keeps the icon and the name on the line. Built, every check passing,
+  not committed: it waits in the working tree for the user's approval
+  of the screenshots, its last acceptance test.
   What it left, after it:
   the line hidden under the name like a thread
   ([card](cards/hide-the-header-line-under-the-logo-name.md)),

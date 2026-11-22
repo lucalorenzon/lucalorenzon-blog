@@ -29,7 +29,13 @@ Checked by the agent on 2026-11-22, before the logo's card is built:
 - **Comments that name it**: `style/input.css` (the header "keeps the
   pixel font", the title "not the pixel font of the header", Hack
   "wider than the pixel font was"), and `src/style_guide/fonts.rs` (the
-  logo's pixel font uses `font-display: block`).
+  logo's pixel font uses `font-display: block`). The logo's card
+  rewrote the first two; the other two were left, and noticed by its
+  sub-agent on 2026-11-22.
+- **The fonts' unit tests** that need a font with a native size use,
+  since the logo's card, a made-up configuration with the pixel font
+  (`pixel()` in the tests of `src/style_guide/`), which reads its real
+  description: they need another font before the description goes.
 - **ADR-003** (`docs/adr/ADR-003-readability-first-amber-as-accent.md`)
   calls the logo in the pixel font "the one sign of 1985 left in the
   frame", and rejects Literata for the logo because a logo drawn in
