@@ -20,6 +20,10 @@ The code in the articles is under the [MIT No Attribution](https://spdx.org/lice
 
 The curriculum is under the [Creative Commons Attribution-NoDerivatives 4.0 International](https://creativecommons.org/licenses/by-nd/4.0/) licence (CC BY-ND 4.0). You may copy it and pass it on, also for work, as long as you name the author. You may not share a changed version, translations included. Changing its format, for example into a PDF, is not a change.
 
+## The logo
+
+The logo and the site's icon are cut from a photo by Gioia Greifenberg. © 2011 Gioia Greifenberg. All rights reserved: they may not be reused.
+
 ## Material by others
 
 Quotations and images by other authors belong to them, under their own terms; each one names its source.

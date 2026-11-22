@@ -1,16 +1,19 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { test, expect, type Page } from '@playwright/test';
-import { FOOTER_RANGE, MD, READER_SPACING, retryWhenLive, sizeOnRange, TITLE_RANGE, VIEWPORTS, XL } from './support';
+import { ADDRESSES, FOOTER_RANGE, LOGO_RANGE, READER_SPACING, retryWhenLive, sizeOnRange, TITLE_RANGE, VIEWPORTS, XL } from './support';
 
 // Enforces the agreed responsive header layout. It checks what the reader
 // sees (positions, sizes, visibility), never how the page is built.
 //
-// Bands by viewport width, at the breakpoints of config/breakpoints.txt (md and xl;
-// 768 and 1280 today):
-//   < md       text logo 32px; title below the header line, centred
-//   md to xl-1 ASCII logo 16px; title below the header line, centred
-//   >= xl      ASCII logo 16px; title in the header row, at most 2 lines
+// Forms by viewport width, at the breakpoint xl of config/breakpoints.txt (1280 today):
+//   < xl       title below the header line, centred
+//   >= xl      title in the header row, at most 2 lines
+// The logo is the same at every width: a round icon and the name "Lvk@73r" as text. The icon
+// grows from 48px at 320px of page to 64px from 1366px (LOGO_RANGE in support.ts); the header's
+// line crosses it at 80% of its height; the name, Literata bold italic at the title's size, has its
+// baseline on the line, 6px from the icon, and leans 5 degrees more than the italic. Why:
+// docs/board/cards/review-the-logo.md
 //
 // The title's size does not change with the band: it grows with the page's width in a straight
 // line, from 24px at 320px to 32px at 1366px, and stays at 24px below and at 32px above
@@ -33,6 +36,11 @@ import { FOOTER_RANGE, MD, READER_SPACING, retryWhenLive, sizeOnRange, TITLE_RAN
 const PAD = 8;
 const MENU_WIDTH = 56;
 const SPACE_UNDER_LINE = 24;
+// Where the line crosses the icon, as a share of its height from the top, and the name's distance
+// from the icon, in pixels.
+const LINE_AT = 0.8;
+const NAME_GAP = 6;
+const SKEW_DEGREES = 5;
 const MIN_GAP = 24;
 // How far a measured text size may be from its range's straight line, in pixels.
 const SIZE_TOLERANCE = 0.05;
@@ -56,7 +64,16 @@ const LONG_TITLES = [
 ];
 
 type Box = { l: number; r: number; t: number; b: number };
-type Logo = { visible: boolean; box: Box; fontSize: number };
+type Part = { visible: boolean; box: Box };
+type Name = Part & {
+  fontSize: number;
+  family: string;
+  weight: string;
+  style: string;
+  transform: string;
+  baseline: number;
+  gapFromIcon: number;
+};
 type Snapshot = {
   innerWidth: number;
   scrollWidth: number;
@@ -66,11 +83,13 @@ type Snapshot = {
   h1Text: Box;
   h1FontSize: number;
   h1LineHeight: number;
-  asciiLogo: Logo | null;
-  textLogo: Logo | null;
+  icon: Part | null;
+  name: Name | null;
+  drawnLogos: number;
   menu: { visible: boolean; box: Box } | null;
   line: { y: number; bottom: number } | null;
 };
+
 
 // ---- Measuring (runs in the browser) -------------------------------------
 
@@ -97,15 +116,6 @@ async function snapshot(page: Page): Promise<Snapshot> {
       );
     }
 
-    function logoInfo(el: Element | null) {
-      if (!el) return null;
-      return {
-        visible: isVisible(el),
-        box: textBox(el),
-        fontSize: parseFloat(getComputedStyle(el).fontSize),
-      };
-    }
-
     // The header line is the topmost full-width visible horizontal border
     // (the footer has one too, near the bottom of the page).
     function findHeaderLine() {
@@ -130,10 +140,25 @@ async function snapshot(page: Page): Promise<Snapshot> {
 
     const h1s = Array.from(document.querySelectorAll('h1'));
     const h1 = h1s[0];
-    const ascii = document.querySelector('[data-testid="ascii-logo"]');
-    const textLogo = Array.from(document.querySelectorAll('body *')).find(
-      (el) => el.children.length === 0 && el.textContent?.trim() === 'Lvk@73r',
-    );
+    const iconEl = document.querySelector('a.logo-link img');
+    const nameEl = document.querySelector('a.logo-link .logo-name') as HTMLElement | null;
+    // The box of the name has no height (line-height 0); its text, in a span, has.
+    const nameText = nameEl?.firstElementChild ?? null;
+    // Anything of the two old forms: the logo drawn in characters, or in the pixel font.
+    const drawnLogos =
+      document.querySelectorAll('[data-testid="ascii-logo"], header pre, .text-logo-large, .art-logo-left').length +
+      Array.from(document.querySelectorAll('header *')).filter((el) =>
+        /VGA|pixel/i.test(getComputedStyle(el).fontFamily),
+      ).length;
+    // The baseline of the name: where a zero-size inline-block, set on the baseline, ends.
+    function baselineOf(el: HTMLElement) {
+      const probe = document.createElement('span');
+      probe.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline';
+      el.appendChild(probe);
+      const y = probe.getBoundingClientRect().bottom;
+      probe.remove();
+      return y;
+    }
     const menu = document.querySelector('[data-testid="menu-slot"]');
     const h1Style = h1 ? getComputedStyle(h1) : null;
     const fontSize = h1Style ? parseFloat(h1Style.fontSize) : NaN;
@@ -149,8 +174,23 @@ async function snapshot(page: Page): Promise<Snapshot> {
       h1FontSize: fontSize,
       // "normal" is not a number: treat it as the font size
       h1LineHeight: h1Style ? parseFloat(h1Style.lineHeight) || fontSize : NaN,
-      asciiLogo: logoInfo(ascii),
-      textLogo: logoInfo(textLogo ?? null),
+      icon: iconEl ? { visible: isVisible(iconEl), box: boxOf(iconEl.getBoundingClientRect()) } : null,
+      name:
+        nameEl && iconEl
+          ? {
+              visible: nameText ? isVisible(nameText) : false,
+              box: textBox(nameEl),
+              fontSize: parseFloat(getComputedStyle(nameEl).fontSize),
+              family: getComputedStyle(nameEl).fontFamily,
+              weight: getComputedStyle(nameEl).fontWeight,
+              style: getComputedStyle(nameEl).fontStyle,
+              transform: getComputedStyle(nameEl).transform,
+              baseline: baselineOf(nameEl),
+              // Layout distance, which the skew does not change.
+              gapFromIcon: nameEl.offsetLeft - ((iconEl as HTMLElement).offsetLeft + (iconEl as HTMLElement).offsetWidth),
+            }
+          : null,
+      drawnLogos,
       menu: menu ? { visible: isVisible(menu), box: boxOf(menu.getBoundingClientRect()) } : null,
       line: findHeaderLine(),
     };
@@ -166,7 +206,6 @@ const fmt = (n: number) => (Number.isFinite(n) ? n.toFixed(1) : String(n));
 // Returns one message per broken rule; empty means the layout is as agreed.
 function violations(s: Snapshot, title: string, centred: boolean): string[] {
   const w = s.innerWidth;
-  const narrow = w < MD;
   const wide = w >= XL;
   const where = `[${w}px, "${title}"]`;
   const out: string[] = [];
@@ -179,19 +218,30 @@ function violations(s: Snapshot, title: string, centred: boolean): string[] {
   rule(s.h1Visible, 'the h1 must be visible');
   rule(s.scrollWidth <= w, `no horizontal scroll: scrollWidth ${s.scrollWidth} > innerWidth ${w}`);
 
-  // Logo: which one is shown, and at what size
-  const ascii = s.asciiLogo;
-  const text = s.textLogo;
-  if (narrow) {
-    rule(!!text?.visible, `the text logo "Lvk@73r" must be visible below ${MD}px`);
-    rule(!ascii?.visible, `the ASCII-art logo must be hidden below ${MD}px`);
-    if (text?.visible) rule(text.fontSize === 32, `text logo font-size must be 32px, is ${text.fontSize}px`);
-  } else {
-    rule(!!ascii?.visible, `the ASCII-art logo must be visible from ${MD}px`);
-    rule(!text?.visible, `the text logo must be hidden from ${MD}px`);
-    if (ascii?.visible) rule(ascii.fontSize === 16, `ASCII logo font-size must be 16px, is ${ascii.fontSize}px`);
+  // Logo: the icon and the name, at every width, and nothing drawn
+  const icon = s.icon;
+  const name = s.name;
+  rule(!!icon?.visible, 'the round icon must be visible');
+  rule(!!name?.visible, 'the name "Lvk@73r" must be visible');
+  rule(s.drawnLogos === 0, `no logo drawn in characters or in the pixel font may exist, found ${s.drawnLogos}`);
+  if (icon?.visible) {
+    const expectedWidth = sizeOnRange(LOGO_RANGE, w);
+    const width = icon.box.r - icon.box.l;
+    rule(near(width, expectedWidth, 0.5), `icon width must be ${expectedWidth.toFixed(1)}px, is ${fmt(width)}px`);
+    rule(near(icon.box.b - icon.box.t, width, 0.5), 'the icon must be square');
   }
-  const logo = (narrow ? text : ascii)?.visible ? (narrow ? text : ascii)! : null;
+  if (name?.visible) {
+    const expectedSize = sizeOnRange(TITLE_RANGE, w);
+    rule(near(name.fontSize, expectedSize, SIZE_TOLERANCE), `name font-size must be the title's, ${expectedSize.toFixed(2)}px, is ${name.fontSize}px`);
+    rule(/^"?Literata"?/.test(name.family), `name must be in Literata, is in ${name.family}`);
+    rule(name.weight === '700', `name must be bold (700), is ${name.weight}`);
+    rule(name.style === 'italic', `name must be italic, is ${name.style}`);
+    rule(near(name.gapFromIcon, NAME_GAP, 1), `name must be ${NAME_GAP}px from the icon, is ${fmt(name.gapFromIcon)}px`);
+    const matrix = /^matrix\(([^)]+)\)$/.exec(name.transform)?.[1].split(',').map(Number);
+    const skew = matrix ? (Math.atan(matrix[2]) * 180) / Math.PI : NaN;
+    rule(near(skew, -SKEW_DEGREES, 0.1), `name must be skewed by ${SKEW_DEGREES} degrees more, transform is ${name.transform}`);
+  }
+  const logo = icon?.visible && name?.visible ? { box: { l: icon.box.l, r: name.box.r, t: icon.box.t, b: icon.box.b } } : null;
 
   // Title size and number of lines
   const expectedSize = sizeOnRange(TITLE_RANGE, w);
@@ -221,7 +271,16 @@ function violations(s: Snapshot, title: string, centred: boolean): string[] {
   const line = s.line;
   rule(!!line, 'a full-width header line (visible top or bottom border) must exist');
   if (line) {
-    if (logo) rule(logo.box.b <= line.y + 0.5, `logo bottom (${fmt(logo.box.b)}) must be above the header line (${fmt(line.y)})`);
+    // The line crosses the icon at 80% of its height, and the name stands on it. The line's
+    // thickness is part of the line: it is measured at its middle.
+    const middle = (line.y + line.bottom) / 2;
+    if (icon?.visible) {
+      const at = icon.box.t + LINE_AT * (icon.box.b - icon.box.t);
+      rule(near(middle, at, 1), `the line (${fmt(middle)}) must cross the icon at 80% of its height (${fmt(at)})`);
+    }
+    if (name?.visible) {
+      rule(near(name.baseline, middle, 1), `the name's baseline (${fmt(name.baseline)}) must be on the header line (${fmt(middle)})`);
+    }
     if (wide) {
       rule(s.h1Box.b <= line.y + 0.5, `title bottom (${fmt(s.h1Box.b)}) must be above the header line (${fmt(line.y)})`);
     } else {
@@ -232,6 +291,9 @@ function violations(s: Snapshot, title: string, centred: boolean): string[] {
 
   // No overlaps among logo, title text and menu slot
   if (logo && overlap(logo.box, s.h1Text)) out.push(`${where} the title overlaps the logo`);
+  // Below xl the circle ends above the title's text, which keeps 24px under the line: the
+  // gap the user approved (12 to 15px) stays.
+  if (!wide && icon?.visible) rule(icon.box.b < s.h1Text.t, `the icon's bottom (${fmt(icon.box.b)}) must be above the title's text (${fmt(s.h1Text.t)})`);
   if (menu?.visible && overlap(s.h1Text, menu.box)) out.push(`${where} the title overlaps the menu slot`);
   if (logo && menu?.visible && overlap(logo.box, menu.box)) out.push(`${where} the logo overlaps the menu slot`);
 
@@ -298,6 +360,31 @@ for (const { name, width, height } of VIEWPORTS) {
         await testInfo.attach(`page-${width}x${height}.png`, { body: screenshot, contentType: 'image/png' });
       }
     }
+  });
+}
+
+// ---- The logo on every page ---------------------------------------------------
+
+// The frame is the same on every page, but a page could still hide or replace the logo, or the
+// longest title could reach under the circle. Every page of the built site, at every width.
+for (const { name, width, height } of VIEWPORTS) {
+  test(`the logo on every page at ${width}x${height} (${name})`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+    test.skip(ADDRESSES.length === 0, 'a live run has no folder of pages to walk');
+    const found: string[] = [];
+    for (const address of ADDRESSES) {
+      await page.goto(address);
+      await page.evaluate(() => document.fonts.ready);
+      const s = await snapshot(page);
+      const where = `[${address}, ${width}px]`;
+      if (!s.icon?.visible) found.push(`${where} the icon is not visible`);
+      if (!s.name?.visible) found.push(`${where} the name is not visible`);
+      if (s.drawnLogos !== 0) found.push(`${where} a drawn or pixel logo exists`);
+      if (width < XL && s.icon && s.icon.box.b >= s.h1Text.t) {
+        found.push(`${where} the icon's bottom ${fmt(s.icon.box.b)} reaches the title's text at ${fmt(s.h1Text.t)}`);
+      }
+    }
+    expect(found.length, `logo rules broken:\n${found.join('\n')}`).toBe(0);
   });
 }
 

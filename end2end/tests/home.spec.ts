@@ -24,7 +24,7 @@ test('home page shows header, body and footer, and loads stylesheet, fonts and f
       return response;
     };
     const stylesheet = waitFor('/style.css');
-    const font = waitFor('.woff');
+    const logoImage = waitFor('.webp');
     const textFont = waitFor('.woff2');
     await page.goto('./');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Home Page', {
@@ -35,7 +35,7 @@ test('home page shows header, body and footer, and loads stylesheet, fonts and f
     await expect(page.getByRole('link', { name: 'Reuse with attribution' })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Lvk@73r, home page' })).toHaveCount(1);
     expect((await stylesheet).status()).toBe(200);
-    expect((await font).status()).toBe(200);
+    expect((await logoImage).status()).toBe(200);
     expect((await textFont).status()).toBe(200);
     const favicon = await page.request.get(new URL('favicon.ico', page.url()).href);
     expect(favicon.status()).toBe(200);
@@ -121,8 +121,8 @@ test('from the about page, the text links lead to the licence page and to the cu
   await retryWhenLive(check);
 });
 
-// The logo has two forms (text below the md breakpoint, ASCII art from it up: 768px today); the link is
-// the same, and only one form is shown at a time.
+// The logo is the same at every width (the icon and the name inside one link); it is checked on a
+// phone and on the laptop.
 for (const { name, width, height } of [
   { name: 'iPhone 15', width: 393, height: 659 },
   { name: 'Laptop', width: 1280, height: 720 },
@@ -140,7 +140,7 @@ for (const { name, width, height } of [
       // Keyboard: the logo is the first stop of the page and shows a focus ring.
       await page.keyboard.press('Tab');
       await expect(logo).toBeFocused();
-      await expect(logo.locator('> div:visible')).toHaveCount(1);
+      await expect(logo.locator('> img:visible, > span > span:visible')).toHaveCount(2);
       await expect(logo).toHaveCSS('outline-style', 'solid');
       await page.keyboard.press('Enter');
       await expect(page.getByRole('heading', { level: 1 })).toHaveText('Home Page', {

@@ -63,8 +63,7 @@ const LAPTOP = VIEWPORTS.find(({ name }) => name === 'Laptop')!;
 type Run = (page: Page) => Promise<AxeResults>;
 
 // Opens the page, scrolls to its end and runs axe; returns the violations,
-// with the drawn logo dropped from the contrast rules, and the ids of the
-// rules that passed. The scroll is for the footer, which is sticky: at the
+// as axe found them, and the ids of the rules that passed. The scroll is for the footer, which is sticky: at the
 // top of the page it covers a band at the bottom of the window, and a link
 // that falls there is reported by axe's target-size as too small, although
 // a reader scrolls to it and finds it whole. At the end the content stops
@@ -78,37 +77,9 @@ async function look(page: Page, address: string, run: Run) {
 
   const results = await run(page);
 
-  // WCAG 1.4.3 and 1.4.6 exempt text that is part of a logo or brand
-  // name from contrast. The drawn logo (aria-hidden, 16px from md) takes
-  // the accent-heading shade, which on the light page reaches 4.61:1,
-  // enough for large text only; axe cannot know it is a logo. So its
-  // nodes are dropped from the two contrast rules, and from those rules
-  // only: every other rule still looks at it, and the contrast rules
-  // still look at everything else, the 32px text logo below md included
-  // (AxeBuilder.exclude() would drop all rules). A node is the logo when
-  // its element, found again in the page by axe's selector, is inside
-  // the element marked data-testid="ascii-logo"; a violation goes only
-  // when no other node remains.
-  const violations = [];
-  for (const v of results.violations) {
-    if (!CONTRAST_RULES.includes(v.id)) {
-      violations.push(v);
-      continue;
-    }
-    const kept = [];
-    for (const n of v.nodes) {
-      const isLogo =
-        n.target.length === 1 &&
-        typeof n.target[0] === 'string' &&
-        (await page.evaluate(
-          (selector) =>
-            document.querySelector(selector)?.closest('[data-testid="ascii-logo"]') != null,
-          n.target[0],
-        ));
-      if (!isLogo) kept.push(n);
-    }
-    if (kept.length > 0) violations.push({ ...v, nodes: kept });
-  }
+  // No finding is dropped: the logo's name is text like the title, the icon has no text, and
+  // the contrast rules look at all of it (the exemption WCAG gives to logos is not used).
+  const violations = results.violations;
 
   return {
     violations,
@@ -197,9 +168,9 @@ for (const { name: pageName, address } of NET_PAGES) {
   // How the page sounds (the voice, how "Lvk@73r" is spelled out) is not
   // checked here: see the card docs/board/cards/run-screen-reader-check-on-demand.md.
   //
-  // The logo, in both forms, is one link to the home page named "Lvk@73r, home
-  // page"; the ASCII art is hidden from the tree, so the screen reader hears
-  // the name, not the art.
+  // The logo is one link to the home page named "Lvk@73r, home page"; the icon
+  // inside it has an empty alternative text, so it is not in the tree: the screen
+  // reader hears the name once, and no image.
   test(`shape of the ${pageName} at ${LAPTOP.width}x${LAPTOP.height} (${LAPTOP.name})`, async ({ page }) => {
     await page.setViewportSize({ width: LAPTOP.width, height: LAPTOP.height });
 
@@ -218,6 +189,8 @@ for (const { name: pageName, address } of NET_PAGES) {
             - text: /© 2026 Luca Lorenzon ·/
             - link /.+/
       `);
+      await expect(page.getByRole('link', { name: 'Lvk@73r, home page' })).toHaveCount(1);
+      await expect(page.getByRole('banner').getByRole('img')).toHaveCount(0);
       await expect(page.getByRole('main').getByRole('heading', { level: 1 })).toHaveCount(0);
       await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
     });
@@ -250,7 +223,7 @@ const FRAME_PAGES = [
 ];
 
 // The frame, at the three width bands. The header changes form with the band
-// (text logo, drawn logo, title below or beside the logo); the frame is the
+// (title below or beside the logo); the frame is the
 // same on every page, so one content page plus the "page not found" suffice.
 // The "page not found" is opened as its own file: only the host serves it for
 // a missing address, so a live run leaves it out.

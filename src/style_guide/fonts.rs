@@ -771,6 +771,8 @@ pub fn real() -> Fonts {
 mod tests {
     use super::*;
 
+    /// A made-up configuration, with a font that has a native size (the pixel font, whose
+    /// description file stays for now), to test what the real configuration no longer holds.
     const ROLES: &str = "text=literata\ncode=hack\nlogo=ibm-vga-8x16\n";
     const LITERATA: &str = include_str!("../../config/fonts/literata.txt");
     const HACK: &str = include_str!("../../config/fonts/hack.txt");
@@ -1090,7 +1092,7 @@ mod tests {
                 .size,
             Some(16)
         );
-        assert_eq!(real().logo.size, Some(16));
+        assert_eq!(pixel().logo.size, Some(16));
         assert_eq!(real().text.size, None);
         assert_eq!(real().code.size, None);
     }
@@ -1118,8 +1120,8 @@ mod tests {
     // The samples.
 
     #[test]
-    fn each_file_of_the_real_fonts_gets_a_variant_named_from_its_role_style_and_weight() {
-        let shown = real().shown();
+    fn each_file_of_the_fonts_gets_a_variant_named_from_its_role_style_and_weight() {
+        let shown = pixel().shown();
         let classes = |at: usize| -> Vec<&str> {
             shown[at].samples.iter().map(|s| s.class.as_str()).collect()
         };
@@ -1138,6 +1140,17 @@ mod tests {
         assert_eq!(names, ["Regular", "Italic", "Bold", "Bold italic"]);
         assert_eq!(shown[0].family, "Literata");
         assert_eq!(shown[2].family, "IBM VGA 8x16");
+    }
+
+    #[test]
+    fn the_real_logo_font_is_literata_shown_once_with_the_roles_text_and_logo() {
+        let fonts = real();
+        assert_eq!(fonts.logo.folder, "literata");
+        let shown = fonts.shown();
+        assert_eq!(shown.len(), 2);
+        assert_eq!(shown[0].family, "Literata");
+        assert_eq!(shown[0].roles, [Role::Text, Role::Logo]);
+        assert_eq!(shown[1].family, "Hack");
     }
 
     #[test]
@@ -1183,7 +1196,7 @@ mod tests {
 
     #[test]
     fn the_variants_take_the_font_from_the_role_and_never_name_one() {
-        let css = css(&real());
+        let css = css(&pixel());
         assert_eq!(
             rule(&css, "sample-text-italic-700"),
             "@utility sample-text-italic-700 {\n  @apply font-text;\n  font-style: italic;\n  font-weight: 700;\n"
@@ -1201,7 +1214,7 @@ mod tests {
 
     #[test]
     fn a_font_with_a_size_is_drawn_at_it_and_no_wider_than_80_characters() {
-        let css = css(&real());
+        let css = css(&pixel());
         let pixel = rule(&css, "sample-logo-normal-400");
         assert!(pixel.contains("  font-size: 16px;\n"));
         assert!(pixel.contains("  max-width: 80ch;\n"));
@@ -1214,7 +1227,7 @@ mod tests {
 
     #[test]
     fn tailwind_is_told_every_variant() {
-        let css = css(&real());
+        let css = css(&pixel());
         let line = css
             .lines()
             .find(|l| l.starts_with("@source inline("))
@@ -1233,7 +1246,7 @@ mod tests {
 
     // The CSS.
 
-    fn real() -> Fonts {
+    fn pixel() -> Fonts {
         load(ROLES, &describe, &everything_exists).unwrap()
     }
 
@@ -1242,18 +1255,19 @@ mod tests {
     }
 
     #[test]
-    fn the_real_configuration_gives_the_roles_the_stylesheet_had() {
+    fn the_real_configuration_gives_the_roles_their_fonts() {
         let css = css(&real());
         assert!(css.contains("  --font-*: initial;\n"));
         assert!(css.contains("  --font-text: \"Literata\", serif;\n"));
         assert!(css.contains("  --font-code: \"Hack\", monospace;\n"));
-        assert!(css.contains("  --font-logo: \"IBM VGA 8x16\", monospace;\n"));
+        assert!(css.contains("  --font-logo: \"Literata\", serif;\n"));
+        assert!(!css.contains("IBM VGA"));
     }
 
     #[test]
-    fn the_real_configuration_declares_the_six_font_faces_the_stylesheet_had() {
+    fn the_real_configuration_declares_the_five_font_faces_of_literata_and_hack() {
         let css = css(&real());
-        assert_eq!(css.matches("@font-face").count(), 6);
+        assert_eq!(css.matches("@font-face").count(), 5);
         assert!(css.contains(
             "@font-face {\n  font-family: \"Literata\";\n  \
              src: url(\"fonts/literata/literata-latin-700-italic.woff2\") format(\"woff2\");\n  \
@@ -1263,11 +1277,6 @@ mod tests {
             "@font-face {\n  font-family: \"Hack\";\n  \
              src: url(\"fonts/hack/hack-regular-subset.woff2\") format(\"woff2\");\n  \
              font-style: normal;\n  font-weight: 400;\n  font-display: swap;\n}\n"
-        ));
-        assert!(css.contains(
-            "@font-face {\n  font-family: \"IBM VGA 8x16\";\n  \
-             src: url(\"fonts/ibm-vga-8x16/Web437_IBM_VGA_8x16.woff\") format(\"woff\");\n  \
-             font-style: normal;\n  font-weight: 400;\n  font-display: block;\n}\n"
         ));
     }
 
@@ -1309,6 +1318,7 @@ mod tests {
             &|folder, file| root.join("assets/fonts").join(folder).join(file).is_file(),
         )
         .unwrap();
+        assert_eq!(fonts.logo.folder, "literata");
         assert_eq!(fonts, real());
     }
 
@@ -1356,10 +1366,14 @@ mod tests {
 
     fn families() -> Vec<String> {
         let fonts = real();
-        [fonts.text, fonts.code, fonts.logo]
+        let mut families: Vec<String> = [fonts.text, fonts.code, fonts.logo]
             .into_iter()
             .map(|font| font.family)
-            .collect()
+            .collect();
+        // A font may play two roles: it is named once.
+        families.sort();
+        families.dedup();
+        families
     }
 
     const STYLESHEET: &str = include_str!("../../style/input.css");

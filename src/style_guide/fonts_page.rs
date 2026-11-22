@@ -240,13 +240,13 @@ mod tests {
         text
     }
 
-    const ALL: [&str; 3] = ["literata | text", "hack | code", "ibm-vga-8x16 | logo"];
+    const ALL: [&str; 3] = ["literata | text", "hack | code", "literata | logo"];
 
     /// Acceptance test 4: a pair of the configuration with no piece stops the build.
     #[test]
     fn a_pair_without_a_piece_is_an_error() {
         let error = body(
-            &text_with(&["literata | text", "ibm-vga-8x16 | logo"]),
+            &text_with(&["literata | text", "literata | logo"]),
             &fonts(),
         )
         .unwrap_err();
@@ -321,7 +321,8 @@ mod tests {
         assert!(!html.contains("Why meslo-lg"));
         assert!(!html.contains("Why literata | heading"));
         assert!(html.contains("Why literata | text."));
-        assert_eq!(html.matches("<h2>").count(), 3);
+        assert!(html.contains("Why literata | logo."));
+        assert_eq!(html.matches("<h2>").count(), 2);
     }
 
     /// Acceptance test 4: an indented level-2 heading is still a heading for the converter.
@@ -353,7 +354,7 @@ mod tests {
         text.push_str("\n````\n```\n## not a placeholder\n```\n````\n");
         let html = body(&text, &fonts()).unwrap();
         assert!(html.contains("## not a placeholder"));
-        assert_eq!(html.matches("<h2>").count(), 3);
+        assert_eq!(html.matches("<h2>").count(), 2);
     }
 
     /// Acceptance test 3: a heading in a fenced code block is not a placeholder.
@@ -384,22 +385,18 @@ mod tests {
                 "<p>These are the fonts this site uses, each in every style it serves."
             )
         );
-        assert_eq!(html.matches("<h2>").count(), 3);
+        assert_eq!(html.matches("<h2>").count(), 2);
         let literata = html.find("<h2>Literata</h2>").unwrap();
         let hack = html.find("<h2>Hack</h2>").unwrap();
-        let vga = html.find("<h2>IBM VGA 8x16</h2>").unwrap();
-        assert!(0 < literata && literata < hack && hack < vga);
+        assert!(0 < literata && literata < hack);
+        assert!(!html.contains("IBM VGA"));
     }
 
     /// Acceptance tests 1 and 2: under each title, the roles' line.
     #[test]
     fn each_title_is_followed_by_the_roles_line() {
         let html = main_html();
-        for (title, line) in [
-            ("Literata", "Role: text"),
-            ("Hack", "Role: code"),
-            ("IBM VGA 8x16", "Role: logo"),
-        ] {
+        for (title, line) in [("Literata", "Roles: text, logo"), ("Hack", "Role: code")] {
             assert!(
                 html.contains(&format!(
                     "<h2>{title}</h2><p class=\"roles-line\">{line}</p>"
@@ -457,7 +454,10 @@ mod tests {
         let html = main_html();
         assert!(samples_in(&html, "Literata").contains("I chose Literata"));
         assert!(samples_in(&html, "Hack").contains("For the code I chose Hack"));
-        assert!(samples_in(&html, "IBM VGA 8x16").contains("was my first choice"));
+        assert!(
+            samples_in(&html, "Literata")
+                .contains("The name in the logo is written in Literata too")
+        );
     }
 
     /// The samples of a font: what the page holds between its section and the next.
@@ -520,11 +520,7 @@ mod tests {
             labelled_samples("Hack"),
             expected(&[("Regular", "sample-code-normal-400")])
         );
-        assert_eq!(
-            labelled_samples("IBM VGA 8x16"),
-            expected(&[("Regular", "sample-logo-normal-400")])
-        );
-        assert_eq!(main_html().matches("sample-label").count(), 6);
+        assert_eq!(main_html().matches("sample-label").count(), 5);
     }
 
     /// Acceptance test 6: a file added to the configuration gets its sample, with no other
@@ -545,7 +541,7 @@ mod tests {
             }
         };
         let fonts = crate::style_guide::fonts::load(
-            "text=literata\ncode=hack\nlogo=ibm-vga-8x16\n",
+            "text=literata\ncode=hack\nlogo=literata\n",
             &describe,
             &|_, _| true,
         )
@@ -560,7 +556,7 @@ mod tests {
         assert!(
             crate::style_guide::fonts::css(&fonts).contains("@utility sample-text-normal-600 {")
         );
-        assert_eq!(html.matches("sample-label").count(), 7);
+        assert_eq!(html.matches("sample-label").count(), 6);
     }
 
     #[test]
@@ -572,7 +568,7 @@ mod tests {
     #[test]
     fn every_sample_shows_the_same_text() {
         let html = main_html();
-        assert_eq!(html.matches(&format!(">{SAMPLE_TEXT}</p>")).count(), 6);
+        assert_eq!(html.matches(&format!(">{SAMPLE_TEXT}</p>")).count(), 5);
     }
 
     /// A sample never names a font: its variant takes it from the role's variable (the variants
@@ -599,7 +595,7 @@ mod tests {
     fn the_outline_is_the_title_then_one_level_two_heading_for_each_font() {
         let html = render_fonts_page();
         assert_eq!(html.matches("<h1").count(), 1);
-        assert_eq!(html.matches("<h2>").count(), 3);
+        assert_eq!(html.matches("<h2>").count(), 2);
         assert_eq!(html.matches("<h3").count(), 0);
     }
 

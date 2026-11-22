@@ -76,9 +76,10 @@ body {
 }
 
 /* Header: two rows below xl (logo and menu, then the title under the line).
-   The header keeps the pixel font (font-logo) and its own line heights. */
+   The header sets no font of its own: the logo's name takes the role logo
+   (logo-name) and the title the role text (title-below-line). */
 @utility header-two-rows {
-  @apply font-logo grid items-center grid-cols-[1fr_auto] [grid-template-areas:'logo_menu''title_title'];
+  @apply grid items-center grid-cols-[1fr_auto] [grid-template-areas:'logo_menu''title_title'];
 }
 
 /* Header: one row from xl. The outer columns are as wide as their content
@@ -88,15 +89,7 @@ body {
    follow the real width of their content, so they also grow with the
    reader's own text spacing instead of letting the title run into the logo. */
 @utility header-one-row {
-  @apply font-logo grid items-center gap-x-6 border-b border-accent-line grid-cols-[minmax(max-content,1fr)_minmax(0,max-content)_minmax(max-content,1fr)] [grid-template-areas:'logo_title_menu'];
-}
-
-@utility text-logo-large {
-  @apply ml-2 text-[32px] leading-8 [grid-area:logo];
-}
-
-@utility art-logo-left {
-  @apply ml-2 block text-base leading-none whitespace-pre [grid-area:logo];
+  @apply grid items-center gap-x-6 border-b border-accent-line grid-cols-[minmax(max-content,1fr)_minmax(0,max-content)_minmax(max-content,1fr)] [grid-template-areas:'logo_title_menu'];
 }
 
 @utility reserved-menu-slot {
@@ -116,10 +109,9 @@ body {
 }
 
 /* Title under the header line: the line is its top border, edge to edge.
-   The title is in Literata bold, not the pixel font of the header (font-text
-   overrides the font-logo of the header container), so it has the line
-   height of a proportional font that may wrap on two lines. Its size is
-   title-size, on a range of the page's width, in both forms of the header. */
+   The title is in Literata bold (font-text), with the line height of a text
+   that may wrap on two lines. Its size is title-size, on a range of the
+   page's width, in both forms of the header. */
 @utility title-below-line {
   @apply title-size border-t border-accent-line pt-6 text-center font-text font-bold leading-normal [grid-area:title];
 }
@@ -509,11 +501,62 @@ body {
   margin-left: 0.5em;
 }
 
-/* The logo is a link to the home page, placed in the header grid where the
-   logo was; it is as wide as the logo shown, and the logo inside keeps its
-   own look. Visible focus ring (WCAG 2.4.7). */
+/* The logo: a round icon, a photo cut to a circle, and the name written as
+   text beside it, in every width. The icon crosses the header's line at 80%
+   of its height (where the girls' feet are in the photo) and the name stands
+   on the line, its baseline on it. The line is, below xl, the top border of
+   the title, and from xl the header's bottom border: in both forms its top edge
+   is the bottom of the row the logo is in, which the link reaches with
+   self-end.
+
+   How the baseline lands on the line without measuring a font: the link is an
+   ordinary line of text with line-height 0, so its only things of any height
+   are the icon, set on the baseline with a bottom margin of -20% of its
+   height (the icon's box ends on the baseline, the picture hangs 20% below
+   it), and the name, an inline-block with line-height 0 that holds the text
+   and lets it overflow. The line box then runs from the icon's top to the
+   baseline, whatever the font, and the link's padding-bottom and negative
+   margin-bottom of the same 20% put the baseline at the bottom of the row
+   without taking room from the title. The 20% of room above the icon (the
+   margin-top) is the room the header keeps over the logo. No font measure is
+   written here; the header's browser test checks the baseline on the line.
+
+   --logo-size is the icon's width, 48px at 320px of page to 64px from
+   1366px, as the title grows (title-size). The `sizes` of the img
+   (src/page_frame.rs) writes the same figures. The link has z-index so the
+   icon and the name are drawn above the line. Visible focus ring, around the
+   icon and the name (WCAG 2.4.7). */
 @utility logo-link {
-  @apply block justify-self-start [grid-area:logo] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-line;
+  @apply relative z-10 ml-2 block self-end justify-self-start leading-[0] [grid-area:logo] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-line;
+  --logo-size: clamp(48px, calc(48px + (100cqi - 320px) * 16 / 1046), 64px);
+  margin-top: calc(var(--logo-size) * 0.2);
+  margin-bottom: calc(var(--logo-size) * -0.2);
+  padding-bottom: calc(var(--logo-size) * 0.2);
+}
+
+/* The icon: inline, on the baseline (Tailwind's base makes an img a block
+   aligned to the middle), its box ending 20% of its height above its bottom,
+   so that the line crosses it at 80%. */
+@utility logo-icon {
+  @apply inline max-w-none align-baseline;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  margin-bottom: calc(var(--logo-size) * -0.2);
+}
+
+/* The name: Literata bold italic (role logo), the title's size, 6px from the
+   icon, leaning 5 degrees more than the italic. A transform needs a box, so
+   it is an inline-block; its line-height 0 keeps it from taking height. The
+   skew turns about the left end of its (empty) box, so the name stays where
+   it is by the icon. The right margin, 0.07em, is what the skew pushes the
+   top of the letters to the right (tan 5 degrees times the letters' height,
+   about 0.7em), so that the title's 24px of room are counted from the letters.
+   The text is in a span inside it, which has the height
+   of the text: the box itself has none, so a browser would call it hidden. */
+@utility logo-name {
+  @apply title-size inline-block ml-[6px] mr-[0.07em] font-logo font-bold whitespace-nowrap italic leading-[0];
+  transform: skewX(-5deg);
+  transform-origin: left bottom;
 }
 
 /* A table cell holding a single value (no space in it), wrapped by the build

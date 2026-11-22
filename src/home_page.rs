@@ -213,32 +213,6 @@ mod tests {
     }
 
     #[test]
-    fn logo_is_one_link_to_the_home_page_with_one_name() {
-        let html = render_home_page();
-        assert!(
-            html.contains("<a href=\"./\" aria-label=\"Lvk@73r, home page\" class=\"logo-link\">")
-        );
-        // The name is the link's; the art is hidden, not read, and no nested image.
-        assert!(!html.contains("role=\"img\""));
-        assert!(html.contains("data-testid=\"ascii-logo\" aria-hidden=\"true\""));
-    }
-
-    /// Orca 51 presents a `<pre>` as a code block and does not speak its name
-    /// (card docs/board/cards/logo-name-not-read-by-orca-51.md).
-    #[test]
-    fn logo_is_not_a_pre_element() {
-        let html = render_home_page();
-        assert!(!html.contains("<pre"));
-    }
-
-    #[test]
-    fn logo_contains_the_ascii_art() {
-        let html = render_home_page();
-        let escaped = crate::page_frame::LOGO.replace('<', "&lt;");
-        assert!(html.contains(&escaped), "ASCII art not found in HTML");
-    }
-
-    #[test]
     fn links_stylesheet_with_relative_path() {
         assert!(render_home_page().contains("href=\"style.css\""));
     }
@@ -255,11 +229,6 @@ mod tests {
         let html = render_home_page();
         assert!(html.contains("data-testid=\"menu-slot\""));
         assert!(html.contains("aria-hidden=\"true\""));
-    }
-
-    #[test]
-    fn has_text_logo_for_narrow_screens() {
-        assert!(render_home_page().contains(">Lvk@73r</div>"));
     }
 
     /// ADR-001: the page carries only our own named variants.

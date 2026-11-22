@@ -39,7 +39,7 @@ function breakpoint(name: string): number {
   return width;
 }
 
-// Where the header changes its logo (md), and where the
+// Where the text column's frame changes (md), and where the
 // header becomes one row (xl). The width just below each is the other side of it.
 export const MD = breakpoint('md');
 export const XL = breakpoint('xl');
@@ -107,6 +107,9 @@ export function sizeOnRange(range: { from: number; to: number; min: number; max:
 // The page frame's own ranges, over the column's band of widths (`title-size` and
 // `footer-text-size` in style/input.css). Written by hand, as TEXT_RANGE is.
 export const TITLE_RANGE = { from: 320, to: 1366, min: 24, max: 32 };
+// The logo's icon, in the same band of widths: 48px wide at 320px and 64px from 1366px
+// (`logo-link` in style/input.css).
+export const LOGO_RANGE = { from: 320, to: 1366, min: 48, max: 64 };
 export const FOOTER_RANGE = { from: 320, to: 1366, min: 16, max: 18 };
 
 // The widths for tests of what is inside the text column. The text column grows
@@ -136,8 +139,8 @@ export const COLUMN_WIDTHS = [
 // start at md and at xl, taken by width from the file, so each is checked at the
 // start of its band even when a breakpoint moves.
 export const BANDS = [
-  viewportAt(393), // text logo
-  viewportAt(MD), // ASCII-art logo, title below the line
+  viewportAt(393), // a phone, the title below the line
+  viewportAt(MD), // title below the line, at the width of md
   viewportAt(XL), // title beside the logo
 ];
 

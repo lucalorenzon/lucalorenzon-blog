@@ -101,16 +101,13 @@ const ROLES: { role: Role; page: string; width: number; cases: [string, string][
     role: '--font-logo',
     page: './style-guide/fonts.html',
     width: 1280,
-    cases: [
-      ['the logo role\'s sample', '.sample-logo-normal-400'],
-      ['the logo drawn in characters', '[data-testid="ascii-logo"]'],
-    ],
+    cases: [['the logo\'s name', '.logo-name > span']],
   },
   {
     role: '--font-logo',
     page: './style-guide/fonts.html',
     width: 393,
-    cases: [['the text logo', '.text-logo-large']],
+    cases: [['the logo\'s name', '.logo-name > span']],
   },
 ];
 

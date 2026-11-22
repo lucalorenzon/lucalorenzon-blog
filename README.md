@@ -181,3 +181,6 @@ The site's code is under the [MIT](LICENSE) licence. The site's text in
 for their code samples, CC BY-ND 4.0 for the curriculum
 ([details](content/README.md)). The fonts in `assets/fonts/` keep their
 authors' licences, beside each font.
+
+The logo's images in `assets/logo/` and the favicon are under none of these
+licences: all rights reserved ([details](assets/logo/README.md)).
