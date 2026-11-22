@@ -140,6 +140,9 @@ live since 2026-10-26
 - [Use a structured configuration file](cards/use-a-structured-configuration-file.md),
   now that `config/` holds a second setting, the fonts, read by the
   build only; the heading limit is read by the tests too.
+- [Move the style guide's texts beside their code](cards/move-the-style-guide-texts-beside-their-code.md),
+  as the frame's page will have it, after the style guide is
+  published.
 - [Write an article on the style guide](cards/write-an-article-on-the-style-guide.md),
   told from the problem it solves, once the style guide is complete:
   published with it, as the third article, and the readers' way into

@@ -126,6 +126,32 @@ superseded; they left this card on 2026-11-22 (see "What it leaves").
   thought of a separate place, dedicated and linked to the component,
   to avoid one large file to open and scroll for every change; ready
   to revise this.
+
+  **Answered by the user on 2026-11-22, with the agent: beside the
+  code.** The agent set out the tension: every other page of the
+  style guide has its text in `content/style-guide/`, and nothing
+  there ties it to the code it describes. Asked for an example, the
+  agent proposed a Markdown file beside the component,
+  `src/page_frame.md`, taken into `src/page_frame.rs` twice: as the
+  module's documentation (`#![doc = include_str!("page_frame.md")]`)
+  and as the text the style guide's page reads. One text is then the
+  component's documentation and its page, kept small and apart from
+  the code, and in the same folder and the same change as the code it
+  describes. The agent named four consequences, none blocking: the
+  text leaves the licences of `content/` for the code's; the content
+  dates step reads only `content/`, so the page would have no date in
+  the sitemap; two rules, the content's elements in `content/` and
+  the page's components beside their code; the check that the
+  Markdown holds no HTML has to reach the new file. The user chose
+  the file beside the code, and asked for a card that brings the
+  other pages to the same model after publishing
+  ([card](move-the-style-guide-texts-beside-their-code.md)).
+- **Under which licence the explanation beside the code is**: the
+  code's, MIT, or the text's, as an exception declared in `src/`.
+  Added on 2026-11-22, from the answer above.
+- **Where the page's date in the sitemap comes from**, since the
+  content dates step reads only `content/`. Added on 2026-11-22, from
+  the answer above.
 - **Where the boundary lies with the text page**, which shows what
   goes inside the column. Came from the column's page.
 - **Whether the frame is one page, or the header, the logo and the
@@ -205,3 +231,5 @@ the style guide needs:
   and
   [declare the pages to come in the style guide's index](declare-the-pages-to-come-in-the-style-guide-index.md):
   the cards cut from this one.
+- [Move the style guide's texts beside their code](move-the-style-guide-texts-beside-their-code.md):
+  the other pages brought to this page's model, after publishing.
