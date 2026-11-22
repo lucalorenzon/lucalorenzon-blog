@@ -135,6 +135,13 @@ The ones known when the card was written; there may be more.
   enlarges text without zooming. Bounds in pixels ignore it, as the
   site does today; WCAG asks for at least one way to enlarge text,
   and zoom is one. Added on 2026-11-22, out of the question on zoom.
+
+  **Answered by the user on 2026-11-22.** Zoom is enough, as today:
+  the bounds stay in pixels. Following the setting would have taken
+  the text below 18 pixels for whoever sets a smaller default, under
+  the size at which the table's column line is counted
+  (`src/table_widths.rs`), and would have made the column follow the
+  setting while the header and the footer do not.
 - **How the Rust checks of the classes learn the containers**, so a
   mistyped container name or size stops the build instead of leaving a
   rule out in silence.
