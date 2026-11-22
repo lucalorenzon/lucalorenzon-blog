@@ -100,6 +100,23 @@ was superseded.
   [decide whether the logo is a component of its own](decide-whether-the-logo-is-a-component.md),
   opened on 2026-11-22 once the logo was reviewed: the answer here
   answers it there too.
+
+  **Answered by the user on 2026-11-22, with the agent.** One page, the
+  frame shown whole at its widths; its parts are not cut into
+  components of their own for now. The site is static HTML today, and
+  the user expects logic soon: background images, a header that is
+  transparent and turns opaque when the text passes under it,
+  parallax for depth, the title and the logo's name moving when the
+  title reaches the header, the articles' cards scrolling sideways,
+  perhaps two columns on wide screens. Those behaviours are expected
+  to give the components their shape; cutting them now would draw
+  boundaries from the wrong information. The agent agreed, adding
+  that a component is cut along the parts that change together, and
+  those behaviours tie the logo, the title and the header together:
+  cut now along the static layout, they would likely be put back
+  together, as the text column was. The agent added one point: the
+  page's tests check what the visitor sees, not the code's
+  boundaries, so they stay true after a later cut and guard it.
 - **Whether the list of devices can come from Firefox's**, the one
   the user reads in its responsive design mode: its address, its
   licence, and whether the tests' list should follow it.

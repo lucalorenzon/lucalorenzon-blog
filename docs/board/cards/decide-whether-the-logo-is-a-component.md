@@ -37,10 +37,24 @@ The ones known when the card was written; there may be more.
 - **What ties it to the frame**: the header's line it stands on, and
   the room it shares with the title.
 
+**Answered for now by the user on 2026-11-22, with the agent**, on the
+card
+[show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md),
+which asked the same question for the frame's parts: not yet. The site
+is static HTML, and the behaviours the user expects soon (a header
+that is transparent and turns opaque when the text passes under it,
+parallax, the title and the logo's name moving when the title reaches
+the header) tie the logo, the title and the header together. They are
+expected to give the components their shape; cut now, the logo would
+be cut from the wrong information. The card stays open, so the
+question comes back with those behaviours.
+
 ## Dependencies
 
 - The card [review the logo](review-the-logo.md), which builds the new
-  logo inside the frame.
+  logo inside the frame; closed on 2026-11-22.
+- **The header's dynamic behaviours**, which have no cards yet: the
+  question is taken up again when they are built.
 
 ## References
 
