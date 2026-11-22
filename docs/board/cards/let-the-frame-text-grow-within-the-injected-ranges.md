@@ -39,6 +39,18 @@ The ones known when the card was written; there may be more.
 
 - **Which ranges the title and the footer use**, and whether the
   title's range is one of the column's or one of its own.
+
+  **Answered for the title by the user on 2026-11-22.** The title
+  grows over the column's band of widths, from 320 to 1366 pixels,
+  between its own bounds of today: 24 pixels at 320, 32 at 1366. It
+  does not keep a fixed ratio to the column's text, which would have
+  left it at about 26.7 pixels on wide screens. Its jump at 768 is not
+  kept in step with the logo's change at the same width: the user
+  expects that change to fall, with a fixed icon in place of the two
+  logos, a matter of the card
+  [review the logo](review-the-logo.md). On tablets and small
+  laptops the title is smaller than today: about 27.4 pixels at 768
+  instead of 32.
 - **Whether the longest title still fits** at every width, now that
   its size varies, and what the header's test checks.
 - **Whether the text grows with the browser's zoom**, as for the
@@ -59,3 +71,5 @@ The ones known when the card was written; there may be more.
   where the ranges move after the stylesheet.
 - [Show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md):
   the page that shows the frame at several widths.
+- [Review the logo](review-the-logo.md): the logo's change at 768
+  pixels, which the title's growth no longer follows.
