@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { test, expect, type Page } from '@playwright/test';
-import { ADDRESSES, FOOTER_RANGE, LOGO_RANGE, READER_SPACING, retryWhenLive, sizeOnRange, TITLE_RANGE, VIEWPORTS, XL } from './support';
+import { ADDRESSES, FOOTER_RANGE, FRAME_PAGE, LOGO_RANGE, READER_SPACING, retryWhenLive, sizeOnRange, TITLE_RANGE, VIEWPORTS, XL } from './support';
 
 // Enforces the agreed responsive header layout. It checks what the reader
 // sees (positions, sizes, visibility), never how the page is built.
@@ -47,7 +47,6 @@ const SIZE_TOLERANCE = 0.05;
 
 // The page these tests open: the frame's page of the style guide, where the frame is tested
 // once (ADR-004). The title is the page's own heading.
-const FRAME_PAGE = './style-guide/frame.html';
 const FRAME_TITLE = 'Page frame';
 // The longest heading the build accepts, in graphemes. It is read from the same file the
 // build includes (config/heading-max-graphemes.txt), so there is one figure, not two copies that

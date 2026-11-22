@@ -12,6 +12,7 @@ import {
   runAxe,
   VIEWPORTS,
   type AxeResults,
+  FRAME_PAGE,
 } from './support';
 
 // Fails on any accessibility violation that axe-core can find.
@@ -218,7 +219,7 @@ for (const { name: pageName, address } of NET_PAGES) {
 }
 
 const FRAME_PAGES = [
-  { label: 'frame page', address: './style-guide/frame.html', onlyLocal: false },
+  { label: 'frame page', address: FRAME_PAGE, onlyLocal: false },
   { label: 'page not found', address: './404.html', onlyLocal: true },
 ];
 

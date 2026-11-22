@@ -16,7 +16,9 @@ Instead of jumping from one size to another at fixed widths, the frame's text gr
 - the page's title, from 24 to 32 pixels;
 - the footer's text, from 16 to 18 pixels.
 
-The section headings, like the one above this list, are always 1.2 times the column's text, so they grow with it.
+### The headings grow with the text
+
+The headings follow the column's text instead of a range of their own: a section heading, like the one above the list, is always 1.2 times the column's text, and a sub-section heading, like this one, 1.1 times.
 
 ## The column
 

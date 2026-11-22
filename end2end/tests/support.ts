@@ -150,6 +150,10 @@ export const BANDS = [
 // page (content/style-guide/text.md).
 export const TEXT_PAGE = './style-guide/text.html';
 
+// The frame's page of the style guide, where the frame is tested once (ADR-004): the column,
+// the header, the footer and the headings' ratios.
+export const FRAME_PAGE = './style-guide/frame.html';
+
 // The guard of the text checks: before measuring, every case of the text page
 // takes at least two lines at the width under test, so that a check never
 // passes with nothing to check (a heading, a paragraph or a list item that

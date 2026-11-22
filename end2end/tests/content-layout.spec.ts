@@ -28,7 +28,8 @@ import {
 // support.ts), whose cases are written for them, at the widths of the text column
 // (COLUMN_WIDTHS in support.ts: it is all they depend on). The first test checks the guard
 // (expectEveryCaseWraps: every case takes at least two lines at that width) before measuring:
-//   2. section headings (h2) are larger than body text
+//   2. (the section headings' size is no longer here: it is a rule the frame injects, checked on
+//      the frame's page by text-column.spec.ts)
 //   3. at the end of the page the content ends at least 32px above the sticky footer
 //   4. consecutive headings, paragraphs and list items do not overlap
 //   5. section (h2) and role (h3) headings stand out from the body text by colour (amber); no line
@@ -47,8 +48,6 @@ const MIN_GAP_ABOVE_FOOTER = 32; // the space used before sections
 
 type Snapshot = {
   innerWidth: number;
-  h2MinFontSize: number;
-  pFontSize: number;
   lastBottom: number;
   footerTop: number;
   overlaps: string[];
@@ -63,9 +62,6 @@ async function snapshot(page: Page): Promise<Snapshot> {
 
   return page.evaluate(() => {
     const main = document.querySelector('main')!;
-
-    const h2s = Array.from(main.querySelectorAll('h2'));
-    const p = main.querySelector('p');
 
     // The last element in main that takes room: its bottom must clear the footer.
     const all = Array.from(main.querySelectorAll('*')).filter((el) => el.getBoundingClientRect().height > 0);
@@ -88,8 +84,6 @@ async function snapshot(page: Page): Promise<Snapshot> {
 
     return {
       innerWidth: window.innerWidth,
-      h2MinFontSize: Math.min(...h2s.map((el) => parseFloat(getComputedStyle(el).fontSize))),
-      pFontSize: p ? parseFloat(getComputedStyle(p).fontSize) : NaN,
       lastBottom,
       footerTop: footer.getBoundingClientRect().top,
       overlaps,
@@ -107,10 +101,6 @@ function violations(s: Snapshot): string[] {
     if (!ok) out.push(`${where} ${message}`);
   };
 
-  rule(
-    s.h2MinFontSize > s.pFontSize,
-    `h2 must be larger than body text: smallest h2 ${s.h2MinFontSize}px, paragraph ${s.pFontSize}px`,
-  );
   rule(
     s.footerTop - s.lastBottom >= MIN_GAP_ABOVE_FOOTER - 0.5,
     `the end of the content (${s.lastBottom}) must be at least ${MIN_GAP_ABOVE_FOOTER}px above the footer (${s.footerTop}), gap is ${s.footerTop - s.lastBottom}px`,

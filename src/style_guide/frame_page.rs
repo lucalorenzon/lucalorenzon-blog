@@ -64,6 +64,7 @@ mod tests {
         let main = &html[html.find("<main").unwrap()..];
         assert!(main.contains("<h2>The header</h2>"));
         assert!(html.matches("<h2>").count() >= 3);
+        assert!(html.contains("<h3>"));
     }
 
     #[test]
