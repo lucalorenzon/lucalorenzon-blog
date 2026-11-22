@@ -99,6 +99,14 @@ was superseded.
   the user looks at.
 - **How the index declares the pages to come.**
 
+## Dependencies
+
+- **Waits for the logo**
+  ([review the logo](review-the-logo.md)), decided by the user on
+  2026-11-22: the logo's change at 768 pixels, one of the two changes
+  this page would show, is expected to go, so the page is made once
+  the logo is settled.
+
 ## References
 
 - [Try a breakpoint declaration on the text column](try-a-breakpoint-declaration-on-the-text-column.md):

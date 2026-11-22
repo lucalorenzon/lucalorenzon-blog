@@ -94,7 +94,11 @@ live since 2026-10-26
     footer from 16 to 18, the section headings at 1.2 times the text),
     then the frame's page, which shows the column too
     ([card](cards/show-the-page-frame-in-the-style-guide.md),
-    in work).
+    in work, waiting for the logo below).
+- [Review the logo](cards/review-the-logo.md), in work, before the
+  frame's page: one icon, the favicon's photo cut to a circle, with
+  the name written beside it at every width, in place of the written
+  logo and the logo drawn in characters.
 - [Update the screen reader check for an English site](cards/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle
@@ -157,9 +161,6 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](cards/improve-site-readability.md)): for
   each one, whether it is done now, next or later.
-- [Review the logo](cards/review-the-logo.md): on the light page the
-  logo drawn in characters is hard to read; the user leans towards the
-  written logo everywhere.
 - [Add preview images](cards/add-preview-images.md) for links shared
   on LinkedIn or elsewhere, one per page, in a session of their own,
   probably after the logo is reviewed.

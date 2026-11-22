@@ -1,11 +1,13 @@
 # Review the logo
 
-- **Opened:** 2026-11-05, by the user, building the light background in
-  the card [give the articles' code, quotes and tables a look](design-look-of-articles.md);
-  in Now.
-- **Status:** noticed, not started.
+- **Created:** 2026-11-05
+- **Status:** In work
 
 ## Why
+
+Opened by the user on 2026-11-05, while building the light background in
+the card [give the articles' code, quotes and tables a look](design-look-of-articles.md),
+and placed in the plan's Now at the time.
 
 From 768 pixels up the logo is drawn in characters, in the pixel font
 at 16 pixels. On the light page the user found it illegible. The
@@ -19,7 +21,13 @@ pixels, "Lvk@73r", and reads well on both backgrounds.
 The light background was committed with the drawn logo as it was, so
 this card could be decided on its own.
 
-## Known from the start
+Taken into work on 2026-11-22, before the page of the frame in the
+style guide
+([show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md)),
+since the logo's change at 768 pixels is one of the two things that
+page would show and put to the test, and the user expects it to go.
+
+## What is known
 
 - **Not a matter of colour.** The user compared, on the light page,
   the logo in the heading shade (`#a9600d`, 4.61:1), in a darker shade
@@ -29,22 +37,94 @@ this card could be decided on its own.
 - **A black header was tried and rejected** by the user: the whole
   header black on the light page, the header and the footer black, and
   only the band above the header line black.
-- **The user's leaning:** drop the drawn logo, and show the written
-  logo everywhere, on both backgrounds.
-- **Another option: a fixed icon in place of both logos.** The idea
-  came up in the session of 2026-11-22 (minute
+- **The user's leaning, before 2026-11-22:** drop the drawn logo, and
+  show the written logo everywhere, on both backgrounds. The answer
+  below keeps the written name everywhere and adds an icon beside it.
+- **The idea of a fixed icon** in place of the two logos came up in
+  the session of 2026-11-22 (minute
   `docs/board/sessions/2026-11-22-grow-the-frame-text-within-ranges.md`),
   where the user also said they expect the logo's change at 768 pixels
   to go, and tied the title's size to the text rather than to the
-  logo. Added here at the user's request on 2026-11-22, beside the
-  leaning above; neither is decided.
-- **What the drawn logo touches today:** the frame shared by every page
-  (`src/page_frame.rs`, the `LOGO` constant and its `div`), two rules
-  in `style/input.css`, two unit tests in `src/home_page.rs`, the
-  header test (`end2end/tests/header-layout.spec.ts`, which expects it
-  from 768 pixels up), and the accessibility test, which drops the
+  logo
+  ([let the frame's text grow within the injected ranges](let-the-frame-text-grow-within-the-injected-ranges.md)).
+- **The favicon is already a circular crop of a photo of the user's**
+  (`assets/favicon.ico`, one image of 16 by 16 pixels): the user
+  pushing a twin pushchair on a beach, under a blue cloth printed with
+  sea animals. Checked by the agent on 2026-11-22 by enlarging the
+  favicon and comparing it with the original photo, which the user
+  copied, uncommitted, to `assets/logo-original.jpg` (a JPEG of 842
+  by 1122 pixels; its metadata holds only the name of the program
+  that saved it, no position).
+- **The photo shows more than the user**: two small children with their
+  faces visible, and other people on the beach. The repository and the
+  site are public.
+- **A photo cannot follow the theme's colours**, as the site's icons do
+  (`src/icons.rs` turns a one-colour drawing into a CSS mask): it stays
+  a fixed image. A circle with a transparent outside sits on both the
+  dark and the light background; JPEG has no transparency.
+- **What the drawn logo touches today** (checked on 2026-11-22): the
+  frame shared by every page (`src/page_frame.rs`, the `LOGO` constant
+  and its `div`, inside the link named "Lvk@73r, home page"); the rules
+  `text-logo-large` and `art-logo-left` in `style/input.css`; the unit
+  tests of the logo in `src/home_page.rs` and, the same ones, in
+  `src/curriculum_page.rs`; the header's browser test
+  (`end2end/tests/header-layout.spec.ts`, which expects the drawn logo
+  from 768 pixels up); the accessibility test, which drops the
   contrast findings on the drawn logo only (WCAG exempts logos from
-  contrast) and would no longer need to.
+  contrast) and would no longer need to; the font roles' test
+  (`end2end/tests/font-roles.spec.ts`, one case on the drawn logo);
+  comments in `end2end/tests/home.spec.ts` and
+  `end2end/tests/support.ts`, whose list of screen widths names the
+  two logos.
 - **ADR-003** calls the logo in the pixel font "the one sign of 1985
   left in the frame" and says a logo drawn in characters needs a
   monospaced font: to be updated if the drawing goes.
+- **The logo's name was once lost by a screen reader**: Orca 51 did
+  not speak the name of the drawn logo when it was a `<pre>`
+  ([logo name not read by Orca 51](logo-name-not-read-by-orca-51.md)).
+
+## Questions to answer
+
+The ones known when the card was taken into work; there may be more.
+
+- **Which logo takes the place of the two forms.**
+
+  **Answered by the user on 2026-11-22.** An icon, the photo of the
+  favicon cut to a circle, which also leaves out what does not belong
+  to it; with the same framing as the favicon, so that each recalls
+  the other. Beside the icon, the name "Lvk@73r" stays, written as
+  text, at every width. If the name and the icon one day do not fit
+  somewhere, only the icon stays there.
+
+- **What of the photo goes into the repository.**
+
+  **Proposed by the agent and agreed by the user on 2026-11-22.** The
+  original photo is never committed, since the repository is public
+  and a file committed once stays in its history: only the circular
+  images made from it, at the sizes the site needs.
+
+- **Who holds the rights on the photo, and under which licence its
+  images are published.** The person who took the photo holds its
+  copyright; the site's content has licences of its own
+  (`content/README.md`), different from the code's.
+- **How large the icon and the name are**, and whether they grow
+  within a range of the page's width, as the title does.
+- **How the link keeps one name.** With an alternative text on the
+  icon and the name written beside it, a screen reader may say the
+  name twice; the link already has a name of its own.
+- **In which formats and sizes the images are made**, screens with
+  dense pixels included, and whether the favicon is made again from
+  the same crop.
+- **What ADR-003 says once the drawn logo is gone.**
+
+## References
+
+- [Give the articles' code, quotes and tables a look](design-look-of-articles.md):
+  the card that brought the light background, where this one was
+  opened.
+- [Show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md):
+  the page that waits for this card.
+- [Let the frame's text grow within the injected ranges](let-the-frame-text-grow-within-the-injected-ranges.md):
+  where the title stopped following the logo.
+- [Logo name not read by Orca 51](logo-name-not-read-by-orca-51.md):
+  the earlier problem with the logo's name.
