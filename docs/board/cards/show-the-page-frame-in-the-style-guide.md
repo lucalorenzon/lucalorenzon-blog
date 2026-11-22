@@ -179,7 +179,24 @@ superseded; they left this card on 2026-11-22 (see "What it leaves").
   from the summary only).
 - **Where the page's date in the sitemap comes from**, since the
   content dates step reads only `content/`. Added on 2026-11-22, from
-  the answer above.
+  the answer above. Each page of the sitemap takes the date of the last
+  commit of its Markdown file (`src/sitemap.rs` names the file,
+  `scripts/content-dates/content_dates.py` dates it); reaching the
+  `.md` files in `src/` is a small change. The question is what the
+  date tells, since the frame's page shows the frame itself: a change
+  of `src/page_frame.rs` changes what the page shows, even when its
+  explanation stays the same.
+
+  **Answered by the user on 2026-11-22, with the agent: the date of
+  the text**, as for the other pages. The agent set out the two
+  readings: the text's date, consistent with the other pages and with
+  the sitemap's purpose of telling search engines that the content
+  changed, though a visible change of the frame leaves the date as it
+  is; or the date of the component, text or code, closer to what the
+  visitor sees, though any change of the code inside, also an
+  invisible one, would make the page look new. So the content dates
+  step also reads the `.md` files in `src/`, and the page's source in
+  the sitemap is `src/page_frame.md`.
 - **Where the boundary lies with the text page**, which shows what
   goes inside the column. Came from the column's page.
 - **Whether the frame is one page, or the header, the logo and the
