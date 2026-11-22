@@ -48,6 +48,16 @@ viewer would show earlier than needed, which the user accepted on
   than its column; the table of texts at the limit is built just under
   the column at 767 pixels, with words in italic, inline code and
   bold. They pass today, at the site's own text sizes only.
+- **The column steps in Chromium on Linux** (measured on 2026-11-22,
+  at the close of
+  [let the column's text grow within a range the site injects](let-the-column-text-grow-within-an-injected-range.md)):
+  its maximum, 60 characters of the digit zero, is 600, 660 or 720
+  pixels as the text grows from 18 to 20 pixels, since Chromium rounds
+  the zero's width to a whole pixel; in Firefox it grows smoothly. The
+  six-column table, whose threshold (33.904 em) lies close to the
+  column's widest, is a record viewer up to 412, a table from 659 to
+  810, a viewer from 843 to 1280 and a table from about 1300. Details
+  in that card's recap.
 
 ## Questions to answer
 
@@ -76,3 +86,5 @@ The ones known when the card was written; there may be more.
 - [Show the table in the style guide](show-the-table-in-the-style-guide.md):
   where the tables' cases at the limit and their measurements come
   from.
+- [Let the column's text grow within a range the site injects](let-the-column-text-grow-within-an-injected-range.md):
+  where the column's steps in Chromium were measured.

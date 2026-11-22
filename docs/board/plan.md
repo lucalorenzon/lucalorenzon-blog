@@ -86,7 +86,8 @@ live since 2026-10-26
     ([card](cards/show-the-text-column-in-the-style-guide.md)). First
     the column's text made to grow within a range the site injects
     ([card](cards/let-the-column-text-grow-within-an-injected-range.md),
-    in work, with the range written in the stylesheet),
+    done, not published yet: 18 to 20 pixels between 320 and 1366,
+    the range written in the stylesheet),
     then the frame's text within the same ranges
     ([card](cards/let-the-frame-text-grow-within-the-injected-ranges.md)),
     then the frame's page, which shows the column too
@@ -103,7 +104,9 @@ live since 2026-10-26
   column's text stopped jumping at 768 pixels.
 - [Check the table widths against Chromium's rounding](cards/check-table-widths-against-chromium-rounding.md),
   which drew the code font a whole number of pixels wide on Linux and
-  may do the same with the tables' text.
+  does the same with the column's text: the column steps there, and
+  the six-column table changes form more than once as the page
+  widens.
 - [Take the measures from the configured fonts](cards/take-the-measures-from-the-configured-fonts.md),
   in the build, in the browser, instead of Literata's widths generated
   by hand and Hack's advance written in the code.

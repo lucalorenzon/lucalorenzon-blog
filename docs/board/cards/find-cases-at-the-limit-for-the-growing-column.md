@@ -34,9 +34,19 @@ its column, at every width.
   1366, where the column reaches its widest; it is the check that
   stops the build when a code font moves the wrap toggle's threshold
   ([measure the fonts again when they change](measure-the-fonts-again-when-they-change.md)).
-- **With a growing column**, the column's width is a smooth function
-  of the page's width between 320 and 1366 pixels, so a case at the
-  limit can be placed at any width, not only at a breakpoint.
+- **With a growing column**, the column's width follows the page's
+  width between 320 and 1366 pixels, so a case at the limit can be
+  placed at any width, not only at a breakpoint; smoothly in Firefox,
+  by steps in Chromium on Linux (below).
+- **The column steps in Chromium on Linux** (measured on 2026-11-22,
+  at the close of
+  [let the column's text grow within a range the site injects](let-the-column-text-grow-within-an-injected-range.md)):
+  its maximum, 60 characters of the digit zero, is 600, 660 or 720
+  pixels as the text grows, since Chromium rounds the zero's width to
+  a whole pixel; in Firefox it grows smoothly. The six-column table,
+  whose threshold (33.904 em) lies close to the column's widest, is a
+  record viewer up to 412, a table from 659 to 810, a viewer from 843
+  to 1280 and a table from about 1300. Details in that card's recap.
 
 ## Questions to answer
 

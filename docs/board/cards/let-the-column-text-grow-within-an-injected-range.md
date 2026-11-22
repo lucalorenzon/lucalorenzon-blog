@@ -1,7 +1,8 @@
 # Let the column's text grow within a range the site injects
 
 - **Created:** 2026-11-21
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-22
 
 ## Why
 
@@ -268,10 +269,65 @@ Agreed with the user on 2026-11-22. The card is done when:
 9. **The pipeline.** Every check of the pipeline passes: formatting,
    clippy, the Rust tests, the type check and the browser tests.
 
+## Recap
+
+The column's text grows from 18 pixels at a page width of 320 to 20
+pixels at 1366, in a straight line, instead of jumping at 768
+(`8e9c396`). The page's wrapper is a container named `page`; the
+column's size is a value clamped between the two sizes and measured
+against that container; the size variable is registered, so the code
+block and the table receive it in pixels; the class
+`md:long-text-large` is gone. The tables' cases at the limit left the
+style guide's tables page and their tests, with the sentences the user
+approved; the code block's case at the limit moved to 1366; the
+column widths of the browser tests became 320, 393, 412, 843 and
+1366; the browser tests' README was updated. Every check of the
+pipeline passed. Before the code, the decisions were taken on a
+throwaway branch with a comparison page (the trials above), deleted at
+the close.
+
+### What the column does in Chromium on Linux
+
+Measured by the agent on 2026-11-22, in Chromium and Firefox, after
+the code was written. Chromium on Linux rounds each character's width
+to a whole pixel, as it does with the code font. The column's maximum,
+60 characters of the digit zero, 0.579 em in Literata, so steps in
+Chromium: 600 pixels with 18-pixel text, 660 from about 18.13 pixels,
+720 from about 19.86, that is from a page of about 1294 pixels; in
+Firefox it grows smoothly, 625 to 695. Lines stay at 60 characters,
+since the text is drawn with the same rounding. Today's site steps
+too, 600 and 720, but at 768, where the text jumps. The visible
+consequence is in the six-column table, whose estimated threshold,
+33.904 em, lies close to the column's widest: in Chromium on Linux it
+is a record viewer up to 412, a table from 659 to 810, a viewer again
+from 843 to 1280 and a table from about 1300. Every form fits its
+column and every test passes. The user decided on 2026-11-22 to close
+the card as it is and to deal with this in the cards on Chromium's
+rounding and on cases at the limit.
+
+## Cautions
+
+- The range, 18 to 20 pixels between 320 and 1366, is written twice
+  by hand: in `style/input.css` and in `end2end/tests/support.ts`
+  (`TEXT_RANGE`). A change goes in both until
+  [read the column text's range from the configuration](read-the-column-text-range-from-the-configuration.md)
+  is done.
+- The browser tests run with the scrollbars hidden, so they do not
+  notice a missing container declaration: the text would follow the
+  window's width, a scrollbar's width apart.
+- The form of a table between 412 and 1366 pixels is checked only by
+  "exactly one form is shown", and in Chromium on Linux it changes
+  more than once as the page widens (see the recap).
+
 ## What it leaves
 
 - The search for new cases at the limit, in place of the tables'
   ones taken out: the card
+  [find cases at the limit for the growing column](find-cases-at-the-limit-for-the-growing-column.md).
+- The tables that change form more than once as the page widens, in
+  Chromium on Linux: the cards
+  [check the table widths against Chromium's rounding](check-table-widths-against-chromium-rounding.md)
+  and
   [find cases at the limit for the growing column](find-cases-at-the-limit-for-the-growing-column.md).
 - The range written in `config/` and read by the build, instead of in
   the stylesheet: the card
