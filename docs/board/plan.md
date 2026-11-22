@@ -135,13 +135,14 @@ live since 2026-10-26
   in `scripts/build-site.sh`, so a file the site no longer has does
   not stay in `target/site` from an earlier build; done, not published
   yet.
-- [Update the screen reader check for an English site](cards/update-screen-reader-check-for-english-site.md),
-  since its reference still describes the Italian page, and let it
-  read more pages than the home page: it carries the wrap toggle
-  card's acceptance test on the screen reader; next.
 
 ## Next
 
+- [Update the screen reader check for an English site](cards/update-screen-reader-check-for-english-site.md),
+  since its reference still describes the Italian home page, and let
+  it read the pages that make sense, probably the style guide's
+  rather than the home page: it carries the wrap toggle card's
+  acceptance test on the screen reader.
 - [Find cases at the limit for the growing column](cards/find-cases-at-the-limit-for-the-growing-column.md),
   in place of the tables' cases at the limit, taken out when the
   column's text stopped jumping at 768 pixels.
