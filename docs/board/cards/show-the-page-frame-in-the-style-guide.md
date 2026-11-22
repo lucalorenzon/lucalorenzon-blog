@@ -1,7 +1,7 @@
 # Show the page frame in the style guide
 
 - **Created:** 2026-11-21
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
@@ -22,9 +22,13 @@ page to show its changes.
 - **What the frame changes at each breakpoint** (`src/page_frame.rs`):
   at 768 pixels the written logo gives way to the logo drawn in
   characters; at 1280 pixels the header becomes one row, with the
-  title beside the logo. Its text sizes are to grow within the site's
-  ranges
-  ([card](let-the-frame-text-grow-within-the-injected-ranges.md)).
+  title beside the logo. Its text grows within ranges of its own over
+  the page's widths from 320 to 1366 pixels, written in the
+  stylesheet (`style/input.css`): the title from 24 to 32 pixels, the
+  footer's text from 16 to 18; the section headings are 1.2 times the
+  column's text
+  ([card](let-the-frame-text-grow-within-the-injected-ranges.md),
+  done on 2026-11-22).
 - **The frame writes the text column** since 2026-11-21: the
   `<main>`, with the look of the text, went back to it from the
   component `OneColumnText`, removed
@@ -33,14 +37,16 @@ page to show its changes.
   ([show the text column in the style guide](show-the-text-column-in-the-style-guide.md))
   joined this one, decided by the user on 2026-11-21, at least until
   the user changes their mind. What was known there:
-  - **What changes in the column** (checked on 2026-11-19 by the
-    browser test `text-column.spec.ts`): at 768 pixels its text grows
-    from 18 to 20 pixels, and its maximum width, 60 characters of its
-    own font, grows with it: 600 pixels below 768, 720 from 768, with
-    Literata. Below its maximum it fills the screen; it is always
-    centred. Its text is to grow within a range the site injects
-    instead
-    ([card](let-the-column-text-grow-within-an-injected-range.md)).
+  - **What changes in the column** (checked by the browser test
+    `text-column.spec.ts`): its text no longer jumps at 768 pixels; it
+    grows on a straight line from 18 pixels at a 320-pixel page to 20
+    pixels from 1366 up, written in the stylesheet
+    ([card](let-the-column-text-grow-within-an-injected-range.md),
+    done on 2026-11-22). Its maximum width, 60 characters of its own
+    font, grows with its text. Below its maximum it fills the screen;
+    it is always centred. Until 2026-11-22 the text was 18 pixels
+    below 768 and 20 from 768, and the column 600 and 720 pixels wide
+    with Literata.
   - **The browser test of the column moves here**: written on the
     style guide's text page, it moves to this page once it exists
     (agreed by the user on 2026-11-19, for the column's page).

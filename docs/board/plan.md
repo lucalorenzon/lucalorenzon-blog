@@ -93,7 +93,8 @@ live since 2026-10-26
     done, not published yet: the title from 24 to 32 pixels, the
     footer from 16 to 18, the section headings at 1.2 times the text),
     then the frame's page, which shows the column too
-    ([card](cards/show-the-page-frame-in-the-style-guide.md)).
+    ([card](cards/show-the-page-frame-in-the-style-guide.md),
+    in work).
 - [Update the screen reader check for an English site](cards/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle
