@@ -84,7 +84,30 @@ was superseded.
 - **Whether the `iframe` passes the accessibility checks**, the
   build's and axe's best practices, and how wide a sample may be on a
   320-pixel screen without scrolling the page sideways.
-- **What the page puts to the test.**
+- **What the page puts to the test.** The frame's browser tests run
+  today on the home page, which does for the frame what the two
+  articles did for the text's components before the style guide took
+  them over
+  ([ADR-004](../../adr/ADR-004-test-components-once-and-pages-with-a-net.md)).
+  The frame's page is itself inside the frame, so its own header and
+  footer are what is tested, with no sample.
+
+  **Answered by the user on 2026-11-22, with the agent.** The tests
+  that check the frame as a component leave the home page for the
+  frame's page: the header's layout at every width, the line under
+  the logo's name, the footer's text size, the header with the
+  reader's text spacing, and the frame's accessibility and contrast.
+  The text column's tests join them from the style guide's text page,
+  as agreed on 2026-11-19. Stay where they are: the net that runs on
+  every page of the sitemap (the logo on every page, the shape of
+  each page), as ADR-004 says, and the tests of the home page's own
+  content (its list of articles and their links). The "page not
+  found" stays out of the move: it is a page of its own, with links
+  written for addresses of any depth, though tested today with the
+  home page for the frame's accessibility and contrast. The agent
+  checked that the move needs nothing of the build: the header's
+  test puts its two invented longest titles in place of the heading
+  in the browser, so it works on any page.
 - **Where the explanation of a component lives**: beside its code, or
   in the Markdown of `content/style-guide/` as for the other pages.
   Came from the column's page. The user's view on 2026-11-19: the
