@@ -1,7 +1,7 @@
 # Move the text column's tests to the frame's page
 
 - **Created:** 2026-11-22
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
@@ -45,11 +45,61 @@ The ones known when the card was written; there may be more.
   which on the text page run on paragraphs written to take more than
   one line at every width.
 
+  **Answered by the agent on 2026-11-22.** Yes. The column's width
+  does not depend on the text it holds: it takes the whole width
+  available up to 60 characters and is centred, whatever is inside
+  (`long-text-column` in `style/input.css`). The column's tests
+  measure the text's size, the width and the centring, and none needs
+  long paragraphs; the guard that every case wraps serves the text
+  page's layout tests, which stay there. The frame's page has three
+  section headings and paragraphs up to 360 characters long anyway.
+- **Whether the sub-section headings' size belongs to the frame too**,
+  a question that came up during the work: the same rule of the
+  stylesheet that sets the section headings at 1.2 times the column's
+  text sets the sub-section headings (level three) at 1.1 times; no
+  test checks that size today, and the frame's page had no heading of
+  level three.
+
+  **Answered by the user on 2026-11-22, with a doubt declared.** The
+  user is not sure, but places them in the frame, and checks them in
+  this card. To keep the rule agreed for the section headings,
+  measured on the page's own headings with no sample, the frame's page
+  gets a real sub-section explaining the headings' ratios, still part
+  of the draft text.
+
 ## Dependencies
 
 - The card
   [show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md),
   which builds the page the tests move to.
+
+## Acceptance tests
+
+Agreed with the user on 2026-11-22.
+
+1. The two tests of the column, the one at every width of the column
+   and at Full HD and the one that wants it wider at 1366 pixels than
+   at 843, open the frame's page instead of the text page; their names
+   say the frame's page.
+2. On the frame's page, at the same widths, every heading of level two
+   is 1.2 times the column's text and every heading of level three 1.1
+   times, within a few hundredths of a pixel; a guard fails the test if
+   the page has no heading of either level, so a text rewritten
+   without them does not let it pass empty.
+3. The frame page's text has a heading of level three: a real
+   sub-section that explains the headings' ratios, still marked as a
+   draft.
+4. The text page's layout test (`content layout of the style guide's
+   text page`) loses only the rule that section headings are larger
+   than the text, and keeps the rest; the headings' colours test does
+   not change.
+5. The test of the size the column passes on to the code block and to
+   the table stays on their pages; the number of tests stays the same.
+6. In the same commit, the tests' rows in `end2end/README.md` and the
+   comments of the test files change with them.
+7. Before the commit, the user sees the frame's page with the new
+   sub-section, in screenshots on the iPhone SE and on the laptop.
+8. Every check of the pipeline passes, as in `build.yml`.
 
 ## References
 
