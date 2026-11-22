@@ -16,7 +16,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-# Files in content/ that are not pages (the sitemap must not list them).
+# Files in content/ and src/ that are not pages (the sitemap must not list them).
 # Mirrors NOT_PAGES in the tests of src/sitemap.rs: change both.
 EXCLUDED = ("content/README.md", "content/LICENSE-MIT-0")
 
@@ -37,9 +37,18 @@ def git(repo: Path, *args: str) -> str:
     return result.stdout
 
 
+# Folders whose Markdown files are the text of a page: content/, and src/ for the
+# explanation that lives beside its component's code (ADR-005).
+SOURCE_FOLDERS = ("content", "src")
+
+
 def content_files(repo: Path) -> list[str]:
-    """Markdown files under content/, as sorted paths with forward slashes."""
-    found = (p.relative_to(repo).as_posix() for p in (repo / "content").rglob("*.md"))
+    """Markdown files under content/ and src/, as sorted paths with forward slashes."""
+    found = (
+        p.relative_to(repo).as_posix()
+        for folder in SOURCE_FOLDERS
+        for p in (repo / folder).rglob("*.md")
+    )
     return sorted(p for p in found if p not in EXCLUDED)
 
 

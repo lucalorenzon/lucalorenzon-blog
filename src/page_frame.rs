@@ -1,7 +1,13 @@
+#![doc = include_str!("page_frame.md")]
+
 use leptos::either::{Either, EitherOf3};
 use leptos::prelude::*;
 use std::sync::LazyLock;
 use unicode_segmentation::UnicodeSegmentation;
+
+/// The explanation of the frame, in Markdown: the module's documentation (above) and the text
+/// of the style guide's page of the frame (`style_guide/frame_page.rs`).
+pub(crate) const EXPLANATION: &str = include_str!("page_frame.md");
 
 /// The class of the `<main>`: the text column's look, with the text growing with the page's width.
 /// It is in `style/input.css`.

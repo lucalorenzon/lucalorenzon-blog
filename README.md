@@ -179,7 +179,10 @@ at the same time it runs the browser test again on the public address.
 The site's code is under the [MIT](LICENSE) licence. The site's text in
 `content/` has licences of its own: CC BY 4.0 for the articles, MIT-0
 for their code samples, CC BY-ND 4.0 for the curriculum
-([details](content/README.md)). The fonts in `assets/fonts/` keep their
+([details](content/README.md)). The Markdown files in `src/` that
+explain a component, shown as pages of the style guide, are text of the
+site, not code: they are under CC BY 4.0, as the articles. The fonts in
+`assets/fonts/` keep their
 authors' licences, beside each font.
 
 The logo's images in `assets/logo/` and the favicon are under none of these

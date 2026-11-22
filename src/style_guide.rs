@@ -7,6 +7,7 @@ pub mod colours;
 pub mod colours_page;
 pub mod fonts;
 pub mod fonts_page;
+pub mod frame_page;
 pub mod index_page;
 pub mod navigation;
 pub mod tables_page;

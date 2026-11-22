@@ -1,7 +1,7 @@
 //! The index of the style guide: the text of `content/style-guide/index.md`, then the list of
 //! the guide's pages, written by the build.
 
-use super::{FOLDER, code_page, colours_page, fonts_page, tables_page, text_page};
+use super::{FOLDER, code_page, colours_page, fonts_page, frame_page, tables_page, text_page};
 use crate::markdown;
 use crate::page_frame::{FooterLicence, Heading, IndexedPage, Indexing, PageFrame, PageKind};
 use crate::site_address::SiteAddress;
@@ -14,12 +14,13 @@ pub(crate) const INDEX: &str = include_str!("../../content/style-guide/index.md"
 const DESCRIPTION: &str = "The style guide of this site: its design decisions, right or wrong, gathered in one place and each tested once.";
 
 /// The guide's pages: the title the reader sees and the file, in the guide's folder.
-const PAGES: [(&str, &str); 5] = [
+const PAGES: [(&str, &str); 6] = [
     ("Colours", colours_page::FILE),
     ("Code blocks", code_page::FILE),
     ("Tables", tables_page::FILE),
     ("Text", text_page::FILE),
     ("Fonts", fonts_page::FILE),
+    ("Page frame", frame_page::FILE),
 ];
 
 #[component]
@@ -68,11 +69,11 @@ mod tests {
     }
 
     #[test]
-    fn lists_the_colours_page_then_the_code_blocks_page_then_the_tables_page_then_the_text_page_then_the_fonts_page()
+    fn lists_the_colours_page_then_the_code_blocks_page_then_the_tables_page_then_the_text_page_then_the_fonts_page_then_the_frames_page()
      {
         let html = render_index_page();
         assert!(html.contains(
-            "<ul><li><a href=\"colours.html\">Colours</a></li><li><a href=\"code.html\">Code blocks</a></li><li><a href=\"tables.html\">Tables</a></li><li><a href=\"text.html\">Text</a></li><li><a href=\"fonts.html\">Fonts</a></li>"
+            "<ul><li><a href=\"colours.html\">Colours</a></li><li><a href=\"code.html\">Code blocks</a></li><li><a href=\"tables.html\">Tables</a></li><li><a href=\"text.html\">Text</a></li><li><a href=\"fonts.html\">Fonts</a></li><li><a href=\"frame.html\">Page frame</a></li>"
         ));
     }
 

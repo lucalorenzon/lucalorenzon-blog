@@ -12,6 +12,13 @@ Unless otherwise noted:
 | The code samples in the articles | [MIT No Attribution (MIT-0)](https://spdx.org/licenses/MIT-0.html); full text in `LICENSE-MIT-0` | Use it freely; a citation is welcome, not required |
 | The curriculum (`curriculum.md`) | [Creative Commons Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)](https://creativecommons.org/licenses/by-nd/4.0/) | Copy and pass it on, also for work; cite the author; do not share changed versions |
 
+The site's text also lives outside this folder in one case: a Markdown
+file beside a component's code in `src/` (for example
+`src/page_frame.md`), which explains the component and is shown as its
+page in the style guide. It is text of the site, not code: it is under
+CC BY 4.0, as the articles, and not under the code's MIT licence. Why:
+[ADR-005](../docs/adr/ADR-005-explain-a-component-beside-its-code.md).
+
 Quotations and images by other authors belong to them, under their own
 terms, and each one names its source.
 

@@ -99,6 +99,12 @@ class CollectTest(RepoTestCase):
             content_dates.collect(self.repo), [("content/a.md", "2026-01-10")]
         )
 
+    def test_markdown_files_in_src_are_listed(self):
+        self.commit({"src/page_frame.md": "f", "src/a.rs": "r"}, author="2026-05-02")
+        self.assertEqual(
+            content_dates.collect(self.repo), [("src/page_frame.md", "2026-05-02")]
+        )
+
     def test_files_outside_content_are_ignored(self):
         self.commit({"other/a.md": "a", "content/a.txt": "t"})
         self.assertEqual(content_dates.collect(self.repo), [])

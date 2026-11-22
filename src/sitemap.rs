@@ -9,7 +9,7 @@ use crate::article_page::Article;
 use crate::site_address::SiteAddress;
 use crate::style_guide::fonts::Fonts;
 use crate::style_guide::{
-    self, code_page, colours_page, fonts_page, index_page, tables_page, text_page,
+    self, code_page, colours_page, fonts_page, frame_page, index_page, tables_page, text_page,
 };
 use crate::{about_page, article_page, curriculum_page, home_page, licence_page, not_found_page};
 use jiff::civil::Date;
@@ -115,6 +115,11 @@ pub fn pages(
             "style-guide/fonts.html",
             "content/style-guide/fonts.md",
             fonts_page::render_fonts_page(site, fonts)?,
+        ),
+        fixed(
+            "style-guide/frame.html",
+            "src/page_frame.md",
+            frame_page::render_frame_page(site),
         ),
     ];
     for article in articles {
@@ -342,6 +347,7 @@ mod tests {
                 "https://www.lucalorenzon.com/style-guide/code.html",
                 "https://www.lucalorenzon.com/style-guide/colours.html",
                 "https://www.lucalorenzon.com/style-guide/fonts.html",
+                "https://www.lucalorenzon.com/style-guide/frame.html",
                 "https://www.lucalorenzon.com/style-guide/tables.html",
                 "https://www.lucalorenzon.com/style-guide/text.html",
             ]
@@ -422,12 +428,13 @@ mod tests {
     }
 
     #[test]
-    fn every_markdown_file_in_content_is_the_source_of_exactly_one_entry() {
+    fn every_markdown_file_in_content_and_src_is_the_source_of_exactly_one_entry() {
         // Not pages. Mirrors EXCLUDED in scripts/content-dates/content_dates.py: change both.
         const NOT_PAGES: [&str; 2] = ["content/README.md", "content/LICENSE-MIT-0"];
         let root = Path::new(env!("CARGO_MANIFEST_DIR"));
         let mut files = Vec::new();
         walk(&root.join("content"), &mut files);
+        walk(&root.join("src"), &mut files);
         let pages = pages(
             &site(),
             &real_articles(),
@@ -501,6 +508,10 @@ mod tests {
             (
                 "style-guide/fonts.html",
                 crate::style_guide::fonts_page::FONTS,
+            ),
+            (
+                "style-guide/frame.html",
+                crate::style_guide::frame_page::FRAME,
             ),
         ] {
             let page = pages.iter().find(|p| p.file == file).unwrap();
