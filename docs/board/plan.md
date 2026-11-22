@@ -88,8 +88,10 @@ live since 2026-10-26
     ([card](cards/let-the-column-text-grow-within-an-injected-range.md),
     done, not published yet: 18 to 20 pixels between 320 and 1366,
     the range written in the stylesheet),
-    then the frame's text within the same ranges
-    ([card](cards/let-the-frame-text-grow-within-the-injected-ranges.md)),
+    then the frame's text within ranges of its own over the same widths
+    ([card](cards/let-the-frame-text-grow-within-the-injected-ranges.md),
+    done, not published yet: the title from 24 to 32 pixels, the
+    footer from 16 to 18, the section headings at 1.2 times the text),
     then the frame's page, which shows the column too
     ([card](cards/show-the-page-frame-in-the-style-guide.md)).
 - [Update the screen reader check for an English site](cards/update-screen-reader-check-for-english-site.md),

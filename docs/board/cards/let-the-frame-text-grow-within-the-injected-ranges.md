@@ -1,7 +1,8 @@
 # Let the page frame's text grow within the injected ranges
 
 - **Created:** 2026-11-21
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-22
 
 ## Why
 
@@ -158,6 +159,50 @@ Agreed with the user on 2026-11-22. The card is done when:
    comments are updated for every test touched.
 7. **The pipeline.** Every check of the pipeline passes: formatting,
    clippy, the Rust tests, the type check and the browser tests.
+
+## Recap
+
+- The card taken into work (`06ce05e`); its questions answered one by
+  one, with the acceptance tests (`2052844`, `ae69227`, `d6505b1`,
+  `eebe5fa`, `e947cfe`, `d876196`), and the answer on the section
+  headings after two trials of the title's minimum (`2a96c54`).
+- The change, in one commit (`91f58d0`): the page title grows from 24
+  pixels at 320 to 32 at 1366, and the footer's text from 16 to 18,
+  over the column's band of widths, both written in the stylesheet as
+  the column's range is (`title-size`, `footer-text-size` in
+  `style/input.css`, measured against the "page" container); the old
+  rules at 768 pixels are gone; the section headings in the text column
+  are 1.2 times its text; the header's browser test checks the title
+  on its range's line, and a new test in the same file checks the
+  footer's text on its own; the ranges are written for the tests in
+  `end2end/tests/support.ts` (`TITLE_RANGE`, `FOOTER_RANGE`), next to
+  the column's. The general comment of the column's rule, which still
+  described the section headings as 1.5 times the text, was corrected.
+- Every check of the pipeline passed: formatting, clippy, 423 Rust
+  tests, the type check and 287 browser tests (one skipped, as before
+  the change).
+
+## Cautions
+
+- **A long word bounds the title's minimum.** At 320 pixels, with the
+  reader's text spacing, the longest invented title of the header's
+  test leaves about 8 pixels at 24 (an estimate from the trials) and
+  overflows from 25. Raising the minimum needs long words to break
+  first ([break long words in the text](break-long-words-in-the-text.md)).
+  The invented titles are in Italian while the site is in English; the
+  limit they stand for is a count of graphemes, so a long word may
+  come in any language.
+- **1366 is not among the header test's widths.** The title's 32
+  pixels at 1366 was measured by hand; the test checks the line at
+  1280 and the bound at 1920.
+- **The ranges are written twice**, in the stylesheet and in the
+  tests, by hand, as the column's is, until they move to the
+  configuration
+  ([read the column text's range from the configuration](read-the-column-text-range-from-the-configuration.md)),
+  which now has three ranges to move, not one.
+- **Zoom enlarges the title less than it says**: 167 per cent at 200
+  per cent zoom, at 1366 pixels; 200 per cent is reached at 250 per
+  cent zoom.
 
 ## References
 
