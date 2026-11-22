@@ -19,10 +19,15 @@ page to show its changes.
 
 ## What is known
 
-- **What the frame changes at each breakpoint** (`src/page_frame.rs`):
-  at 768 pixels the written logo gives way to the logo drawn in
-  characters; at 1280 pixels the header becomes one row, with the
-  title beside the logo. Its text grows within ranges of its own over
+- **What the frame changes at each breakpoint** (`src/page_frame.rs`,
+  checked by the agent on 2026-11-22): one change only, at 1280
+  pixels, where the header goes from two rows (the logo and the menu's
+  room above the line, the title below it) to one row, with the title
+  between the logo and the menu's room. Until the logo was reviewed
+  ([card](review-the-logo.md), closed on 2026-11-22) there was a
+  second change, at 768 pixels, where the written logo gave way to the
+  logo drawn in characters; the new logo, a round icon with the name
+  beside it, is the same at every width. Its text grows within ranges of its own over
   the page's widths from 320 to 1366 pixels, written in the
   stylesheet (`style/input.css`): the title from 24 to 32 pixels, the
   footer's text from 16 to 18; the section headings are 1.2 times the
@@ -91,7 +96,10 @@ was superseded.
   goes inside the column. Came from the column's page.
 - **Whether the frame is one page, or the header, the logo and the
   title are pages of their own**, whose boundaries were still to be
-  drawn; the logo is under review.
+  drawn. For the logo, the same question is asked by the card
+  [decide whether the logo is a component of its own](decide-whether-the-logo-is-a-component.md),
+  opened on 2026-11-22 once the logo was reviewed: the answer here
+  answers it there too.
 - **Whether the list of devices can come from Firefox's**, the one
   the user reads in its responsive design mode: its address, its
   licence, and whether the tests' list should follow it.
@@ -105,7 +113,10 @@ was superseded.
   ([review the logo](review-the-logo.md)), decided by the user on
   2026-11-22: the logo's change at 768 pixels, one of the two changes
   this page would show, is expected to go, so the page is made once
-  the logo is settled.
+  the logo is settled. Met on 2026-11-22: the logo's card and the
+  card that hid the header's line under the logo's name
+  ([card](hide-the-header-line-under-the-logo-name.md)) are closed,
+  and the change at 768 pixels is gone.
 
 ## References
 
@@ -126,4 +137,9 @@ was superseded.
 - [Build a design system](build-a-design-system.md): the card
   the style guide belongs to.
 - [Review the logo](review-the-logo.md): a page of the logo would
-  describe something that may change.
+  describe something that may change; closed on 2026-11-22.
+- [Hide the header's line under the logo's name](hide-the-header-line-under-the-logo-name.md):
+  the last change to the header before this page.
+- [Decide whether the logo is a component of its own](decide-whether-the-logo-is-a-component.md):
+  the same question as this card's on the frame's pages, from the
+  logo's side.
