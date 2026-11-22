@@ -79,6 +79,16 @@ The ones known when the card was written; there may be more.
   overlap, prove the reasoning above.
 - **Whether the text grows with the browser's zoom**, as for the
   column.
+
+  **Answered by the user on 2026-11-22.** The column's decision holds
+  for the frame: zoom is enough for WCAG 1.4.4, read as "200 per cent
+  reachable", and the bounds stay in pixels, so the browser's
+  font-size setting is not followed, as today. The agent measured,
+  at 1366 pixels, the worst width, how much 200 per cent zoom really
+  enlarges the text, since zoom narrows the width the stylesheet sees
+  and a text that grows with the width loses part of it: the column
+  187 per cent, the footer 186, the title 167, the widest range. All
+  three reach 200 per cent at 250 per cent zoom.
 - **Whether a browser test checks the footer's text size.** Came up
   during the work: no browser test checks it today, neither the 16
   pixels below 768 nor the 18 from 768, so its change to a range
