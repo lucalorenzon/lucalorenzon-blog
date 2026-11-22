@@ -174,6 +174,15 @@ The ones known when the card was written; there may be more.
 - **What the browser test of the column checks**: that the size stays
   within the range at several widths, and whether it runs with the
   scrollbars shown.
+
+  **Answered by the user on 2026-11-22.** The visible behaviour is
+  enough: the text is 18 pixels at 320 and 20 from 1366, between the
+  two in between, growing with the width without jumps; the column
+  stays 60 characters of its own font at most, and centred. The test
+  runs with the scrollbars hidden, as every other test: so it does
+  not notice a missing container declaration, which would make the
+  text follow the window's width instead of the page's, a scrollbar's
+  width apart.
 - **What happens to the browser tests built on the jump at 768.**
   Added on 2026-11-22, after the browser tests ran on the branch. The
   cases at the limit of the tables and of the code block were placed
