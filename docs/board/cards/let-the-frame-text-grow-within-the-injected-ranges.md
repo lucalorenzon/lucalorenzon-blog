@@ -104,6 +104,30 @@ The ones known when the card was written; there may be more.
 - [Let the column's text grow within a range the site injects](let-the-column-text-grow-within-an-injected-range.md),
   which defines the ranges.
 
+## Acceptance tests
+
+Agreed with the user on 2026-11-22. The card is done when:
+
+1. **The title's growth.** The page title is 24 pixels at 320, 32
+   pixels at 1366 and at 1920, and at the widths of the header's test
+   it follows its range's straight line, within 0.05 pixels.
+2. **The footer's growth.** The footer's text is 16 pixels at 320, 18
+   pixels at 1366 and at 1920, and at the same widths it follows its
+   range's straight line, within 0.05 pixels: a new check.
+3. **The rest of the header.** The logo still changes at 768 pixels,
+   the header becomes one row from 1280 with the title on two lines at
+   most, and the gaps and the absence of overlaps hold, with the
+   longest titles and with the reader's spacing (already checked; the
+   checks stay).
+4. **The old rules.** `md:title-below-line-large` and
+   `md:footer-text-large` are gone from the Rust code and from the
+   stylesheet, and the title's rule from 1280 pixels no longer fixes
+   32 pixels.
+5. **The descriptions.** The browser tests' README and the tests'
+   comments are updated for every test touched.
+6. **The pipeline.** Every check of the pipeline passes: formatting,
+   clippy, the Rust tests, the type check and the browser tests.
+
 ## References
 
 - [Try a breakpoint declaration on the text column](try-a-breakpoint-declaration-on-the-text-column.md):
