@@ -98,6 +98,33 @@ The ones known when the card was written; there may be more.
   that the footer's text lies on its range's straight line, 16 pixels
   at 320 and 18 from 1366, within 0.05 pixels, as the title's and the
   column's do.
+- **Whether the page title still stands out from the section
+  headings.** Came up during the work, from the screenshots of the
+  first version. The section headings in the text column (`h2`,
+  among them the titles of the home page's boxes) were 1.4 times the
+  column's text, so 25.2 pixels at 320 and 26.4 at 768: with its new
+  range the page title, 24 and 27.4 pixels there, was smaller than
+  them on phones and only about one pixel larger on tablets.
+
+  **Answered by the user on 2026-11-22, after two trials.** The page
+  title's minimum stays at 24 pixels. A minimum of 26, then of 25,
+  was tried: with either, at 320 pixels and with the reader's text
+  spacing (WCAG 1.4.12), the longest title the build accepts made the
+  page scroll sideways, by 14 and by 3 pixels, since a long word in it
+  ("Contestualizzazione", in the header test's invented titles)
+  cannot wrap; the card
+  [break long words in the text](break-long-words-in-the-text.md)
+  is the one that could lift that bound. The section headings go
+  instead from 1.4 to 1.2 times the column's text, 21.6 pixels at 320
+  and 24 at 1366, with 2 times the text still above them; this
+  revises the size the user chose on 2026-11-05 in the card
+  [give the articles' code, quotes and tables a look](design-look-of-articles.md).
+  No WCAG criterion sets the size of headings; the site's own bound
+  is the contrast of the heading colour, enough for large text only
+  (18.66 pixels in bold), which 1.2 times the text still is. The user
+  accepted, from the curriculum's screenshots, that the section
+  headings come closer to the roles (`h3`, 1.1 times the text, in
+  italics): about 2 pixels apart instead of 5 or 6.
 
 ## Dependencies
 
@@ -123,9 +150,13 @@ Agreed with the user on 2026-11-22. The card is done when:
    `md:footer-text-large` are gone from the Rust code and from the
    stylesheet, and the title's rule from 1280 pixels no longer fixes
    32 pixels.
-5. **The descriptions.** The browser tests' README and the tests'
+5. **The section headings.** The section headings in the text column
+   are 1.2 times the column's text, with 2 times the text above them,
+   and still larger than the text (already checked; the check stays).
+   Added on 2026-11-22, with the user's answer above.
+6. **The descriptions.** The browser tests' README and the tests'
    comments are updated for every test touched.
-6. **The pipeline.** Every check of the pipeline passes: formatting,
+7. **The pipeline.** Every check of the pipeline passes: formatting,
    clippy, the Rust tests, the type check and the browser tests.
 
 ## References
@@ -140,3 +171,7 @@ Agreed with the user on 2026-11-22. The card is done when:
   the page that shows the frame at several widths.
 - [Review the logo](review-the-logo.md): the logo's change at 768
   pixels, which the title's growth no longer follows.
+- [Break long words in the text](break-long-words-in-the-text.md):
+  what could lift the bound a long word sets on the title's minimum.
+- [Give the articles' code, quotes and tables a look](design-look-of-articles.md):
+  where the section headings' size was first chosen.
