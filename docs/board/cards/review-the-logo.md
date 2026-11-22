@@ -142,16 +142,40 @@ The ones known when the card was taken into work; there may be more.
   repository. What the screenshots showed: at 32 pixels the photo is
   a blue blot; from 48 the figure, the cloth and the pushchair are
   recognised; at these sizes the feet themselves cannot be made out,
-  so the line reads as a circle resting on it. Still open: the size of
-  the name, whether the header is aligned again around the icon, and
-  how far the circle may reach into the title below the line on
-  narrow screens, with long titles.
+  so the line reads as a circle resting on it.
+
+  **Answered by the user on 2026-11-22, for the name.** The name is
+  written in Literata bold italic, the size of the title (from 24 to
+  32 pixels), with its baseline on the header's line, so the "@"
+  reaches below it as the pushchair's wheels do. The pixel font
+  (IBM VGA 8x16) leaves the site with it: the user drops for good the
+  reference to the BBS of 1985 that ADR-003 kept in the logo. Chosen
+  on screenshots at double pixel density, the user's screen, among the
+  pixel font, Literata bold, regular and bold italic: bold looked like
+  a second title beside the page's, regular looked thin beside the
+  icon. Then tried in a copy of the built site served on this machine:
+  the title, too, with its baseline on the line, from 1280 pixels up
+  where it sits beside the name; the user rejected it, since the page
+  looked badly formatted and the title read worse, so the title stays
+  where the site puts it today.
+
+  Still open: whether the header is aligned again around the icon and
+  the name, and how far the circle may reach into the title below the
+  line on narrow screens, with long titles.
 - **How the link keeps one name.** With an alternative text on the
   icon and the name written beside it, a screen reader may say the
   name twice; the link already has a name of its own.
 - **In which formats and sizes the images are made**, screens with
   dense pixels included, and whether the favicon is made again from
   the same crop.
+
+  **Answered by the user on 2026-11-22, in part.** The user's screen
+  has double pixel density; on it the icon is clear, while at normal
+  density it looked grainy, since a 48-pixel image holds only 48
+  pixels of the photo. The icon is the sharpened version: the crop
+  reduced to size, then sharpened (unsharp mask, radius 1.2, 80 per
+  cent, threshold 2), with colour raised by 15 per cent and contrast
+  by 8. The formats and the favicon are still open.
 - **What ADR-003 says once the drawn logo is gone.**
 
 ## References
