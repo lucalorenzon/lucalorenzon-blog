@@ -15,7 +15,8 @@ by the agent and a section that says only what it should hold.
 ## What is known
 
 - **The texts to write**, as the agent read the user's request
-  ("all three texts") on 2026-11-22; the reading is not confirmed yet:
+  ("all three texts") on 2026-11-22, confirmed by the user the same
+  day:
   1. the frame page's text, `src/page_frame.md`, a whole draft by the
      agent, written while building the page
      ([card](show-the-page-frame-in-the-style-guide.md)), with its
@@ -51,6 +52,8 @@ by the agent and a section that says only what it should hold.
 The ones known when the card was written; there may be more.
 
 - **Whether the three texts are the ones the user meant.**
+
+  **Answered by the user on 2026-11-22.** Yes, the three listed above.
 - **Whether the placeholder marks go** once the author's text is in,
   or something of them stays.
 
