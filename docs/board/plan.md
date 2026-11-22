@@ -94,20 +94,17 @@ live since 2026-10-26
     footer from 16 to 18, the section headings at 1.2 times the text),
     then the frame's page, which shows the column too
     ([card](cards/show-the-page-frame-in-the-style-guide.md),
-    in work, waiting for the logo below).
-- [Review the logo](cards/review-the-logo.md), in work, before the
-  frame's page: one icon, the favicon's photo cut to a circle, standing
-  on the header's line, with the name beside it in Literata bold
-  italic on the same line, in place of the written logo and the logo
-  drawn in characters; the role `logo` moves to Literata, so the pixel
-  font leaves the stylesheet. Agreed on a trial and cut: the card
-  keeps the icon and the name on the line. Built, every check passing,
-  not committed: it waits in the working tree for the user's approval
-  of the screenshots, its last acceptance test.
-  What it left, after it:
+    in work; the logo below is done).
+- [Review the logo](cards/review-the-logo.md), done, not published
+  yet: one icon, the favicon's photo cut to a circle, standing on the
+  header's line, with the name beside it in Literata bold italic on
+  the same line, in place of the written logo and the logo drawn in
+  characters; the role `logo` moved to Literata.
+  What it left, after it: first
   the line hidden under the name like a thread
   ([card](cards/hide-the-header-line-under-the-logo-name.md)),
-  the pixel font's files and ADR-003
+  the one remark of the user on the screenshots, next;
+  then the pixel font's files and ADR-003
   ([card](cards/remove-the-pixel-font.md)),
   the favicon made from the logo's crop
   ([card](cards/make-the-favicon-from-the-logo-crop.md)),

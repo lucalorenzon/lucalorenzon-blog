@@ -1,7 +1,8 @@
 # Review the logo
 
 - **Created:** 2026-11-05
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-22
 
 ## Why
 
@@ -363,29 +364,9 @@ The ones known when the card was taken into work; there may be more.
 
 ## Dependencies
 
-- **The slice's code, not committed.** Built on 2026-11-22 by a
-  sub-agent and checked by the agent: formatting, clippy, 425 unit
-  tests, the build, the type check and the browser tests (298 passed,
-  one skipped as before) pass, which covers the acceptance tests 1 to
-  9, 12 and 14; 10 and 11 were checked by the agent. It waits in the
-  working tree of the user's machine, not committed, for test 13: the
-  user's approval of the screenshots of the real header, made by the
-  agent in `target/logo-look/shots/real-*.png` (not committed; the
-  script that made the images is beside them, `make_logo.py`), at 375
-  and 1366 pixels, dark and light. The name
-  stands on the line with no measure of the font: the logo's link is a
-  line of text of height 0, the icon sits on its baseline with a
-  margin of -20 per cent, and the name takes no height
-  (`style/input.css`, `logo-link`, `logo-icon`, `logo-name`).
-- **The trial files**, outside the repository and not committed: the
-  original photo in `assets/logo-original.jpg`, kept out of git on
-  purpose (see the answer on what goes into the repository) and, since
-  2026-11-22 on the user's choice, listed in `.git/info/exclude`, so
-  that git ignores it on this machine only, and the
-  trial in `target/logo-look/`: the circular crops (`circle-*.png`,
-  the sharpened ones `circle-sharp-*.png`), the screenshots and the
-  copy of the site with the logo (`mock-site/`, its script
-  `logo-mock.js`). `target/` is wiped by a clean build.
+None left. While the slice waited for the screenshots' approval, its
+code sat uncommitted in the working tree; it is now in the commit named
+in the recap.
 
 ## Acceptance tests
 
@@ -444,9 +425,52 @@ Before the commit:
 13. The user sees screenshots of the real header on a narrow screen and
     on a laptop, on both backgrounds, and approves them. *Check by
     eye.*
+
+    **Approved by the user on 2026-11-22.** The one remark, the line
+    that runs on under the letters of the name, is the thread this card
+    left out on purpose
+    ([hide the header's line under the logo's name](hide-the-header-line-under-the-logo-name.md)).
 14. The pipeline's checks pass: formatting, clippy, unit tests, type
     check, browser tests; the rows of `end2end/README.md` follow the
     tests that change. *Automatic.*
+
+## Recap
+
+- The card taken into work on 2026-11-22 (`1bccff9`), and its
+  questions answered over that day's sessions: the photo and its
+  rights (`1c1ff90`, `2dc9918`), the icon on the line (`aa96ceb`), the
+  name in Literata bold italic (`11edd01`), the line as a thread
+  (`6abb71b`); the card cut and its acceptance tests agreed
+  (`3e1d13d`, `ba94ac6`); the slice built and left waiting for the
+  screenshots (`eefb948`).
+- The slice, in one commit (`3b44229`): the round icon in place of the
+  logo drawn in characters and of the name in the pixel font, at every
+  width, growing from 48 pixels at 320 to 64 at 1366 and crossing the
+  header's line at 80 per cent of its height; the name "Lvk@73r" in
+  Literata bold italic, the title's size, with its baseline on the
+  line, 6 pixels from the icon and leaning 5 degrees more than the
+  italic; the link's one name, the icon with an empty alternative
+  text; the role `logo` moved to Literata, with the fonts page's piece;
+  the four WebP files in `assets/logo/` with the notice inside each,
+  and the notice in `README.md`, `assets/logo/README.md` and the
+  licence page; the browser tests of the header, the accessibility
+  check without its exception for the drawn logo, and the font roles'
+  test on the name.
+
+## Cautions
+
+- **The name stands on the line with no measure of the font.** The
+  logo's link is a line of text of height 0, the icon sits on its
+  baseline with a margin of -20 per cent, and the name takes no height
+  (`style/input.css`, `logo-link`, `logo-icon`, `logo-name`). The
+  header's browser test checks the result, not the way it is reached.
+- **The original photo lives only on the user's machine**
+  (`assets/logo-original.jpg`, listed in `.git/info/exclude`). The way
+  the icons are made from it, the crop's position included, is written
+  in `assets/logo/README.md`; without the photo they cannot be made
+  again at other sizes.
+- **The trial files are in `target/logo-look/`**, wiped by a clean
+  build: the screenshots and the script that made the images.
 
 ## What it leaves
 
