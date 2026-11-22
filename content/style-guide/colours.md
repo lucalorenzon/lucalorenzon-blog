@@ -1,4 +1,4 @@
-Here are my choices on the colours of this site. I love dark pages, but I know many people don't. I started, selfishly, from the dark, because I wanted to recall the first BBS terminals: amber on black. Then I recognised my egocentrism and set out to destroy it, looking for what reads better for the readers. So I decided to let the scheme follow the reader's preference. Here you find the colours chosen for both schemes, light and dark.
+Here are my choices on the colours of this site. I love dark pages, but I know many people don't. I started from the dark, because I wanted to recall the first BBS terminals: amber on black. Then I changed my mind and looked for something easier to read, so the scheme follows the reader's preference. Here you find the colours chosen for both schemes, light and dark.
 
 ## Ink
 
@@ -18,4 +18,6 @@ To keep the meaning of the accent, I have tried to keep it on lines too. Because
 
 ## Code surface
 
-*Placeholder, to be written by the author: why the code surface, a background everywhere else, becomes the colour of a graphic on the code accent, and where the site uses it: the wrap toggle's icon, when the lines wrap.*
+To make code blocks stand out from the rest of the page, I gave them a background of their own, in both the dark and the light scheme. When I turned the `Wrap` checkbox into an icon, I needed a way to show its state. While the lines are not wrapped, the icon is drawn in the code accent on the code surface; once they are, the two colours swap, and the icon takes the colour of the code surface on a square of the code accent.
+
+The site's build allows this pair for graphics only, never for text. A graphic needs a contrast of 3:1, and this pair goes well beyond it in both schemes, as the samples of this section show.
