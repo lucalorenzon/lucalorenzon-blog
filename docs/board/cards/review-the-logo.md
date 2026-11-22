@@ -31,6 +31,13 @@ this card could be decided on its own.
   only the band above the header line black.
 - **The user's leaning:** drop the drawn logo, and show the written
   logo everywhere, on both backgrounds.
+- **Another option: a fixed icon in place of both logos.** The idea
+  came up in the session of 2026-11-22 (minute
+  `docs/board/sessions/2026-11-22-grow-the-frame-text-within-ranges.md`),
+  where the user also said they expect the logo's change at 768 pixels
+  to go, and tied the title's size to the text rather than to the
+  logo. Added here at the user's request on 2026-11-22, beside the
+  leaning above; neither is decided.
 - **What the drawn logo touches today:** the frame shared by every page
   (`src/page_frame.rs`, the `LOGO` constant and its `div`), two rules
   in `style/input.css`, two unit tests in `src/home_page.rs`, the
