@@ -145,6 +145,17 @@ The ones known when the card was written; there may be more.
 - **How the Rust checks of the classes learn the containers**, so a
   mistyped container name or size stops the build instead of leaving a
   rule out in silence.
+
+  **Answered by the user on 2026-11-22**: the question falls for this
+  card. The trials needed no new class in the Rust code: the container
+  is declared inside the stylesheet's rule the page wrapper already
+  uses (`page-fills-screen`), and the growth lives in the column's
+  rule (`long-text-column`), with no threshold and no prefix; the Rust
+  code only loses the class `md:long-text-large`. A different risk
+  stays, which the class checks would not see anyway: without the
+  container's declaration, the unit that measures it falls back to the
+  window's width, and the text still grows, a few pixels off because
+  of the scrollbar, with no error. Only a browser test can notice it.
 - **What the browser test of the column checks**: that the size stays
   within the range at several widths, and whether it runs with the
   scrollbars shown.
