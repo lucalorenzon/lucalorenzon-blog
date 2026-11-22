@@ -59,6 +59,21 @@ code, which is the problem the spike was opened for.
   smallest size, 18 pixels (`COLUMN_LINE_DIVISOR`), which the range
   should not go below without checking it.
 
+- **How the trials were run** (2026-11-22): on a throwaway branch,
+  the page's wrapper (`div#top`) declared a container named `page`,
+  and the column's size written as a value clamped between the
+  smallest and the largest size, growing linearly with the
+  container's width (`cqi`) between two widths; the four numbers
+  were stylesheet variables, changed live from a comparison page that
+  showed the site in frames from 320 to 1366 pixels wide. Checked in
+  Chromium and Firefox.
+- **The size variable has to be registered** (`@property
+  --long-text-size`, of type `<length>`): otherwise the code block and
+  the table, which are containers too and use the variable, would
+  compute its `cqi` against their own width. Registered, the variable
+  reaches them already computed in pixels; checked on the branch,
+  where the code block's spacing followed the text.
+
 ## Questions to answer
 
 The ones known when the card was written; there may be more.
@@ -76,6 +91,21 @@ The ones known when the card was written; there may be more.
   [read the column text's range from the configuration](read-the-column-text-range-from-the-configuration.md).
 - **Which widths the range spans**, and whether the sizes stay 18 and
   20 pixels.
+
+  **Answered by the user on 2026-11-22**, after trying values on a
+  comparison page: the text grows from 18 pixels at a page width of
+  320 to 20 pixels at 1366. Below 18 the text at 320 pixels becomes
+  hard to read; above 20 it looks too large at 1366; 18 to 20 keeps
+  the text more uniform across widths. What the trials showed:
+  - The end of the band decides how large the text is on tablets and
+    laptops, not how long the lines are: where the column is at its
+    widest, it widens with the text and keeps about 59 characters.
+  - On phones the column fills the page, so the length of a line
+    depends mostly on the smallest size: about 30 characters at 320
+    pixels with 18-pixel text.
+  - With the band ending at 1366, the text is smaller than today
+    between 768 and 1366 pixels: about 18.9 pixels at 768, against 20
+    today.
 - **Whether the text still grows with the browser's zoom**, as WCAG
   1.4.4 asks, with the smallest size in units of the page's font.
 - **How the Rust checks of the classes learn the containers**, so a
