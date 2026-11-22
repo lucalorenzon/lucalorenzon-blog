@@ -125,6 +125,10 @@ The ones known when the card was taken into work; there may be more.
   (`content/licence.md`) says that, unless a page says otherwise, what
   is read on the site may be reused, and that images by other authors
   name their source.
+
+  **Answered by the user on 2026-11-22, for the notice.** The notice
+  names Gioia Greifenberg as the author of the photo, as the site's
+  licence page asks of images by other authors.
 - **How large the icon and the name are**, and whether they grow
   within a range of the page's width, as the title does.
 - **How the link keeps one name.** With an alternative text on the
