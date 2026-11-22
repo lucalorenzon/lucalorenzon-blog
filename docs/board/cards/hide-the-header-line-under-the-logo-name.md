@@ -62,10 +62,46 @@ The ones known when the card was written; there may be more.
 
 - **How the two points are found**: computed by the build, checked by a
   browser test, or both.
+
+  **Answered by the user on 2026-11-22.** Neither: no point is found.
+  Asked by the agent where the knowledge of the two points should
+  live, the user asked whether CSS could intersect two elements, or
+  mask the line with the name in the page's colour. The agent answered
+  that CSS has no intersection of two elements (`clip-path` takes
+  shapes, `mask` images and gradients, `element()` works in Firefox
+  only), and tried three ways on the real header, with the style added
+  in the browser to the built site (`target/thread-look/`, not
+  committed), at 375 and 1366 pixels, dark and light, at double pixel
+  density:
+  - *the name in negative*, a ring of the page's colour around each
+    letter (`text-shadow`, or a stroke painted under the letters): short
+    dashes of line stay between the letters, and the ring cuts the line
+    off the feet of the "L" and of the "r";
+  - *the name's box* in the page's colour, behind the letters: the line
+    disappears under the whole name and reaches the foot of the "L",
+    but comes back 8 to 10 pixels after the foot of the "r", whose
+    italic stroke reaches further right at the top than at the foot,
+    where the box ends;
+  - *the box trimmed*: the same colour stopping 0.32 times the size of
+    the letters before the box's right end
+    (`linear-gradient` of the page's colour, `background-size:
+    calc(100% - 0.32em) 100%`): the line comes back at the foot of the
+    "r", measured on the screenshots at both widths and in both themes,
+    and looks like the trial with a script.
+
+  The user chose the box trimmed. No script and no measure in the
+  build; its price is the one number, 0.32, which depends on the "r" of
+  Literata bold italic: a change of the role `logo`'s font, or of the
+  name's last letter, needs it measured again.
 - **What happens when the font of the role `logo` changes**: whether
   the build stops, as it does when a code font moves the wrap toggle's
   threshold
   ([measure the fonts again when they change](measure-the-fonts-again-when-they-change.md)).
+
+  **Proposed by the agent on 2026-11-22, not answered yet.** With the
+  box trimmed, a browser test that checks the line touching the feet of
+  the "L" and of the "r" would fail, and stop the pipeline, when the
+  font or the name changes.
 
 ## Dependencies
 
