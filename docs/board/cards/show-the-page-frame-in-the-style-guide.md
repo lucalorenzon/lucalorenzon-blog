@@ -1,7 +1,8 @@
 # Show the page frame in the style guide
 
 - **Created:** 2026-11-21
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-22
 
 ## Why
 
@@ -292,6 +293,65 @@ same day, that the check that the Markdown holds no HTML reads
 `content/`: it reads only the articles' bodies
 (`src/article_page.rs`). Test 5 covers this page; whether the other
 pages need it is left to the card that moves their texts.
+
+## Recap
+
+Every question was answered on 2026-11-22, the card was cut to the
+page itself, and the page was built.
+
+### The decisions
+
+- The frame stays one page, its parts not cut into components until
+  the header's dynamic behaviours give them their shape (`c4ae12a`);
+  the card on the logo as a component waits for them.
+- The frame's tests move from the home page to its page; the net and
+  the "page not found" stay (`f9674b5`); the move itself went to a
+  card of its own.
+- No `iframe`: the page explains what changes, inside the real frame
+  (`741e654`).
+- The explanation lives beside the code, in `src/page_frame.md`
+  (`5706e12`), recorded in
+  [ADR-005](../../adr/ADR-005-explain-a-component-beside-its-code.md)
+  (`5e8f37c`); it keeps the site text's licence, CC BY 4.0
+  (`b7d28e3`), and the page is dated by its text (`5b56cea`).
+- The section headings' size belongs to the frame, their look to the
+  text page (`e0f1589`).
+- The acceptance tests and the draft text (`5a6339e`); the cuts
+  (`de92349`, `4ba3e35`).
+
+### What was built
+
+Commit `b5a0cfa`: the page `style-guide/frame.html`
+(`src/style_guide/frame_page.rs`), whose text is `src/page_frame.md`,
+also the documentation of `src/page_frame.rs`; the index lists it after
+the fonts; the sitemap lists it with the date of its text, and the
+content dates step also reads the `.md` files in `src/`; a unit test
+checks that the page's Markdown holds no HTML; the breadcrumb and
+"Back to top" unit tests cover the page; the licence of the text
+beside the code is written in `content/README.md` and in the root
+`README.md`. The code was written by a sub-agent on Claude Sonnet 5.5.
+
+### The acceptance tests
+
+All nine pass. 1 to 5 by unit tests (434 in Rust, 12 in Python);
+`cargo doc --no-deps` runs without warnings (test 2). The draft (6),
+the licence lines (7) and the screenshots on a 375-pixel phone and a
+1366-pixel laptop (9) were approved by the user on 2026-11-22. Every
+check of the pipeline passed locally (8): formatting, clippy, unit
+tests, the editor's Python checks, the type check, and 331 browser
+tests, one skipped, the net included on the new page.
+
+## Cautions
+
+- **The page's text is a placeholder**, written by the agent, to be
+  rewritten by the user; with one section of the colours page, the
+  style guide has two placeholders.
+- **A page's source must be committed before the pipeline builds it**:
+  the pipeline stops on a source with no date, while a local build
+  only warns.
+- **The tab title** of a style guide page has the form
+  "<page> - Style guide - Luca Lorenzon": the agent's brief to the
+  sub-agent gave another form, corrected before the commit.
 
 ## What it leaves
 

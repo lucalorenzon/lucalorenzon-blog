@@ -94,7 +94,10 @@ live since 2026-10-26
     footer from 16 to 18, the section headings at 1.2 times the text),
     then the frame's page, which shows the column too
     ([card](cards/show-the-page-frame-in-the-style-guide.md),
-    in work, cut to the page itself; the logo below is done), then
+    done, not published yet: its text, a draft by the agent for the
+    user to rewrite, lives beside the frame's code, as
+    [ADR-005](../adr/ADR-005-explain-a-component-beside-its-code.md)
+    says), then
     the frame's tests moved onto it from the home page
     ([card](cards/move-the-frame-tests-to-its-page.md)) and the
     column's from the text page
