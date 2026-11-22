@@ -1,0 +1,1 @@
+../cards/follow-a-known-device-list-in-the-tests.md

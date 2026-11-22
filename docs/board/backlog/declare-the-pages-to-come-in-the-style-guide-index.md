@@ -1,0 +1,1 @@
+../cards/declare-the-pages-to-come-in-the-style-guide-index.md

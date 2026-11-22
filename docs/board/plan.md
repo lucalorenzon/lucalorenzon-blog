@@ -94,7 +94,9 @@ live since 2026-10-26
     footer from 16 to 18, the section headings at 1.2 times the text),
     then the frame's page, which shows the column too
     ([card](cards/show-the-page-frame-in-the-style-guide.md),
-    in work; the logo below is done).
+    in work; the logo below is done), and last the index's list of
+    the pages to come
+    ([card](cards/declare-the-pages-to-come-in-the-style-guide-index.md)).
 - [Review the logo](cards/review-the-logo.md), done, not published
   yet: one icon, the favicon's photo cut to a circle, standing on the
   header's line, with the name beside it in Literata bold italic on
@@ -126,6 +128,9 @@ live since 2026-10-26
   does the same with the column's text: the column steps there, and
   the six-column table changes form more than once as the page
   widens.
+- [Follow a known device list in the browser tests](cards/follow-a-known-device-list-in-the-tests.md),
+  perhaps Firefox's, and give the tests' 320 a name that is not the
+  iPhone SE the user looks at.
 - [Take the measures from the configured fonts](cards/take-the-measures-from-the-configured-fonts.md),
   in the build, in the browser, instead of Literata's widths generated
   by hand and Hack's advance written in the code.

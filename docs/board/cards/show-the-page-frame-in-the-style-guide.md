@@ -77,9 +77,9 @@ page to show its changes.
 
 ## Questions to answer
 
-The ones known when the card was written; there may be more. The
-last three come from the breakpoints page's card, still open when it
-was superseded.
+The ones known when the card was written; there may be more. Three
+more came from the breakpoints page's card, still open when it was
+superseded; they left this card on 2026-11-22 (see "What it leaves").
 
 - **Whether the `iframe` passes the accessibility checks**, the
   build's and axe's best practices, and how wide a sample may be on a
@@ -151,12 +151,6 @@ was superseded.
   together, as the text column was. The agent added one point: the
   page's tests check what the visitor sees, not the code's
   boundaries, so they stay true after a later cut and guard it.
-- **Whether the list of devices can come from Firefox's**, the one
-  the user reads in its responsive design mode: its address, its
-  licence, and whether the tests' list should follow it.
-- **What the tests' 320 is called**, since it is not the iPhone SE
-  the user looks at.
-- **How the index declares the pages to come.**
 
 ## Dependencies
 
@@ -168,6 +162,19 @@ was superseded.
   card that hid the header's line under the logo's name
   ([card](hide-the-header-line-under-the-logo-name.md)) are closed,
   and the change at 768 pixels is gone.
+
+## What it leaves
+
+Cut by the user on 2026-11-22, to keep the card on what publishing
+the style guide needs:
+
+- Whether the list of devices can come from Firefox's, and what the
+  tests' 320 is called: they concern every browser test, not this
+  page. Card
+  [follow a known device list in the browser tests](follow-a-known-device-list-in-the-tests.md).
+- How the index declares the pages to come: it concerns the index,
+  and is needed before publishing. Card
+  [declare the pages to come in the style guide's index](declare-the-pages-to-come-in-the-style-guide-index.md).
 
 ## References
 
@@ -194,3 +201,7 @@ was superseded.
 - [Decide whether the logo is a component of its own](decide-whether-the-logo-is-a-component.md):
   the same question as this card's on the frame's pages, from the
   logo's side.
+- [Follow a known device list in the browser tests](follow-a-known-device-list-in-the-tests.md)
+  and
+  [declare the pages to come in the style guide's index](declare-the-pages-to-come-in-the-style-guide-index.md):
+  the cards cut from this one.
