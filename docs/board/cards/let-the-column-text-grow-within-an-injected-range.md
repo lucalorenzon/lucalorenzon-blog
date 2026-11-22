@@ -199,6 +199,21 @@ The ones known when the card was written; there may be more.
   text being 20 pixels there. That the move is enough is supposed,
   not yet checked. The tables keep a check of the same kind: on every
   width, no table may be wider than its column.
+- **Which widths the tests of what is inside the column run on.**
+  Added on 2026-11-22: they were one width per size of the column
+  (320, 393, 412, 767 and 768,
+  [check at every width only what depends on it](check-at-every-width-only-what-depends-on-it.md)),
+  a rule that gives no finite set once the column grows smoothly up
+  to 1366.
+
+  **Answered by the user on 2026-11-22**: 320, 393, 412, 843 and
+  1366. 767 and 768 go, since they no longer tell anything about the
+  column; 1366 comes in, where the column reaches its widest, as the
+  code block's case at the limit needs; 843, where the text is 19
+  pixels, is a token presence in the middle, so the tests see the
+  text at 18, 19 and 20 pixels. The widths between 412 and 1366 stay
+  covered by the tests of layout and readability that run on every
+  device.
 - **Whether a line of the column stays near 60 characters** at every
   width of the range.
 
@@ -228,6 +243,8 @@ went, with the range's place in the configuration, to the card
 
 ## References
 
+- [Check at every width only what depends on it](check-at-every-width-only-what-depends-on-it.md):
+  the card that chose one width per size of the column.
 - [Find cases at the limit for the growing column](find-cases-at-the-limit-for-the-growing-column.md):
   cut from this card, for the tables' cases taken out.
 - [Measure the fonts again when they change](measure-the-fonts-again-when-they-change.md):
