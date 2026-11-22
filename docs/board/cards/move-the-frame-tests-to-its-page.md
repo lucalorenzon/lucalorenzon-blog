@@ -1,7 +1,7 @@
 # Move the frame's tests to its page
 
 - **Created:** 2026-11-22
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
@@ -47,11 +47,59 @@ The ones known when the card was written; there may be more.
   of these checks depended on what the home page holds below the
   frame.
 
+  **Answered by the agent on 2026-11-22, the last point accepted by
+  the user the same day.** Four of the six tests look only at the
+  frame: the header's line under the name, the footer's text size,
+  and, apart from one rule, the header's layout and the header with
+  the reader's text spacing. That one rule, in both, is that the page
+  does not scroll sideways, which looks at the whole page; for the
+  home page the net already checks it on every page of the sitemap at
+  320 pixels, with and without the reader's spacing
+  (`content-layout.spec.ts`). The header's layout uses the home page's
+  real title, "Home Page", and checks it centred; the frame page's
+  "Page frame" is as short, so the rule holds. What is lost is in the
+  frame's accessibility and contrast: axe examines today the whole
+  home page at the three width bands, its list of articles included,
+  and after the move only at the laptop's width, through the net. The
+  list changes form with the width; its layout stays checked at every
+  width of the column by the home page's own tests in
+  `content-layout.spec.ts`. The user accepted that the list is
+  examined by axe at the laptop's width only, as every other page of
+  content (ADR-004).
+
 ## Dependencies
 
 - The card
   [show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md),
   which builds the page the tests move to.
+
+## Acceptance tests
+
+Agreed with the user on 2026-11-22.
+
+1. The four tests of the header and the footer (`header layout at
+   ${width}`, `the header's line under the name at ${width}`,
+   `header with the reader's text spacing`, `footer text size at
+   ${width}`) open the frame's page, `style-guide/frame.html`, not the
+   home page, still on every device.
+2. Where they use the home page's real title, "Home Page", they use
+   the frame page's, "Page frame"; the header's layout still checks it
+   centred, together with the two invented titles as long as the build
+   accepts.
+3. The frame's accessibility and contrast tests run on the frame's
+   page and on the "page not found", at the three width bands; the
+   home page leaves that list and stays in the net only, at the
+   laptop's width.
+4. No other test changes: neither the net, nor the home page's own
+   tests, nor those of the "page not found"; the number of tests stays
+   the same.
+5. In the same commit, the rows of the six tests in
+   `end2end/README.md` (the page they run on, and the text of "Why")
+   and the comments at the top of the two test files that name the
+   home page as the frame's page change with them.
+6. Every check of the pipeline passes, as in `build.yml`: formatting,
+   clippy, unit tests, type check and Playwright, the README's test
+   included.
 
 ## References
 
