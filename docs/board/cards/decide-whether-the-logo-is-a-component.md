@@ -19,8 +19,8 @@ would show it only as a part.
 
 - **The new logo** is an icon, a photo cut to a circle, with the name
   in Literata bold italic beside it, both standing on the header's
-  line, which belongs to the frame. The line may also disappear under
-  the name
+  line, which belongs to the frame. Since 2026-11-22 the line is also
+  hidden under the name, like a thread
   ([hide the header's line under the logo's name](hide-the-header-line-under-the-logo-name.md)).
 - **The text column was made a component and went back into the
   frame**
@@ -48,6 +48,10 @@ the header) tie the logo, the title and the header together. They are
 expected to give the components their shape; cut now, the logo would
 be cut from the wrong information. The card stays open, so the
 question comes back with those behaviours.
+
+**Confirmed by the user on 2026-11-22**, when the card came up in Now:
+nothing is done now, and the card goes to Later. When the header's
+behaviours are built, the question will come up by itself.
 
 ## Dependencies
 

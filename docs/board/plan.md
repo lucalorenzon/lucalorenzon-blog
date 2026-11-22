@@ -128,9 +128,7 @@ live since 2026-10-26
   ([card](cards/remove-the-pixel-font.md));
   the favicon made from the logo's crop, done, not published yet:
   one icon file of 16 and 32 pixels
-  ([card](cards/make-the-favicon-from-the-logo-crop.md)),
-  and whether the logo is a component of its own
-  ([card](cards/decide-whether-the-logo-is-a-component.md)).
+  ([card](cards/make-the-favicon-from-the-logo-crop.md)).
 - [Empty the site folder before the build](cards/empty-the-site-folder-before-the-build.md),
   in `scripts/build-site.sh`, so a file the site no longer has does
   not stay in `target/site` from an earlier build; done, not published
@@ -231,6 +229,9 @@ live since 2026-10-26
 
 ## Later
 
+- [Decide whether the logo is a component of its own](cards/decide-whether-the-logo-is-a-component.md),
+  when the header's behaviours are built: transparent, parallax, the
+  title and the logo's name moving into it.
 - [Give the screen reader container an Italian voice](cards/give-the-screen-reader-container-an-italian-voice.md),
   probably superseded now that the site is in English: decided by the
   screen reader card in Next.
