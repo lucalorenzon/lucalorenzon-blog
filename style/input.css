@@ -273,8 +273,7 @@ body {
 
   /* Code in a sentence takes the code accent, so it stands out from the ink
      around it; code blocks keep the ink. Hack, at 85% of the
-     text. A long identifier must break rather than push the page sideways
-     (Hack is wider than the pixel font was at the same line length). */
+     text. A long identifier must break rather than push the page sideways. */
   & :not(pre) > code {
     @apply font-code text-accent-code text-[0.85em] wrap-anywhere;
   }

@@ -1,7 +1,8 @@
 # Remove the pixel font
 
 - **Created:** 2026-11-22
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-22
 
 ## Why
 
@@ -106,6 +107,55 @@ Agreed with the user on 2026-11-22.
 7. Every check of the pipeline passes: formatting, clippy, unit tests,
    type check, browser tests and the check of the browser tests'
    README.
+
+## Recap
+
+Done on 2026-11-22: the card taken into work with its acceptance tests
+(`96c4d90`), ADR-006 written (`462ae6c`), and the pixel font removed in
+the commit that closes this card.
+
+- **The pixel font's files are gone**: `assets/fonts/ibm-vga-8x16/`
+  (the web font, its licence and its attribution) and its description
+  `config/fonts/ibm-vga-8x16.txt`. The built site holds no file of it.
+- **The native size is gone** from `src/style_guide/fonts.rs`: the
+  field, its reading and its check, and the `font-size` and
+  `max-width` it wrote into the fonts page's samples. A description
+  with `size` now stops the build as any unknown key does, and a unit
+  test checks it; another checks that no sample sets a size or a
+  width. The repository map in `CLAUDE.md` no longer lists the key.
+- **The key `display` keeps its five values**; the comment that
+  justified `block` with the pixel font now says the build copies the
+  property's values as they are.
+- **The fonts' unit tests** that read the pixel font's description use
+  a made-up font, `tiny`, written in the tests, for the third role; the
+  fonts page's test of a font with two roles uses Hack, for the code
+  and the logo. Two checks that a font with no role is not shown were
+  taken out: the real configuration no longer describes a font without
+  a role, so they could not fail.
+- **The comment in `style/input.css`** that compared Hack with the
+  pixel font lost that comparison.
+- **ADR-006** records the logo as a photo and a name, and supersedes
+  ADR-003's part on the logo; ADR-003 says so in its status line.
+- Every acceptance test passed: no file and no mention of the pixel
+  font is left outside the records, the changelog and the header's
+  guard; formatting, clippy, the 432 unit tests, the build, the type
+  check and the browser tests (331 passed, 1 skipped, the "page not
+  found" check that runs on the live site only) pass.
+
+## Cautions
+
+- **The build does not empty `target/site`** before writing it: on a
+  machine that built the site before this card, the pixel font's
+  folder stays in `target/site/fonts/` until the folder is removed by
+  hand. The pipeline builds from scratch, so the published site is not
+  affected.
+- **The header's browser test still looks for the pixel font** (a font
+  family with "VGA" or "pixel" in the header), on purpose: it guards
+  against the old logo coming back, and its rows in
+  `end2end/README.md` stay as they are.
+- **No font is described without a role** any more: a font added to
+  `config/fonts/` and given no role is not tested by the real
+  configuration, only by the made-up ones in the unit tests.
 
 ## References
 

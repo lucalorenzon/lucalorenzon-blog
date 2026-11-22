@@ -122,8 +122,10 @@ live since 2026-10-26
   ([card](cards/hide-the-header-line-under-the-logo-name.md)),
   the one remark of the user on the screenshots, done, not published
   yet;
-  then the pixel font's files and ADR-003
-  ([card](cards/remove-the-pixel-font.md)),
+  then the pixel font's files and ADR-003, done, not published yet:
+  the files gone with the fonts' native size, and ADR-006 in place of
+  ADR-003's part on the logo
+  ([card](cards/remove-the-pixel-font.md));
   the favicon made from the logo's crop
   ([card](cards/make-the-favicon-from-the-logo-crop.md)),
   and whether the logo is a component of its own

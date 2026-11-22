@@ -389,7 +389,6 @@ mod tests {
         let literata = html.find("<h2>Literata</h2>").unwrap();
         let hack = html.find("<h2>Hack</h2>").unwrap();
         assert!(0 < literata && literata < hack);
-        assert!(!html.contains("IBM VGA"));
     }
 
     /// Acceptance tests 1 and 2: under each title, the roles' line.
@@ -406,11 +405,11 @@ mod tests {
         }
     }
 
-    /// A configuration where the code and the logo share a font, the pixel one.
+    /// A configuration where the code and the logo share a font, Hack.
     fn shared_fonts() -> Fonts {
         let root = env!("CARGO_MANIFEST_DIR");
         crate::style_guide::fonts::load(
-            "text=literata\ncode=ibm-vga-8x16\nlogo=ibm-vga-8x16\n",
+            "text=literata\ncode=hack\nlogo=hack\n",
             &|folder| std::fs::read_to_string(format!("{root}/config/fonts/{folder}.txt")).ok(),
             &|_, _| true,
         )
@@ -421,17 +420,17 @@ mod tests {
     /// first role, naming both roles and holding both pieces in the roles' order.
     #[test]
     fn a_font_with_two_roles_has_one_section_with_both_pieces() {
-        let text = "Introduction.\n\n## ibm-vga-8x16 | logo\n\nLogo piece.\n\n\
-             ## literata | text\n\nText piece.\n\n## ibm-vga-8x16 | code\n\nCode piece.\n";
+        let text = "Introduction.\n\n## hack | logo\n\nLogo piece.\n\n\
+             ## literata | text\n\nText piece.\n\n## hack | code\n\nCode piece.\n";
         let html = body(text, &shared_fonts()).unwrap();
         assert!(html.starts_with("<p>Introduction.</p>"));
         assert_eq!(html.matches("<h2>").count(), 2);
         let literata = html.find("<h2>Literata</h2>").unwrap();
-        let vga = html.find("<h2>IBM VGA 8x16</h2>").unwrap();
-        assert!(literata < vga);
+        let hack = html.find("<h2>Hack</h2>").unwrap();
+        assert!(literata < hack);
         assert!(html.contains("<p class=\"roles-line\">Role: text</p>"));
         assert!(html.contains("<p class=\"roles-line\">Roles: code, logo</p>"));
-        let section = &html[vga..];
+        let section = &html[hack..];
         let code = section.find("Code piece.").unwrap();
         let logo = section.find("Logo piece.").unwrap();
         assert!(section.find("Roles: code, logo").unwrap() < code);
@@ -445,7 +444,7 @@ mod tests {
         let html = render_fonts_page();
         let main = &html[html.find("<main").unwrap()..html.find("</main>").unwrap()];
         assert!(!main.contains(" | "));
-        assert!(!main.contains("ibm-vga-8x16"));
+        assert!(!main.contains("hack |"));
     }
 
     /// Acceptance test 3: each piece is in its font's section, in the roles' order.
@@ -578,8 +577,7 @@ mod tests {
     fn no_sample_names_a_font() {
         let html = render_fonts_page();
         let body = &html[html.find("<main").unwrap()..html.find("</main>").unwrap()];
-        let body = body.replace("IBM VGA 8x16", "");
-        for family in ["font-family", "Literata\"", "Hack\"", "VGA", "style=\""] {
+        for family in ["font-family", "Literata\"", "Hack\"", "style=\""] {
             assert!(!body.contains(family), "{family}");
         }
     }

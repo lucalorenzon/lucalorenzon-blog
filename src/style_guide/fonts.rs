@@ -11,9 +11,7 @@
 //!   `folder` being the font's folder in `assets/fonts/`.
 //! - `config/fonts/<folder>.txt` describes that font, one `key=value` per line. The keys
 //!   without a prefix are for the whole font: `family` (the CSS family name), `fallback` (a
-//!   generic family), `display` (`font-display`) and, optional, `size` (the font's native size
-//!   in pixels, a positive whole number: the fonts page draws its samples at that size, and a
-//!   font without one keeps the page's size). The keys with a prefix `<label>.` describe
+//!   generic family), `display` (`font-display`). The keys with a prefix `<label>.` describe
 //!   one file, all four required: `file`, `name` (the label the fonts page will show), `style`
 //!   and `weight`. Style and weight are written, not guessed from the label, so a new weight
 //!   needs no change to the build.
@@ -28,8 +26,9 @@
 //! disk; the build program reads the files and passes their text in.
 //!
 //! About `display`: the text and the code use `swap`, so that they are readable at once in a
-//! fallback font, even before the font arrives; the logo's pixel font uses `block`, because a
-//! fallback would flash before the pixel font replaced it.
+//! fallback font, even before the font arrives. The other values of the CSS property (`auto`,
+//! `block`, `fallback`, `optional`) are accepted too, because the build copies the property's
+//! values as they are.
 
 use std::fmt::{self, Write};
 
@@ -337,8 +336,6 @@ pub struct Font {
     pub family: String,
     pub fallback: Fallback,
     pub display: Display,
-    /// The font's native size in pixels, if the description gives one.
-    pub size: Option<u16>,
     pub files: Vec<FontFile>,
 }
 
@@ -387,7 +384,6 @@ pub fn parse_font(
     let mut family: Option<(usize, &str)> = None;
     let mut fallback: Option<(usize, &str)> = None;
     let mut display: Option<(usize, &str)> = None;
-    let mut size: Option<(usize, &str)> = None;
     // In order of first appearance, so the files keep the order they are written in.
     let mut labels: Vec<(&str, FileLines)> = Vec::new();
 
@@ -398,7 +394,6 @@ pub fn parse_font(
             "family" => Some(&mut family),
             "fallback" => Some(&mut fallback),
             "display" => Some(&mut display),
-            "size" => Some(&mut size),
             _ => None,
         };
         if let Some(slot) = whole {
@@ -462,16 +457,6 @@ pub fn parse_font(
         .find(|(name, _)| *name == display)
         .map(|(_, value)| *value)
         .ok_or_else(|| not_allowed(display_line, "display", display, Display::NAMES))?;
-
-    let size = size
-        .map(|(line, value)| {
-            value
-                .parse::<u16>()
-                .ok()
-                .filter(|size| *size > 0)
-                .ok_or_else(|| not_allowed(line, "size", value, "a positive whole number"))
-        })
-        .transpose()?;
 
     if labels.is_empty() {
         return Err(fail(None, Problem::NoFiles));
@@ -576,7 +561,6 @@ pub fn parse_font(
         family: family.to_owned(),
         fallback,
         display,
-        size,
         files,
     })
 }
@@ -743,9 +727,6 @@ pub fn css(fonts: &Fonts) -> String {
                 style = file.style.css(),
                 weight = file.weight,
             );
-            if let Some(size) = font.size {
-                let _ = writeln!(out, "  font-size: {size}px;\n  max-width: 80ch;");
-            }
             out.push_str("}\n");
             names.push(name);
         }
@@ -771,18 +752,21 @@ pub fn real() -> Fonts {
 mod tests {
     use super::*;
 
-    /// A made-up configuration, with a font that has a native size (the pixel font, whose
-    /// description file stays for now), to test what the real configuration no longer holds.
-    const ROLES: &str = "text=literata\ncode=hack\nlogo=ibm-vga-8x16\n";
+    /// A made-up configuration where each role has its own font, the third one made up in the
+    /// tests, to test what the real configuration no longer holds.
+    const ROLES: &str = "text=literata\ncode=hack\nlogo=tiny\n";
     const LITERATA: &str = include_str!("../../config/fonts/literata.txt");
     const HACK: &str = include_str!("../../config/fonts/hack.txt");
-    const PIXEL: &str = include_str!("../../config/fonts/ibm-vga-8x16.txt");
+    /// A made-up font with one file, for the third role.
+    const TINY: &str = "family=Tiny\nfallback=monospace\ndisplay=block\n\
+                        regular.file=tiny.woff2\nregular.name=Regular\n\
+                        regular.style=normal\nregular.weight=400\n";
 
     fn describe(folder: &str) -> Option<String> {
         match folder {
             "literata" => Some(LITERATA.to_owned()),
             "hack" => Some(HACK.to_owned()),
-            "ibm-vga-8x16" => Some(PIXEL.to_owned()),
+            "tiny" => Some(TINY.to_owned()),
             _ => None,
         }
     }
@@ -832,12 +816,11 @@ mod tests {
 
     #[test]
     fn the_roles_are_read_with_their_lines() {
-        let roles =
-            parse_roles("# the fonts\n\ntext=literata\ncode = hack\nlogo=ibm-vga-8x16\n").unwrap();
+        let roles = parse_roles("# the fonts\n\ntext=literata\ncode = hack\nlogo=tiny\n").unwrap();
         assert_eq!(roles.text.folder, "literata");
         assert_eq!(roles.text.line, 3);
         assert_eq!(roles.code.folder, "hack");
-        assert_eq!(roles.logo.folder, "ibm-vga-8x16");
+        assert_eq!(roles.logo.folder, "tiny");
     }
 
     #[test]
@@ -1081,39 +1064,10 @@ mod tests {
     // The size.
 
     #[test]
-    fn the_size_is_optional_and_read_as_pixels() {
+    fn a_size_is_not_a_key_of_a_description() {
         assert_eq!(
-            parse_font("x", SMALL, &everything_exists).unwrap().size,
-            None
-        );
-        assert_eq!(
-            parse_font("x", &with_size("16"), &everything_exists)
-                .unwrap()
-                .size,
-            Some(16)
-        );
-        assert_eq!(pixel().logo.size, Some(16));
-        assert_eq!(real().text.size, None);
-        assert_eq!(real().code.size, None);
-    }
-
-    #[test]
-    fn a_size_that_is_not_a_positive_whole_number_stops_the_build() {
-        for size in ["0", "-3", "16.5", "big", "", "70000"] {
-            assert_eq!(
-                font_error(&with_size(size)),
-                format!(
-                    "config/fonts/x.txt:8: `size` is `{size}`, which is not allowed: a positive whole number"
-                )
-            );
-        }
-    }
-
-    #[test]
-    fn a_repeated_size_stops_the_build() {
-        assert_eq!(
-            font_error(&format!("{}size=8\n", with_size("16"))),
-            "config/fonts/x.txt:9: the key `size` is given more than once"
+            font_error(&format!("{SMALL}size=16\n")),
+            "config/fonts/x.txt:8: `size` is not a key of a font's description"
         );
     }
 
@@ -1121,7 +1075,7 @@ mod tests {
 
     #[test]
     fn each_file_of_the_fonts_gets_a_variant_named_from_its_role_style_and_weight() {
-        let shown = pixel().shown();
+        let shown = three().shown();
         let classes = |at: usize| -> Vec<&str> {
             shown[at].samples.iter().map(|s| s.class.as_str()).collect()
         };
@@ -1139,7 +1093,7 @@ mod tests {
         let names: Vec<&str> = shown[0].samples.iter().map(|s| s.name.as_str()).collect();
         assert_eq!(names, ["Regular", "Italic", "Bold", "Bold italic"]);
         assert_eq!(shown[0].family, "Literata");
-        assert_eq!(shown[2].family, "IBM VGA 8x16");
+        assert_eq!(shown[2].family, "Tiny");
     }
 
     #[test]
@@ -1196,7 +1150,7 @@ mod tests {
 
     #[test]
     fn the_variants_take_the_font_from_the_role_and_never_name_one() {
-        let css = css(&pixel());
+        let css = css(&three());
         assert_eq!(
             rule(&css, "sample-text-italic-700"),
             "@utility sample-text-italic-700 {\n  @apply font-text;\n  font-style: italic;\n  font-weight: 700;\n"
@@ -1213,13 +1167,13 @@ mod tests {
     }
 
     #[test]
-    fn a_font_with_a_size_is_drawn_at_it_and_no_wider_than_80_characters() {
-        let css = css(&pixel());
-        let pixel = rule(&css, "sample-logo-normal-400");
-        assert!(pixel.contains("  font-size: 16px;\n"));
-        assert!(pixel.contains("  max-width: 80ch;\n"));
-        // Without a size the page's size and width are kept.
-        for name in ["sample-text-normal-400", "sample-code-normal-400"] {
+    fn the_variants_keep_the_pages_size_and_width() {
+        let css = css(&three());
+        for name in [
+            "sample-text-normal-400",
+            "sample-code-normal-400",
+            "sample-logo-normal-400",
+        ] {
             assert!(!rule(&css, name).contains("font-size"), "{name}");
             assert!(!rule(&css, name).contains("max-width"), "{name}");
         }
@@ -1227,7 +1181,7 @@ mod tests {
 
     #[test]
     fn tailwind_is_told_every_variant() {
-        let css = css(&pixel());
+        let css = css(&three());
         let line = css
             .lines()
             .find(|l| l.starts_with("@source inline("))
@@ -1246,12 +1200,8 @@ mod tests {
 
     // The CSS.
 
-    fn pixel() -> Fonts {
+    fn three() -> Fonts {
         load(ROLES, &describe, &everything_exists).unwrap()
-    }
-
-    fn with_size(value: &str) -> String {
-        format!("{SMALL}size={value}\n")
     }
 
     #[test]
@@ -1261,7 +1211,6 @@ mod tests {
         assert!(css.contains("  --font-text: \"Literata\", serif;\n"));
         assert!(css.contains("  --font-code: \"Hack\", monospace;\n"));
         assert!(css.contains("  --font-logo: \"Literata\", serif;\n"));
-        assert!(!css.contains("IBM VGA"));
     }
 
     #[test]
@@ -1284,7 +1233,7 @@ mod tests {
     #[test]
     fn changing_a_roles_font_changes_the_roles_value() {
         let fonts = load(
-            "text=hack\ncode=hack\nlogo=ibm-vga-8x16\n",
+            "text=hack\ncode=hack\nlogo=tiny\n",
             &describe,
             &everything_exists,
         )
@@ -1297,7 +1246,7 @@ mod tests {
     #[test]
     fn a_font_that_plays_two_roles_is_declared_once() {
         let fonts = load(
-            "text=hack\ncode=hack\nlogo=ibm-vga-8x16\n",
+            "text=hack\ncode=hack\nlogo=tiny\n",
             &describe,
             &everything_exists,
         )
