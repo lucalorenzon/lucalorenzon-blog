@@ -1,7 +1,7 @@
 # Write the style guide's placeholder texts
 
 - **Created:** 2026-11-22
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
@@ -57,9 +57,27 @@ The ones known when the card was written; there may be more.
 - **Whether the placeholder marks go** once the author's text is in,
   or something of them stays.
 
+- **How the texts are written.**
+
+  **Answered by the user on 2026-11-22.** One placeholder at a time:
+  the agent shows it in the chat, the author writes the text, the
+  agent reviews it, and together they decide what goes in.
+
 ## Dependencies
 
 - The author's time to write the texts.
+
+## Acceptance tests
+
+Agreed with the user on 2026-11-22, when the card was taken into work.
+
+1. The frame page's text, `src/page_frame.md`, keeps at least one
+   heading of level two and one of level three.
+2. The Markdown of the three texts holds no HTML.
+3. No placeholder mark is left in `content/` or beside the code,
+   unless the answer to the question on the marks keeps one on
+   purpose.
+4. The build and every test pass, as the pipeline runs them.
 
 ## References
 
