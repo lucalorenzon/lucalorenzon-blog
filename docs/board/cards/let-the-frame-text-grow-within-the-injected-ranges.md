@@ -60,6 +60,23 @@ The ones known when the card was written; there may be more.
   whole frame was preferred.
 - **Whether the longest title still fits** at every width, now that
   its size varies, and what the header's test checks.
+
+  **Answered by the user on 2026-11-22, from the agent's reasoning.**
+  The longest title still fits. From 768 pixels up the title is never
+  larger than today (about 27.4 pixels at 768, 31.3 at 1280, 32 only
+  from 1366), so it takes no more lines than today, and the limit of
+  two lines from 1280 holds better. Below 768 it is larger than today,
+  up to about 27.4 pixels instead of 24, but there it sits under the
+  header line, centred and free to wrap, and the room grows faster
+  than the font: 140 per cent more width against 14 per cent more
+  size. The header's browser test
+  (`end2end/tests/header-layout.spec.ts`), which today expects
+  exactly 24 pixels below 768 and 32 from 768, checks instead that the
+  title lies on its range's straight line, 24 pixels at 320 and 32
+  from 1366, within 0.05 pixels, as the column's test does, at the
+  widths it already runs on: the devices and the two sides of each
+  breakpoint. Its other checks, two lines at most from 1280 and no
+  overlap, prove the reasoning above.
 - **Whether the text grows with the browser's zoom**, as for the
   column.
 
