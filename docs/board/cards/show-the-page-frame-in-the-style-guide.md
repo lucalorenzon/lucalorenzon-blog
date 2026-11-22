@@ -198,7 +198,36 @@ superseded; they left this card on 2026-11-22 (see "What it leaves").
   step also reads the `.md` files in `src/`, and the page's source in
   the sitemap is `src/page_frame.md`.
 - **Where the boundary lies with the text page**, which shows what
-  goes inside the column. Came from the column's page.
+  goes inside the column. Came from the column's page. The frame's
+  page shows the column (its width, its text growing from 18 to 20
+  pixels, its centring); the text page shows the elements inside it.
+  Two cases sit across the line, found by the agent on 2026-11-22:
+  the section headings' size, set at 1.2 times the column's text by
+  the frame's ranges
+  ([card](let-the-frame-text-grow-within-the-injected-ranges.md)) but
+  checked on the text page with the room around the headings
+  (`content-layout.spec.ts`); and the size the column passes on to
+  the code block and the table (`text-column.spec.ts`), checked on
+  their pages.
+
+  **Answered by the user on 2026-11-22, with the agent.** The size the
+  column passes on stays on the code and tables pages: only there do
+  those components exist. The section headings' size belongs to the
+  frame: the user saw it, with a confidence of 60%, as a style rule the
+  frame injects to keep the site uniform. The agent agreed, with the
+  rule that the place goes to whoever decides the value: the ratio of
+  1.2 is written by the frame in the stylesheet, beside the other
+  sizes that grow with the page, as the column's size passed on to
+  the code block. Following it through, the agent proposed splitting
+  the section heading in two, which the user accepted. On the frame's
+  page, the rule injected: section headings are 1.2 times the
+  column's text at every width, measured on the page's own headings,
+  with no sample. On the text page, what belongs to the heading: its
+  colour, the room around it, how it wraps, the underline of level
+  four; the test that checks a section heading is larger than the
+  text gives up the size there and keeps the rest. If the ratio
+  changes, the test that breaks is the frame's, where the rule is
+  written.
 - **Whether the frame is one page, or the header, the logo and the
   title are pages of their own**, whose boundaries were still to be
   drawn. For the logo, the same question is asked by the card
