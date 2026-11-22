@@ -51,6 +51,13 @@ The ones known when the card was written; there may be more.
   [review the logo](review-the-logo.md). On tablets and small
   laptops the title is smaller than today: about 27.4 pixels at 768
   instead of 32.
+
+  **Answered for the footer by the user on 2026-11-22.** The footer's
+  text follows the title's rule: the column's band of widths, between
+  its own bounds of today, 16 pixels at 320 and 18 at 1366. Kept in
+  proportion to the column's text instead, it would have reached about
+  17.8 pixels, a difference no reader sees; the same rule for the
+  whole frame was preferred.
 - **Whether the longest title still fits** at every width, now that
   its size varies, and what the header's test checks.
 - **Whether the text grows with the browser's zoom**, as for the
