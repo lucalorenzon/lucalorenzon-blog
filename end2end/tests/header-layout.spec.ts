@@ -1,16 +1,23 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { test, expect, type Page } from '@playwright/test';
-import { MD, READER_SPACING, retryWhenLive, VIEWPORTS, XL } from './support';
+import { FOOTER_RANGE, MD, READER_SPACING, retryWhenLive, sizeOnRange, TITLE_RANGE, VIEWPORTS, XL } from './support';
 
 // Enforces the agreed responsive header layout. It checks what the reader
 // sees (positions, sizes, visibility), never how the page is built.
 //
 // Bands by viewport width, at the breakpoints of config/breakpoints.txt (md and xl;
 // 768 and 1280 today):
-//   < md       text logo 32px; title below the header line, 24px, centred
-//   md to xl-1 ASCII logo 16px; title below the header line, 32px, centred
-//   >= xl      ASCII logo 16px; title in the header row, 32px, at most 2 lines
+//   < md       text logo 32px; title below the header line, centred
+//   md to xl-1 ASCII logo 16px; title below the header line, centred
+//   >= xl      ASCII logo 16px; title in the header row, at most 2 lines
+//
+// The title's size does not change with the band: it grows with the page's width in a straight
+// line, from 24px at 320px to 32px at 1366px, and stays at 24px below and at 32px above
+// (TITLE_RANGE in support.ts, `title-size` in style/input.css), within 0.05px. The footer's text
+// does the same, from 16px to 18px (FOOTER_RANGE), checked by the last test of this file. The
+// tests' browser hides the scrollbars, so the page's width is the window's.
+// Why: docs/board/cards/let-the-frame-text-grow-within-the-injected-ranges.md
 //
 // A second test per viewport applies the reader's text spacing (WCAG 1.4.12,
 // READER_SPACING in support.ts) and checks that the header's logo, title and
@@ -27,6 +34,8 @@ const PAD = 8;
 const MENU_WIDTH = 56;
 const SPACE_UNDER_LINE = 24;
 const MIN_GAP = 24;
+// How far a measured text size may be from its range's straight line, in pixels.
+const SIZE_TOLERANCE = 0.05;
 
 const HOME_TITLE = 'Home Page';
 // The longest heading the build accepts, in graphemes. It is read from the same file the
@@ -185,8 +194,11 @@ function violations(s: Snapshot, title: string, centred: boolean): string[] {
   const logo = (narrow ? text : ascii)?.visible ? (narrow ? text : ascii)! : null;
 
   // Title size and number of lines
-  const expectedSize = narrow ? 24 : 32;
-  rule(s.h1FontSize === expectedSize, `h1 font-size must be ${expectedSize}px, is ${s.h1FontSize}px`);
+  const expectedSize = sizeOnRange(TITLE_RANGE, w);
+  rule(
+    Math.abs(s.h1FontSize - expectedSize) <= SIZE_TOLERANCE,
+    `h1 font-size must be ${expectedSize.toFixed(2)}px, on its range's line, is ${s.h1FontSize}px`,
+  );
   const lines = Math.round((s.h1Box.b - s.h1Box.t) / s.h1LineHeight);
   if (wide) rule(lines <= 2, `the title must take at most 2 lines, takes ${lines}`);
 
@@ -360,6 +372,26 @@ for (const { name, width, height } of VIEWPORTS) {
         found.push(...(await headerSpacingProblems(page, title)));
       }
       expect(found.length, `header problems with the reader's text spacing:\n${found.join('\n')}`).toBe(0);
+    });
+  });
+}
+
+// ---- Footer text size ------------------------------------------------------
+
+// The footer is part of the page frame, as the header is, and its text grows with the page's
+// width on its own range: kept here, with the frame's other tests that run on every device.
+for (const { name, width, height } of VIEWPORTS) {
+  test(`footer text size at ${width}x${height} (${name})`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
+    await retryWhenLive(async () => {
+      await page.goto('./');
+      await page.evaluate(() => document.fonts.ready);
+      const size = await page.evaluate(() => parseFloat(getComputedStyle(document.querySelector('footer')!).fontSize));
+      const expected = sizeOnRange(FOOTER_RANGE, width);
+      expect(
+        Math.abs(size - expected),
+        `the footer's text follows its range's line at ${width}px: ${expected.toFixed(2)}px expected, ${size}px measured`,
+      ).toBeLessThanOrEqual(SIZE_TOLERANCE);
     });
   });
 }

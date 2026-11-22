@@ -251,7 +251,7 @@ pub fn PageFrame(
                                 class="not-shown md:art-logo-left"
                             >{LOGO}</div>
                         </a>
-                        <h1 class="title-below-line md:title-below-line-large xl:title-beside-logo">{heading.as_str().to_owned()}</h1>
+                        <h1 class="title-below-line xl:title-beside-logo">{heading.as_str().to_owned()}</h1>
                         <div
                             data-testid="menu-slot"
                             aria-hidden="true"
@@ -259,7 +259,7 @@ pub fn PageFrame(
                         ></div>
                     </header>
                     {main}
-                    <footer class="footer-sticky-bottom md:footer-text-large">
+                    <footer class="footer-sticky-bottom">
                         <p>
                             "© 2026 Luca Lorenzon · "
                             <a href=about_page class="footer-link">{footer_licence.phrase()}</a>

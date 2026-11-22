@@ -94,9 +94,20 @@ export const TEXT_RANGE = { from: 320, to: 1366, min: 18, max: 20 };
 
 // The text size the range gives at a page width: the straight line, clamped.
 export function textSizeAt(width: number): number {
-  const { from, to, min, max } = TEXT_RANGE;
+  return sizeOnRange(TEXT_RANGE, width);
+}
+
+// The size a range gives at a page width: the straight line from `min` px at `from` px
+// to `max` px at `to` px, clamped outside them.
+export function sizeOnRange(range: { from: number; to: number; min: number; max: number }, width: number): number {
+  const { from, to, min, max } = range;
   return Math.min(max, Math.max(min, min + ((max - min) * (width - from)) / (to - from)));
 }
+
+// The page frame's own ranges, over the column's band of widths (`title-size` and
+// `footer-text-size` in style/input.css). Written by hand, as TEXT_RANGE is.
+export const TITLE_RANGE = { from: 320, to: 1366, min: 24, max: 32 };
+export const FOOTER_RANGE = { from: 320, to: 1366, min: 16, max: 18 };
 
 // The widths for tests of what is inside the text column. The text column grows
 // smoothly with the page, up to 1366 px, so there is no longer one width per
