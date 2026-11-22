@@ -74,6 +74,21 @@ code, which is the problem the spike was opened for.
   reaches them already computed in pixels; checked on the branch,
   where the code block's spacing followed the text.
 
+- **What the browser tests said** (2026-11-22), run on the throwaway
+  branch with the chosen range, 18 to 20 pixels between 320 and 1366:
+  267 passed, 8 failed, 1 skipped. Every check of readability and
+  spacing passed at every width. The failures fell in three groups:
+  - the column's own test (`text-column.spec.ts`), 4 failures, which
+    expects 18 pixels below 768 and 20 from 768;
+  - the tables' cases at the limit (`table-forms.spec.ts`), 3
+    failures at 767: the six-column table and the rows of different
+    heights, meant to be record viewers there, fit as tables, since
+    the text at 767 is now about 18.85 pixels and the column wider;
+  - the code block's case at the limit (`code-blocks.spec.ts`), 1
+    failure at 768: the line that just fits the widest column, which
+    is written to scroll only below 768, now scrolls there too, since
+    the column reaches its widest only at 1366.
+
 ## Questions to answer
 
 The ones known when the card was written; there may be more.
@@ -159,6 +174,22 @@ The ones known when the card was written; there may be more.
 - **What the browser test of the column checks**: that the size stays
   within the range at several widths, and whether it runs with the
   scrollbars shown.
+- **What happens to the browser tests built on the jump at 768.**
+  Added on 2026-11-22, after the browser tests ran on the branch. The
+  cases at the limit of the tables and of the code block were placed
+  where the column widened at once, which no longer happens.
+
+  **Answered by the user on 2026-11-22.** The tables' cases at the
+  limit are children of a breakpoint with a fixed change of size, so
+  this card takes them out; whether other cases at the limit can be
+  found is a card of its own. The code block's case at the limit
+  stays, moved from 768 to 1366: it is the check that stops the build
+  when a code font moves the wrap toggle's threshold
+  ([measure the fonts again when they change](measure-the-fonts-again-when-they-change.md)),
+  and from 1366 the column is as wide as it is today from 768, its
+  text being 20 pixels there. That the move is enough is supposed,
+  not yet checked. The tables keep a check of the same kind: on every
+  width, no table may be wider than its column.
 - **Whether a line of the column stays near 60 characters** at every
   width of the range.
 
@@ -179,12 +210,19 @@ went, with the range's place in the configuration, to the card
 
 ## What it leaves
 
+- The search for new cases at the limit, in place of the tables'
+  ones taken out: the card
+  [find cases at the limit for the growing column](find-cases-at-the-limit-for-the-growing-column.md).
 - The range written in `config/` and read by the build, instead of in
   the stylesheet: the card
   [read the column text's range from the configuration](read-the-column-text-range-from-the-configuration.md).
 
 ## References
 
+- [Find cases at the limit for the growing column](find-cases-at-the-limit-for-the-growing-column.md):
+  cut from this card, for the tables' cases taken out.
+- [Measure the fonts again when they change](measure-the-fonts-again-when-they-change.md):
+  the check the code block's case at the limit carries, kept.
 - [Try a breakpoint declaration on the text column](try-a-breakpoint-declaration-on-the-text-column.md):
   the spike that decided it.
 - [Let the page frame's text grow within the injected ranges](let-the-frame-text-grow-within-the-injected-ranges.md):

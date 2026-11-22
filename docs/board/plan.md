@@ -98,6 +98,9 @@ live since 2026-10-26
 
 ## Next
 
+- [Find cases at the limit for the growing column](cards/find-cases-at-the-limit-for-the-growing-column.md),
+  in place of the tables' cases at the limit, taken out when the
+  column's text stopped jumping at 768 pixels.
 - [Check the table widths against Chromium's rounding](cards/check-table-widths-against-chromium-rounding.md),
   which drew the code font a whole number of pixels wide on Linux and
   may do the same with the tables' text.
