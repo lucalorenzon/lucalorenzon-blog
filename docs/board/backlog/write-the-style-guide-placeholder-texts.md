@@ -1,0 +1,1 @@
+../cards/write-the-style-guide-placeholder-texts.md

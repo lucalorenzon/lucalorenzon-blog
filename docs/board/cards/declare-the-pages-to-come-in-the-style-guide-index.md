@@ -1,7 +1,8 @@
 # Declare the pages to come in the style guide's index
 
 - **Created:** 2026-11-22
-- **Status:** Open
+- **Status:** Closed
+- **Closed:** 2026-11-22
 
 ## Why
 
@@ -44,8 +45,28 @@ learns which pages are still to come.
 
 The ones known when the card was written; there may be more.
 
-- **How the index declares the pages to come.**
 - **Which pages are to come**, now that the frame stays one page.
+
+  **Answered by the user on 2026-11-22.** None is declared. The index
+  describes what exists now; a page is listed when it is made. The
+  user does not know when the next pages will come, nor which ones.
+  This changes the decision of 2026-11-18 to publish with the gaps
+  declared: what is lost is that a reader cannot ask for a page they
+  do not know is coming; what is gained is an index that promises
+  nothing that may not come.
+- **How the index declares the pages to come.**
+
+  **Answered by the user on 2026-11-22, with the question above.** It
+  does not: with no page to come, the index stays as it is, the
+  author's text and the list of the pages that exist.
+- **What is left of declaring the components not yet cut**, a question
+  that came up during the work: on 2026-11-19 the user had decided to
+  declare them a limit of the first version, with a division planned.
+
+  **Answered by the user on 2026-11-22.** Only the part on the present
+  stays: the frame is one piece today, and at most the site, still a
+  draft, needs no other division for now. The user writes it in the
+  frame page's text; the announcement of a division to come goes.
 
 ## Dependencies
 
@@ -54,7 +75,24 @@ The ones known when the card was written; there may be more.
   the last page before publishing, which may change what is left to
   come.
 
+## Recap
+
+Closed on 2026-11-22 with no change to the code: the index already
+lists only the pages that exist (`src/style_guide/index_page.rs`, after
+the author's text in `content/style-guide/index.md`). The statement on
+the present goes into the frame page's text, which the author rewrites
+with the other placeholders
+([card](write-the-style-guide-placeholder-texts.md)).
+
+## Cautions
+
+- When a page of the style guide is made, it is added to the index's
+  list in the same slice; nothing announces it before.
+
 ## References
+
+- [Write the style guide's placeholder texts](write-the-style-guide-placeholder-texts.md):
+  where the statement on the present is to be written.
 
 - [Show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md):
   the card this one was cut from.

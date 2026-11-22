@@ -104,9 +104,14 @@ live since 2026-10-26
     column's from the text page
     ([card](cards/move-the-column-tests-to-the-frame-page.md), done,
     with the headings' ratios),
-    and last the index's list of
-    the pages to come
+    and the index's list of
+    the pages to come, closed: the index lists only the pages that
+    exist
     ([card](cards/declare-the-pages-to-come-in-the-style-guide-index.md)).
+    Last, before publishing, the author's texts in place of the
+    placeholders: the frame's page, a section of the colours page, and
+    the frame shown as one piece for now
+    ([card](cards/write-the-style-guide-placeholder-texts.md)).
 - [Review the logo](cards/review-the-logo.md), done, not published
   yet: one icon, the favicon's photo cut to a circle, standing on the
   header's line, with the name beside it in Literata bold italic on
