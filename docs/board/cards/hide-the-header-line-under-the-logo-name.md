@@ -1,7 +1,7 @@
 # Hide the header's line under the logo's name
 
 - **Created:** 2026-11-22
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
@@ -17,6 +17,10 @@ letter touches it, and comes out at the foot of the "r". Without it,
 the line runs under the whole name, and the logo stands on it instead
 of being woven into it.
 
+Taken into work on 2026-11-22, right after the logo's card was closed:
+on the screenshots of the real header, the user approved everything
+but the line that runs on under the letters of the name.
+
 ## What is known
 
 - **The effect was tried** by the agent on 2026-11-22, in a copy of the
@@ -25,6 +29,23 @@ of being woven into it.
   line hidden ran from the first to the last pixel the letters ink just
   above the baseline, measured on a canvas in the same font. The user
   confirmed it was the effect intended.
+- **How the trial hid the line** (read by the agent on 2026-11-22 in
+  `target/logo-look/mock-site/logo-mock.js`): a script in the page drew
+  the name on a canvas, found the two points on the row of pixels one
+  pixel above the baseline, moved them by the 5 degrees of extra slant,
+  and laid over the line a band 4 pixels high, in the colour of the
+  page, behind the letters, so the letters stayed drawn over it. The
+  site has no script today: done for real, the band's ends must come
+  from somewhere else.
+- **The line is drawn by two different boxes** (checked by the agent
+  on 2026-11-22 in `style/input.css` and `src/page_frame.rs`): below
+  1280 pixels it is the top border of the title (`title-below-line`),
+  from 1280 up the bottom border of the header (`header-one-row`). The
+  name sits on it in both forms (`logo-name`, in the link `logo-link`).
+- **What the user approved on the screenshots** of the slice
+  (`target/logo-look/shots/real-*.png`, not committed): the icon and
+  the name on the line as they are; the only remark was the line under
+  the letters, which is this card.
 - **Those two points depend on the font and its size**, and the name
   grows with the title, from 24 to 32 pixels. Done for real, either the
   build computes them from Literata's measures, as it does for the

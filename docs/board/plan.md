@@ -103,7 +103,7 @@ live since 2026-10-26
   What it left, after it: first
   the line hidden under the name like a thread
   ([card](cards/hide-the-header-line-under-the-logo-name.md)),
-  the one remark of the user on the screenshots, next;
+  the one remark of the user on the screenshots, in work;
   then the pixel font's files and ADR-003
   ([card](cards/remove-the-pixel-font.md)),
   the favicon made from the logo's crop
