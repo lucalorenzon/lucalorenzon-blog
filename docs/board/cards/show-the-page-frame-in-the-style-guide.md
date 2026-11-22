@@ -197,6 +197,14 @@ superseded; they left this card on 2026-11-22 (see "What it leaves").
   invisible one, would make the page look new. So the content dates
   step also reads the `.md` files in `src/`, and the page's source in
   the sitemap is `src/page_frame.md`.
+- **Who writes the page's text.** The other pages of the style guide
+  have the author's text, except one section of the colours page, a
+  placeholder declared as such. Added on 2026-11-22, once the card was
+  cut to the page itself.
+
+  **Answered by the user on 2026-11-22: the agent writes a draft**,
+  declared as a placeholder as on the colours page, and the user
+  rewrites it afterwards.
 - **Where the boundary lies with the text page**, which shows what
   goes inside the column. Came from the column's page. The frame's
   page shows the column (its width, its text growing from 18 to 20
@@ -262,6 +270,28 @@ superseded; they left this card on 2026-11-22 (see "What it leaves").
   card that hid the header's line under the logo's name
   ([card](hide-the-header-line-under-the-logo-name.md)) are closed,
   and the change at 768 pixels is gone.
+
+## Acceptance tests
+
+Agreed with the user on 2026-11-22, for the page itself.
+
+| # | What is checked | How |
+|---|---|---|
+| 1 | The build writes `style-guide/frame.html`, titled "Page frame", with the text of `src/page_frame.md`; like the other pages of the style guide it has its tab title, a heading within the frame's limit, a description within 160 characters, its canonical link, its Open Graph tags, the footer "Reuse with attribution", the link to the index and the way back to the top | Unit tests, on the model of the code page's |
+| 2 | `src/page_frame.md` is also the documentation of the module `src/page_frame.rs` | The compiler; `cargo doc` tried once |
+| 3 | The index lists the frame's page after the fonts | Unit test of the index |
+| 4 | The sitemap lists the page with the date of the last commit of `src/page_frame.md`; the content dates step also reads the `.md` files in `src/` | Unit tests, in Rust and in Python |
+| 5 | The page's Markdown holds no HTML | Unit test |
+| 6 | The draft is declared a placeholder, in italic as on the colours page, and explains the header's change at 1280 pixels, the growth of the title, the footer and the column's text, and the section headings at 1.2 times the text | Review by the user |
+| 7 | `content/README.md`, and one line in the root `README.md`, say that the `.md` files in `src/` follow the text's licences | Review by the user |
+| 8 | The net passes on the new page with no test written for it (accessibility, contrast, shape, the search engines' rules, Open Graph); every check of the pipeline passes: formatting, clippy, unit tests, type check, browser tests | The pipeline's checks, run locally |
+| 9 | Before the commit, the user sees the real page in screenshots, on the small screen and on the laptop | Screenshots with the project's Playwright |
+
+The agent noted on 2026-11-22 that it had said wrongly, earlier the
+same day, that the check that the Markdown holds no HTML reads
+`content/`: it reads only the articles' bodies
+(`src/article_page.rs`). Test 5 covers this page; whether the other
+pages need it is left to the card that moves their texts.
 
 ## What it leaves
 
