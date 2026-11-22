@@ -1,0 +1,1 @@
+../cards/make-the-favicon-from-the-logo-crop.md

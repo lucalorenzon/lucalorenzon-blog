@@ -1,0 +1,1 @@
+../cards/decide-whether-the-logo-is-a-component.md

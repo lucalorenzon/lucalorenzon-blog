@@ -173,13 +173,20 @@ The ones known when the card was taken into work; there may be more.
   points depend on the font and its size: the build could compute them
   from Literata's measures, as it does for the tables' widths, or a
   browser test could check them. The extra slant is a skew of an italic
-  already drawn: unnoticed at 5 degrees, stretched beyond.
+  already drawn: unnoticed at 5 degrees, stretched beyond. The thread
+  went to a card of its own (see "What it leaves"); the name closer to
+  the icon and its extra slant stay here.
 
   Still open: how far the circle may reach into the title below the
   line on narrow screens, with long titles.
 - **How the link keeps one name.** With an alternative text on the
   icon and the name written beside it, a screen reader may say the
   name twice; the link already has a name of its own.
+
+  **Proposed by the agent and agreed by the user on 2026-11-22.** The
+  icon has an empty alternative text, so it is not announced, and the
+  link keeps its own name (`aria-label="Lvk@73r, home page"` in
+  `src/page_frame.rs`).
 - **In which formats and sizes the images are made**, screens with
   dense pixels included, and whether the favicon is made again from
   the same crop.
@@ -191,29 +198,115 @@ The ones known when the card was taken into work; there may be more.
   reduced to size, then sharpened (unsharp mask, radius 1.2, 80 per
   cent, threshold 2), with colour raised by 15 per cent and contrast
   by 8. The formats and the favicon are still open.
+
+  **Decided by the user on 2026-11-22, for the favicon.** The favicon
+  went to a card of its own (see "What it leaves"); the formats and
+  sizes of the icon's images stay here.
 - **What ADR-003 says once the drawn logo is gone**, and the pixel
   font with it.
+
+  **Decided by the user on 2026-11-22.** It went, with the removal of
+  the pixel font's files, to a card of its own (see "What it leaves").
 - **Whether the logo becomes a component of its own**, apart from the
   page frame. Asked by the user on 2026-11-22, at the end of the
   session that took the card into work; not discussed yet.
+
+  **Decided by the user on 2026-11-22.** It went to a card of its own
+  (see "What it leaves").
 - **How the card is cut.** It now holds the icon and its images, the
   name in Literata on the line, the notice on the rights, the favicon
   and the removal of the pixel font, which also touches the fonts'
   configuration, the fonts page, the font roles' test and ADR-003.
   Noticed by the agent on 2026-11-22.
 
+  **Answered by the user on 2026-11-22.** Asked which result should
+  work first on the built site, the user chose the icon and the name
+  on the line, without the thread. This card keeps:
+  - the round icon, sharpened, growing from 48 to 64 pixels and
+    crossing the line, in place of both forms of the logo, at every
+    width;
+  - the name in Literata bold italic with its baseline on the line;
+  - the role `logo` moved to Literata (below);
+  - the link's name (below);
+  - how far the circle may reach into the title's row on narrow
+    screens;
+  - the images, in the sizes the icon needs;
+  - the notice on the rights (below).
+
+  The thread, the removal of the pixel font's files with ADR-003, the
+  favicon and the question of a component of its own went to cards of
+  their own (see "What it leaves").
+- **Whether the role `logo` moves to Literata in this card.** In
+  `config/fonts.txt` the role `logo` names the pixel font, and the
+  whole header uses it (`font-logo` on the header's container), not
+  only the logo. Either the role moves to Literata, one line, and the
+  pixel font is left with no role; or the name uses Literata directly
+  and the role keeps a font the logo no longer uses. Raised by the
+  agent on 2026-11-22.
+
+  **Answered by the user on 2026-11-22.** The role moves to Literata
+  in this card. What follows, checked by the agent the same day: the
+  build declares in the stylesheet, and shows on the fonts page, only
+  the fonts that play a role, so the pixel font leaves both by itself,
+  and Literata is shown once with two roles, text and logo. The fonts
+  page's text (`content/style-guide/fonts.md`) must then lose the piece
+  `## ibm-vga-8x16 | logo` and gain a piece `## literata | logo`,
+  without which the build stops; the font roles' test
+  (`end2end/tests/font-roles.spec.ts`) changes its case on the drawn
+  logo into one on the name. Literata bold italic is already in the
+  configuration (`config/fonts/literata.txt`).
+- **What the fonts page says of Literata as the logo's font.** The
+  piece is the author's text.
+
+  **Answered by the user on 2026-11-22.** On a draft of the agent, the
+  user chose the shorter of two, which leaves out the history of the
+  pixel font:
+
+  > The name in the logo is written in Literata too, in bold italic,
+  > beside a photo cut to a circle: bold looked like a second title
+  > beside the page's own, and regular looked thin beside the photo.
+- **Where the notice on the rights is written.** The images and their
+  notice must arrive in the same commit: an image published with no
+  note falls under the repository's MIT licence. The notice is legal
+  text and may belong in three places, `README.md`,
+  `content/README.md` and the site's licence page
+  (`content/licence.md`), which changes the card in a way different
+  from the rest. Raised by the agent on 2026-11-22; not discussed yet.
+
 ## Dependencies
 
 - **The trial files**, outside the repository and not committed: the
   original photo in `assets/logo-original.jpg`, kept out of git on
-  purpose (see the answer on what goes into the repository), and the
+  purpose (see the answer on what goes into the repository) and, since
+  2026-11-22 on the user's choice, listed in `.git/info/exclude`, so
+  that git ignores it on this machine only, and the
   trial in `target/logo-look/`: the circular crops (`circle-*.png`,
   the sharpened ones `circle-sharp-*.png`), the screenshots and the
   copy of the site with the logo (`mock-site/`, its script
   `logo-mock.js`). `target/` is wiped by a clean build.
 
+## What it leaves
+
+Cut by the user on 2026-11-22.
+
+- The line that disappears under the name like a thread:
+  [hide the header's line under the logo's name](hide-the-header-line-under-the-logo-name.md).
+- The pixel font's files, its description and its licence, and what
+  ADR-003 says once it is gone:
+  [remove the pixel font](remove-the-pixel-font.md).
+- The favicon, made again from the logo's crop:
+  [make the favicon from the logo's crop](make-the-favicon-from-the-logo-crop.md).
+- Whether the logo becomes a component of its own:
+  [decide whether the logo is a component of its own](decide-whether-the-logo-is-a-component.md).
+
 ## References
 
+- [Hide the header's line under the logo's name](hide-the-header-line-under-the-logo-name.md),
+  [remove the pixel font](remove-the-pixel-font.md),
+  [make the favicon from the logo's crop](make-the-favicon-from-the-logo-crop.md)
+  and
+  [decide whether the logo is a component of its own](decide-whether-the-logo-is-a-component.md):
+  the cards cut from this one.
 - [Give the articles' code, quotes and tables a look](design-look-of-articles.md):
   the card that brought the light background, where this one was
   opened.

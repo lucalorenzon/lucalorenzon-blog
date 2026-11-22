@@ -1,0 +1,58 @@
+# Decide whether the logo is a component of its own
+
+- **Created:** 2026-11-22
+- **Status:** Open
+
+## Why
+
+Asked by the user on 2026-11-22, at the end of the session that took
+the card [review the logo](review-the-logo.md) into work, and cut from
+that card by the user the same day. The logo is today part of the page
+frame (`src/page_frame.rs`), shared by every page. The style guide
+tests each component once, on its own page
+([build a design system](build-a-design-system.md)); a logo of its own
+would have its own page, and the frame's page
+([show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md))
+would show it only as a part.
+
+## What is known
+
+- **The new logo** is an icon, a photo cut to a circle, with the name
+  in Literata bold italic beside it, both standing on the header's
+  line, which belongs to the frame. The line may also disappear under
+  the name
+  ([hide the header's line under the logo's name](hide-the-header-line-under-the-logo-name.md)).
+- **The text column was made a component and went back into the
+  frame**
+  ([make the text column a component](make-the-text-column-a-component.md),
+  [decide whether to cut the text column again](decide-whether-to-cut-the-text-column-again.md)):
+  a precedent on what being a component costs here.
+
+## Questions to answer
+
+The ones known when the card was written; there may be more.
+
+- **What the logo would gain as a component**: a page of its own in the
+  style guide, its tests apart from the frame's, reuse elsewhere.
+- **What ties it to the frame**: the header's line it stands on, and
+  the room it shares with the title.
+
+## Dependencies
+
+- The card [review the logo](review-the-logo.md), which builds the new
+  logo inside the frame.
+
+## References
+
+- [Review the logo](review-the-logo.md): the card this one was cut
+  from.
+- [Build a design system](build-a-design-system.md): one page per
+  component.
+- [Show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md):
+  the page that would show the logo as a part of the frame.
+- [Hide the header's line under the logo's name](hide-the-header-line-under-the-logo-name.md):
+  an effect that ties the name to the frame's line.
+- [Make the text column a component](make-the-text-column-a-component.md)
+  and
+  [decide whether to cut the text column again](decide-whether-to-cut-the-text-column-again.md):
+  the precedent of the text column.

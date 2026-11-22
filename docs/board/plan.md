@@ -99,8 +99,18 @@ live since 2026-10-26
   frame's page: one icon, the favicon's photo cut to a circle, standing
   on the header's line, with the name beside it in Literata bold
   italic on the same line, in place of the written logo and the logo
-  drawn in characters; the pixel font leaves the site. Agreed on a
-  trial; next, cut the card into slices, the first one to build.
+  drawn in characters; the role `logo` moves to Literata, so the pixel
+  font leaves the stylesheet. Agreed on a trial and cut: the card
+  keeps the icon and the name on the line; next, its acceptance tests.
+  What it left, after it:
+  the line hidden under the name like a thread
+  ([card](cards/hide-the-header-line-under-the-logo-name.md)),
+  the pixel font's files and ADR-003
+  ([card](cards/remove-the-pixel-font.md)),
+  the favicon made from the logo's crop
+  ([card](cards/make-the-favicon-from-the-logo-crop.md)),
+  and whether the logo is a component of its own
+  ([card](cards/decide-whether-the-logo-is-a-component.md)).
 - [Update the screen reader check for an English site](cards/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle
