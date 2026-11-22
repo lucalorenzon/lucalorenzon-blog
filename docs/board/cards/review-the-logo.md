@@ -159,8 +159,23 @@ The ones known when the card was taken into work; there may be more.
   looked badly formatted and the title read worse, so the title stays
   where the site puts it today.
 
-  Still open: whether the header is aligned again around the icon and
-  the name, and how far the circle may reach into the title below the
+  **Answered by the user on 2026-11-22, for the header and the
+  line.** The header keeps the room above the icon and the name: there
+  is more room above than below, and the line becomes part of the
+  logo. On the user's idea, under the name the line disappears, like a
+  thread that runs inside the letters: it reaches the foot of the "L",
+  is left only where each letter touches it, and comes out at the foot
+  of the "r". The name is closer to the icon (6 pixels instead of 12)
+  and slanted 5 degrees more than Literata's italic. Tried in the copy
+  of the site by the agent: the stretch of line hidden runs from the
+  first to the last pixel the letters ink just above the baseline,
+  measured on a canvas in the same font. Done for real, those two
+  points depend on the font and its size: the build could compute them
+  from Literata's measures, as it does for the tables' widths, or a
+  browser test could check them. The extra slant is a skew of an italic
+  already drawn: unnoticed at 5 degrees, stretched beyond.
+
+  Still open: how far the circle may reach into the title below the
   line on narrow screens, with long titles.
 - **How the link keeps one name.** With an alternative text on the
   icon and the name written beside it, a screen reader may say the
@@ -176,7 +191,26 @@ The ones known when the card was taken into work; there may be more.
   reduced to size, then sharpened (unsharp mask, radius 1.2, 80 per
   cent, threshold 2), with colour raised by 15 per cent and contrast
   by 8. The formats and the favicon are still open.
-- **What ADR-003 says once the drawn logo is gone.**
+- **What ADR-003 says once the drawn logo is gone**, and the pixel
+  font with it.
+- **Whether the logo becomes a component of its own**, apart from the
+  page frame. Asked by the user on 2026-11-22, at the end of the
+  session that took the card into work; not discussed yet.
+- **How the card is cut.** It now holds the icon and its images, the
+  name in Literata on the line, the notice on the rights, the favicon
+  and the removal of the pixel font, which also touches the fonts'
+  configuration, the fonts page, the font roles' test and ADR-003.
+  Noticed by the agent on 2026-11-22.
+
+## Dependencies
+
+- **The trial files**, outside the repository and not committed: the
+  original photo in `assets/logo-original.jpg`, kept out of git on
+  purpose (see the answer on what goes into the repository), and the
+  trial in `target/logo-look/`: the circular crops (`circle-*.png`,
+  the sharpened ones `circle-sharp-*.png`), the screenshots and the
+  copy of the site with the logo (`mock-site/`, its script
+  `logo-mock.js`). `target/` is wiped by a clean build.
 
 ## References
 

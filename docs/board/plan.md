@@ -96,9 +96,11 @@ live since 2026-10-26
     ([card](cards/show-the-page-frame-in-the-style-guide.md),
     in work, waiting for the logo below).
 - [Review the logo](cards/review-the-logo.md), in work, before the
-  frame's page: one icon, the favicon's photo cut to a circle, with
-  the name written beside it at every width, in place of the written
-  logo and the logo drawn in characters.
+  frame's page: one icon, the favicon's photo cut to a circle, standing
+  on the header's line, with the name beside it in Literata bold
+  italic on the same line, in place of the written logo and the logo
+  drawn in characters; the pixel font leaves the site. Agreed on a
+  trial; next, cut the card into slices, the first one to build.
 - [Update the screen reader check for an English site](cards/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle
