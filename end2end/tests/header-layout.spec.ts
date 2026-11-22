@@ -388,6 +388,166 @@ for (const { name, width, height } of VIEWPORTS) {
   });
 }
 
+// ---- The line under the name ------------------------------------------------
+
+// The header's line disappears under the name, like a thread that runs inside the letters: it
+// reaches the foot of the "L" and comes out at the foot of the "r" (`logo-name` in
+// style/input.css, which hides it with a background of the page's colour trimmed by 0.32em, a
+// number that belongs to the "r" of Literata bold italic). Measured on the real pixels, not on
+// the CSS values, in two shots of the rows the line covers, taken at the same layout:
+//  - the line alone: the name's letters made transparent (the background stays), so what shows
+//    in those rows is the line, and a hole where the background hides it;
+//  - the letters alone: the line's colour made transparent, so what shows in the two rows just
+//    above is the ink of the letters at their feet (INK_ROWS).
+// The line must end at the first inked column and come back at the one after the last, within
+// the margins below; between them nothing of it may show; before and after it must be whole, from the
+// icon's right edge to the page's right edge. The background's box must not reach the icon or
+// the title's text. Why: docs/board/cards/hide-the-header-line-under-the-logo-name.md
+// The margins, in pixels, between the line's ends and the letters' feet. One pixel is the rule,
+// agreed with the user: each end is read on whole columns of an antialiased image. The one
+// exception is the "r", where the line may come back up to 2 pixels before the end of its foot:
+// it then runs under the last bit of the foot, which is drawn over it, so it does not show
+// (measured at 1024px: back at 189, the foot ends at 191). It may not come back late: a gap
+// between the foot and the line would show.
+const THREAD_L_MARGIN = 1;
+const THREAD_R_EARLY_MARGIN = 2;
+const THREAD_R_LATE_MARGIN = 1;
+// The trim of the background, in em (style/input.css, `logo-name`): the box's right end is
+// where the "r"'s advance ends, the line comes back this much before it.
+const THREAD_TRIM_EM = 0.32;
+// The letters' feet are drawn on the rows just above the line's: the text's baseline is snapped
+// to a whole pixel, so the row of the line itself holds only what dips below the baseline.
+const INK_ROWS = 2;
+const LETTERS_HIDDEN = 'a.logo-link .logo-name { color: transparent !important; }';
+const LINE_HIDDEN = '.title-below-line { border-top-color: transparent !important; } .header-one-row { border-bottom-color: transparent !important; }';
+
+// The columns of a shot of `rows` pixel rows, from `top`, in which something differs from the
+// page's colour, once `css` is added to the page.
+async function paintedColumns(page: Page, css: string, top: number, rows: number): Promise<boolean[]> {
+  const width = page.viewportSize()!.width;
+  await page.evaluate((text) => {
+    const style = document.createElement('style');
+    style.id = 'measure-only';
+    style.textContent = text;
+    document.head.appendChild(style);
+  }, css);
+  await page.evaluate(() => new Promise((done) => requestAnimationFrame(() => done(null))));
+  const png = await page.screenshot({ clip: { x: 0, y: top, width, height: rows } });
+  await page.evaluate(() => document.getElementById('measure-only')!.remove());
+  return page.evaluate(
+    async ({ data, rows }) => {
+      // The page's colour as the browser computes it, from a probe painted with the colour.
+      const probe = document.createElement('div');
+      probe.style.background = 'var(--color-page)';
+      document.body.appendChild(probe);
+      const colour = getComputedStyle(probe).backgroundColor;
+      probe.remove();
+      const page = (colour.match(/\d+(\.\d+)?/g) ?? []).slice(0, 3).map(Number);
+      if (page.length !== 3) throw new Error(`cannot read the page's colour from "${colour}"`);
+      const image = new Image();
+      image.src = `data:image/png;base64,${data}`;
+      await image.decode();
+      const canvas = document.createElement('canvas');
+      canvas.width = image.width;
+      canvas.height = image.height;
+      const context = canvas.getContext('2d')!;
+      context.drawImage(image, 0, 0);
+      const pixels = context.getImageData(0, 0, image.width, image.height).data;
+      // A column is painted when its strongest pixel is at least a quarter as far from the
+      // page's colour as the strongest of the shot: the faint edge of an antialiased stroke
+      // does not count. A shot with nothing in it, only noise, paints nothing.
+      const strongest: number[] = [];
+      for (let x = 0; x < image.width; x++) {
+        let best = 0;
+        for (let y = 0; y < rows; y++) {
+          const at = (y * image.width + x) * 4;
+          const difference =
+            Math.abs(pixels[at] - page[0]) + Math.abs(pixels[at + 1] - page[1]) + Math.abs(pixels[at + 2] - page[2]);
+          best = Math.max(best, difference);
+        }
+        strongest.push(best);
+      }
+      const top = Math.max(...strongest);
+      const out = strongest.map((best) => top >= 48 && best * 4 >= top);
+      return out;
+    },
+    { data: png.toString('base64'), rows },
+  );
+}
+
+// What is wrong with the line under the name in the page as it is now, as messages.
+async function threadProblems(page: Page, title: string): Promise<string[]> {
+  const width = page.viewportSize()!.width;
+  const where = `[${width}px, "${title}"]`;
+  const found: string[] = [];
+  const s = await snapshot(page);
+  if (!s.line || !s.icon || !s.name) return [`${where} the line, the icon or the name is missing`];
+
+  // The rows the line covers (its middle is the name's baseline).
+  const top = Math.round(s.line.y);
+  const rows = Math.max(1, Math.round(s.line.bottom) - top);
+  const from = Math.ceil(s.icon.box.r);
+  const line = (await paintedColumns(page, LETTERS_HIDDEN, top, rows)).slice(from);
+  const ink = (await paintedColumns(page, LINE_HIDDEN, top - INK_ROWS, INK_ROWS)).slice(from);
+
+  const inkFirst = ink.indexOf(true);
+  const inkLast = ink.lastIndexOf(true);
+  const hole = line.indexOf(false);
+  const holeEnd = line.lastIndexOf(false) + 1;
+  if (inkFirst < 0) return [`${where} the letters leave no ink in the line's rows`];
+  if (hole < 0) return [`${where} the line is whole under the name: nothing hides it`];
+
+  // Outside the name: whole from the icon's right edge up to the hole, and from it to the right end.
+  const before = line.slice(0, hole).filter((painted) => !painted).length;
+  const after = line.slice(holeEnd).filter((painted) => !painted).length;
+  if (before !== 0) found.push(`${where} the line is not whole between the icon and the name`);
+  if (after !== 0 || holeEnd >= line.length) found.push(`${where} the line is not whole from the "r" to its right end`);
+  // Under the name: no pixel of the line between the letters.
+  const between = line.slice(hole, holeEnd).filter((painted) => painted).length;
+  if (between !== 0) found.push(`${where} ${between} columns of the line show between the letters`);
+  // The two ends: the foot of the "L" and the foot of the "r".
+  if (Math.abs(hole - inkFirst) > THREAD_L_MARGIN) {
+    found.push(`${where} at the "L" the line ends at ${from + hole}, the foot starts at ${from + inkFirst}: more than ${THREAD_L_MARGIN}px apart`);
+  }
+  const back = holeEnd - (inkLast + 1);
+  if (back < -THREAD_R_EARLY_MARGIN) {
+    found.push(`${where} at the "r" the line comes back at ${from + holeEnd}, too early: the foot ends at ${from + inkLast + 1}, more than ${THREAD_R_EARLY_MARGIN}px after`);
+  }
+  if (back > THREAD_R_LATE_MARGIN) {
+    found.push(`${where} at the "r" the line comes back at ${from + holeEnd}, too late: the foot ends at ${from + inkLast + 1}, more than ${THREAD_R_LATE_MARGIN}px before`);
+  }
+
+  // The background covers neither the icon nor the title's text: its box is the text's, trimmed.
+  const box = await page.evaluate((trim) => {
+    const inner = document.querySelector('a.logo-link .logo-name')!.firstElementChild!;
+    const rect = inner.getBoundingClientRect();
+    const size = parseFloat(getComputedStyle(inner).fontSize);
+    return { l: rect.left, r: rect.right - trim * size, t: rect.top, b: rect.bottom };
+  }, THREAD_TRIM_EM);
+  if (overlap(box, s.icon.box)) found.push(`${where} the name's background covers the icon`);
+  if (overlap(box, s.h1Text)) found.push(`${where} the name's background covers the title's text`);
+  return found;
+}
+
+for (const { name, width, height } of VIEWPORTS) {
+  test(`the header's line under the name at ${width}x${height} (${name})`, { tag: '@colours' }, async ({ page }) => {
+    for (const title of LONG_TITLES) expect(graphemes(title)).toBe(HEADING_MAX_GRAPHEMES);
+    await page.setViewportSize({ width, height });
+
+    await retryWhenLive(async () => {
+      await page.goto('./');
+      await page.evaluate(() => document.fonts.ready);
+
+      const found: string[] = [];
+      for (const title of [HOME_TITLE, ...LONG_TITLES]) {
+        await setTitle(page, title);
+        found.push(...(await threadProblems(page, title)));
+      }
+      expect(found.length, `the line under the name is wrong:\n${found.join('\n')}`).toBe(0);
+    });
+  });
+}
+
 // ---- Header with the reader's text spacing (WCAG 1.4.12) ------------------
 
 // After the reader's spacing is applied: what is wrong in the header, as messages.

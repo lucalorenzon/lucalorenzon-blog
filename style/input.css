@@ -552,11 +552,28 @@ body {
    top of the letters to the right (tan 5 degrees times the letters' height,
    about 0.7em), so that the title's 24px of room are counted from the letters.
    The text is in a span inside it, which has the height
-   of the text: the box itself has none, so a browser would call it hidden. */
+   of the text: the box itself has none, so a browser would call it hidden.
+   The name stands on the header's line, and the line disappears under it, like
+   a thread that runs inside the letters: it reaches the foot of the "L" and
+   comes out at the foot of the "r". The span with the text has a background in
+   the page's colour (it follows the dark and light themes), painted over the
+   line and under the letters. It is a gradient, not a plain colour, because it
+   must stop short of the box's right end: the box ends where the advance of the
+   "r" ends, 8 to 10px after the foot of the italic "r", whose stroke reaches
+   further right at the top than at the foot. 0.32em was measured so that the
+   line comes back at the foot of the "r". The number belongs to the "r" of
+   Literata bold italic: a change of the logo's font or of the name's last
+   letter needs it measured again, and the header's browser test fails until it
+   is. Why: docs/board/cards/hide-the-header-line-under-the-logo-name.md.
+   In forced colours mode the gradient is dropped, but the browser paints its own
+   backplate behind text, which hides the line anyway. */
 @utility logo-name {
   @apply title-size inline-block ml-[6px] mr-[0.07em] font-logo font-bold whitespace-nowrap italic leading-[0];
   transform: skewX(-5deg);
   transform-origin: left bottom;
+  & > span {
+    background: linear-gradient(var(--color-page), var(--color-page)) no-repeat left / calc(100% - 0.32em) 100%;
+  }
 }
 
 /* A table cell holding a single value (no space in it), wrapped by the build
