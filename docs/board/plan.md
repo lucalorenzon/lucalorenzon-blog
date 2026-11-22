@@ -198,6 +198,10 @@ live since 2026-10-26
   criterion by criterion, levels A, AA and AAA, now that readability
   is done ([card](cards/improve-site-readability.md)): for
   each one, whether it is done now, next or later.
+- [Add icons for the home screen](cards/add-icons-for-the-home-screen.md)
+  of phones, cut from the favicon's card, with the
+  [decision whether to keep the logo images' script](cards/decide-whether-to-keep-the-logo-images-script.md),
+  which would make them.
 - [Add preview images](cards/add-preview-images.md) for links shared
   on LinkedIn or elsewhere, one per page, in a session of their own,
   probably after the logo is reviewed.

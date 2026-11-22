@@ -1,0 +1,1 @@
+../cards/decide-whether-to-keep-the-logo-images-script.md
