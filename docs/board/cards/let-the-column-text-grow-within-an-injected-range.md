@@ -232,6 +232,42 @@ None known. The possible dependency on the card
 went, with the range's place in the configuration, to the card
 [read the column text's range from the configuration](read-the-column-text-range-from-the-configuration.md).
 
+## Acceptance tests
+
+Agreed with the user on 2026-11-22. The card is done when:
+
+1. **The growth.** The column's text is 18 pixels at 320, 20 pixels at
+   1366 and at 1920, and grows with the page's width without jumps:
+   at the column widths it follows the range's straight line, within
+   a small tolerance.
+2. **The column.** It stays at most 60 characters of its own font
+   wide, centred, filling the screen up to that limit (already
+   checked; the check stays).
+3. **The size inside the components.** Inside the code block and the
+   table, the text size the column passes on is the same as the
+   column's, in pixels: the guard against losing the registration of
+   the size variable.
+4. **The code block's case at the limit.** The line that just fits
+   does not scroll from 1366 up and scrolls below; the line one
+   character longer always scrolls.
+5. **The tables.** The tables' cases at the limit leave the style
+   guide's tables page and their tests: the test of the keyboard on
+   the record viewer moves to a phone's width, where the six-column
+   table is a viewer; the test of the rows of different heights loses
+   767. The page's text no longer names 767 and 768, with the
+   sentences the user approved on 2026-11-22, and its section "Texts
+   at the limit" is gone.
+6. **The column widths** are 320, 393, 412, 843 and 1366; 843 and
+   1366 are among the column widths only, not among the devices, and
+   are written in the tests by hand until the range moves to the
+   configuration.
+7. **The old class.** `md:long-text-large` is gone from the Rust code
+   and from the stylesheet.
+8. **The descriptions.** The browser tests' README and the tests'
+   comments are updated for every test touched.
+9. **The pipeline.** Every check of the pipeline passes: formatting,
+   clippy, the Rust tests, the type check and the browser tests.
+
 ## What it leaves
 
 - The search for new cases at the limit, in place of the tables'
