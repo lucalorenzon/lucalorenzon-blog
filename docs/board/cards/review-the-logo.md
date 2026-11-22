@@ -47,7 +47,7 @@ page would show and put to the test, and the user expects it to go.
   to go, and tied the title's size to the text rather than to the
   logo
   ([let the frame's text grow within the injected ranges](let-the-frame-text-grow-within-the-injected-ranges.md)).
-- **The favicon is already a circular crop of a photo of the user's**
+- **The favicon is already a circular crop of a photo of the user**
   (`assets/favicon.ico`, one image of 16 by 16 pixels): the user
   pushing a twin pushchair on a beach, under a blue cloth printed with
   sea animals. Checked by the agent on 2026-11-22 by enlarging the
@@ -107,6 +107,24 @@ The ones known when the card was taken into work; there may be more.
   images are published.** The person who took the photo holds its
   copyright; the site's content has licences of its own
   (`content/README.md`), different from the code's.
+
+  **Answered by the user on 2026-11-22, for the rights.** The user's
+  wife took the photo, with the user's phone, so the rights are hers;
+  she agrees that the photo, cut to the circle, is published on the
+  site and in the repository as the logo and as the favicon. The
+  licence is still open: the favicon, already made from this photo,
+  sits in `assets/` with no note, so it falls under the repository's
+  MIT licence, which lets anyone reuse it; a logo is usually kept out
+  of free licences.
+
+  **Answered by the user on 2026-11-22, for the licence.** The logo and
+  the favicon are under no licence of the repository or of the site:
+  all rights reserved, out of the MIT licence. Today nothing says so:
+  `README.md` ("License") and `content/README.md` name the code's and
+  the text's licences, and the site's licence page
+  (`content/licence.md`) says that, unless a page says otherwise, what
+  is read on the site may be reused, and that images by other authors
+  name their source.
 - **How large the icon and the name are**, and whether they grow
   within a range of the page's width, as the title does.
 - **How the link keeps one name.** With an alternative text on the
