@@ -108,6 +108,33 @@ The ones known when the card was written; there may be more.
     today.
 - **Whether the text still grows with the browser's zoom**, as WCAG
   1.4.4 asks, with the smallest size in units of the page's font.
+
+  **Answered by the user on 2026-11-22.** It does, and that is
+  enough. Zooming makes the page narrower in CSS pixels, so the text
+  slides down its range while the zoom enlarges it: at 200 per cent
+  zoom the text is enlarged 187 to 199 per cent, depending on the
+  window (187 at 1366 pixels). The criterion asks only that text "can
+  be resized without assistive technology up to 200 percent", and its
+  Understanding document
+  (https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) says
+  that when text does not grow steadily with zoom, as when a media
+  query changes it, 200 per cent must still be reachable in some way:
+  here, by zooming a little further. The failure it names, text sized
+  in viewport units that zoom does not enlarge, does not apply: the
+  bounds are in pixels. A reading by Maxwell Barvian
+  (https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/),
+  an interpretation and not part of WCAG, asks that text be at least
+  doubled at the browser's largest zoom, 500 per cent, and finds that
+  always true when the largest size is at most 2.5 times the smallest;
+  here it is 20 over 18. Today's site does worse: in a 1366-pixel
+  window at 200 per cent the page falls below 768 pixels, the text
+  drops back to 18 pixels and is enlarged 180 per cent. Whether the
+  bounds should follow the browser's own font-size setting is a
+  question of its own, below.
+- **Whether the text follows the browser's font-size setting**, which
+  enlarges text without zooming. Bounds in pixels ignore it, as the
+  site does today; WCAG asks for at least one way to enlarge text,
+  and zoom is one. Added on 2026-11-22, out of the question on zoom.
 - **How the Rust checks of the classes learn the containers**, so a
   mistyped container name or size stops the build instead of leaving a
   rule out in silence.
@@ -116,6 +143,14 @@ The ones known when the card was written; there may be more.
   scrollbars shown.
 - **Whether a line of the column stays near 60 characters** at every
   width of the range.
+
+  **Answered by the agent on 2026-11-22**, from the trials: where the
+  column is at its widest, from about 700 pixels, a line keeps about
+  59 characters whatever the size, since the column's width is
+  measured in characters of its own font. Below, the column fills the
+  page and lines are shorter, as today: about 30 characters at 320
+  pixels. The range does not change this; the smallest size does,
+  and it stays 18 pixels.
 
 ## Dependencies
 
