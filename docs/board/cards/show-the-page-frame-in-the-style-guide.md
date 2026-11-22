@@ -150,7 +150,33 @@ superseded; they left this card on 2026-11-22 (see "What it leaves").
   [ADR-005](../../adr/ADR-005-explain-a-component-beside-its-code.md).
 - **Under which licence the explanation beside the code is**: the
   code's, MIT, or the text's, as an exception declared in `src/`.
-  Added on 2026-11-22, from the answer above.
+  Added on 2026-11-22, from the answer above. The style guide's pages
+  say "Reuse with attribution" in their footer, which leads to the
+  site's text licence (CC BY 4.0, under "unless a page says
+  otherwise" in `content/licence.md`), while everything in `src/` is
+  under MIT: the visitor and the reader of the repository would be
+  promised different terms for the same text.
+
+  **Answered by the user on 2026-11-22, with the agent: the text's
+  licence.** The user first asked whether the code could move to
+  Creative Commons too, to make things simpler. The agent advised
+  against it: Creative Commons' own frequently asked questions say
+  that software and hardware are the only works for which it does not
+  recommend its licences (read verbatim by the agent on 2026-11-22);
+  the entry on software, read only in a summary, adds that the
+  licences say nothing on source code or patents and are not
+  compatible with the main software licences. The repository would
+  keep several licences anyway (the robots list under MIT, the
+  articles' code samples under MIT-0), and a licence once given
+  cannot be taken back from those who took the code. The agent
+  proposed one rule instead, which the user accepted: every Markdown
+  file that explains a component is text of the site, under the same
+  licence as the style guide's pages, wherever it lives; one line in
+  `content/README.md`, and perhaps one in the root `README.md`, says
+  that the `.md` files in `src/` follow the text's licences. The code
+  stays under MIT, and the page keeps its footer's promise. Creative
+  Commons calls its licences fit for software documentation (also
+  from the summary only).
 - **Where the page's date in the sitemap comes from**, since the
   content dates step reads only `content/`. Added on 2026-11-22, from
   the answer above.
