@@ -160,10 +160,10 @@ Why: `docs/board/cards/describe-the-browser-tests-in-a-readme.md`.
 - [pulldown-cmark](https://github.com/pulldown-cmark/pulldown-cmark) 0.13,
   converting the content's Markdown to HTML at build time; the Markdown
   holds no HTML (a unit test checks it)
-- [serde-saphyr](https://crates.io/crates/serde-saphyr) 2.1, reading
+- [serde-saphyr](https://crates.io/crates/serde-saphyr) 2.2, reading
   only, for the YAML front matter at the top of each article (why:
   `docs/board/cards/read-article-fields-from-front-matter.md`)
-- [jiff](https://github.com/BurntSushi/jiff) 0.2, without time zones,
+- [jiff](https://github.com/BurntSushi/jiff) 1.0, without time zones,
   reading the dates of the articles and of the sitemap (strict ISO
   form, `YYYY-MM-DD`) and writing them for the reader (why:
   `docs/board/cards/give-dates-a-module-of-their-own.md`)
