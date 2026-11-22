@@ -1,7 +1,8 @@
 # Hide the header's line under the logo's name
 
 - **Created:** 2026-11-22
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-22
 
 ## Why
 
@@ -98,7 +99,7 @@ The ones known when the card was written; there may be more.
   threshold
   ([measure the fonts again when they change](measure-the-fonts-again-when-they-change.md)).
 
-  **Proposed by the agent on 2026-11-22, not answered yet.** With the
+  **Proposed by the agent on 2026-11-22.** With the
   box trimmed, a browser test that checks the line touching the feet of
   the "L" and of the "r" would fail, and stop the pipeline, when the
   font or the name changes.
@@ -110,9 +111,10 @@ The ones known when the card was written; there may be more.
   pixels wide, against the build's measures.
 
 - **What happens in forced colours mode**, where the system imposes
-  its own colours. Raised and checked by the agent on 2026-11-22, in
-  Chromium only, the one browser of the project's tests: the
-  gradient is dropped, but Chromium draws a band of the system's
+  its own colours. Raised by the agent on 2026-11-22.
+
+  **Checked by the agent on 2026-11-22**, in Chromium only, the one
+  browser of the project's tests: the gradient is dropped, but Chromium draws a band of the system's
   background behind every text, which already hides the line under the
   name today, without this card; the effect stays, at most with a gap
   after the "r". Firefox was not checked.
@@ -132,6 +134,15 @@ The line under the name:
    and in both themes, the header's line reaches the foot of the "L"
    and comes back at the foot of the "r", within one pixel. *Browser
    test, on the line's pixels.*
+
+   **Changed by the user on 2026-11-22**, on what the build showed: at
+   1024 pixels, in both themes, the line comes back 2 pixels before the
+   end of the "r"'s foot, which is drawn over it, so it does not show;
+   a gap after the "r" would. The margin differs by side: at the "L",
+   one pixel either way; at the "r", the line may come back up to 2
+   pixels before the end of the foot, and at most one pixel after it.
+   The agent had offered this or 2 pixels on both sides, which would
+   also let a visible gap after the "r" pass.
 2. Between the foot of the "L" and the foot of the "r", the line does
    not show between the letters. *The same browser test.*
 3. Nothing else changes: outside the name the line is whole, the
@@ -148,13 +159,73 @@ A change of font:
    threshold
    ([measure the fonts again when they change](measure-the-fonts-again-when-they-change.md)).
 
+   **Done by a sub-agent on 2026-11-22, the outcome checked by the
+   agent.** With only the role `logo` moved to Hack in
+   `config/fonts.txt`, the build itself stops first: the fonts page asks
+   for a piece of text for that font in that role. With the piece added
+   too, the build passes and the test fails at all 24 of its runs, every
+   width in both themes, always at the "L", for example "[320px, "Home
+   Page"] at the "L" the line ends at 61, the foot starts at 63: more
+   than 1px apart". With the earlier margin of 2 pixels on both sides
+   only 12 of 24 failed. Both files were then put back as they were,
+   and the test passed again.
+
 Before the commit:
 
 5. The user sees screenshots of the real header on a narrow screen and
    on a laptop, in both themes, and approves them. *Check by eye.*
+
+   **Approved by the user on 2026-11-22**, on screenshots at 375 and
+   1366 pixels, dark and light, at double pixel density
+   (`target/thread-look/real-*.png`, not committed).
 6. The pipeline's checks pass: formatting, clippy, unit tests, type
    check, browser tests; the row of `end2end/README.md` follows the
    test. *Automatic.*
+
+   **Passed on 2026-11-22:** formatting, clippy, 425 unit tests, the
+   build, the type check, and 322 browser tests passed with one skipped
+   as before (the 24 runs of the new test added to 298); the new test,
+   run alone three times, passed every time.
+
+## Recap
+
+- The card taken into work right after the logo's card was closed
+  (`392accf`); the way chosen on a trial of three
+  (`5c703b6`); the last answer, the check in forced colours and the
+  acceptance tests (`917fbda`).
+- The change, in one commit (`ffb204b`): in `style/input.css`, the
+  utility `logo-name` gives the span with the name's text a background
+  in the page's colour, a gradient trimmed by 0.32em on the right, so
+  the line disappears from the foot of the "L" to the foot of the "r".
+  In `end2end/tests/header-layout.spec.ts`, the test "the header's line
+  under the name" runs on the home page with its title and the two
+  longest titles, at every width of the list of screens, in both
+  themes (tagged `@colours`, so the dark project runs it too). It takes
+  two thin screenshots of the line's rows, one with the letters made
+  transparent and one with the line made transparent, reads their
+  pixels on a canvas in the page, and checks both ends, the line whole
+  outside the name and nothing of it between the letters; and, on the
+  boxes, that the name's background covers neither the icon nor the
+  title's text. Its row in `end2end/README.md`.
+
+## Cautions
+
+- **0.32 belongs to Literata bold italic's "r".** A change of the role
+  `logo`'s font, or of the name's last letter, fails the header's test
+  until the number is measured again; the comment beside the rule in
+  `style/input.css` says so.
+- **The letters' feet are read on the two rows above the line**, not on
+  the line's own row: the text's baseline is snapped to a whole pixel,
+  so the feet are drawn just above the line, and the line's row holds
+  only what dips below the baseline.
+- **The test reads whole columns of an antialiased image**; its margins
+  are those of acceptance test 1, as changed. A test that fails by one
+  pixel at a single width is more likely the browser's rounding than a
+  changed font, which moved the "L" end by 2 to 3 pixels at every width.
+- **Forced colours mode was checked in Chromium only**; whether Firefox
+  hides the line there is not known, and the project's tests do not run
+  it
+  ([run the browser tests in more browsers](run-browser-tests-in-more-browsers.md)).
 
 ## References
 
@@ -164,3 +235,5 @@ Before the commit:
   a possible source of the measures.
 - [Measure the fonts again when they change](measure-the-fonts-again-when-they-change.md):
   how the build already stops on a font that moves a threshold.
+- [Run the browser tests in more browsers](run-browser-tests-in-more-browsers.md):
+  where Firefox's forced colours mode could be checked.
