@@ -94,7 +94,12 @@ live since 2026-10-26
     footer from 16 to 18, the section headings at 1.2 times the text),
     then the frame's page, which shows the column too
     ([card](cards/show-the-page-frame-in-the-style-guide.md),
-    in work; the logo below is done), and last the index's list of
+    in work, cut to the page itself; the logo below is done), then
+    the frame's tests moved onto it from the home page
+    ([card](cards/move-the-frame-tests-to-its-page.md)) and the
+    column's from the text page
+    ([card](cards/move-the-column-tests-to-the-frame-page.md)),
+    and last the index's list of
     the pages to come
     ([card](cards/declare-the-pages-to-come-in-the-style-guide-index.md)).
 - [Review the logo](cards/review-the-logo.md), done, not published

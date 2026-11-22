@@ -276,6 +276,18 @@ the style guide needs:
   and is needed before publishing. Card
   [declare the pages to come in the style guide's index](declare-the-pages-to-come-in-the-style-guide-index.md).
 
+Cut by the user on 2026-11-22, once every question had its answer, so
+that this card keeps one slice: the page itself (its explanation
+beside the code, its place in the style guide, in the index and in
+the sitemap with the text's date, and the line on the licence). The
+tests that move onto it went to two cards:
+
+- The frame's tests, from the home page. Card
+  [move the frame's tests to its page](move-the-frame-tests-to-its-page.md).
+- The text column's tests, from the text page, and the section
+  heading's test split in two. Card
+  [move the text column's tests to the frame's page](move-the-column-tests-to-the-frame-page.md).
+
 ## References
 
 - [Try a breakpoint declaration on the text column](try-a-breakpoint-declaration-on-the-text-column.md):
@@ -309,3 +321,7 @@ the style guide needs:
   the other pages brought to this page's model, after publishing.
 - [ADR-005](../../adr/ADR-005-explain-a-component-beside-its-code.md):
   the record of the decision on where a component's explanation lives.
+- [Move the frame's tests to its page](move-the-frame-tests-to-its-page.md)
+  and
+  [move the text column's tests to the frame's page](move-the-column-tests-to-the-frame-page.md):
+  the two slices of tests cut from this card.
