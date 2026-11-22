@@ -79,6 +79,15 @@ The ones known when the card was written; there may be more.
   overlap, prove the reasoning above.
 - **Whether the text grows with the browser's zoom**, as for the
   column.
+- **Whether a browser test checks the footer's text size.** Came up
+  during the work: no browser test checks it today, neither the 16
+  pixels below 768 nor the 18 from 768, so its change to a range
+  would go unchecked, as would any later change.
+
+  **Answered by the user on 2026-11-22.** Yes: a browser test checks
+  that the footer's text lies on its range's straight line, 16 pixels
+  at 320 and 18 from 1366, within 0.05 pixels, as the title's and the
+  column's do.
 
 ## Dependencies
 
