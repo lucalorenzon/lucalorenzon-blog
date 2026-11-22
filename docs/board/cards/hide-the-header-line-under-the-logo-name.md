@@ -103,10 +103,58 @@ The ones known when the card was written; there may be more.
   the "L" and of the "r" would fail, and stop the pipeline, when the
   font or the name changes.
 
+  **Answered by the user on 2026-11-22.** The test in the pipeline is
+  enough; the tie between the number and the font is not written
+  anywhere else. The agent had named the weakness of a check made on
+  pixels: Chromium on Linux already drew a font a whole number of
+  pixels wide, against the build's measures.
+
+- **What happens in forced colours mode**, where the system imposes
+  its own colours. Raised and checked by the agent on 2026-11-22, in
+  Chromium only, the one browser of the project's tests: the
+  gradient is dropped, but Chromium draws a band of the system's
+  background behind every text, which already hides the line under the
+  name today, without this card; the effect stays, at most with a gap
+  after the "r". Firefox was not checked.
+
 ## Dependencies
 
 - The card [review the logo](review-the-logo.md), which puts the name on
   the line.
+
+## Acceptance tests
+
+Agreed with the user on 2026-11-22. Each one names how it is checked.
+
+The line under the name:
+
+1. On every page, at every width of the browser tests' list of screens
+   and in both themes, the header's line reaches the foot of the "L"
+   and comes back at the foot of the "r", within one pixel. *Browser
+   test, on the line's pixels.*
+2. Between the foot of the "L" and the foot of the "r", the line does
+   not show between the letters. *The same browser test.*
+3. Nothing else changes: outside the name the line is whole, the
+   stretch between the icon and the "L" included, and the name's
+   background covers neither the icon nor the title's text below the
+   line. *The header's browser tests already there, and a check on the
+   background.*
+
+A change of font:
+
+4. Proof that test 1 notices a change: once, outside the commit, the
+   role `logo` is moved to another font and the test is seen to fail;
+   the outcome is written in this card, as for the wrap toggle's
+   threshold
+   ([measure the fonts again when they change](measure-the-fonts-again-when-they-change.md)).
+
+Before the commit:
+
+5. The user sees screenshots of the real header on a narrow screen and
+   on a laptop, in both themes, and approves them. *Check by eye.*
+6. The pipeline's checks pass: formatting, clippy, unit tests, type
+   check, browser tests; the row of `end2end/README.md` follows the
+   test. *Automatic.*
 
 ## References
 
