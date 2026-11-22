@@ -1,7 +1,7 @@
 # Let the page frame's text grow within the injected ranges
 
 - **Created:** 2026-11-21
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
