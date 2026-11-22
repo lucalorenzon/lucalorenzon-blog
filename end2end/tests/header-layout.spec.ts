@@ -25,7 +25,7 @@ import { ADDRESSES, FOOTER_RANGE, LOGO_RANGE, READER_SPACING, retryWhenLive, siz
 // A second test per viewport applies the reader's text spacing (WCAG 1.4.12,
 // READER_SPACING in support.ts) and checks that the header's logo, title and
 // menu slot do not intersect, that nothing in the header cuts off its content
-// and that the page does not scroll sideways. It uses the home page title and
+// and that the page does not scroll sideways. It uses the frame page's title and
 // the two invented titles below instead of the real pages' titles: the build
 // limits a heading to a number of graphemes (card
 // docs/board/cards/enforce-the-title-length-limit-in-the-build.md), so the
@@ -45,7 +45,10 @@ const MIN_GAP = 24;
 // How far a measured text size may be from its range's straight line, in pixels.
 const SIZE_TOLERANCE = 0.05;
 
-const HOME_TITLE = 'Home Page';
+// The page these tests open: the frame's page of the style guide, where the frame is tested
+// once (ADR-004). The title is the page's own heading.
+const FRAME_PAGE = './style-guide/frame.html';
+const FRAME_TITLE = 'Page frame';
 // The longest heading the build accepts, in graphemes. It is read from the same file the
 // build includes (config/heading-max-graphemes.txt), so there is one figure, not two copies that
 // could drift apart; and it is counted in graphemes, as the build does. The tests also run on
@@ -339,11 +342,11 @@ for (const { name, width, height } of VIEWPORTS) {
 
     let screenshot: Buffer | undefined;
     const check = async () => {
-      await page.goto('./');
+      await page.goto(FRAME_PAGE);
       await page.evaluate(() => document.fonts.ready);
 
       screenshot = await page.screenshot({ fullPage: true });
-      const found = violations(await snapshot(page), HOME_TITLE, true);
+      const found = violations(await snapshot(page), FRAME_TITLE, true);
 
       for (const title of LONG_TITLES) {
         await setTitle(page, title);
@@ -535,11 +538,11 @@ for (const { name, width, height } of VIEWPORTS) {
     await page.setViewportSize({ width, height });
 
     await retryWhenLive(async () => {
-      await page.goto('./');
+      await page.goto(FRAME_PAGE);
       await page.evaluate(() => document.fonts.ready);
 
       const found: string[] = [];
-      for (const title of [HOME_TITLE, ...LONG_TITLES]) {
+      for (const title of [FRAME_TITLE, ...LONG_TITLES]) {
         await setTitle(page, title);
         found.push(...(await threadProblems(page, title)));
       }
@@ -609,12 +612,12 @@ for (const { name, width, height } of VIEWPORTS) {
     await page.setViewportSize({ width, height });
 
     await retryWhenLive(async () => {
-      await page.goto('./');
+      await page.goto(FRAME_PAGE);
       await page.addStyleTag({ content: READER_SPACING });
       await page.evaluate(() => document.fonts.ready);
 
       const found: string[] = [];
-      for (const title of [HOME_TITLE, ...LONG_TITLES]) {
+      for (const title of [FRAME_TITLE, ...LONG_TITLES]) {
         await setTitle(page, title);
         found.push(...(await headerSpacingProblems(page, title)));
       }
@@ -631,7 +634,7 @@ for (const { name, width, height } of VIEWPORTS) {
   test(`footer text size at ${width}x${height} (${name})`, async ({ page }) => {
     await page.setViewportSize({ width, height });
     await retryWhenLive(async () => {
-      await page.goto('./');
+      await page.goto(FRAME_PAGE);
       await page.evaluate(() => document.fonts.ready);
       const size = await page.evaluate(() => parseFloat(getComputedStyle(document.querySelector('footer')!).fontSize));
       const expected = sizeOnRange(FOOTER_RANGE, width);

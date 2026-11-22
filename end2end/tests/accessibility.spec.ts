@@ -24,7 +24,7 @@ import {
 //     of the headings (three best-practice rules enabled by name), the colours
 //     in both themes, the shape of the banner and footer, and that no
 //     identifier is repeated;
-//   - the frame: axe on the home page and on the "page not found" at the three
+//   - the frame: axe on the frame's page of the style guide and on the "page not found" at the three
 //     width bands.
 // The elements that appear only at some widths (the record viewer of the
 // tables, the code blocks' wrap toggle) are components, checked by their own
@@ -218,13 +218,15 @@ for (const { name: pageName, address } of NET_PAGES) {
 }
 
 const FRAME_PAGES = [
-  { label: 'home page', address: './', onlyLocal: false },
+  { label: 'frame page', address: './style-guide/frame.html', onlyLocal: false },
   { label: 'page not found', address: './404.html', onlyLocal: true },
 ];
 
 // The frame, at the three width bands. The header changes form with the band
 // (title below or beside the logo); the frame is the
-// same on every page, so one content page plus the "page not found" suffice.
+// same on every page, so the frame's page of the style guide plus the "page not found"
+// suffice: components are tested once, on their style guide page (ADR-004), and the home
+// page, being content, is only in the net, at the laptop's width.
 // The "page not found" is opened as its own file: only the host serves it for
 // a missing address, so a live run leaves it out.
 for (const band of BANDS) {
