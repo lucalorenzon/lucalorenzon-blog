@@ -179,6 +179,16 @@ The ones known when the card was taken into work; there may be more.
 
   Still open: how far the circle may reach into the title below the
   line on narrow screens, with long titles.
+
+  **Answered by the user on 2026-11-22, for the title below.** Measured
+  by the agent the same day on the copy of the site, on three pages,
+  the longest title among them, at widths from 320 to 1279 pixels
+  (from 1280 the title sits beside the logo): the circle reaches from
+  10 to 13 pixels below the line, into the 24 pixels of room the title
+  keeps above itself, and leaves between 12 and 15 pixels before the
+  title's highest line of text, also when the title wraps and starts
+  under the circle. The user finds that distance right, and asked for
+  a test that protects it: the circle never reaches the title's text.
 - **How the link keeps one name.** With an alternative text on the
   icon and the name written beside it, a screen reader may say the
   name twice; the link already has a name of its own.
@@ -198,6 +208,28 @@ The ones known when the card was taken into work; there may be more.
   reduced to size, then sharpened (unsharp mask, radius 1.2, 80 per
   cent, threshold 2), with colour raised by 15 per cent and contrast
   by 8. The formats and the favicon are still open.
+
+  **Answered by the user on 2026-11-22, for the formats.** The icon
+  must look as approved on screens of normal density too, so it is
+  made in several WebP files, each sharpened at its own size, and the
+  browser picks one; JPEG has no transparency, and WebP weighs less
+  than PNG. Before choosing WebP the user asked to check its
+  vulnerabilities. What the agent found the same day: the one the user
+  remembered is CVE-2023-4863, a heap overflow in libwebp's decoder,
+  exploited in the wild through crafted images in 2023 and fixed in
+  libwebp 1.3.2 and in the browsers of September 2023; no new flaw of
+  libwebp itself was found for 2025 or 2026 (the one of 2026,
+  CVE-2026-58586, is in a Perl module that carries a copy of libwebp
+  from 2013). The danger lies in decoding a crafted file: the site
+  serves only files made by its author, from the author's own photo,
+  and the tool that makes them here, Pillow 12.1.1, uses the system's
+  libwebp 1.5.0.
+
+  **Answered by the user on 2026-11-22, for the sizes in between.** The
+  icon grows smoothly, so between 48 and 64 pixels the browser takes
+  the next larger file and shrinks it a little itself, which is not
+  exactly what the trial showed at 48 and 64. The user accepts that
+  small reduction rather than an icon that grows by steps.
 
   **Decided by the user on 2026-11-22, for the favicon.** The favicon
   went to a card of its own (see "What it leaves"); the formats and
@@ -271,7 +303,51 @@ The ones known when the card was taken into work; there may be more.
   text and may belong in three places, `README.md`,
   `content/README.md` and the site's licence page
   (`content/licence.md`), which changes the card in a way different
-  from the rest. Raised by the agent on 2026-11-22; not discussed yet.
+  from the rest. Raised by the agent on 2026-11-22.
+
+  **Answered by the user on 2026-11-22.** The notice reaches both
+  readers: the one who reads the repository and could copy the files
+  from `assets/`, with a note beside the files as the fonts have
+  (`assets/fonts/<folder>/README.md`), and the one who visits the site,
+  on the licence page. Asked by the user, the notice is also written
+  inside each image file the site serves, as metadata: one line only,
+  not the terms of use, in English:
+
+  > © 2011 Gioia Greifenberg. All rights reserved.
+
+  2011 is the year the photo was taken. What the agent said of the
+  metadata, the same day: PNG, WebP and JPEG all accept an XMP block
+  (Extensible Metadata Platform), whose IPTC photo fields hold the
+  creator and the copyright notice, and Google Images shows them; the
+  notice then travels with the file outside the site; in the European
+  Union, embedded rights information is protected against deliberate
+  removal (directive 2001/29/EC, article 7), an indication and not a
+  legal opinion. Metadata are easily stripped, by social networks and
+  by image tools, ours included, so a test checks that they are in the
+  files the site publishes. One line weighs a few tens of bytes, the
+  full set of fields one or two kilobytes.
+
+  **Answered by the user on 2026-11-22, for the text.** On drafts of
+  the agent, the images go in a folder of their own, `assets/logo/`,
+  and the notice is written in three places, the favicon included,
+  since it is under all rights reserved too:
+  - `README.md`, at the end of the section "License":
+    "The logo's images in `assets/logo/` and the favicon are under none
+    of these licences: all rights reserved ([details](assets/logo/README.md))."
+  - `assets/logo/README.md`, beside the files: the images (the round
+    icons of the folder, and `assets/favicon.ico`, cut from a photo by
+    Gioia Greifenberg), the line "© 2011 Gioia Greifenberg. All rights
+    reserved.", and that they are under none of the repository's
+    licences, may not be copied, changed or reused, and carry the same
+    notice inside each WebP file.
+  - The site's licence page (`content/licence.md`), a section "The
+    logo" before "Material by others": "The logo and the site's icon
+    are cut from a photo by Gioia Greifenberg. © 2011 Gioia
+    Greifenberg. All rights reserved: they may not be reused."
+
+  The page's opening ("Unless a page says otherwise, you may reuse
+  what you read here") gets no sentence on the exception: the user
+  keeps it short, and the new section says it.
 
 ## Dependencies
 
@@ -284,6 +360,67 @@ The ones known when the card was taken into work; there may be more.
   the sharpened ones `circle-sharp-*.png`), the screenshots and the
   copy of the site with the logo (`mock-site/`, its script
   `logo-mock.js`). `target/` is wiped by a clean build.
+
+## Acceptance tests
+
+Agreed with the user on 2026-11-22. Each one names how it is checked.
+
+The logo in the header:
+
+1. On every page and at every width of the browser tests' list of
+   screens, the header shows the round icon and the name "Lvk@73r"
+   written as text; neither the logo drawn in characters nor the name
+   in the pixel font appears anywhere. *Browser test.*
+2. The icon is 48 pixels wide at a page of 320 pixels and 64 from 1366
+   up, growing in a straight line in between, as the title does.
+   *Browser test.*
+3. The header's line crosses the icon at 80 per cent of its height,
+   where the girls' feet are, in both forms of the header, within one
+   pixel. *Browser test.*
+4. The name is in Literata bold italic, the title's size, with its
+   baseline on the header's line; it stands 6 pixels from the icon and
+   leans 5 degrees more than Literata's italic. *Browser test.*
+5. Below 1280 pixels, with the longest title, the circle never reaches
+   the title's text. *Browser test.*
+
+Accessibility:
+
+6. The link to the home page has one name only, "Lvk@73r, home page";
+   the icon has an empty alternative text and is not announced. *Unit
+   test and browser test on the accessibility tree.*
+7. The accessibility check passes on every page without dropping any
+   finding on the logo: the exception for the drawn logo goes.
+   *Browser test.*
+
+Images and rights:
+
+8. The icon is served as WebP files of 48, 64, 96 and 128 pixels, each
+   sharpened at its own size, with a transparent outside, and the
+   browser picks one by the icon's size and the screen's density.
+   *Unit test on the markup, check on the files.*
+9. Every WebP file the site publishes holds in its metadata the line
+   "© 2011 Gioia Greifenberg. All rights reserved." *Automatic test on
+   the files.*
+10. The notice is in `README.md`, in `assets/logo/README.md` and on the
+    licence page, with the agreed text. *Check by eye.*
+11. The original photo is not in the repository. *Check with
+    `git ls-files`.*
+
+Fonts:
+
+12. The role `logo` is Literata: the stylesheet no longer declares the
+    pixel font, and the fonts page shows Literata once, with the roles
+    text and logo and the chosen piece, and no section for IBM VGA
+    8x16. *Unit tests and the font roles' browser test.*
+
+Before the commit:
+
+13. The user sees screenshots of the real header on a narrow screen and
+    on a laptop, on both backgrounds, and approves them. *Check by
+    eye.*
+14. The pipeline's checks pass: formatting, clippy, unit tests, type
+    check, browser tests; the rows of `end2end/README.md` follow the
+    tests that change. *Automatic.*
 
 ## What it leaves
 
