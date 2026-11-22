@@ -3,9 +3,9 @@ use leptos::prelude::*;
 use std::sync::LazyLock;
 use unicode_segmentation::UnicodeSegmentation;
 
-/// The classes of the `<main>`: the text column's look, and the larger text from `md`. They are
-/// in `style/input.css`.
-const MAIN_CLASSES: &str = "long-text-column md:long-text-large";
+/// The class of the `<main>`: the text column's look, with the text growing with the page's width.
+/// It is in `style/input.css`.
+const MAIN_CLASSES: &str = "long-text-column";
 
 /// The ASCII-art logo (narrow version of the old site's `AsciiArtLogo`).
 pub const LOGO: &str = r#"    __        __   ______  __________
@@ -168,7 +168,7 @@ fn common_tags(page: IndexedPage, heading: String, og_type: &'static str) -> imp
 
 /// The frame every page shares: the `<html>` element with its `<head>`, the
 /// header (logo, title, reserved menu slot), the `<main>` (the text column: 60 characters wide
-/// at most and centred, its text 18px and from `md` 20px) and the footer. The page supplies its
+/// at most and centred, its text growing from 18px to 20px with the page's width) and the footer. The page supplies its
 /// tab title, its `<h1>` and what goes in the `<main>`.
 ///
 /// The `<main>` holds either the HTML made from a Markdown file (`html`, written as it is) or
@@ -275,9 +275,9 @@ pub fn PageFrame(
 mod tests {
     use super::*;
 
-    /// The classes the `<main>` must carry, written out here so that the test does not depend on
+    /// The class the `<main>` must carry, written out here so that the test does not depend on
     /// the constant of the component.
-    const EXPECTED_CLASSES: &str = "long-text-column md:long-text-large";
+    const EXPECTED_CLASSES: &str = "long-text-column";
 
     fn render(view: impl IntoView + 'static) -> String {
         let owner = Owner::new();
@@ -285,7 +285,7 @@ mod tests {
     }
 
     #[test]
-    fn with_html_it_writes_the_main_with_both_classes_holding_the_html_unchanged() {
+    fn with_html_it_writes_the_main_with_its_class_holding_the_html_unchanged() {
         let html = render(view! {
             <PageFrame
                 title="Title"

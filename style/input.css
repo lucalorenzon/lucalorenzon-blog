@@ -53,6 +53,22 @@ body {
 
 @utility page-fills-screen {
   @apply min-h-screen flex flex-col;
+  /* The page is a container named "page": the column's text size is measured
+     against its width (cqi), not against the window's, which includes the
+     scrollbar. */
+  container-type: inline-size;
+  container-name: page;
+}
+
+/* The size of the column's text, as a registered length. Registered, it is
+   inherited already computed in pixels. Not registered, it would be inherited
+   as the expression, and the code blocks and the tables inside the column,
+   which are containers themselves, would compute its cqi against their own
+   width and get a size of their own. */
+@property --long-text-size {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 18px;
 }
 
 @utility not-shown {
@@ -112,7 +128,12 @@ body {
    sizes need not be multiples of 8px: that rule, which keeps the bitmap
    font sharp, applies to the header only.
 
-   The text is 18px; long-text-large (switched on with md:) makes it 20px.
+   The text grows with the width of the page, in a straight line from 18px at
+   320px wide to 20px at 1366px wide, and stays at 18px below 320px and at
+   20px above 1366px. The width is that of the container named "page" (see
+   page-fills-screen), and --long-text-size is registered (@property above)
+   so that the components inside the column, which are containers too,
+   receive the size already computed.
    Spacing follows the text size, so it is in em of the column's font:
    line height 1.5; paragraphs and lists 2.25em apart (1.5 times the line
    height, WCAG 1.4.8); list items 0.75em; section titles 1.5em, line height
@@ -125,7 +146,7 @@ body {
    still must be spaced by the text's size. */
 @utility long-text-column {
   @apply grow w-full max-w-[60ch] mx-auto px-2 pb-8 text-ink;
-  --long-text-size: 18px;
+  --long-text-size: clamp(18px, calc(18px + (100cqi - 320px) * 2 / 1046), 20px);
   font-size: var(--long-text-size);
 
   /* Sections: heading accent, bold and larger than the text, no line above
@@ -256,11 +277,6 @@ body {
   & :not(pre) > code {
     @apply font-code text-accent-code text-[0.85em] wrap-anywhere;
   }
-}
-
-/* The text column from md: 20px instead of 18px (the em spacing follows). */
-@utility long-text-large {
-  --long-text-size: 20px;
 }
 
 /* The style guide's colour samples, in the text column. A sample is a box that

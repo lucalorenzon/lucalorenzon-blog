@@ -39,7 +39,7 @@ function breakpoint(name: string): number {
   return width;
 }
 
-// Where the text column changes size and the header its logo (md), and where the
+// Where the header changes its logo (md), and where the
 // header becomes one row (xl). The width just below each is the other side of it.
 export const MD = breakpoint('md');
 export const XL = breakpoint('xl');
@@ -85,22 +85,38 @@ export function viewportAt(width: number) {
   return found;
 }
 
-// The widths for tests of what is inside the text column. Measured in the
-// browser, as the width of its text, without the column's 8 px of padding on
-// each side: the column grows with the screen from 304 to 584 px up to about
-// 600 px, stays at 584 px up to just below md (text 18 px), and is 704 px wide
-// from md up (text 20 px), at today's breakpoints (md at 768 px). The table forms and the code "wrap" toggle follow
-// the column. So a test of what is inside the column needs one width per
-// column size: 659 and 767 give the same result, and so do the seven widths
-// from 768 to 1920. The widths between 412 and 600 are sampled at three
-// points only, as before. Why: docs/board/cards/check-at-every-width-only-what-depends-on-it.md
-// The three phones are devices, by name; the last two are the two sides of md,
-// by width, whatever stands there.
+// The text column's range: its text grows in a straight line from `min` px at a page
+// width of `from` px to `max` px at `to` px, and stays at `min` below and at `max` above
+// (`long-text-column` in style/input.css). Written by hand: these numbers repeat the
+// stylesheet until docs/board/cards/read-the-column-text-range-from-the-configuration.md
+// moves the range to config/, where the build and the tests read it.
+export const TEXT_RANGE = { from: 320, to: 1366, min: 18, max: 20 };
+
+// The text size the range gives at a page width: the straight line, clamped.
+export function textSizeAt(width: number): number {
+  const { from, to, min, max } = TEXT_RANGE;
+  return Math.min(max, Math.max(min, min + ((max - min) * (width - from)) / (to - from)));
+}
+
+// The widths for tests of what is inside the text column. The text column grows
+// smoothly with the page, up to 1366 px, so there is no longer one width per
+// column size: the tests take a few widths that show what changes. 320, 843
+// and 1366 show the text at 18, 19 and 20 px (843 is about the middle of the
+// range); the three phones, 320, 393 and 412 px, are where the column fills the
+// screen and its lines are shortest; 1366 is also where the column is at its
+// widest in characters and in pixels, as the code block's case at the limit
+// needs. The widths in between stay covered by the layout and readability tests,
+// which run on every device. Why: docs/board/cards/check-at-every-width-only-what-depends-on-it.md
+// and docs/board/cards/let-the-column-text-grow-within-an-injected-range.md
+// The three phones are devices, by name; the last two are widths of the range, not
+// devices, so they are not among VIEWPORTS or DEVICES.
 const COLUMN_WIDTH_PHONES = ['iPhone SE', 'iPhone 15', 'Pixel 7'];
+// The phones among them, where the column fills the screen and is narrowest.
+export const COLUMN_PHONES = VIEWPORTS.filter(({ name }) => COLUMN_WIDTH_PHONES.includes(name));
 export const COLUMN_WIDTHS = [
-  ...VIEWPORTS.filter(({ name }) => COLUMN_WIDTH_PHONES.includes(name)),
-  viewportAt(MD - 1),
-  viewportAt(MD),
+  ...COLUMN_PHONES,
+  { name: 'text 19 px', width: 843, height: 800 },
+  { name: 'range end', width: TEXT_RANGE.to, height: 800 },
 ];
 
 // The pages show different elements per width band (and axe checks only what

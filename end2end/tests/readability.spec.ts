@@ -17,7 +17,8 @@ import {
 // The NET runs on every page of the sitemap (NET_PAGES in support.ts), because
 // the rule depends on the text, which any page may change:
 //   - no rendered line is longer than 80 characters (WCAG 1.4.8), at the
-//     widest column, 1280x720 (text 20 px, column 704 px, from the md breakpoint up, 768 px today).
+//     widest column that the net's width reaches, 1280x720 (text about 19.8 px, column about 714 px:
+//     the column is at its widest from 700 px up, and the text grows up to 1366 px).
 //     Counted on the lines as the browser breaks them, not estimated from the
 //     width: the font is proportional, so no style rule can bound it.
 // (The sideways scroll, without and with the reader's spacing, is the other

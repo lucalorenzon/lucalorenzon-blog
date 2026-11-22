@@ -2,7 +2,7 @@ Like code, tables are a critical point for a site meant to be responsive and acc
 
 ## A table that always fits
 
-This is the simple case, the reference for the others: two short columns, shown as a table at every screen width. The tests check it at 767 and 768 pixels, the two sides of the width where the text grows and the column widens. A wider table, such as the next one, becomes a record viewer at 767.
+This is the simple case, the reference for the others: two short columns, shown as a table at every screen width. A wider table, such as the next one, becomes a record viewer where the column is narrow.
 
 | Tool | Use |
 |---|---|
@@ -14,7 +14,7 @@ This is the simple case, the reference for the others: two short columns, shown 
 
 ## Six columns
 
-At 768 pixels this table is shown as a table; at 767 it becomes the record viewer. The width where it changes form is estimated when the site is built, from the words in the table. This case also puts the keyboard to the test: the Tab key reaches the record viewer, and the arrow keys move through the records one at a time.
+On a wide screen this table is shown as a table; on a narrow one it becomes the record viewer. The width where it changes form is estimated when the site is built, from the words in the table. This case also puts the keyboard to the test: the Tab key reaches the record viewer, and the arrow keys move through the records one at a time.
 
 | Planet | Moons | Rings | Day | Year | Orbit |
 |---|---|---|---|---|---|
@@ -37,7 +37,7 @@ The record viewer shows every record with each field at the same height. To make
 
 ## A range with an en dash
 
-Here I dealt with unwanted line breaks in narrow columns, such as the one the browser makes after the en dash of a range: 63–44 would be split in two. A value with no space in it stays on one line, and the table gives its column the width it needs, taking it from the columns with room to spare. The tests check it at 320, 393, 412 and 767 pixels.
+Here I dealt with unwanted line breaks in narrow columns, such as the one the browser makes after the en dash of a range: 63–44 would be split in two. A value with no space in it stays on one line, and the table gives its column the width it needs, taking it from the columns with room to spare. The tests check it at 320, 393 and 412 pixels, the widths of three phones, where columns are narrowest.
 
 | Pts | What happened in the match |
 |---|---|
@@ -49,7 +49,7 @@ Here I dealt with unwanted line breaks in narrow columns, such as the one the br
 
 ## A word with a hyphen
 
-This case is like the previous one, with a word such as read-only, which the browser would split after the hyphen, since a letter follows it; it does not split a date such as 2026-11-15, where a digit follows. The word stays on one line in the same way, and the tests check it at the same four widths.
+This case is like the previous one, with a word such as read-only, which the browser would split after the hyphen, since a letter follows it; it does not split a date such as 2026-11-15, where a digit follows. The word stays on one line in the same way, and the tests check it at the same three widths.
 
 | Mode | What it allows the reader of the file to do with the file |
 |---|---|
@@ -57,14 +57,3 @@ This case is like the previous one, with a word such as read-only, which the bro
 | write-once | The reader writes the file the first time it is created and never again, whatever the program they use for it. |
 | read-write | The reader opens the file and changes whatever they like inside it, whatever the program they use for it. |
 | append-only | The reader adds new lines at the end of the file and leaves the older lines as they were written. |
-
-## Texts at the limit
-
-Here, instead, I put to the test the estimate of the width below which a table becomes a record viewer. Its words are in italic, inline code and bold, which the estimate measures each under an assumption of its own, and the table is estimated at 581 pixels, in a column of 584 at a screen width of 767 pixels: very little room. If the estimate is too low, the table overflows its column and the test fails.
-
-| Plain | Italic | Code | Bold |
-|---|---|---|---|
-| Stationery | *Emphatically* | `notebook_cell_values` | **Importantly** |
-| Pencil | *Lightly* | `pencil_ids` | **Strongly** |
-| Eraser | *Gently* | `eraser_key` | **Firmly** |
-| Ruler | *Precisely* | `ruler_size` | **Boldly** |

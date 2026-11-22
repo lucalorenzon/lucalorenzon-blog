@@ -1,5 +1,5 @@
 import { test, expect, type Locator, type Page } from '@playwright/test';
-import { axeReport, boundaryName, COLUMN_WIDTHS, CONTRAST_RULES, MD, VIEWPORTS, runAxe } from './support';
+import { axeReport, COLUMN_PHONES, COLUMN_WIDTHS, CONTRAST_RULES, VIEWPORTS, runAxe } from './support';
 
 // Every Markdown table is rendered in two forms inside one wrapper: the
 // table, and a "record viewer" (the names of the columns stay still on the
@@ -8,20 +8,17 @@ import { axeReport, boundaryName, COLUMN_WIDTHS, CONTRAST_RULES, MD, VIEWPORTS, 
 // tables never scroll sideways. Checked on the style guide's tables page,
 // whose cases are written for these tests (content/style-guide/tables.md);
 // the articles are no longer test pages for the tables:
-//   - on either side of the md breakpoint (767 and 768 today), the form of the simple table, of the six-column table
-//     (a table at 768, a viewer at 767) and of the table of texts at the
-//     limit, which is a table at 767 and no wider than its wrapper
 //   - at the widths of the text column (COLUMN_WIDTHS), for every case:
 //     exactly one of the two forms is displayed, the table is not wider than
 //     its wrapper, and the page does not scroll sideways
 //   - in the case of rows of different heights, at the phone widths, where it
-//     is a viewer: for each record, every row of the box is as tall as, and
+//     is a viewer (it is a table at the other widths of the column): for each record, every row of the box is as tall as, and
 //     level with, the matching row of the label column; the number row reads
 //     "k / n"
-//   - at 767, the keyboard reaches the six-column table's viewer and moves it
+//   - at a phone's width, the keyboard reaches the six-column table's viewer and moves it
 //     one record (ArrowDown), then one more (PageDown)
 //   - axe finds no accessibility violation inside the tables, in both forms
-//     (at 767, where the page shows both, and at 768; see the end of the file)
+//     (at 1024, where the page shows both, and at 1920, where it shows tables only; see the end of the file)
 // It checks what the reader sees, never how the page is built (the class names
 // below only find the parts of the viewer). A case is found by the title of
 // its section: a table belongs to the section whose heading comes before it.
@@ -30,18 +27,20 @@ const PAGE = './style-guide/tables.html';
 
 // What each case puts to the test. The threshold of each case, in em of its
 // own text, is the number in the class `@max-[Tem]/table:viewer-shown` of its
-// wrapper in the built page; the column is 584 px wide at 767 (text 18 px,
-// 32.444 em) and 704 px at 768 (text 20 px, 35.2 em), so a table whose
-// threshold is above 32.444 em is a viewer at 767, and one above 35.2 em would
-// still be a viewer at 768.
+// wrapper in the built page. The column grows with the page up to 1366 px,
+// where it is 704 px wide (text 20 px, 35.2 em) and stays so, and the text
+// grows with it, so a table is a viewer where its threshold is above the
+// column's width in em. Measured on the built page, the six-column table and the
+// rows of different heights are viewers at the three phones, and tables at 1366 and
+// above; between, the form of the six-column table changes with the width
+// and is not checked, only that exactly one form is shown.
 type Case = { name: string; heading: string };
 const SIMPLE: Case = { name: 'simple table', heading: 'A table that always fits' };
 const SIX_COLUMNS: Case = { name: 'six columns', heading: 'Six columns' };
 const HEIGHTS: Case = { name: 'rows of different heights', heading: 'Rows of different heights' };
 const RANGE: Case = { name: 'range with an en dash', heading: 'A range with an en dash' };
 const HYPHEN: Case = { name: 'word with a hyphen', heading: 'A word with a hyphen' };
-const LIMIT: Case = { name: 'texts at the limit', heading: 'Texts at the limit' };
-const CASES: Case[] = [SIMPLE, SIX_COLUMNS, HEIGHTS, RANGE, HYPHEN, LIMIT];
+const CASES: Case[] = [SIMPLE, SIX_COLUMNS, HEIGHTS, RANGE, HYPHEN];
 
 async function gotoReady(page: Page) {
   await page.goto(PAGE);
@@ -89,31 +88,6 @@ async function showRecord(box: Locator, k: number) {
     .toBe(true);
 }
 
-// The form each case has at the two widths on either side of the md breakpoint, where
-// the text size changes (at today's 768: 767 has 18 px text and a 584 px column, 768
-// has 20 px text and a 704 px column).
-const FORMS: { width: number; height: number; expected: [Case, { table: boolean; viewer: boolean }][] }[] = [
-  { width: MD - 1, height: 800, expected: [[SIMPLE, TABLE], [SIX_COLUMNS, VIEWER], [LIMIT, TABLE]] },
-  { width: MD, height: 1024, expected: [[SIMPLE, TABLE], [SIX_COLUMNS, TABLE], [LIMIT, TABLE]] },
-];
-
-for (const { width, height, expected } of FORMS) {
-  test(`the form of the simple, six-column and limit tables at ${width}x${height}`, async ({ page }) => {
-    await page.setViewportSize({ width, height });
-    await gotoReady(page);
-
-    for (const [c, form] of expected) {
-      expect(await formsShown(await wrapperOf(page, c)), `${c.name}: ${form.table ? 'a table' : 'a record viewer'}`).toEqual(form);
-    }
-    // The table of texts at the limit is no wider than its column.
-    const { wrapperWidth, tableWidth } = await (await wrapperOf(page, LIMIT)).evaluate((el) => ({
-      wrapperWidth: el.getBoundingClientRect().width,
-      tableWidth: el.querySelector('table')!.getBoundingClientRect().width,
-    }));
-    expect(tableWidth, 'texts at the limit: the table is not wider than its wrapper').toBeLessThanOrEqual(wrapperWidth + 0.5);
-  });
-}
-
 for (const { name, width, height } of COLUMN_WIDTHS) {
   const where = `at ${width}x${height} (${name})`;
 
@@ -142,9 +116,9 @@ for (const { name, width, height } of COLUMN_WIDTHS) {
 }
 
 // The rows of different heights are a viewer at every phone width (its
-// threshold is above the 767 column's 32.444 em): there the rows of a record
-// must line up with their labels.
-for (const { name, width, height } of COLUMN_WIDTHS.filter(({ width }) => width < MD)) {
+// threshold is 33.643 em, above the phones' columns, at most 412 px at 18.2 px
+// text): there the rows of a record must line up with their labels.
+for (const { name, width, height } of COLUMN_PHONES) {
   test(`every record of the rows of different heights at ${width}x${height} (${name}) lines up with the labels and is numbered`, async ({ page }) => {
     await page.setViewportSize({ width, height });
     await gotoReady(page);
@@ -209,8 +183,11 @@ for (const { name, width, height } of COLUMN_WIDTHS.filter(({ width }) => width 
   });
 }
 
-test(`the keyboard reaches the viewer of the six-column table at ${MD - 1}x800 and moves one record, then one more`, async ({ page }) => {
-  await page.setViewportSize({ width: MD - 1, height: 800 });
+// At the width of an iPhone 15, where the six-column table is a viewer.
+const KEYBOARD_PHONE = COLUMN_PHONES.find(({ name }) => name === 'iPhone 15')!;
+
+test(`the keyboard reaches the viewer of the six-column table at ${KEYBOARD_PHONE.width}x${KEYBOARD_PHONE.height} and moves one record, then one more`, async ({ page }) => {
+  await page.setViewportSize({ width: KEYBOARD_PHONE.width, height: KEYBOARD_PHONE.height });
   await gotoReady(page);
 
   const wrapper = await wrapperOf(page, SIX_COLUMNS);
@@ -240,10 +217,12 @@ test(`the keyboard reaches the viewer of the six-column table at ${MD - 1}x800 a
 
 // Accessibility of the components, with axe limited to the component.
 // Per ADR-004 a component is checked once, on the case that stresses it most:
-// the style guide's tables page shows both forms just below md and tables only
-// from md up (767 and 768 today). The contrast rules are a test of their own, tagged @colours, to run in
-// both themes.
-const AXE_WIDTHS = VIEWPORTS.filter(({ name }) => [boundaryName(MD), 'iPad Mini'].includes(name));
+// the style guide's tables page shows both forms at the width of the iPad Mini in
+// landscape, 1024 (the simple table and the two of single values are tables, the
+// six-column table and the rows of different heights are viewers), and tables only at
+// Full HD, 1920, past the end of the text's range. The contrast rules are a test of their
+// own, tagged @colours, to run in both themes.
+const AXE_WIDTHS = VIEWPORTS.filter(({ name }) => ['iPad Mini landscape', 'Full HD'].includes(name));
 
 for (const { name, width, height } of AXE_WIDTHS) {
   const where = `of the style guide's tables page at ${width}x${height} (${name})`;

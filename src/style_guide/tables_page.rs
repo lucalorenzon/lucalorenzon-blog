@@ -59,26 +59,25 @@ mod tests {
         super::render_tables_page(&site())
     }
 
-    /// The titles of the six cases: the browser tests find each case by its title.
-    const CASE_TITLES: [&str; 6] = [
+    /// The titles of the five cases: the browser tests find each case by its title.
+    const CASE_TITLES: [&str; 5] = [
         "A table that always fits",
         "Six columns",
         "Rows of different heights",
         "A range with an en dash",
         "A word with a hyphen",
-        "Texts at the limit",
     ];
 
     #[test]
     fn the_cases_are_the_real_component() {
         let html = markdown::to_html(TABLES);
-        assert!(html.matches("<h2>").count() >= 6);
-        assert!(html.matches("class=\"table-with-viewer").count() >= 6);
+        assert!(html.matches("<h2>").count() >= 5);
+        assert!(html.matches("class=\"table-with-viewer").count() >= 5);
         assert!(render_tables_page().contains("class=\"record-viewer"));
     }
 
     #[test]
-    fn the_page_holds_the_six_cases_each_in_a_section_with_one_table() {
+    fn the_page_holds_the_five_cases_each_in_a_section_with_one_table() {
         let html = markdown::to_html(TABLES);
         let sections: Vec<&str> = html.split("<h2>").skip(1).collect();
         assert_eq!(sections.len(), CASE_TITLES.len());
