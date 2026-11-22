@@ -131,6 +131,21 @@ The ones known when the card was taken into work; there may be more.
   licence page asks of images by other authors.
 - **How large the icon and the name are**, and whether they grow
   within a range of the page's width, as the title does.
+
+  **Answered by the user on 2026-11-22, for the icon.** The icon grows
+  as the title does, from 48 pixels on narrow screens to 64 on wide
+  ones, and crosses the header's line: the line passes where the
+  girls' feet are, about 80 per cent of the circle's height down, as
+  if the pushchair stepped over it. Chosen on screenshots of the real
+  header (icon at 32, 48 and 64 pixels, then on the line at 48 and
+  64), made by the agent with throwaway scripts outside the
+  repository. What the screenshots showed: at 32 pixels the photo is
+  a blue blot; from 48 the figure, the cloth and the pushchair are
+  recognised; at these sizes the feet themselves cannot be made out,
+  so the line reads as a circle resting on it. Still open: the size of
+  the name, whether the header is aligned again around the icon, and
+  how far the circle may reach into the title below the line on
+  narrow screens, with long titles.
 - **How the link keeps one name.** With an alternative text on the
   icon and the name written beside it, a screen reader may say the
   name twice; the link already has a name of its own.
