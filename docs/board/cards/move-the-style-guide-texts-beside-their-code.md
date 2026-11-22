@@ -61,3 +61,5 @@ The ones known when the card was written; there may be more.
   the card where the model was decided.
 - [Build a design system](build-a-design-system.md): the card the
   style guide belongs to.
+- [ADR-005](../../adr/ADR-005-explain-a-component-beside-its-code.md):
+  the record of the decision this card applies.

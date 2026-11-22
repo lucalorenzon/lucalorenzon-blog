@@ -145,7 +145,9 @@ superseded; they left this card on 2026-11-22 (see "What it leaves").
   Markdown holds no HTML has to reach the new file. The user chose
   the file beside the code, and asked for a card that brings the
   other pages to the same model after publishing
-  ([card](move-the-style-guide-texts-beside-their-code.md)).
+  ([card](move-the-style-guide-texts-beside-their-code.md)). Recorded,
+  since it spans several cards, in
+  [ADR-005](../../adr/ADR-005-explain-a-component-beside-its-code.md).
 - **Under which licence the explanation beside the code is**: the
   code's, MIT, or the text's, as an exception declared in `src/`.
   Added on 2026-11-22, from the answer above.
@@ -233,3 +235,5 @@ the style guide needs:
   the cards cut from this one.
 - [Move the style guide's texts beside their code](move-the-style-guide-texts-beside-their-code.md):
   the other pages brought to this page's model, after publishing.
+- [ADR-005](../../adr/ADR-005-explain-a-component-beside-its-code.md):
+  the record of the decision on where a component's explanation lives.
