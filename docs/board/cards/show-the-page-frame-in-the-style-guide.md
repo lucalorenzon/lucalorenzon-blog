@@ -84,6 +84,17 @@ was superseded.
 - **Whether the `iframe` passes the accessibility checks**, the
   build's and axe's best practices, and how wide a sample may be on a
   320-pixel screen without scrolling the page sideways.
+
+  **Answered by the user on 2026-11-22, with the agent: no `iframe`.**
+  Once the tests check the frame of the page itself (the next
+  question), the samples would serve the reader only. The agent set
+  out the two ways: samples side by side, which show the two-row and
+  one-row header at a glance but bring in the `iframe` and its checks;
+  or an explanation of what changes and at which width, which the
+  reader sees by resizing the window, though a reader on a phone never
+  sees the one-row header. The user chose the explanation: the frame
+  around the text is the real one, and an `iframe` would be awkward to
+  look at on a phone anyway.
 - **What the page puts to the test.** The frame's browser tests run
   today on the home page, which does for the frame what the two
   articles did for the text's components before the style guide took
