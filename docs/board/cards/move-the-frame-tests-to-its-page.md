@@ -1,7 +1,8 @@
 # Move the frame's tests to its page
 
 - **Created:** 2026-11-22
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-22
 
 ## Why
 
@@ -100,6 +101,35 @@ Agreed with the user on 2026-11-22.
 6. Every check of the pipeline passes, as in `build.yml`: formatting,
    clippy, unit tests, type check and Playwright, the README's test
    included.
+
+## Recap
+
+Done on 2026-11-22: the card taken into work with its acceptance tests
+(`cb076fc`), the tests moved (`cb80c02`).
+
+- The four tests of the header and the footer in
+  `header-layout.spec.ts` open `style-guide/frame.html`, named once in
+  the constant `FRAME_PAGE`, and use the page's title, "Page frame",
+  where they used "Home Page".
+- In `accessibility.spec.ts`, the frame's list of pages holds the
+  frame's page and the "page not found"; the home page is in the net
+  only.
+- The rows of the six tests in `end2end/README.md`, and the comments
+  at the top of the two files, name the frame's page.
+- Every acceptance test passed: the moved tests pass on the frame's
+  page with no rule changed, which confirms they did not depend on the
+  home page's content; the suite still counts 332 tests (331 passed,
+  1 skipped, the "page not found" check that runs on the live site
+  only); formatting, clippy, the 434 unit tests and the type check
+  pass.
+
+## Cautions
+
+- The home page's list of articles is examined by axe at the laptop's
+  width only. Should it become a component of its own, its page in the
+  style guide is where it would be examined at every width.
+- The README's class "Frame" still lists the home page among the
+  site's own pages: its own tests (`home.spec.ts`) stay in that class.
 
 ## References
 

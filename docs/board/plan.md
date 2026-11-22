@@ -99,7 +99,8 @@ live since 2026-10-26
     [ADR-005](../adr/ADR-005-explain-a-component-beside-its-code.md)
     says), then
     the frame's tests moved onto it from the home page
-    ([card](cards/move-the-frame-tests-to-its-page.md)) and the
+    ([card](cards/move-the-frame-tests-to-its-page.md), done, the
+    home page left to the net) and the
     column's from the text page
     ([card](cards/move-the-column-tests-to-the-frame-page.md)),
     and last the index's list of
