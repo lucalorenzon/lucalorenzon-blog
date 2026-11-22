@@ -1,6 +1,6 @@
 # Plan
 
-Last updated: 2026-11-21
+Last updated: 2026-11-22
 
 The project's board: what is being worked on now, what comes next, what
 is known or wished for later. How it is used: `CLAUDE.md`, "The plan".
@@ -85,7 +85,8 @@ live since 2026-10-26
     so the column's page joined the frame's, closed
     ([card](cards/show-the-text-column-in-the-style-guide.md)). First
     the column's text made to grow within a range the site injects
-    ([card](cards/let-the-column-text-grow-within-an-injected-range.md)),
+    ([card](cards/let-the-column-text-grow-within-an-injected-range.md),
+    in work, with the range written in the stylesheet),
     then the frame's text within the same ranges
     ([card](cards/let-the-frame-text-grow-within-the-injected-ranges.md)),
     then the frame's page, which shows the column too
@@ -103,6 +104,9 @@ live since 2026-10-26
 - [Take the measures from the configured fonts](cards/take-the-measures-from-the-configured-fonts.md),
   in the build, in the browser, instead of Literata's widths generated
   by hand and Hack's advance written in the code.
+- [Read the column text's range from the configuration](cards/read-the-column-text-range-from-the-configuration.md),
+  the second increment of the column's text, after the range is
+  written in the stylesheet.
 - [Use a structured configuration file](cards/use-a-structured-configuration-file.md),
   now that `config/` holds a second setting, the fonts, read by the
   build only; the heading limit is read by the tests too.

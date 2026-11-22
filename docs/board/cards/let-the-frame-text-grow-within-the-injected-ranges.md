@@ -26,7 +26,9 @@ about.
   characters at 768 (decided by the user in the spike).
 - **The ranges are those of the column's card**
   ([let the column's text grow within a range the site injects](let-the-column-text-grow-within-an-injected-range.md)),
-  which sets how a range is written and where it lives.
+  which sets how a range is written, first in the stylesheet; the
+  range moves to the configuration in a second increment
+  ([read the column text's range from the configuration](read-the-column-text-range-from-the-configuration.md)).
 - **The title has a limit of graphemes**
   (`config/heading-max-graphemes.txt`), checked by the header's
   browser test at today's sizes.
@@ -53,5 +55,7 @@ The ones known when the card was written; there may be more.
   the spike that decided it.
 - [Let the column's text grow within a range the site injects](let-the-column-text-grow-within-an-injected-range.md):
   the first use of the ranges.
+- [Read the column text's range from the configuration](read-the-column-text-range-from-the-configuration.md):
+  where the ranges move after the stylesheet.
 - [Show the page frame in the style guide](show-the-page-frame-in-the-style-guide.md):
   the page that shows the frame at several widths.

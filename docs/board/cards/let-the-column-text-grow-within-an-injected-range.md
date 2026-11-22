@@ -67,6 +67,13 @@ The ones known when the card was written; there may be more.
   largest size, and the widths at which they are reached; in
   `config/`, as the breakpoints and the fonts are, and whether it
   waits for the card on a structured configuration file.
+
+  **Answered by the user on 2026-11-22.** The work is cut in two
+  increments. In this card the range is written in the stylesheet, so
+  the column's text grows smoothly with no change to the build or to
+  the configuration. Moving the range into the configuration, read by
+  the build, is a second increment, in the card
+  [read the column text's range from the configuration](read-the-column-text-range-from-the-configuration.md).
 - **Which widths the range spans**, and whether the sizes stay 18 and
   20 pixels.
 - **Whether the text still grows with the browser's zoom**, as WCAG
@@ -82,8 +89,16 @@ The ones known when the card was written; there may be more.
 
 ## Dependencies
 
-- [Use a structured configuration file](use-a-structured-configuration-file.md),
-  perhaps, depending on where the range lives.
+None known. The possible dependency on the card
+[use a structured configuration file](use-a-structured-configuration-file.md)
+went, with the range's place in the configuration, to the card
+[read the column text's range from the configuration](read-the-column-text-range-from-the-configuration.md).
+
+## What it leaves
+
+- The range written in `config/` and read by the build, instead of in
+  the stylesheet: the card
+  [read the column text's range from the configuration](read-the-column-text-range-from-the-configuration.md).
 
 ## References
 
@@ -97,6 +112,8 @@ The ones known when the card was written; there may be more.
 - [Decide whether to cut the text column again](decide-whether-to-cut-the-text-column-again.md):
   the card that put the column back into the frame.
 - [Use a structured configuration file](use-a-structured-configuration-file.md):
-  a possible place for the range.
+  a possible place for the range, now a matter of the next card.
+- [Read the column text's range from the configuration](read-the-column-text-range-from-the-configuration.md):
+  the second increment, cut from this card.
 - [Check the table widths against Chromium's rounding](check-table-widths-against-chromium-rounding.md):
   the table's widths, measured at a size that would now vary.

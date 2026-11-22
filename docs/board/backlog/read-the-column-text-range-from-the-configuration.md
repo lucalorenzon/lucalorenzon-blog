@@ -1,0 +1,1 @@
+../cards/read-the-column-text-range-from-the-configuration.md
