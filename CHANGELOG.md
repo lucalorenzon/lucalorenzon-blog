@@ -31,6 +31,39 @@ Why these rules: [the card that set them](docs/board/cards/separate-build-from-d
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-11-22
+
+### Added
+
+- A style guide, at `/style-guide/`: one page each for the colours, the
+  code block, the table, the text, the fonts and the page frame, each
+  showing its component in the cases it has to handle, with the
+  author's explanation of the choices behind it. It is listed in the
+  sitemap; no page links to it yet.
+
+### Changed
+
+- A new logo: the author's photo, cut to a circle, stands on the
+  header's line, with the name Lvk@73r beside it in bold italic,
+  breaking the line. It replaces the written logo and the logo drawn in
+  characters; the pixel font they used is no longer served.
+- The favicon is cut from the logo's photo, at 16 and 32 pixels.
+- The text grows smoothly with the width of the page, between 320 and
+  1366 pixels, instead of jumping at 768: the column's text from 18 to
+  20 pixels, the page's title from 24 to 32, the logo from 48 to 64, the
+  footer's text from 16 to 18. Headings follow the text, at 1.2 and 1.1
+  times its size.
+- The code block's wrap toggle is an icon instead of a checkbox with the
+  word "wrap"; it keeps its name for screen readers and the keyboard,
+  and the system colours in forced colours mode.
+- The licence page names the icons' set and its licence.
+
+### Fixed
+
+- In Chromium on Linux, a code block whose lines fitted the column could
+  still show the wrap toggle: the code font is now drawn at its true
+  width, as Firefox and WebKit already did.
+
 ## [0.11.0] - 2026-11-07
 
 ### Changed
