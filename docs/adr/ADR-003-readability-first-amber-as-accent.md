@@ -11,7 +11,11 @@
   [card](../board/cards/show-numbered-lists-and-colour-list-markers.md)).
   Extended again on 2026-11-07: the frame of the boxes that hold the
   articles on the home page joins the uses of amber (see Decision and
-  Technical notes; [card](../board/cards/frame-home-page-articles-in-boxes.md))
+  Technical notes; [card](../board/cards/frame-home-page-articles-in-boxes.md)).
+  Superseded in part on 2026-11-22 by
+  [ADR-006](ADR-006-a-photo-and-a-name-for-the-logo.md): the logo is a
+  photo and a name in Literata, and the pixel font leaves the site;
+  what this record says of the logo is kept as it was decided then
 - **Card:** [give the articles' code, quotes and tables a look](../board/cards/design-look-of-articles.md)
 
 ## Context
