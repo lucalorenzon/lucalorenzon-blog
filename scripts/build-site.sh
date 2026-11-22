@@ -34,6 +34,12 @@ else
 fi
 export BLOCKED_ROBOTS_FILE
 
+# Empty the site folder first, so a file the site no longer has does not stay
+# from an earlier build. The path is written out in full, with no variable, and
+# is relative to the repository's root, where the script moved above
+# (docs/board/cards/empty-the-site-folder-before-the-build.md).
+rm -rf target/site
+
 # The site's full address can be set with the SITE_ADDRESS environment
 # variable (https, with a host, ending with "/"); default: https://www.lucalorenzon.com/
 cargo run --release -- target/site

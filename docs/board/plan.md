@@ -133,8 +133,8 @@ live since 2026-10-26
   ([card](cards/decide-whether-the-logo-is-a-component.md)).
 - [Empty the site folder before the build](cards/empty-the-site-folder-before-the-build.md),
   in `scripts/build-site.sh`, so a file the site no longer has does
-  not stay in `target/site` from an earlier build; asked by the user,
-  the next card to take into work.
+  not stay in `target/site` from an earlier build; done, not published
+  yet.
 - [Update the screen reader check for an English site](cards/update-screen-reader-check-for-english-site.md),
   since its reference still describes the Italian page, and let it
   read more pages than the home page: it carries the wrap toggle

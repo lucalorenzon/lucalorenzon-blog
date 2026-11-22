@@ -1,7 +1,8 @@
 # Empty the site folder before the build
 
 - **Created:** 2026-11-22
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-22
 
 ## Why
 
@@ -81,6 +82,33 @@ once, as the answer above says; the last one is the pipeline's.
    in the pipeline, where every job starts from a fresh checkout.
 5. Every check the pipeline runs passes: formatting, Clippy, the unit
    tests, the type check and the browser tests.
+
+## Recap
+
+Done on 2026-11-22: the card taken into work with its acceptance tests
+(`5032daa`), and the fix in the commit that closes this card.
+
+- **`scripts/build-site.sh`** runs `rm -rf target/site` before the
+  build program writes the site, with a comment that gives the reason
+  and points to this card. The path is written out in full, and the
+  line comes after the script has moved to the repository's root.
+- **Checked by hand**, as agreed: before the build,
+  `target/site/logo-original.jpg` was there, left by an earlier build;
+  after it, it was gone, and the list of the folders in `target/` was
+  the same as before. A second build, with `target/site` deleted
+  first, ran without errors.
+- Every check of the pipeline passed: the 12 and 33 unit tests of the
+  two Python steps, formatting, Clippy, the 433 unit tests, the build,
+  the type check, and the browser tests, 331 passed and one skipped,
+  the "page not found" checked on the live site only.
+
+## Cautions
+
+- **Whatever is put in `target/site` by hand is lost at the next
+  build** through `scripts/build-site.sh`. Trial files belong in a
+  folder of their own under `target/`, as the earlier cards did.
+- **Running the build program by hand** (`cargo run -- <folder>`)
+  still does not empty its folder, as decided above.
 
 ## References
 
