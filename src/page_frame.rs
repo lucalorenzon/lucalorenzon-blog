@@ -504,6 +504,41 @@ mod tests {
         );
         assert_eq!(HeadingError::Empty.to_string(), "the title is empty");
     }
+
+    /// The favicon holds the two images made from the logo's crop (card
+    /// docs/board/cards/make-the-favicon-from-the-logo-crop.md): one of 16 pixels for normal
+    /// screens and one of 32 for screens of double density, both with transparency outside the
+    /// circle, which means 32 bits per pixel. The test reads the header of the file, little-endian:
+    /// the directory (reserved, type, count) and its two 16-byte entries.
+    #[test]
+    fn the_favicon_holds_one_image_of_16_and_one_of_32_pixels_with_32_bits_each() {
+        let file: &[u8] = include_bytes!("../assets/favicon.ico");
+        let word = |at: usize| u16::from_le_bytes([file[at], file[at + 1]]);
+        let double =
+            |at: usize| u32::from_le_bytes([file[at], file[at + 1], file[at + 2], file[at + 3]]);
+
+        assert_eq!(word(0), 0, "reserved");
+        assert_eq!(word(2), 1, "type: 1 is an icon");
+        assert_eq!(word(4), 2, "number of images");
+
+        let mut sides = Vec::new();
+        for entry in 0..2 {
+            let at = 6 + entry * 16;
+            let (width, height) = (file[at], file[at + 1]);
+            assert_eq!(width, height, "entry {entry} is square");
+            assert_eq!(word(at + 6), 32, "bits per pixel of entry {entry}");
+            let size = double(at + 8) as usize;
+            let offset = double(at + 12) as usize;
+            assert!(size > 0, "entry {entry} has an image");
+            assert!(
+                offset + size <= file.len(),
+                "entry {entry} lies within the file"
+            );
+            sides.push(width);
+        }
+        sides.sort();
+        assert_eq!(sides, [16, 32], "exactly one image of each side");
+    }
 }
 
 /// The logo's image files (acceptance tests 8 and 9 of the card

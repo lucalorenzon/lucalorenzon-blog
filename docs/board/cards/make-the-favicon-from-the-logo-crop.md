@@ -1,7 +1,8 @@
 # Make the favicon from the logo's crop
 
 - **Created:** 2026-11-22
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-22
 
 ## Why
 
@@ -83,6 +84,39 @@ Agreed with the user on 2026-11-22.
    favicon, beside the variant A they chose.
 4. The site still serves `favicon.ico` (the home page's browser test),
    and every check of the pipeline passes.
+
+## Recap
+
+Done on 2026-11-22: the card taken into work and cut (`d012d5b`), and the
+favicon made in the commit that closes this card.
+
+- **`assets/favicon.ico`** holds two images, of 16 and 32 pixels, each
+  a PNG with its transparency, made from the logo's approved circle
+  with the logo's recipe, each at its own size; read back from the
+  file, they match the variant A the user chose pixel for pixel. The
+  file weighs 4,196 bytes, against 1,150 for the old one of 16 pixels
+  only. The frame's link to it did not change.
+- **The recipe** is written in `assets/logo/README.md`, after the
+  icons', with the reason the icon file carries no rights notice.
+- **A unit test** in `src/page_frame.rs`
+  (`the_favicon_holds_one_image_of_16_and_one_of_32_pixels_with_32_bits_each`)
+  reads the file's header: two images, one of each side, 32 bits per
+  pixel, each within the file. Shown to fail when an expected side is
+  changed.
+- **The user saw the final file** beside variant A, enlarged and in a
+  mock browser tab at double density, and approved it.
+- Every acceptance test passed: formatting, clippy, the 433 unit
+  tests, the build, the type check and the browser tests, the home
+  page's included, which checks that the favicon is served.
+
+## Cautions
+
+- **The trial files are in `target/favicon-look/`**, wiped by a clean
+  build: the three variants, the comparison page and its screenshots,
+  and the scripts that made the images and the icon file.
+- **The original photo is back in `assets/logo-original.jpg`**, excluded
+  from git, so every local build copies it into `target/site`. The
+  pipeline never has it, so the published site is not affected.
 
 ## What it leaves
 

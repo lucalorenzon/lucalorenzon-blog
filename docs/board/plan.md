@@ -126,7 +126,8 @@ live since 2026-10-26
   the files gone with the fonts' native size, and ADR-006 in place of
   ADR-003's part on the logo
   ([card](cards/remove-the-pixel-font.md));
-  the favicon made from the logo's crop
+  the favicon made from the logo's crop, done, not published yet:
+  one icon file of 16 and 32 pixels
   ([card](cards/make-the-favicon-from-the-logo-crop.md)),
   and whether the logo is a component of its own
   ([card](cards/decide-whether-the-logo-is-a-component.md)).
