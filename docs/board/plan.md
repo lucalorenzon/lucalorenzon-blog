@@ -102,7 +102,8 @@ live since 2026-10-26
     ([card](cards/move-the-frame-tests-to-its-page.md), done, the
     home page left to the net) and the
     column's from the text page
-    ([card](cards/move-the-column-tests-to-the-frame-page.md)),
+    ([card](cards/move-the-column-tests-to-the-frame-page.md), done,
+    with the headings' ratios),
     and last the index's list of
     the pages to come
     ([card](cards/declare-the-pages-to-come-in-the-style-guide-index.md)).

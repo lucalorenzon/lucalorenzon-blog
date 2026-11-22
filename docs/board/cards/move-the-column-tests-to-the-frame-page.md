@@ -1,7 +1,8 @@
 # Move the text column's tests to the frame's page
 
 - **Created:** 2026-11-22
-- **Status:** In work
+- **Status:** Closed
+- **Closed:** 2026-11-22
 
 ## Why
 
@@ -100,6 +101,45 @@ Agreed with the user on 2026-11-22.
 7. Before the commit, the user sees the frame's page with the new
    sub-section, in screenshots on the iPhone SE and on the laptop.
 8. Every check of the pipeline passes, as in `build.yml`.
+
+## Recap
+
+Done on 2026-11-22: the card taken into work with its acceptance tests
+(`7b60f28`), the tests moved and the frame page's sub-section written
+(`bd3abf3`).
+
+- The two tests of the column in `text-column.spec.ts` open the
+  frame's page and are named after it: `text column of the style
+  guide's frame page` and `the column of the frame page is wider at
+  1366px`. The address is one constant, `FRAME_PAGE` in `support.ts`,
+  shared with the frame's tests moved by the sibling card.
+- The column's test also checks, at every width of the column and at
+  Full HD, that each heading of level two is 1.2 times the column's
+  text and each of level three 1.1 times, within 0.05 pixels, with a
+  guard for a page that has none. Measured in Chromium at 320 pixels:
+  text 18, section heading 21.6, sub-section heading 19.8.
+- The text page's layout test lost the rule that section headings are
+  larger than the text, and kept the rest.
+- The frame page's text has a sub-section, "The headings grow with the
+  text", still a draft by the agent; a unit test requires a heading of
+  level three on the page. The user saw it in screenshots on the
+  iPhone SE and on the laptop before the commit.
+- Every acceptance test passed: the suite still counts 332 tests (331
+  passed, 1 skipped, the "page not found" check that runs on the live
+  site only); formatting, clippy, the 434 unit tests and the type
+  check pass.
+
+## Cautions
+
+- The sub-section headings' ratio was placed in the frame with a doubt
+  declared by the user: should the text page turn out to be its place,
+  only the check and its row move.
+- The guard needs a heading of each level in the frame page's text:
+  the author's rewrite of the draft must keep at least one of each, or
+  the column's test fails on purpose.
+- The space under a heading, 2.25 times the text before the next
+  paragraph, looks larger than the space above a sub-section heading;
+  it is the column's spacing of paragraphs, not changed by this card.
 
 ## References
 
