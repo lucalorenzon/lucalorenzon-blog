@@ -1,7 +1,7 @@
 # Remove the pixel font
 
 - **Created:** 2026-11-22
-- **Status:** Open
+- **Status:** In work
 
 ## Why
 
@@ -47,15 +47,65 @@ Checked by the agent on 2026-11-22, before the logo's card is built:
 
 The ones known when the card was written; there may be more.
 
-- **What ADR-003 says once the pixel font is gone**: a note on the
-  record, or a new record that supersedes the part on the logo.
+- **Whether the native size stays in the build.** A font's description
+  may give an optional `size`, its native size in pixels, which the
+  build reads, checks and writes into the fonts page's samples
+  (`src/style_guide/fonts.rs`). The pixel font was the only font with
+  one: once it is gone, no configuration uses it, and only the tests
+  would keep it alive with a made-up font. Raised by the agent on
+  2026-11-22, when the card was taken into work.
+
+  **Decided by the user on 2026-11-22.** It goes with the pixel font:
+  the key `size` is no longer part of a font's description.
 - **Whether `font-display: block` is still needed** by any font, once
   the only font that used it is gone.
+
+  **Decided by the user on 2026-11-22.** The key `display` stays, with
+  all five values of the CSS property (`auto`, `block`, `swap`,
+  `fallback`, `optional`). Unlike the native size, the key is used by
+  every font; only some of its values are unused, and the build only
+  copies them into the stylesheet. The comment that justifies `block`
+  with the pixel font is rewritten.
+- **What ADR-003 says once the pixel font is gone**: a note on the
+  record, or a new record that supersedes the part on the logo.
+
+  **Decided by the user on 2026-11-22.** A new record, ADR-006,
+  supersedes the part of ADR-003 on the logo; in ADR-003 only the
+  status line changes, and the rest stays as the record of what was
+  decided then. Why not a note, as for ADR-003's earlier corrections
+  and extensions: this time a part of the decision is reversed (the
+  logo kept the pixel font, and "Literata everywhere, logo included"
+  was rejected), and the reason lies in the logo's card, not in a
+  record.
 
 ## Dependencies
 
 - The card [review the logo](review-the-logo.md), which takes the role
   `logo` away from the pixel font.
+
+## Acceptance tests
+
+Agreed with the user on 2026-11-22.
+
+1. No file of the pixel font is left in the repository
+   (`assets/fonts/ibm-vga-8x16/`, `config/fonts/ibm-vga-8x16.txt`), nor
+   in the built site.
+2. A font's description with the key `size` stops the build, with the
+   error that it is not a key of a font's description; a unit test
+   checks it.
+3. The fonts' stylesheet the build writes has no `font-size` in the
+   samples; the fonts page stays as it is today, since the pixel font,
+   with no role, was no longer on it.
+4. No unit test reads the pixel font's description; those that need a
+   second font use a made-up one, written in the test.
+5. No comment and no rule of the code names the pixel font, except the
+   guard of the header's browser test against the old logo, which
+   stays.
+6. ADR-006 exists and records the decision on the logo; ADR-003 says in
+   its status line that this part of it is superseded.
+7. Every check of the pipeline passes: formatting, clippy, unit tests,
+   type check, browser tests and the check of the browser tests'
+   README.
 
 ## References
 
